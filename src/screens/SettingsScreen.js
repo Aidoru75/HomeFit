@@ -1,0 +1,288 @@
+// Settings Screen - User preferences
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  Switch,
+} from 'react-native';
+import Slider from '@react-native-community/slider';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors, spacing, borderRadius, fontSize, shadows } from '../theme';
+import { loadSettings, saveSettings } from '../storage/storage';
+import { t } from '../data/translations';
+
+export default function SettingsScreen() {
+  const insets = useSafeAreaInsets();
+  const [settings, setSettings] = useState({
+    userName: '',
+    language: 'en',
+    soundEnabled: true,
+    soundVolume: 1.0,
+  });
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    loadUserSettings();
+  }, []);
+
+  const loadUserSettings = async () => {
+    const saved = await loadSettings();
+    setSettings(saved);
+    setLoaded(true);
+  };
+
+  const updateSetting = async (key, value) => {
+    const newSettings = { ...settings, [key]: value };
+    setSettings(newSettings);
+    await saveSettings(newSettings);
+  };
+
+  const lang = settings.language;
+
+  if (!loaded) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+      <View style={[styles.header, { paddingTop: insets.top + 20 }]}>
+        <Text style={styles.headerTitle}>{t('settingsTitle', lang)}</Text>
+      </View>
+
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Profile Section */}
+        <Text style={styles.sectionTitle}>{t('profile', lang)}</Text>
+        <View style={styles.card}>
+          <Text style={styles.label}>{t('yourName', lang)}</Text>
+          <TextInput
+            style={styles.textInput}
+            value={settings.userName}
+            onChangeText={(text) => updateSetting('userName', text)}
+            placeholder={t('namePlaceholder', lang)}
+            placeholderTextColor={colors.textLight}
+          />
+        </View>
+
+        {/* Language Section */}
+        <Text style={styles.sectionTitle}>{t('language', lang)}</Text>
+        <View style={styles.card}>
+          <Text style={styles.label}>{t('selectLanguage', lang)}</Text>
+          <View style={styles.languageButtons}>
+            <TouchableOpacity
+              style={[
+                styles.languageButton,
+                settings.language === 'en' && styles.languageButtonActive,
+              ]}
+              onPress={() => updateSetting('language', 'en')}
+            >
+              <Text style={[
+                styles.languageButtonText,
+                settings.language === 'en' && styles.languageButtonTextActive,
+              ]}>
+                🇬🇧 {t('english', lang)}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.languageButton,
+                settings.language === 'es' && styles.languageButtonActive,
+              ]}
+              onPress={() => updateSetting('language', 'es')}
+            >
+              <Text style={[
+                styles.languageButtonText,
+                settings.language === 'es' && styles.languageButtonTextActive,
+              ]}>
+                🇪🇸 {t('spanish', lang)}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Sound Section */}
+        <Text style={styles.sectionTitle}>{t('sound', lang)}</Text>
+        <View style={styles.card}>
+          <View style={styles.switchRow}>
+            <Text style={styles.label}>{t('countdownSound', lang)}</Text>
+            <Switch
+              value={settings.soundEnabled}
+              onValueChange={(value) => updateSetting('soundEnabled', value)}
+              trackColor={{ false: colors.border, true: colors.accentLight }}
+              thumbColor={settings.soundEnabled ? colors.accent : colors.textLight}
+            />
+          </View>
+
+          {settings.soundEnabled && (
+            <View style={styles.volumeContainer}>
+              <Text style={styles.label}>{t('volume', lang)}</Text>
+              <View style={styles.sliderRow}>
+                <Text style={styles.volumeIcon}>🔈</Text>
+                <Slider
+                  style={styles.slider}
+                  minimumValue={0}
+                  maximumValue={1}
+                  value={settings.soundVolume}
+                  onSlidingComplete={(value) => updateSetting('soundVolume', value)}
+                  minimumTrackTintColor={colors.accent}
+                  maximumTrackTintColor={colors.border}
+                  thumbTintColor={colors.accent}
+                />
+                <Text style={styles.volumeIcon}>🔊</Text>
+              </View>
+              <Text style={styles.volumeValue}>
+                {Math.round(settings.soundVolume * 100)}%
+              </Text>
+            </View>
+          )}
+        </View>
+
+        {/* About Section */}
+        <Text style={styles.sectionTitle}>{t('about', lang)}</Text>
+        <View style={styles.card}>
+          <View style={styles.aboutRow}>
+            <Text style={styles.aboutLabel}>HomeFit</Text>
+            <Text style={styles.aboutValue}>{t('version', lang)} 1.0.0</Text>
+          </View>
+        </View>
+
+        <View style={styles.bottomPadding} />
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.background,
+  },
+  loadingText: {
+    color: colors.textSecondary,
+    fontSize: fontSize.md,
+  },
+  header: {
+    backgroundColor: colors.primary,
+    paddingBottom: 20,
+    paddingHorizontal: spacing.lg,
+  },
+  headerTitle: {
+    fontSize: fontSize.xl,
+    fontWeight: 'bold',
+    color: colors.white,
+  },
+  content: {
+    flex: 1,
+  },
+  sectionTitle: {
+    fontSize: fontSize.sm,
+    fontWeight: 'bold',
+    color: colors.textSecondary,
+    textTransform: 'uppercase',
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
+    marginBottom: spacing.sm,
+  },
+  card: {
+    backgroundColor: colors.card,
+    marginHorizontal: spacing.md,
+    padding: spacing.md,
+    borderRadius: borderRadius.lg,
+    ...shadows.small,
+  },
+  label: {
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
+    marginBottom: spacing.sm,
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
+  },
+  languageButtons: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+  languageButton: {
+    flex: 1,
+    padding: spacing.md,
+    borderRadius: borderRadius.md,
+    backgroundColor: colors.background,
+    alignItems: 'center',
+  },
+  languageButtonActive: {
+    backgroundColor: colors.accent,
+  },
+  languageButtonText: {
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
+    fontWeight: '500',
+  },
+  languageButtonTextActive: {
+    color: colors.white,
+  },
+  switchRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  volumeContainer: {
+    marginTop: spacing.md,
+    paddingTop: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
+  sliderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: spacing.sm,
+  },
+  slider: {
+    flex: 1,
+    height: 40,
+  },
+  volumeIcon: {
+    fontSize: 18,
+    width: 30,
+    textAlign: 'center',
+  },
+  volumeValue: {
+    textAlign: 'center',
+    color: colors.textSecondary,
+    fontSize: fontSize.sm,
+  },
+  aboutRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  aboutLabel: {
+    fontSize: fontSize.md,
+    fontWeight: '600',
+    color: colors.textPrimary,
+  },
+  aboutValue: {
+    fontSize: fontSize.md,
+    color: colors.textSecondary,
+  },
+  bottomPadding: {
+    height: 100,
+  },
+});
