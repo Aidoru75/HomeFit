@@ -34,6 +34,7 @@ export const translations = {
     bodyweightOnly: 'Bodyweight only',
     weightType: 'Weight Type',
     close: 'Close',
+    exerciseToggleHint: 'Toggle switch to include/exclude from routines',
     
     // Routines Screen
     newRoutine: 'New',
@@ -64,6 +65,10 @@ export const translations = {
     delete: 'Delete',
     confirmDelete: 'Are you sure you want to delete',
     emptyDayWarning: 'This day has no exercises. Add exercises before starting.',
+    renameDay: 'Rename Day',
+    dayName: 'Day Name',
+    dayNamePlaceholder: 'e.g., Push Day, Leg Day',
+    renameDayHint: 'Leave empty to use default name',
     
     // Training Screen
     loadingWorkout: 'Loading workout...',
@@ -81,6 +86,12 @@ export const translations = {
     skipRest: 'Skip Rest',
     of: 'of',
     completeSet: 'Complete Set ✓',
+    done: 'DONE',
+    saveChanges: 'Save Changes?',
+    saveChangesPrompt: 'You made changes to reps/weights. Save them?',
+    discardChanges: 'Discard',
+    unsavedChanges: 'You have unsaved changes. Do you want to save them?',
+    changesDetected: '* Changes will be saved when you finish',
     
     // Settings Screen
     settingsTitle: 'Settings',
@@ -131,6 +142,7 @@ export const translations = {
     bodyweightOnly: 'Solo peso corporal',
     weightType: 'Tipo de Peso',
     close: 'Cerrar',
+    exerciseToggleHint: 'Usa el interruptor para incluir/excluir de las rutinas',
     
     // Routines Screen
     newRoutine: 'Nueva',
@@ -161,6 +173,10 @@ export const translations = {
     delete: 'Eliminar',
     confirmDelete: '¿Estás seguro de que quieres eliminar',
     emptyDayWarning: 'Este día no tiene ejercicios. Añade ejercicios antes de empezar.',
+    renameDay: 'Renombrar Día',
+    dayName: 'Nombre del Día',
+    dayNamePlaceholder: 'ej., Día de Empuje, Día de Piernas',
+    renameDayHint: 'Déjalo vacío para usar el nombre por defecto',
     
     // Training Screen
     loadingWorkout: 'Cargando entrenamiento...',
@@ -178,6 +194,12 @@ export const translations = {
     skipRest: 'Saltar Descanso',
     of: 'de',
     completeSet: 'Serie Completada ✓',
+    done: 'HECHO',
+    saveChanges: '¿Guardar Cambios?',
+    saveChangesPrompt: 'Hiciste cambios en reps/pesos. ¿Guardarlos?',
+    discardChanges: 'Descartar',
+    unsavedChanges: 'Tienes cambios sin guardar. ¿Quieres guardarlos?',
+    changesDetected: '* Los cambios se guardarán al terminar',
     
     // Settings Screen
     settingsTitle: 'Ajustes',

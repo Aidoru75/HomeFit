@@ -6,6 +6,7 @@ const KEYS = {
   LAST_WORKOUT: 'homefit_last_workout',
   WORKOUT_HISTORY: 'homefit_history',
   SETTINGS: 'homefit_settings',
+  EXCLUDED_EXERCISES: 'homefit_excluded_exercises',
 };
 
 // Default settings
@@ -152,11 +153,54 @@ export const getHistory = async () => {
   }
 };
 
+// ============ EXCLUDED EXERCISES ============
+
+export const loadExcludedExercises = async () => {
+  try {
+    const data = await AsyncStorage.getItem(KEYS.EXCLUDED_EXERCISES);
+    return data ? JSON.parse(data) : [];
+  } catch (error) {
+    console.error('Error loading excluded exercises:', error);
+    return [];
+  }
+};
+
+export const saveExcludedExercises = async (excludedIds) => {
+  try {
+    await AsyncStorage.setItem(KEYS.EXCLUDED_EXERCISES, JSON.stringify(excludedIds));
+    return true;
+  } catch (error) {
+    console.error('Error saving excluded exercises:', error);
+    return false;
+  }
+};
+
+export const toggleExerciseExclusion = async (exerciseId) => {
+  const excluded = await loadExcludedExercises();
+  const index = excluded.indexOf(exerciseId);
+  
+  if (index === -1) {
+    // Add to excluded
+    excluded.push(exerciseId);
+  } else {
+    // Remove from excluded
+    excluded.splice(index, 1);
+  }
+  
+  await saveExcludedExercises(excluded);
+  return excluded;
+};
+
 // ============ UTILITY ============
 
 export const clearAllData = async () => {
   try {
-    await AsyncStorage.multiRemove([KEYS.ROUTINES, KEYS.LAST_WORKOUT, KEYS.WORKOUT_HISTORY]);
+    await AsyncStorage.multiRemove([
+      KEYS.ROUTINES, 
+      KEYS.LAST_WORKOUT, 
+      KEYS.WORKOUT_HISTORY,
+      KEYS.EXCLUDED_EXERCISES
+    ]);
     return true;
   } catch (error) {
     console.error('Error clearing data:', error);

@@ -23,7 +23,7 @@ import {
   getMuscleGroupName,
   getExerciseById,
 } from '../data/exercises';
-import { loadRoutines, addRoutine, updateRoutine, deleteRoutine, loadSettings } from '../storage/storage';
+import { loadRoutines, addRoutine, updateRoutine, deleteRoutine, loadSettings, loadExcludedExercises } from '../storage/storage';
 import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
 
@@ -34,10 +34,13 @@ export default function RoutinesScreen({ navigation, route }) {
   const [showNewRoutineModal, setShowNewRoutineModal] = useState(false);
   const [showAddExerciseModal, setShowAddExerciseModal] = useState(false);
   const [showEditExerciseModal, setShowEditExerciseModal] = useState(false);
+  const [showRenameDayModal, setShowRenameDayModal] = useState(false);
   const [editingDayIndex, setEditingDayIndex] = useState(null);
   const [editingExerciseIndex, setEditingExerciseIndex] = useState(null);
   const [currentMuscleFilter, setCurrentMuscleFilter] = useState(0); // Index in muscleGroups, 0 = all
   const [settings, setSettings] = useState({ language: 'en' });
+  const [dayNameInput, setDayNameInput] = useState('');
+  const [excludedExercises, setExcludedExercises] = useState([]);
   
   // New routine form state
   const [newRoutineName, setNewRoutineName] = useState('');
@@ -75,11 +78,22 @@ export default function RoutinesScreen({ navigation, route }) {
   const loadData = async () => {
     const data = await loadRoutines();
     const userSettings = await loadSettings();
+    const excluded = await loadExcludedExercises();
     setRoutines(data);
     setSettings(userSettings);
+    setExcludedExercises(excluded);
   };
 
   const lang = settings.language || 'en';
+
+  // Get display name for a day (customName takes priority)
+  const getDayDisplayName = (day, index) => {
+    if (day.customName) {
+      return day.customName;
+    }
+    // Fallback to translated default name
+    return day.name || `${t('days', lang).slice(0, -1)} ${index + 1}`;
+  };
 
   const handleCreateRoutine = async () => {
     if (!newRoutineName.trim()) {
@@ -90,7 +104,8 @@ export default function RoutinesScreen({ navigation, route }) {
     const days = [];
     for (let i = 0; i < newRoutineDays; i++) {
       days.push({
-        name: `${t('days', lang).slice(0, -1)} ${i + 1}`,
+        name: `Day ${i + 1}`, // Default English name
+        customName: null, // No custom name initially
         exercises: [],
       });
     }
@@ -130,6 +145,48 @@ export default function RoutinesScreen({ navigation, route }) {
         },
       ]
     );
+  };
+
+  // Day reordering functions
+  const moveDay = async (fromIndex, toIndex) => {
+    if (fromIndex === toIndex) return;
+    if (toIndex < 0 || toIndex >= selectedRoutine.days.length) return;
+    
+    const updatedDays = [...selectedRoutine.days];
+    const [moved] = updatedDays.splice(fromIndex, 1);
+    updatedDays.splice(toIndex, 0, moved);
+
+    const updated = await updateRoutine(selectedRoutine.id, { days: updatedDays });
+    setSelectedRoutine(updated);
+    setRoutines(routines.map(r => r.id === updated.id ? updated : r));
+  };
+
+  // Day renaming functions
+  const openRenameDayModal = (dayIndex) => {
+    const day = selectedRoutine.days[dayIndex];
+    setEditingDayIndex(dayIndex);
+    setDayNameInput(day.customName || '');
+    setShowRenameDayModal(true);
+  };
+
+  const handleRenameDay = async () => {
+    if (selectedRoutine && editingDayIndex !== null) {
+      const updatedDays = [...selectedRoutine.days];
+      const trimmedName = dayNameInput.trim();
+      
+      // Set customName if provided, otherwise clear it
+      updatedDays[editingDayIndex] = {
+        ...updatedDays[editingDayIndex],
+        customName: trimmedName || null,
+      };
+
+      const updated = await updateRoutine(selectedRoutine.id, { days: updatedDays });
+      setSelectedRoutine(updated);
+      setRoutines(routines.map(r => r.id === updated.id ? updated : r));
+      setShowRenameDayModal(false);
+      setDayNameInput('');
+      setEditingDayIndex(null);
+    }
   };
 
   const openAddExerciseModal = (dayIndex) => {
@@ -275,11 +332,14 @@ export default function RoutinesScreen({ navigation, route }) {
     });
   };
 
-  // Get filtered exercises for add modal
+  // Get filtered exercises for add modal (excluding disabled ones)
   const getFilteredExercises = () => {
-    if (currentMuscleFilter === 0) return exercises;
-    const muscle = muscleGroups[currentMuscleFilter - 1];
-    return getExercisesByMuscle(muscle.id);
+    let filtered = exercises.filter(ex => !excludedExercises.includes(ex.id));
+    if (currentMuscleFilter !== 0) {
+      const muscle = muscleGroups[currentMuscleFilter - 1];
+      filtered = filtered.filter(ex => ex.muscleGroup === muscle.id);
+    }
+    return filtered;
   };
 
   const nextMuscleFilter = () => {
@@ -373,7 +433,37 @@ export default function RoutinesScreen({ navigation, route }) {
       {selectedRoutine.days?.map((day, dayIndex) => (
         <View key={dayIndex} style={styles.dayCard}>
           <View style={styles.dayHeader}>
-            <Text style={styles.dayTitle}>{day.name}</Text>
+            <View style={styles.dayTitleRow}>
+              {/* Day reorder buttons */}
+              <View style={styles.dayReorderButtons}>
+                {dayIndex > 0 && (
+                  <TouchableOpacity
+                    style={styles.dayReorderButton}
+                    onPress={() => moveDay(dayIndex, dayIndex - 1)}
+                  >
+                    <Text style={styles.dayReorderIcon}>▲</Text>
+                  </TouchableOpacity>
+                )}
+                {dayIndex < selectedRoutine.days.length - 1 && (
+                  <TouchableOpacity
+                    style={styles.dayReorderButton}
+                    onPress={() => moveDay(dayIndex, dayIndex + 1)}
+                  >
+                    <Text style={styles.dayReorderIcon}>▼</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+              
+              {/* Day title (tappable to rename) */}
+              <TouchableOpacity 
+                style={styles.dayTitleTouchable}
+                onPress={() => openRenameDayModal(dayIndex)}
+              >
+                <Text style={styles.dayTitle}>{getDayDisplayName(day, dayIndex)}</Text>
+                <Text style={styles.dayEditIcon}>✏️</Text>
+              </TouchableOpacity>
+            </View>
+            
             <View style={styles.dayActions}>
               <TouchableOpacity
                 style={styles.dayActionButton}
@@ -462,20 +552,19 @@ export default function RoutinesScreen({ navigation, route }) {
             <Text style={styles.modalTitle}>
               {isEdit ? t('editExercise', lang) : t('addExercise', lang)}
             </Text>
-            
+
             {!isEdit && !exerciseConfig.exerciseId ? (
               // Exercise selection
               <>
-                <View style={styles.muscleFilterRow}>
-                  <TouchableOpacity onPress={prevMuscleFilter} style={styles.filterArrow}>
-                    <Text style={styles.filterArrowText}>◀</Text>
+                <View style={styles.muscleFilter}>
+                  <TouchableOpacity onPress={prevMuscleFilter}>
+                    <Text style={styles.filterArrow}>◀</Text>
                   </TouchableOpacity>
-                  <Text style={styles.filterLabel}>{getCurrentFilterName()}</Text>
-                  <TouchableOpacity onPress={nextMuscleFilter} style={styles.filterArrow}>
-                    <Text style={styles.filterArrowText}>▶</Text>
+                  <Text style={styles.filterName}>{getCurrentFilterName()}</Text>
+                  <TouchableOpacity onPress={nextMuscleFilter}>
+                    <Text style={styles.filterArrow}>▶</Text>
                   </TouchableOpacity>
                 </View>
-                
                 <FlatList
                   data={getFilteredExercises()}
                   keyExtractor={(item) => item.id}
@@ -485,132 +574,87 @@ export default function RoutinesScreen({ navigation, route }) {
                       style={styles.exerciseOption}
                       onPress={() => selectExerciseForAdd(item)}
                     >
-                      <View style={[
-                        styles.exerciseOptionColor,
-                        { backgroundColor: colors.muscleColors[item.muscleGroup] }
-                      ]} />
-                      <View style={styles.exerciseOptionInfo}>
-                        <Text style={styles.exerciseOptionName}>{getExerciseName(item, lang)}</Text>
-                        <Text style={styles.exerciseOptionMuscle}>
-                          {getMuscleGroupName(item.muscleGroup, lang)}
-                        </Text>
-                      </View>
+                      <ExerciseImage exerciseId={item.id} size={40} />
+                      <Text style={styles.exerciseOptionName}>
+                        {getExerciseName(item, lang)}
+                      </Text>
                     </TouchableOpacity>
                   )}
                 />
               </>
             ) : (
               // Exercise configuration
-              <ScrollView style={styles.configScroll}>
+              <ScrollView>
                 {exerciseData && (
-                  <View style={styles.selectedExerciseHeader}>
-                    <View style={styles.selectedExerciseInfo}>
-                      <View style={[
-                        styles.selectedExerciseColor,
-                        { backgroundColor: colors.muscleColors[exerciseData.muscleGroup] }
-                      ]} />
-                      <Text style={styles.selectedExerciseName}>
-                        {getExerciseName(exerciseData, lang)}
-                      </Text>
-                    </View>
-                    <View style={styles.configImageContainer}>
-                      <ExerciseImage 
-                        exerciseId={exerciseData.id} 
-                        size={120}
-                        animate={true}
-                        animationDuration={1500}
-                      />
-                    </View>
+                  <View style={styles.selectedExercise}>
+                    <ExerciseImage exerciseId={exerciseData.id} size={60} />
+                    <Text style={styles.selectedExerciseName}>
+                      {getExerciseName(exerciseData, lang)}
+                    </Text>
                   </View>
                 )}
 
-                {/* Sets count */}
-                <View style={styles.configRow}>
-                  <Text style={styles.configLabel}>{t('sets', lang)}</Text>
-                  <View style={styles.configControls}>
-                    <TouchableOpacity 
-                      style={styles.configButton}
-                      onPress={() => updateSetsCount(exerciseConfig.sets - 1)}
-                    >
-                      <Text style={styles.configButtonText}>−</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.configValue}>{exerciseConfig.sets}</Text>
-                    <TouchableOpacity 
-                      style={styles.configButton}
-                      onPress={() => updateSetsCount(exerciseConfig.sets + 1)}
-                    >
-                      <Text style={styles.configButtonText}>+</Text>
-                    </TouchableOpacity>
-                  </View>
+                <Text style={styles.inputLabel}>{t('sets', lang)}</Text>
+                <View style={styles.setsControl}>
+                  <TouchableOpacity
+                    style={styles.setsButton}
+                    onPress={() => updateSetsCount(exerciseConfig.sets - 1)}
+                  >
+                    <Text style={styles.setsButtonText}>−</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.setsValue}>{exerciseConfig.sets}</Text>
+                  <TouchableOpacity
+                    style={styles.setsButton}
+                    onPress={() => updateSetsCount(exerciseConfig.sets + 1)}
+                  >
+                    <Text style={styles.setsButtonText}>+</Text>
+                  </TouchableOpacity>
                 </View>
 
-                {/* Per-set configuration */}
-                <Text style={styles.configSectionTitle}>
-                  {t('reps', lang)} & {t('weight', lang)}
-                </Text>
+                <Text style={styles.inputLabel}>{t('reps', lang)} & {t('weight', lang)}</Text>
                 {Array.from({ length: exerciseConfig.sets }).map((_, index) => (
-                  <View key={index} style={styles.setConfigRow}>
-                    <Text style={styles.setLabel}>{t('set', lang)} {index + 1}</Text>
-                    <View style={styles.setInputs}>
-                      {/* Reps with arrows */}
-                      <View style={styles.setInputGroup}>
-                        <TouchableOpacity 
-                          style={styles.miniButton}
-                          onPress={() => updateRep(index, (exerciseConfig.reps[index] || 10) - 1)}
-                        >
-                          <Text style={styles.miniButtonText}>−</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.repValue}>{exerciseConfig.reps[index] || 10}</Text>
-                        <TouchableOpacity 
-                          style={styles.miniButton}
-                          onPress={() => updateRep(index, (exerciseConfig.reps[index] || 10) + 1)}
-                        >
-                          <Text style={styles.miniButtonText}>+</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.setInputLabelSmall}>{t('reps', lang).toLowerCase()}</Text>
-                      </View>
-                      {/* Weight with clear on focus */}
-                      <View style={styles.setInputGroup}>
-                        <TextInput
-                          style={styles.weightInput}
-                          value={String(exerciseConfig.weights[index] || 0)}
-                          onChangeText={(text) => updateWeight(index, text)}
-                          onFocus={() => {
-                            // Clear the field when focused for easier input
-                            if (exerciseConfig.weights[index] === 0) {
-                              // Already zero, no need to clear
-                            } else {
-                              updateWeight(index, '');
-                            }
-                          }}
-                          keyboardType="decimal-pad"
-                          placeholder="0"
-                          selectTextOnFocus={true}
-                        />
-                        <Text style={styles.setInputLabelSmall}>kg</Text>
-                      </View>
+                  <View key={index} style={styles.setRow}>
+                    <Text style={styles.setNumber}>{index + 1}</Text>
+                    <View style={styles.setInput}>
+                      <Text style={styles.setInputLabel}>{t('reps', lang)}</Text>
+                      <TextInput
+                        style={styles.setInputField}
+                        value={String(exerciseConfig.reps[index] || 10)}
+                        onChangeText={(value) => updateRep(index, value)}
+                        keyboardType="numeric"
+                      />
+                    </View>
+                    <View style={styles.setInput}>
+                      <Text style={styles.setInputLabel}>Kg</Text>
+                      <TextInput
+                        style={styles.setInputField}
+                        value={String(exerciseConfig.weights[index] || 0)}
+                        onChangeText={(value) => updateWeight(index, value)}
+                        keyboardType="decimal-pad"
+                      />
                     </View>
                   </View>
                 ))}
+
+                {isEdit && (
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={handleRemoveExercise}
+                  >
+                    <Text style={styles.deleteButtonText}>{t('delete', lang)}</Text>
+                  </TouchableOpacity>
+                )}
               </ScrollView>
             )}
 
             <View style={styles.modalButtons}>
-              {isEdit && (
-                <TouchableOpacity
-                  style={styles.modalDeleteButton}
-                  onPress={handleRemoveExercise}
-                >
-                  <Text style={styles.modalDeleteText}>{t('delete', lang)}</Text>
-                </TouchableOpacity>
-              )}
               <TouchableOpacity
                 style={styles.modalCancelButton}
                 onPress={() => isEdit ? setShowEditExerciseModal(false) : setShowAddExerciseModal(false)}
               >
                 <Text style={styles.modalCancelText}>{t('cancel', lang)}</Text>
               </TouchableOpacity>
-              {(exerciseConfig.exerciseId || isEdit) && (
+              {exerciseConfig.exerciseId && (
                 <TouchableOpacity
                   style={styles.modalCreateButton}
                   onPress={isEdit ? handleSaveExercise : handleAddExercise}
@@ -624,6 +668,55 @@ export default function RoutinesScreen({ navigation, route }) {
       </Modal>
     );
   };
+
+  // Rename day modal
+  const renderRenameDayModal = () => (
+    <Modal
+      visible={showRenameDayModal}
+      animationType="slide"
+      transparent={true}
+      onRequestClose={() => setShowRenameDayModal(false)}
+    >
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalTitle}>{t('renameDay', lang) || 'Rename Day'}</Text>
+          
+          <Text style={styles.inputLabel}>{t('dayName', lang) || 'Day Name'}</Text>
+          <TextInput
+            style={styles.textInput}
+            value={dayNameInput}
+            onChangeText={setDayNameInput}
+            placeholder={t('dayNamePlaceholder', lang) || 'e.g., Push Day, Leg Day'}
+            placeholderTextColor={colors.textLight}
+            autoFocus={true}
+          />
+          
+          <Text style={styles.hintText}>
+            {t('renameDayHint', lang) || 'Leave empty to use default name'}
+          </Text>
+
+          <View style={styles.modalButtons}>
+            <TouchableOpacity
+              style={styles.modalCancelButton}
+              onPress={() => {
+                setShowRenameDayModal(false);
+                setDayNameInput('');
+                setEditingDayIndex(null);
+              }}
+            >
+              <Text style={styles.modalCancelText}>{t('cancel', lang)}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalCreateButton}
+              onPress={handleRenameDay}
+            >
+              <Text style={styles.modalCreateText}>{t('save', lang)}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
 
   return (
     <View style={styles.container}>
@@ -713,6 +806,9 @@ export default function RoutinesScreen({ navigation, route }) {
 
       {/* Edit Exercise Modal */}
       {renderExerciseConfigModal(true)}
+
+      {/* Rename Day Modal */}
+      {renderRenameDayModal()}
     </View>
   );
 }
@@ -723,15 +819,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
-    backgroundColor: colors.primary,
-    paddingBottom: 20,
-    paddingHorizontal: spacing.lg,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.md,
+    backgroundColor: colors.primary,
   },
   headerTitle: {
-    fontSize: fontSize.xl,
+    fontSize: fontSize.xxl,
     fontWeight: 'bold',
     color: colors.white,
   },
@@ -755,6 +851,7 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: colors.white,
     fontWeight: 'bold',
+    fontSize: fontSize.sm,
   },
   emptyState: {
     alignItems: 'center',
@@ -766,7 +863,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   emptyTitle: {
-    fontSize: fontSize.lg,
+    fontSize: fontSize.xl,
     fontWeight: 'bold',
     color: colors.textPrimary,
   },
@@ -820,6 +917,12 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     marginTop: spacing.lg,
   },
+  hintText: {
+    color: colors.textLight,
+    fontSize: fontSize.xs,
+    marginTop: spacing.xs,
+    fontStyle: 'italic',
+  },
   routineStats: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -855,10 +958,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.sm,
   },
+  dayTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  dayReorderButtons: {
+    flexDirection: 'column',
+    marginRight: spacing.sm,
+  },
+  dayReorderButton: {
+    padding: spacing.xs,
+  },
+  dayReorderIcon: {
+    color: colors.accent,
+    fontSize: fontSize.xs,
+  },
+  dayTitleTouchable: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
   dayTitle: {
     fontSize: fontSize.lg,
     fontWeight: 'bold',
     color: colors.textPrimary,
+  },
+  dayEditIcon: {
+    fontSize: fontSize.sm,
+    marginLeft: spacing.xs,
+    opacity: 0.5,
   },
   dayActions: {
     flexDirection: 'row',
@@ -1012,43 +1141,28 @@ const styles = StyleSheet.create({
   },
   modalCreateText: {
     color: colors.white,
-    fontSize: fontSize.md,
     fontWeight: 'bold',
-  },
-  modalDeleteButton: {
-    flex: 1,
-    padding: spacing.md,
-    borderRadius: borderRadius.md,
-    backgroundColor: colors.danger,
-    alignItems: 'center',
-  },
-  modalDeleteText: {
-    color: colors.white,
     fontSize: fontSize.md,
-    fontWeight: 'bold',
   },
   
-  // Muscle filter
-  muscleFilterRow: {
+  // Exercise selection
+  muscleFilter: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: spacing.md,
-    paddingVertical: spacing.sm,
+    alignItems: 'center',
+    padding: spacing.sm,
     backgroundColor: colors.background,
     borderRadius: borderRadius.md,
+    marginBottom: spacing.md,
   },
   filterArrow: {
-    padding: spacing.md,
-  },
-  filterArrowText: {
     fontSize: fontSize.lg,
     color: colors.accent,
-    fontWeight: 'bold',
+    padding: spacing.sm,
   },
-  filterLabel: {
+  filterName: {
     fontSize: fontSize.md,
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: colors.textPrimary,
   },
   exerciseList: {
@@ -1057,155 +1171,96 @@ const styles = StyleSheet.create({
   exerciseOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: spacing.sm,
+    padding: spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
-  exerciseOptionColor: {
-    width: 4,
-    height: 40,
-    borderRadius: 2,
-    marginRight: spacing.md,
-  },
-  exerciseOptionInfo: {
-    flex: 1,
-  },
   exerciseOptionName: {
+    marginLeft: spacing.md,
     fontSize: fontSize.md,
     color: colors.textPrimary,
   },
-  exerciseOptionMuscle: {
-    fontSize: fontSize.sm,
-    color: colors.textSecondary,
-  },
-  
-  // Config styles
-  configScroll: {
-    maxHeight: 400,
-  },
-  selectedExerciseHeader: {
-    backgroundColor: colors.background,
+  selectedExercise: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: spacing.md,
+    backgroundColor: colors.background,
     borderRadius: borderRadius.md,
     marginBottom: spacing.md,
-    alignItems: 'center',
-  },
-  selectedExerciseInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
-  selectedExerciseColor: {
-    width: 4,
-    height: 24,
-    borderRadius: 2,
-    marginRight: spacing.sm,
   },
   selectedExerciseName: {
-    fontSize: fontSize.md,
-    fontWeight: '600',
+    marginLeft: spacing.md,
+    fontSize: fontSize.lg,
+    fontWeight: 'bold',
     color: colors.textPrimary,
   },
-  configImageContainer: {
+  setsControl: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.lg,
+  },
+  setsButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: colors.accent,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  setsButtonText: {
+    color: colors.white,
+    fontSize: fontSize.xl,
+    fontWeight: 'bold',
+  },
+  setsValue: {
+    fontSize: fontSize.xxl,
+    fontWeight: 'bold',
+    color: colors.textPrimary,
+    minWidth: 40,
+    textAlign: 'center',
+  },
+  setRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
     marginTop: spacing.sm,
   },
-  configRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-  configLabel: {
+  setNumber: {
+    width: 24,
     fontSize: fontSize.md,
-    color: colors.textPrimary,
-  },
-  configControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-  },
-  configButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.accent,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  configButtonText: {
-    color: colors.white,
-    fontSize: fontSize.xl,
     fontWeight: 'bold',
+    color: colors.accent,
   },
-  configValue: {
-    fontSize: fontSize.xl,
-    fontWeight: 'bold',
-    color: colors.textPrimary,
-    minWidth: 30,
-    textAlign: 'center',
-  },
-  configSectionTitle: {
-    fontSize: fontSize.sm,
-    fontWeight: 'bold',
-    color: colors.textSecondary,
-    marginTop: spacing.md,
-    marginBottom: spacing.sm,
-  },
-  setConfigRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-    paddingVertical: spacing.xs,
-  },
-  setLabel: {
-    width: 55,
-    fontSize: fontSize.sm,
-    color: colors.textSecondary,
-  },
-  setInputs: {
-    flex: 1,
-    flexDirection: 'row',
-    gap: spacing.md,
-    alignItems: 'center',
-  },
-  setInputGroup: {
+  setInput: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  miniButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: colors.accent,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  miniButtonText: {
-    color: colors.white,
-    fontSize: fontSize.lg,
-    fontWeight: 'bold',
-  },
-  repValue: {
-    fontSize: fontSize.lg,
-    fontWeight: 'bold',
-    color: colors.textPrimary,
-    minWidth: 35,
-    textAlign: 'center',
-  },
-  weightInput: {
-    width: 55,
-    borderWidth: 1,
-    borderColor: colors.border,
+    backgroundColor: colors.background,
     borderRadius: borderRadius.sm,
-    padding: spacing.sm,
-    fontSize: fontSize.md,
-    textAlign: 'center',
+    padding: spacing.xs,
   },
-  setInputLabelSmall: {
-    marginLeft: spacing.xs,
+  setInputLabel: {
     fontSize: fontSize.xs,
     color: colors.textSecondary,
+    marginRight: spacing.xs,
+  },
+  setInputField: {
+    flex: 1,
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
+    padding: spacing.xs,
+  },
+  deleteButton: {
+    marginTop: spacing.lg,
+    padding: spacing.md,
+    backgroundColor: '#ff4444',
+    borderRadius: borderRadius.md,
+    alignItems: 'center',
+  },
+  deleteButtonText: {
+    color: colors.white,
+    fontWeight: 'bold',
+    fontSize: fontSize.md,
   },
 });

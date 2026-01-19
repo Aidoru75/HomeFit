@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   ScrollView,
   Switch,
+  Alert,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as Updates from 'expo-updates';
 import { colors, spacing, borderRadius, fontSize, shadows } from '../theme';
 import { loadSettings, saveSettings } from '../storage/storage';
 import { t } from '../data/translations';
@@ -39,6 +41,50 @@ export default function SettingsScreen() {
     const newSettings = { ...settings, [key]: value };
     setSettings(newSettings);
     await saveSettings(newSettings);
+  };
+
+  const handleLanguageChange = async (newLanguage) => {
+    if (newLanguage === settings.language) return;
+    
+    // Get the correct translation for the confirmation based on the NEW language
+    const confirmTitle = newLanguage === 'es' ? 'Cambiar Idioma' : 'Change Language';
+    const confirmMessage = newLanguage === 'es' 
+      ? 'La aplicación se reiniciará para aplicar el nuevo idioma.'
+      : 'The app will restart to apply the new language.';
+    const cancelText = newLanguage === 'es' ? 'Cancelar' : 'Cancel';
+    const confirmText = newLanguage === 'es' ? 'Reiniciar' : 'Restart';
+    
+    Alert.alert(
+      confirmTitle,
+      confirmMessage,
+      [
+        { text: cancelText, style: 'cancel' },
+        { 
+          text: confirmText, 
+          onPress: async () => {
+            // Save the new language setting first
+            const newSettings = { ...settings, language: newLanguage };
+            await saveSettings(newSettings);
+            
+            // Reload the app
+            try {
+              await Updates.reloadAsync();
+            } catch (error) {
+              // If Updates.reloadAsync fails (e.g., in development), 
+              // just update the state and show a message
+              console.log('Could not reload app:', error);
+              setSettings(newSettings);
+              Alert.alert(
+                newLanguage === 'es' ? 'Nota' : 'Note',
+                newLanguage === 'es' 
+                  ? 'Por favor, cierra y vuelve a abrir la app para ver todos los cambios.'
+                  : 'Please close and reopen the app to see all changes.'
+              );
+            }
+          }
+        },
+      ]
+    );
   };
 
   const lang = settings.language;
@@ -81,7 +127,7 @@ export default function SettingsScreen() {
                 styles.languageButton,
                 settings.language === 'en' && styles.languageButtonActive,
               ]}
-              onPress={() => updateSetting('language', 'en')}
+              onPress={() => handleLanguageChange('en')}
             >
               <Text style={[
                 styles.languageButtonText,
@@ -95,7 +141,7 @@ export default function SettingsScreen() {
                 styles.languageButton,
                 settings.language === 'es' && styles.languageButtonActive,
               ]}
-              onPress={() => updateSetting('language', 'es')}
+              onPress={() => handleLanguageChange('es')}
             >
               <Text style={[
                 styles.languageButtonText,

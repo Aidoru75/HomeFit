@@ -8,6 +8,7 @@ import {
   ScrollView,
   FlatList,
   Modal,
+  Switch,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, spacing, borderRadius, fontSize, shadows } from '../theme';
@@ -19,7 +20,7 @@ import {
   getMuscleGroupName,
   getExerciseDescription,
 } from '../data/exercises';
-import { loadSettings } from '../storage/storage';
+import { loadSettings, loadExcludedExercises, toggleExerciseExclusion } from '../storage/storage';
 import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
 
@@ -28,14 +29,26 @@ export default function ExercisesScreen() {
   const [selectedMuscle, setSelectedMuscle] = useState(null);
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [settings, setSettings] = useState({ language: 'en' });
+  const [excludedExercises, setExcludedExercises] = useState([]);
 
   useEffect(() => {
     loadUserSettings();
+    loadExcluded();
   }, []);
 
   const loadUserSettings = async () => {
     const saved = await loadSettings();
     setSettings(saved);
+  };
+
+  const loadExcluded = async () => {
+    const excluded = await loadExcludedExercises();
+    setExcludedExercises(excluded);
+  };
+
+  const handleToggleExclusion = async (exerciseId) => {
+    const newExcluded = await toggleExerciseExclusion(exerciseId);
+    setExcludedExercises(newExcluded);
   };
 
   const lang = settings.language || 'en';
@@ -61,7 +74,7 @@ export default function ExercisesScreen() {
           styles.muscleChipText,
           isSelected && { color: colors.white },
         ]}>
-          {muscle.icon} {getMuscleGroupName(muscle, lang)}
+          {getMuscleGroupName(muscle, lang)}
         </Text>
       </TouchableOpacity>
     );
@@ -69,25 +82,41 @@ export default function ExercisesScreen() {
 
   const renderExerciseItem = ({ item }) => {
     const muscleColor = colors.muscleColors[item.muscleGroup] || colors.accent;
+    const isExcluded = excludedExercises.includes(item.id);
     
     return (
-      <TouchableOpacity
-        style={styles.exerciseCard}
-        onPress={() => setSelectedExercise(item)}
-      >
-        <View style={[styles.exerciseColorBar, { backgroundColor: muscleColor }]} />
-        <View style={styles.exerciseContent}>
-          <Text style={styles.exerciseName}>{getExerciseName(item, lang)}</Text>
-          <Text style={styles.exerciseEquipment}>
-            {item.weightType === 'bodyweight' 
-              ? t('bodyweightOnly', lang)
-              : item.equipment.join(' • ')}
-          </Text>
+      <View style={[styles.exerciseCard, isExcluded && styles.exerciseCardExcluded]}>
+        <TouchableOpacity
+          style={styles.exerciseCardTouchable}
+          onPress={() => setSelectedExercise(item)}
+        >
+          <View style={[styles.exerciseColorBar, { backgroundColor: muscleColor }]} />
+          <View style={styles.exerciseContent}>
+            <Text style={[styles.exerciseName, isExcluded && styles.exerciseNameExcluded]}>
+              {getExerciseName(item, lang)}
+            </Text>
+            <Text style={styles.exerciseEquipment}>
+              {item.weightType === 'bodyweight' 
+                ? t('bodyweightOnly', lang)
+                : item.equipment.join(' • ')}
+            </Text>
+          </View>
+          <Text style={styles.exerciseArrow}>›</Text>
+        </TouchableOpacity>
+        <View style={styles.switchContainer}>
+          <Switch
+            value={!isExcluded}
+            onValueChange={() => handleToggleExclusion(item.id)}
+            trackColor={{ false: colors.border, true: colors.accent }}
+            thumbColor={isExcluded ? colors.textLight : colors.white}
+          />
         </View>
-        <Text style={styles.exerciseArrow}>›</Text>
-      </TouchableOpacity>
+      </View>
     );
   };
+
+  // Count included exercises
+  const includedCount = exercises.length - excludedExercises.length;
 
   return (
     <View style={styles.container}>
@@ -95,7 +124,7 @@ export default function ExercisesScreen() {
       <View style={[styles.header, { paddingTop: insets.top + 20 }]}>
         <Text style={styles.headerTitle}>{t('exerciseLibrary', lang)}</Text>
         <Text style={styles.headerSubtitle}>
-          {exercises.length} {t('exercisesAvailable', lang)}
+          {includedCount} / {exercises.length} {t('exercisesAvailable', lang)}
         </Text>
       </View>
 
@@ -122,6 +151,13 @@ export default function ExercisesScreen() {
           </TouchableOpacity>
           {muscleGroups.map(renderMuscleChip)}
         </ScrollView>
+      </View>
+
+      {/* Hint text */}
+      <View style={styles.hintContainer}>
+        <Text style={styles.hintText}>
+          {t('exerciseToggleHint', lang) || 'Toggle switch to include/exclude from routines'}
+        </Text>
       </View>
 
       {/* Exercise List */}
@@ -260,6 +296,17 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
     fontWeight: '500',
   },
+  hintContainer: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    backgroundColor: colors.background,
+  },
+  hintText: {
+    fontSize: fontSize.xs,
+    color: colors.textSecondary,
+    fontStyle: 'italic',
+    textAlign: 'center',
+  },
   exerciseList: {
     padding: spacing.md,
   },
@@ -271,6 +318,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
     ...shadows.small,
+  },
+  exerciseCardExcluded: {
+    opacity: 0.6,
+  },
+  exerciseCardTouchable: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   exerciseColorBar: {
     width: 4,
@@ -288,6 +343,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.textPrimary,
   },
+  exerciseNameExcluded: {
+    textDecorationLine: 'line-through',
+    color: colors.textSecondary,
+  },
   exerciseEquipment: {
     fontSize: fontSize.sm,
     color: colors.textSecondary,
@@ -296,6 +355,9 @@ const styles = StyleSheet.create({
   exerciseArrow: {
     fontSize: 24,
     color: colors.textLight,
+    paddingRight: spacing.sm,
+  },
+  switchContainer: {
     paddingRight: spacing.md,
   },
   
@@ -369,6 +431,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
     borderRadius: borderRadius.md,
     alignSelf: 'flex-start',
+    marginBottom: 50,
   },
   weightTypeText: {
     fontSize: fontSize.sm,

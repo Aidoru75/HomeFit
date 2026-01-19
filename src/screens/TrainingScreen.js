@@ -35,7 +35,6 @@ export default function TrainingScreen({ route, navigation }) {
   const [isExerciseRest, setIsExerciseRest] = useState(false);
   const [workoutStarted, setWorkoutStarted] = useState(false);
   const [workoutComplete, setWorkoutComplete] = useState(false);
-  const [soundPlayed, setSoundPlayed] = useState(false);
   
   // Track modifications to reps/weights during workout
   const [modifiedExercises, setModifiedExercises] = useState({});
@@ -43,6 +42,7 @@ export default function TrainingScreen({ route, navigation }) {
   
   const timerRef = useRef(null);
   const thumbnailScrollRef = useRef(null);
+  const soundPlayedRef = useRef(false); // Use ref instead of state to avoid closure issues
   
   // Use the new expo-audio hook
   const player = useAudioPlayer(beepSource);
@@ -65,88 +65,72 @@ export default function TrainingScreen({ route, navigation }) {
     setIsExerciseRest(false);
     setWorkoutStarted(false);
     setWorkoutComplete(false);
-    setSoundPlayed(false);
+    soundPlayedRef.current = false;
     setModifiedExercises({});
     setHasChanges(false);
   }, []);
 
-  // Update params ref and reset state when new workout params are received
+  // Update params ref when new workout params are received
   useEffect(() => {
     if (routineId && dayIndex !== undefined) {
       const isDifferentWorkout = 
         paramsRef.current.routineId !== routineId || 
         paramsRef.current.dayIndex !== dayIndex;
       
+      // Update paramsRef FIRST
       paramsRef.current = { routineId, dayIndex };
       
       if (isDifferentWorkout) {
         resetWorkoutState();
       }
+      
+      // Then load data using the updated paramsRef
+      loadData();
     }
-  }, [routineId, dayIndex, resetWorkoutState]);
+  }, [routineId, dayIndex]);
 
   useEffect(() => {
-    loadData();
-    
+    // Cleanup on unmount
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, []);
 
+  // Handle back button
   useEffect(() => {
-    if (routineId) {
-      loadData();
-    }
-  }, [routineId, dayIndex]);
-
-  // Handle Android back button
-  useEffect(() => {
-    if (!workoutStarted || workoutComplete) return;
-
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      showExitConfirmation();
-      return true;
+      if (workoutStarted && !workoutComplete) {
+        showExitConfirmation();
+        return true;
+      }
+      return false;
     });
 
     return () => backHandler.remove();
-  }, [workoutStarted, workoutComplete, lang, hasChanges]);
+  }, [workoutStarted, workoutComplete, hasChanges]);
 
-  // Handle tab bar navigation
+  // Prevent navigation when workout is active
   useEffect(() => {
-    if (!workoutStarted || workoutComplete) return;
-
-    const unsubscribe = navigation.addListener('blur', () => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
       if (allowNavigation.current) {
         allowNavigation.current = false;
         return;
       }
-      
-      const params = paramsRef.current;
-      setTimeout(() => {
-        if (workoutStarted && !workoutComplete && params.routineId) {
-          navigation.navigate('Training', params);
-          showExitConfirmation();
-        }
-      }, 50);
+
+      if (workoutStarted && !workoutComplete) {
+        e.preventDefault();
+        showExitConfirmation();
+      }
     });
 
     return unsubscribe;
-  }, [navigation, workoutStarted, workoutComplete]);
-
-  // Scroll to current exercise thumbnail
-  useEffect(() => {
-    if (thumbnailScrollRef.current && workoutStarted && !isResting) {
-      // Scroll to make current exercise visible (approximate centering)
-      const scrollPosition = Math.max(0, currentExerciseIndex * 70 - 100);
-      thumbnailScrollRef.current.scrollTo({ x: scrollPosition, animated: true });
-    }
-  }, [currentExerciseIndex, workoutStarted, isResting]);
+  }, [navigation, workoutStarted, workoutComplete, hasChanges]);
 
   const showExitConfirmation = () => {
     if (hasChanges) {
       Alert.alert(
-        t('endWorkout', lang),
-        t('saveChangesPrompt', lang) || 'You have made changes to reps/weights. Do you want to save them?',
+        t('saveChanges', lang) || 'Save Changes?',
+        t('unsavedChanges', lang) || 'You have unsaved changes. Do you want to save them?',
         [
           { text: t('cancel', lang), style: 'cancel' },
           { 
@@ -199,7 +183,9 @@ export default function TrainingScreen({ route, navigation }) {
     const routines = await loadRoutines();
     const userSettings = await loadSettings();
     
-    const id = routineId || paramsRef.current.routineId;
+    // Always use paramsRef.current to avoid stale closure issues
+    const id = paramsRef.current.routineId;
+    const dayIdx = paramsRef.current.dayIndex;
     const found = routines.find(r => r.id === id);
     
     setSettings(userSettings);
@@ -207,15 +193,14 @@ export default function TrainingScreen({ route, navigation }) {
     if (found) {
       setRoutine(found);
       // Initialize modified exercises with current values
-      initializeModifiedExercises(found);
+      initializeModifiedExercises(found, dayIdx);
     } else if (id) {
       Alert.alert('Error', 'Routine not found');
       navigation.goBack();
     }
   };
 
-  const initializeModifiedExercises = (routineData) => {
-    const dayIdx = paramsRef.current.dayIndex;
+  const initializeModifiedExercises = (routineData, dayIdx) => {
     const day = routineData?.days?.[dayIdx];
     if (!day?.exercises) return;
     
@@ -342,7 +327,7 @@ export default function TrainingScreen({ route, navigation }) {
   const startRest = (betweenExercises = false) => {
     setIsResting(true);
     setIsExerciseRest(betweenExercises);
-    setSoundPlayed(false);
+    soundPlayedRef.current = false; // Reset sound flag using ref
     
     const restTime = betweenExercises 
       ? (routine?.restBetweenExercises || 90)
@@ -352,7 +337,9 @@ export default function TrainingScreen({ route, navigation }) {
     
     timerRef.current = setInterval(() => {
       setRestTimeLeft(prev => {
-        if (prev <= 8 && prev > 1 && !soundPlayed) {
+        // Play sound once when countdown reaches 8 seconds
+        if (prev < 10 && prev > 1 && !soundPlayedRef.current) {
+          soundPlayedRef.current = true; // Mark as played using ref
           playCountdownSound();
         }
         if (prev <= 1) {
@@ -406,7 +393,7 @@ export default function TrainingScreen({ route, navigation }) {
       routineId: routine?.id,
       routineName: routine?.name,
       dayIndex: paramsRef.current.dayIndex,
-      dayName: day?.name,
+      dayName: day?.name || day?.customName,
       exerciseCount: day?.exercises?.length || 0,
     };
     
@@ -470,7 +457,7 @@ export default function TrainingScreen({ route, navigation }) {
     const currentEx = day.exercises[currentExerciseIndex];
     const totalSets = currentEx?.sets || 3;
     
-    if (currentSetIndex < totalSets - 1) {
+    if (currentSetIndex < totalSets) {
       const exerciseData = getExerciseData(currentEx.exerciseId);
       const nextReps = modifiedExercises[currentExerciseIndex]?.reps[currentSetIndex + 1] 
         || currentEx.reps?.[currentSetIndex + 1] || 10;
@@ -504,11 +491,60 @@ export default function TrainingScreen({ route, navigation }) {
     return null;
   };
 
+  // Render thumbnail strip
+  const renderThumbnailStrip = () => {
+    const day = routine?.days?.[paramsRef.current.dayIndex];
+    if (!day?.exercises) return null;
+
+    return (
+      <View style={styles.thumbnailContainer}>
+        <ScrollView
+          ref={thumbnailScrollRef}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.thumbnailScroll}
+        >
+          {day.exercises.map((ex, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.thumbnailWrapper,
+                index === currentExerciseIndex && styles.thumbnailWrapperActive,
+              ]}
+              onPress={() => {
+                if (index !== currentExerciseIndex) {
+                  setCurrentExerciseIndex(index);
+                  setCurrentSetIndex(0);
+                }
+              }}
+            >
+              <ExerciseImage 
+                exerciseId={ex.exerciseId} 
+                size={50}
+                animate={false}
+              />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  // Get current values for display
+  const currentReps = getCurrentReps();
+  const currentWeight = getCurrentWeight();
+  const nextInfo = getNextInfo();
+
   // Format weight for display (show decimals only if needed)
   const formatWeight = (weight) => {
     if (weight === 0) return '0';
     if (weight % 1 === 0) return weight.toString();
     return weight.toFixed(2).replace(/\.?0+$/, '');
+  };
+
+  // Get day name (prefer customName over translated name)
+  const getDayName = (day) => {
+    return day?.customName || day?.name || '';
   };
 
   // Loading state
@@ -529,7 +565,7 @@ export default function TrainingScreen({ route, navigation }) {
         <Text style={styles.completeIcon}>🎉</Text>
         <Text style={styles.completeTitle}>{t('workoutComplete', lang)}</Text>
         <Text style={styles.completeRoutine}>{routine.name}</Text>
-        <Text style={styles.completeDay}>{day?.name}</Text>
+        <Text style={styles.completeDay}>{getDayName(day)}</Text>
         {hasChanges && (
           <Text style={styles.changesNote}>
             {t('changesDetected', lang) || '* Changes were made to reps/weights'}
@@ -557,7 +593,7 @@ export default function TrainingScreen({ route, navigation }) {
         
         <View style={styles.preWorkoutContent}>
           <Text style={styles.preWorkoutRoutine}>{routine.name}</Text>
-          <Text style={styles.preWorkoutDay}>{day?.name}</Text>
+          <Text style={styles.preWorkoutDay}>{getDayName(day)}</Text>
           <Text style={styles.preWorkoutExercises}>
             {day?.exercises?.length || 0} {t('exercisesLabel', lang).toLowerCase()}
           </Text>
@@ -576,216 +612,172 @@ export default function TrainingScreen({ route, navigation }) {
   // Active workout
   const currentEx = day?.exercises?.[currentExerciseIndex];
   const exerciseData = currentEx ? getExerciseData(currentEx.exerciseId) : null;
-  const nextInfo = getNextInfo();
-  const currentReps = getCurrentReps();
-  const currentWeight = getCurrentWeight();
 
-  // Render thumbnail strip
-  const renderThumbnailStrip = () => (
-    <View style={styles.thumbnailContainer}>
-      <ScrollView
-        ref={thumbnailScrollRef}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.thumbnailScroll}
-      >
-        {day?.exercises?.map((ex, idx) => {
-          const isCurrentExercise = idx === currentExerciseIndex;
-          return (
-            <View
-              key={idx}
-              style={[
-                styles.thumbnailWrapper,
-                isCurrentExercise && styles.thumbnailWrapperActive,
-              ]}
-            >
-              <ExerciseImage
-                exerciseId={ex.exerciseId}
-                size={50}
-                animate={isCurrentExercise}
+  return isResting ? (
+    /* Rest screen - now light theme */
+    <View style={[styles.restScreen, { paddingTop: insets.top }]}>
+      <View style={styles.restContent}>
+        <Text style={styles.restLabel}>
+          {isExerciseRest ? t('restLabel', lang) : t('restLabel', lang)}
+        </Text>
+        <Text style={styles.restTimer}>{restTimeLeft}</Text>
+        <Text style={styles.restSeconds}>{t('seconds', lang)}</Text>
+        
+        {nextInfo && (
+          <View style={styles.nextPreview}>
+            <Text style={styles.nextLabel}>{t('upNext', lang)}</Text>
+            <View style={styles.nextImageContainer}>
+              <ExerciseImage 
+                exerciseId={nextInfo.exerciseId} 
+                size={80}
+                animate={true}
                 animationDuration={1500}
               />
             </View>
-          );
-        })}
-      </ScrollView>
+            <Text style={styles.nextExercise}>{nextInfo.name}</Text>
+            <Text style={styles.nextDetails}>
+              {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {t('reps', lang).toLowerCase()}
+              {nextInfo.weight > 0 && ` • ${formatWeight(nextInfo.weight)}kg`}
+            </Text>
+          </View>
+        )}
+        
+        <TouchableOpacity style={styles.skipRestButton} onPress={skipRest}>
+          <Text style={styles.skipRestButtonText}>{t('skipRest', lang)}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  );
+  ) : (
+    /* Exercise mode - light theme */
+    <View style={styles.exerciseScreen}>
+      {/* Thumbnail strip */}
+      {renderThumbnailStrip()}
 
-  return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      {/* Rest mode - dark theme */}
-      {isResting ? (
-        <View style={styles.restScreen}>
-          <TouchableOpacity style={styles.restCloseButton} onPress={exitWorkout}>
-            <Text style={styles.restCloseText}>✕</Text>
-          </TouchableOpacity>
-          
-          <View style={styles.restContent}>
-            <Text style={styles.restLabel}>
-              {isExerciseRest ? t('restLabel', lang) : t('restLabel', lang)}
-            </Text>
-            <Text style={styles.restTimer}>{restTimeLeft}</Text>
-            <Text style={styles.restSeconds}>{t('seconds', lang)}</Text>
-            
-            {nextInfo && (
-              <View style={styles.nextPreview}>
-                <Text style={styles.nextLabel}>{t('upNext', lang)}</Text>
-                <View style={styles.nextImageContainer}>
-                  <ExerciseImage 
-                    exerciseId={nextInfo.exerciseId} 
-                    size={80}
-                    animate={true}
-                    animationDuration={1500}
-                  />
-                </View>
-                <Text style={styles.nextExercise}>{nextInfo.name}</Text>
-                <Text style={styles.nextDetails}>
-                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {t('reps', lang).toLowerCase()}
-                  {nextInfo.weight > 0 && ` • ${formatWeight(nextInfo.weight)}kg`}
-                </Text>
-              </View>
-            )}
-            
-            <TouchableOpacity style={styles.skipButton} onPress={skipRest}>
-              <Text style={styles.skipButtonText}>{t('skipRest', lang)}</Text>
-            </TouchableOpacity>
+      {/* Main content */}
+      <View style={styles.exerciseContent}>
+        {/* Exercise name */}
+        <Text style={styles.exerciseName}>
+          {exerciseData ? getExerciseName(exerciseData, lang) : 'Exercise'}
+        </Text>
+        
+        {/* Exercise description */}
+        {exerciseData && (
+          <Text style={styles.exerciseDescription}>
+            {getExerciseDescription(exerciseData, lang)}
+          </Text>
+        )}
+        
+        {/* Set indicator */}
+        <Text style={styles.setIndicator}>
+          {t('set', lang).toUpperCase()} {currentSetIndex + 1} / {currentEx?.sets || 3}
+        </Text>
+
+        {/* Exercise Image - large */}
+        <View style={styles.imageContainer}>
+          <ExerciseImage 
+            exerciseId={currentEx?.exerciseId} 
+            size={220}
+            animate={true}
+            animationDuration={2000}
+          />
+        </View>
+
+        {/* Done button */}
+        <TouchableOpacity
+          style={styles.doneButton}
+          onPress={completeSet}
+        >
+          <Text style={styles.doneButtonText}>
+            {t('done', lang) || 'DONE'}
+          </Text>
+        </TouchableOpacity>
+
+        {/* Reps and Weight controls */}
+        <View style={styles.controlsRow}>
+          {/* Reps control */}
+          <View style={styles.controlGroup}>
+            <Text style={styles.controlLabel}>{t('reps', lang)}</Text>
+            <View style={styles.controlButtons}>
+              <TouchableOpacity
+                style={styles.controlButton}
+                onPress={() => updateReps(-1)}
+              >
+                <Text style={styles.controlButtonText}>−</Text>
+              </TouchableOpacity>
+              <Text style={styles.controlValue}>{currentReps}</Text>
+              <TouchableOpacity
+                style={styles.controlButton}
+                onPress={() => updateReps(1)}
+              >
+                <Text style={styles.controlButtonText}>+</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      ) : (
-        /* Exercise mode - light theme */
-        <View style={styles.exerciseScreen}>
-          {/* Thumbnail strip */}
-          {renderThumbnailStrip()}
-          
-          
-          {/* Close button */}
-          <TouchableOpacity 
-            style={[styles.closeWorkoutButton, { bottom: insets.bottom + spacing.md }]} 
-            onPress={exitWorkout}
-          >
-            <Text style={styles.closeWorkoutText}>✕</Text>
-          </TouchableOpacity>
 
-          {/* Main content */}
-          <View style={styles.exerciseContent}>
-            {/* Exercise name */}
-            <Text style={styles.exerciseName}>
-              {exerciseData ? getExerciseName(exerciseData, lang) : 'Exercise'}
-            </Text>
-            
-            {/* Set indicator */}
-            <Text style={styles.setIndicator}>
-              {t('set', lang).toUpperCase()} {currentSetIndex + 1} / {currentEx?.sets || 3}
-            </Text>
+        <View style={styles.controlsRow}>
+          {/* Weight control */}
+          <View style={styles.controlGroup}>
+            <Text style={styles.controlLabel}>{t('weight', lang)}</Text>
+            <View style={styles.controlButtons}>
+              <TouchableOpacity
+                style={styles.controlButton}
+                onPress={() => updateWeight(-1)}
+              >
+                <Text style={styles.controlButtonText}>-1</Text>
+              </TouchableOpacity>
 
-            {/* Exercise Image - large */}
-            <View style={styles.imageContainer}>
-              <ExerciseImage 
-                exerciseId={currentEx?.exerciseId} 
-                size={220}
-                animate={true}
-                animationDuration={2000}
-              />
+              <TouchableOpacity
+                style={styles.controlButton}
+                onPress={() => updateWeight(-0.25)}
+              >
+                <Text style={styles.controlButtonTextS}>−0.25</Text>
+              </TouchableOpacity>
+
+              <Text style={styles.controlValue}>{formatWeight(currentWeight)}</Text>
+
+              <TouchableOpacity
+                style={styles.controlButton}
+                onPress={() => updateWeight(0.25)}
+              >
+                <Text style={styles.controlButtonTextS}>+0.25</Text>
+
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.controlButton}
+                onPress={() => updateWeight(1)}
+              >
+                <Text style={styles.controlButtonText}>+1</Text>
+              </TouchableOpacity>
             </View>
-
-            {/* Done button */}
-            <TouchableOpacity
-              style={styles.doneButton}
-              onPress={completeSet}
-            >
-              <Text style={styles.doneButtonText}>
-                {t('done', lang) || 'DONE'}
-              </Text>
-            </TouchableOpacity>
-
-            {/* Reps and Weight controls */}
-            <View style={styles.controlsRow}>
-              {/* Reps control */}
-              <View style={styles.controlGroup}>
-                <Text style={styles.controlLabel}>{t('reps', lang)}</Text>
-                <View style={styles.controlButtons}>
-                  <TouchableOpacity
-                    style={styles.controlButton}
-                    onPress={() => updateReps(-1)}
-                  >
-                    <Text style={styles.controlButtonText}>−</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.controlValue}>{currentReps}</Text>
-                  <TouchableOpacity
-                    style={styles.controlButton}
-                    onPress={() => updateReps(1)}
-                  >
-                    <Text style={styles.controlButtonText}>+</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.controlsRow}>
-              {/* Weight control */}
-              <View style={styles.controlGroup}>
-                <Text style={styles.controlLabel}>{t('weight', lang)} (Kg)</Text>
-                <View style={styles.controlButtons}>
-                  <TouchableOpacity
-                    style={styles.controlButton}
-                    onPress={() => updateWeight(-1)}
-                  >
-                    <Text style={styles.controlButtonText}>−</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.controlButton}
-                    onPress={() => updateWeight(-0.25)}
-                  >
-                    <Text style={styles.controlButtonTextS}>−</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.controlValue}>{formatWeight(currentWeight)}</Text>
-                  <TouchableOpacity
-                    style={styles.controlButton}
-                    onPress={() => updateWeight(0.25)}
-                  >
-                    <Text style={styles.controlButtonTextS}>+</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.controlButton}
-                    onPress={() => updateWeight(1)}
-                  >
-                    <Text style={styles.controlButtonText}>+</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-
-            {/* Changes indicator */}
-            {hasChanges && (
-              <Text style={styles.changesIndicator}>
-                * {t('unsavedChanges', lang) || 'Unsaved changes'}
-              </Text>
-            )}
           </View>
         </View>
-      )}
+
+        {hasChanges && (
+          <Text style={styles.changesIndicator}>
+            {t('changesDetected', lang) || '* Changes will be saved when you finish'}
+          </Text>
+        )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.primary,
-  },
+  // Loading
   loadingContainer: {
     flex: 1,
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.primary,
   },
   loadingText: {
     color: colors.white,
     fontSize: fontSize.lg,
   },
   
-  // Complete screen (dark)
+  // Complete screen
   completeContainer: {
     flex: 1,
     backgroundColor: colors.primary,
@@ -884,21 +876,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   
-  // Rest screen (dark)
+  // Rest screen (now light theme)
   restScreen: {
     flex: 1,
-    backgroundColor: colors.primary,
-  },
-  restCloseButton: {
-    position: 'absolute',
-    top: spacing.md,
-    right: spacing.lg,
-    zIndex: 10,
-    padding: spacing.sm,
-  },
-  restCloseText: {
-    color: colors.white,
-    fontSize: fontSize.xl,
+    backgroundColor: '#FFFFFF',
   },
   restContent: {
     flex: 1,
@@ -907,21 +888,21 @@ const styles = StyleSheet.create({
     padding: spacing.xl,
   },
   restLabel: {
-    color: colors.textLight,
+    color: '#666666',
     fontSize: fontSize.lg,
     letterSpacing: 4,
   },
   restTimer: {
-    color: colors.white,
+    color: '#000000',
     fontSize: 120,
     fontWeight: 'bold',
   },
   restSeconds: {
-    color: colors.textLight,
+    color: '#666666',
     fontSize: fontSize.lg,
   },
   nextPreview: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#F0F0F0',
     padding: spacing.lg,
     borderRadius: borderRadius.lg,
     marginTop: spacing.xl,
@@ -938,24 +919,29 @@ const styles = StyleSheet.create({
     marginVertical: spacing.sm,
   },
   nextExercise: {
-    color: colors.white,
+    color: '#000000',
     fontSize: fontSize.lg,
     fontWeight: 'bold',
     marginTop: spacing.sm,
     textAlign: 'center',
   },
   nextDetails: {
-    color: colors.textLight,
+    color: '#666666',
     fontSize: fontSize.md,
     marginTop: spacing.xs,
   },
-  skipButton: {
+  skipRestButton: {
+    backgroundColor: '#000000',
+    paddingHorizontal: spacing.xl * 2,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.round,
     marginTop: spacing.xl,
-    padding: spacing.md,
   },
-  skipButtonText: {
-    color: colors.accent,
-    fontSize: fontSize.md,
+  skipRestButtonText: {
+    color: '#FFFFFF',
+    fontSize: fontSize.lg,
+    fontWeight: 'bold',
+    letterSpacing: 1,
   },
   
   // Exercise screen (light theme)
@@ -998,6 +984,13 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xl,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  exerciseDescription: {
+    color: '#666666',
+    fontSize: fontSize.sm,
+    textAlign: 'center',
+    marginTop: spacing.xs,
+    paddingHorizontal: spacing.md,
   },
   setIndicator: {
     color: '#666666',
@@ -1047,9 +1040,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   controlButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginLeft: 3,
+    marginRight: 3,
     backgroundColor: '#000000',
     justifyContent: 'center',
     alignItems: 'center',
@@ -1062,15 +1057,14 @@ const styles = StyleSheet.create({
   },
   controlButtonTextS: {
     color: '#FFFFFF',
-    fontSize: fontSize.l,
+    fontSize: fontSize.xs,
     fontWeight: 'bold',
-    lineHeight: fontSize.l,
   },
   controlValue: {
     color: '#000000',
     fontSize: fontSize.xxl,
     fontWeight: 'bold',
-    minWidth: 80,
+    minWidth: 90,
     textAlign: 'center',
     marginHorizontal: spacing.sm,
   },
@@ -1081,23 +1075,5 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xs,
     marginTop: spacing.md,
     fontStyle: 'italic',
-  },
-  
-  // Close workout button (floating)
-  closeWorkoutButton: {
-    position: 'relative',
-    top: 10,
-    left: spacing.lg,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#000000',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  closeWorkoutText: {
-    color: '#FFFFFF',
-    fontSize: fontSize.md,
-    fontWeight: 'bold',
   },
 });
