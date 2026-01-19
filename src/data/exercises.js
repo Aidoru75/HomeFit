@@ -52,7 +52,7 @@ export const exercises = [
     id: 'cable_crossover',
     name: { en: 'Cable Crossover (High)', es: 'Cruce de Cables (Alto)' },
     muscleGroup: 'chest',
-    equipment: ['multigym'],
+    equipment: ['high_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
       en: 'High pulley chest isolation. Pull handles down and together.',
@@ -63,7 +63,7 @@ export const exercises = [
     id: 'pec_deck',
     name: { en: 'Pec Deck / Butterfly', es: 'Pec Deck / Mariposa' },
     muscleGroup: 'chest',
-    equipment: ['multigym'],
+    equipment: ['pec_deck_station'],
     weightType: 'machine',
     description: {
       en: 'Machine chest isolation. Squeeze arms together in front.',
@@ -87,7 +87,7 @@ export const exercises = [
     id: 'lat_pulldown',
     name: { en: 'Lat Pulldown (Wide)', es: 'Jalón al Pecho (Ancho)' },
     muscleGroup: 'back',
-    equipment: ['multigym'],
+    equipment: ['high_pulley', 'lat_bar'],
     weightType: 'machine',
     description: {
       en: 'Lat builder. Pull bar to upper chest, squeeze lats.',
@@ -98,7 +98,7 @@ export const exercises = [
     id: 'seated_cable_row',
     name: { en: 'Seated Cable Row', es: 'Remo Sentado en Polea' },
     muscleGroup: 'back',
-    equipment: ['multigym'],
+    equipment: ['low_pulley', 'v_bar'],
     weightType: 'machine',
     description: {
       en: 'Mid-back thickness. Pull handle to abdomen, squeeze shoulder blades.',
@@ -109,7 +109,7 @@ export const exercises = [
     id: 'face_pulls',
     name: { en: 'Face Pulls', es: 'Tirón a la Cara' },
     muscleGroup: 'back',
-    equipment: ['multigym'],
+    equipment: ['high_pulley', 'rope'],
     weightType: 'machine',
     description: {
       en: 'Rear delts and upper back. Pull rope to face, elbows high.',
@@ -199,7 +199,7 @@ export const exercises = [
     id: 'cable_lateral_raise',
     name: { en: 'Cable Lateral Raise', es: 'Elevación Lateral en Polea' },
     muscleGroup: 'shoulders',
-    equipment: ['multigym'],
+    equipment: ['low_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
       en: 'Constant tension lateral raise. Low pulley, raise to side.',
@@ -234,7 +234,7 @@ export const exercises = [
     id: 'preacher_curl',
     name: { en: 'EZ Bar Preacher Curl', es: 'Curl en Banco Scott con Barra Z' },
     muscleGroup: 'biceps',
-    equipment: ['ez_bar', 'multigym'],
+    equipment: ['ez_bar', 'preacher_pad'],
     weightType: 'barbell',
     description: {
       en: 'Strict bicep isolation. Arms on preacher pad, curl up.',
@@ -256,7 +256,7 @@ export const exercises = [
     id: 'cable_curl',
     name: { en: 'Cable Curl (Rope)', es: 'Curl en Polea (Cuerda)' },
     muscleGroup: 'biceps',
-    equipment: ['multigym'],
+    equipment: ['low_pulley', 'rope'],
     weightType: 'machine',
     description: {
       en: 'Constant tension curls. Low pulley with rope attachment.',
@@ -291,7 +291,7 @@ export const exercises = [
     id: 'rope_pushdown',
     name: { en: 'Cable Pushdown (Rope)', es: 'Empuje en Polea (Cuerda)' },
     muscleGroup: 'triceps',
-    equipment: ['multigym'],
+    equipment: ['high_pulley', 'rope'],
     weightType: 'machine',
     description: {
       en: 'Tricep isolation. High pulley, push rope down, spread at bottom.',
@@ -300,13 +300,13 @@ export const exercises = [
   },
   {
     id: 'db_french_press',
-    name: { en: 'Dumbbell French press', es: 'French press con mancuerna' },
+    name: { en: 'Dumbbell French Press', es: 'French Press con Mancuerna' },
     muscleGroup: 'triceps',
-    equipment: ['multigym'],
-    weightType: 'machine',
+    equipment: ['dumbbells', 'bench'],
+    weightType: 'dumbbell',
     description: {
-      en: 'Long head tricep focus. Extend overhead.',
-      es: 'Enfoque en cabeza larga del tríceps. Extiende sobre la cabeza.',
+      en: 'Long head tricep focus. Seated, extend dumbbell overhead.',
+      es: 'Enfoque en cabeza larga del tríceps. Sentado, extiende la mancuerna sobre la cabeza.',
     },
   },
   {
@@ -381,7 +381,7 @@ export const exercises = [
     id: 'leg_extension',
     name: { en: 'Leg Extension', es: 'Extensión de Piernas' },
     muscleGroup: 'quads',
-    equipment: ['multigym'],
+    equipment: ['leg_extension_station'],
     weightType: 'machine',
     description: {
       en: 'Quad isolation. Extend legs against resistance.',
@@ -405,7 +405,7 @@ export const exercises = [
     id: 'lying_leg_curl',
     name: { en: 'Lying Leg Curl', es: 'Curl de Piernas Acostado' },
     muscleGroup: 'hamstrings',
-    equipment: ['multigym'],
+    equipment: ['leg_curl_station'],
     weightType: 'machine',
     description: {
       en: 'Hamstring isolation. Curl heels to glutes.',
@@ -427,7 +427,7 @@ export const exercises = [
     id: 'cable_pull_through',
     name: { en: 'Cable Pull-Through', es: 'Tirón de Cable entre Piernas' },
     muscleGroup: 'hamstrings',
-    equipment: ['multigym'],
+    equipment: ['low_pulley', 'rope'],
     weightType: 'machine',
     description: {
       en: 'Hip hinge pattern. Low pulley between legs, thrust forward.',
@@ -451,7 +451,7 @@ export const exercises = [
     id: 'cable_kickback',
     name: { en: 'Cable Kickback', es: 'Patada Trasera en Polea' },
     muscleGroup: 'glutes',
-    equipment: ['multigym'],
+    equipment: ['low_pulley', 'ankle_strap'],
     weightType: 'machine',
     description: {
       en: 'Glute isolation. Ankle strap, kick leg back.',
@@ -521,7 +521,7 @@ export const exercises = [
     id: 'cable_crunch',
     name: { en: 'Cable Crunch', es: 'Crunch en Polea' },
     muscleGroup: 'core',
-    equipment: ['multigym'],
+    equipment: ['high_pulley', 'rope'],
     weightType: 'machine',
     description: {
       en: 'Weighted abs. Kneel, crunch down against resistance.',
@@ -532,7 +532,7 @@ export const exercises = [
     id: 'cable_woodchop',
     name: { en: 'Cable Woodchop', es: 'Leñador en Polea' },
     muscleGroup: 'core',
-    equipment: ['multigym'],
+    equipment: ['high_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
       en: 'Rotational core. Pull cable diagonally across body.',
