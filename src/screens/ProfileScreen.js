@@ -1,4 +1,4 @@
-// Profile Screen - User profile information
+// Profile Screen - User profile and equipment management
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -8,10 +8,25 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
+  Switch,
+  Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, spacing, borderRadius, fontSize, shadows } from '../theme';
-import { loadSettings, saveSettings } from '../storage/storage';
+import { 
+  loadSettings, 
+  saveSettings, 
+  loadAvailableEquipment,
+  updateExcludedByEquipment,
+} from '../storage/storage';
+import { 
+  equipment, 
+  equipmentCategories, 
+  getEquipmentName,
+  getCategoryName,
+  getAllEquipmentIds,
+} from '../data/equipment';
 import { t } from '../data/translations';
 
 export default function ProfileScreen() {
@@ -22,15 +37,19 @@ export default function ProfileScreen() {
     userWeight: '',
     language: 'en',
   });
+  const [availableEquipment, setAvailableEquipment] = useState([]);
+  const [expandedCategories, setExpandedCategories] = useState({});
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    loadUserSettings();
+    loadUserData();
   }, []);
 
-  const loadUserSettings = async () => {
-    const saved = await loadSettings();
-    setSettings(saved);
+  const loadUserData = async () => {
+    const savedSettings = await loadSettings();
+    const savedEquipment = await loadAvailableEquipment();
+    setSettings(savedSettings);
+    setAvailableEquipment(savedEquipment);
     setLoaded(true);
   };
 
@@ -42,6 +61,125 @@ export default function ProfileScreen() {
 
   const lang = settings.language || 'en';
 
+  const toggleCategory = (categoryId) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [categoryId]: !prev[categoryId],
+    }));
+  };
+
+  const toggleEquipment = async (equipmentId) => {
+    let newAvailable;
+    if (availableEquipment.includes(equipmentId)) {
+      newAvailable = availableEquipment.filter(id => id !== equipmentId);
+    } else {
+      newAvailable = [...availableEquipment, equipmentId];
+    }
+    
+    setAvailableEquipment(newAvailable);
+    await updateExcludedByEquipment(newAvailable);
+  };
+
+  const toggleAllInCategory = async (categoryId, enable) => {
+    const category = equipmentCategories[categoryId];
+    if (!category) return;
+
+    let newAvailable;
+    if (enable) {
+      // Add all equipment from this category
+      const toAdd = category.equipmentIds.filter(id => !availableEquipment.includes(id));
+      newAvailable = [...availableEquipment, ...toAdd];
+    } else {
+      // Remove all equipment from this category
+      newAvailable = availableEquipment.filter(id => !category.equipmentIds.includes(id));
+    }
+
+    setAvailableEquipment(newAvailable);
+    await updateExcludedByEquipment(newAvailable);
+  };
+
+  const selectAllEquipment = async () => {
+    const allIds = getAllEquipmentIds();
+    setAvailableEquipment(allIds);
+    await updateExcludedByEquipment(allIds);
+  };
+
+  const deselectAllEquipment = async () => {
+    setAvailableEquipment([]);
+    await updateExcludedByEquipment([]);
+  };
+
+  const getCategoryStatus = (categoryId) => {
+    const category = equipmentCategories[categoryId];
+    if (!category) return { count: 0, total: 0 };
+    
+    const total = category.equipmentIds.length;
+    const count = category.equipmentIds.filter(id => availableEquipment.includes(id)).length;
+    return { count, total };
+  };
+
+  const renderEquipmentItem = (equipmentId) => {
+    const isAvailable = availableEquipment.includes(equipmentId);
+    
+    return (
+      <View key={equipmentId} style={styles.equipmentItem}>
+        <Text style={styles.equipmentName}>
+          {getEquipmentName(equipmentId, lang)}
+        </Text>
+        <Switch
+          value={isAvailable}
+          onValueChange={() => toggleEquipment(equipmentId)}
+          trackColor={{ false: colors.border, true: colors.accentLight }}
+          thumbColor={isAvailable ? colors.accent : colors.textLight}
+        />
+      </View>
+    );
+  };
+
+  const renderCategory = (categoryKey) => {
+    const category = equipmentCategories[categoryKey];
+    const isExpanded = expandedCategories[categoryKey];
+    const { count, total } = getCategoryStatus(categoryKey);
+    const allEnabled = count === total;
+    
+    return (
+      <View key={categoryKey} style={styles.categoryContainer}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => toggleCategory(categoryKey)}
+          activeOpacity={0.7}
+        >
+          <View style={styles.categoryLeft}>
+            <Text style={styles.categoryIcon}>{category.icon}</Text>
+            <View>
+              <Text style={styles.categoryName}>
+                {getCategoryName(category, lang)}
+              </Text>
+              <Text style={styles.categoryCount}>
+                {count}/{total} {t('enabled', lang)}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.categoryRight}>
+            <Switch
+              value={allEnabled}
+              onValueChange={(value) => toggleAllInCategory(categoryKey, value)}
+              trackColor={{ false: colors.border, true: colors.accentLight }}
+              thumbColor={allEnabled ? colors.accent : colors.textLight}
+            />
+            <Text style={styles.expandIcon}>{isExpanded ? '▼' : '▶'}</Text>
+          </View>
+        </TouchableOpacity>
+        
+        {isExpanded && (
+          <View style={styles.equipmentList}>
+            {category.equipmentIds.map(renderEquipmentItem)}
+          </View>
+        )}
+      </View>
+    );
+  };
+
   if (!loaded) {
     return (
       <View style={styles.loadingContainer}>
@@ -49,6 +187,9 @@ export default function ProfileScreen() {
       </View>
     );
   }
+
+  const totalEquipment = getAllEquipmentIds().length;
+  const availableCount = availableEquipment.length;
 
   return (
     <KeyboardAvoidingView 
@@ -97,7 +238,6 @@ export default function ProfileScreen() {
                 style={[styles.textInput, styles.numberInput]}
                 value={settings.userHeight}
                 onChangeText={(text) => {
-                  // Only allow numbers
                   const numericValue = text.replace(/[^0-9]/g, '');
                   updateSetting('userHeight', numericValue);
                 }}
@@ -118,9 +258,7 @@ export default function ProfileScreen() {
                 style={[styles.textInput, styles.numberInput]}
                 value={settings.userWeight}
                 onChangeText={(text) => {
-                  // Allow numbers and one decimal point
                   const numericValue = text.replace(/[^0-9.]/g, '');
-                  // Ensure only one decimal point
                   const parts = numericValue.split('.');
                   const sanitized = parts.length > 2 
                     ? parts[0] + '.' + parts.slice(1).join('')
@@ -168,6 +306,41 @@ export default function ProfileScreen() {
             </View>
           </>
         )}
+
+        {/* My Equipment Section */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>{t('myEquipment', lang)}</Text>
+          <Text style={styles.sectionSubtitle}>
+            {availableCount}/{totalEquipment} {t('items', lang)}
+          </Text>
+        </View>
+        
+        <View style={styles.card}>
+          <Text style={styles.equipmentHint}>
+            {t('equipmentHint', lang)}
+          </Text>
+          
+          {/* Quick actions */}
+          <View style={styles.quickActions}>
+            <TouchableOpacity 
+              style={styles.quickActionButton}
+              onPress={selectAllEquipment}
+            >
+              <Text style={styles.quickActionText}>{t('selectAll', lang)}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.quickActionButton, styles.quickActionButtonOutline]}
+              onPress={deselectAllEquipment}
+            >
+              <Text style={[styles.quickActionText, styles.quickActionTextOutline]}>
+                {t('deselectAll', lang)}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Equipment Categories */}
+        {Object.keys(equipmentCategories).map(renderCategory)}
 
         <View style={styles.bottomPadding} />
       </ScrollView>
@@ -221,6 +394,14 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: 'bold',
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
+    marginBottom: spacing.sm,
+  },
   sectionTitle: {
     fontSize: fontSize.sm,
     fontWeight: 'bold',
@@ -229,6 +410,11 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing.lg,
     marginTop: spacing.lg,
     marginBottom: spacing.sm,
+  },
+  sectionSubtitle: {
+    fontSize: fontSize.sm,
+    color: colors.accent,
+    fontWeight: '600',
   },
   card: {
     backgroundColor: colors.card,
@@ -287,7 +473,100 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     marginTop: spacing.xs,
   },
+  equipmentHint: {
+    fontSize: fontSize.sm,
+    color: colors.textSecondary,
+    marginBottom: spacing.md,
+    lineHeight: 20,
+  },
+  quickActions: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+  quickActionButton: {
+    flex: 1,
+    backgroundColor: colors.accent,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    alignItems: 'center',
+  },
+  quickActionButtonOutline: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: colors.accent,
+  },
+  quickActionText: {
+    color: colors.white,
+    fontWeight: '600',
+    fontSize: fontSize.sm,
+  },
+  quickActionTextOutline: {
+    color: colors.accent,
+  },
+  categoryContainer: {
+    backgroundColor: colors.card,
+    marginHorizontal: spacing.md,
+    marginTop: spacing.sm,
+    borderRadius: borderRadius.lg,
+    overflow: 'hidden',
+    ...shadows.small,
+  },
+  categoryHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: spacing.md,
+  },
+  categoryLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  categoryIcon: {
+    fontSize: 24,
+    marginRight: spacing.md,
+  },
+  categoryName: {
+    fontSize: fontSize.md,
+    fontWeight: '600',
+    color: colors.textPrimary,
+  },
+  categoryCount: {
+    fontSize: fontSize.xs,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+  categoryRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  expandIcon: {
+    fontSize: fontSize.sm,
+    color: colors.textLight,
+    width: 20,
+    textAlign: 'center',
+  },
+  equipmentList: {
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    paddingHorizontal: spacing.md,
+  },
+  equipmentItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  equipmentName: {
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
+    flex: 1,
+  },
   bottomPadding: {
-    height: 100,
+    height: 120,
   },
 });

@@ -1,5 +1,7 @@
 // Local storage for routines, settings, and workout history
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { exercises } from '../data/exercises';
+import { getAllEquipmentIds } from '../data/equipment';
 
 const KEYS = {
   ROUTINES: 'homefit_routines',
@@ -7,6 +9,7 @@ const KEYS = {
   WORKOUT_HISTORY: 'homefit_history',
   SETTINGS: 'homefit_settings',
   EXCLUDED_EXERCISES: 'homefit_excluded_exercises',
+  AVAILABLE_EQUIPMENT: 'homefit_available_equipment',
 };
 
 // Default settings
@@ -48,6 +51,69 @@ export const updateSetting = async (key, value) => {
   const settings = await loadSettings();
   settings[key] = value;
   return saveSettings(settings);
+};
+
+// ============ AVAILABLE EQUIPMENT ============
+
+export const loadAvailableEquipment = async () => {
+  try {
+    const data = await AsyncStorage.getItem(KEYS.AVAILABLE_EQUIPMENT);
+    if (data) {
+      return JSON.parse(data);
+    }
+    // Default: all equipment is available
+    return getAllEquipmentIds();
+  } catch (error) {
+    console.error('Error loading available equipment:', error);
+    return getAllEquipmentIds();
+  }
+};
+
+export const saveAvailableEquipment = async (equipmentIds) => {
+  try {
+    await AsyncStorage.setItem(KEYS.AVAILABLE_EQUIPMENT, JSON.stringify(equipmentIds));
+    return true;
+  } catch (error) {
+    console.error('Error saving available equipment:', error);
+    return false;
+  }
+};
+
+// Calculate which exercises should be excluded based on available equipment
+export const calculateExcludedByEquipment = (availableEquipment) => {
+  const excluded = [];
+  
+  for (const exercise of exercises) {
+    // Bodyweight exercises are always available
+    if (!exercise.equipment || exercise.equipment.length === 0) {
+      continue;
+    }
+    
+    // Check if user has ALL required equipment for this exercise
+    const hasAllEquipment = exercise.equipment.every(
+      eqId => availableEquipment.includes(eqId)
+    );
+    
+    if (!hasAllEquipment) {
+      excluded.push(exercise.id);
+    }
+  }
+  
+  return excluded;
+};
+
+// Update excluded exercises based on equipment change
+export const updateExcludedByEquipment = async (newAvailableEquipment) => {
+  // Save the new equipment selection
+  await saveAvailableEquipment(newAvailableEquipment);
+  
+  // Calculate which exercises should be excluded
+  const shouldBeExcluded = calculateExcludedByEquipment(newAvailableEquipment);
+  
+  // Save the new excluded list
+  await saveExcludedExercises(shouldBeExcluded);
+  
+  return shouldBeExcluded;
 };
 
 // ============ ROUTINES ============
@@ -201,7 +267,8 @@ export const clearAllData = async () => {
       KEYS.ROUTINES, 
       KEYS.LAST_WORKOUT, 
       KEYS.WORKOUT_HISTORY,
-      KEYS.EXCLUDED_EXERCISES
+      KEYS.EXCLUDED_EXERCISES,
+      KEYS.AVAILABLE_EQUIPMENT
     ]);
     return true;
   } catch (error) {

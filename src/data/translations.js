@@ -102,6 +102,12 @@ export const translations = {
     height: 'Height',
     bodyWeight: 'Body Weight',
     stats: 'Stats',
+    myEquipment: 'My Equipment',
+    items: 'items',
+    enabled: 'enabled',
+    equipmentHint: 'Select the equipment you have available. Exercises requiring missing equipment will be hidden from the library.',
+    selectAll: 'Select All',
+    deselectAll: 'Deselect All',
     
     // Settings Screen
     settingsTitle: 'Settings',
@@ -217,6 +223,12 @@ export const translations = {
     height: 'Altura',
     bodyWeight: 'Peso Corporal',
     stats: 'Estadísticas',
+    myEquipment: 'Mi Equipamiento',
+    items: 'elementos',
+    enabled: 'activos',
+    equipmentHint: 'Selecciona el equipamiento que tienes disponible. Los ejercicios que requieran equipamiento no disponible se ocultarán de la biblioteca.',
+    selectAll: 'Seleccionar Todo',
+    deselectAll: 'Deseleccionar Todo',
     
     // Settings Screen
     settingsTitle: 'Ajustes',

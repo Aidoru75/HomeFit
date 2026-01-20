@@ -26,30 +26,26 @@ export const equipment = {
     id: 'leg_extension_station',
     name: { en: 'Leg Extension Station', es: 'Estación de Extensión de Piernas' },
     type: 'machine',
-    weightRange: { min: 3.6, max: 68, increment: 4.6 },
   },
   legCurlStation: {
     id: 'leg_curl_station',
     name: { en: 'Leg Curl Station', es: 'Estación de Curl de Piernas' },
     type: 'machine',
-    weightRange: { min: 3.6, max: 68, increment: 4.6 },
   },
   legPressStation: {
     id: 'leg_press_station',
     name: { en: 'Leg Press Station', es: 'Prensa de Piernas' },
     type: 'machine',
-    weightRange: { min: 20, max: 200, increment: 5 },
   },
   pecDeckStation: {
     id: 'pec_deck_station',
     name: { en: 'Pec Deck Station', es: 'Estación de Pecho' },
     type: 'machine',
-    weightRange: { min: 3.6, max: 68, increment: 4.6 },
   },
   preacherPad: {
     id: 'preacher_pad',
     name: { en: 'Preacher Pad', es: 'Banco Scott' },
-    type: 'accessory',
+    type: 'machine',
   },
   
   // Racks and Benches
@@ -162,6 +158,46 @@ export const equipment = {
   },
 };
 
+// Equipment categories for UI grouping
+export const equipmentCategories = {
+  freeWeights: {
+    id: 'freeWeights',
+    name: { en: 'Free Weights', es: 'Pesos Libres' },
+    icon: '🏋️',
+    equipmentIds: ['straight_bar', 'ez_bar', 'dumbbells', 'plates'],
+  },
+  racksAndBenches: {
+    id: 'racksAndBenches',
+    name: { en: 'Racks & Benches', es: 'Racks y Bancos' },
+    icon: '🪑',
+    equipmentIds: ['rack', 'bench'],
+  },
+  cableMachine: {
+    id: 'cableMachine',
+    name: { en: 'Cable Machine', es: 'Máquina de Poleas' },
+    icon: '🔗',
+    equipmentIds: ['high_pulley', 'mid_pulley', 'low_pulley'],
+  },
+  machineStations: {
+    id: 'machineStations',
+    name: { en: 'Machine Stations', es: 'Estaciones de Máquinas' },
+    icon: '⚙️',
+    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'leg_press_station', 'pec_deck_station', 'preacher_pad'],
+  },
+  cableAttachments: {
+    id: 'cableAttachments',
+    name: { en: 'Cable Attachments', es: 'Accesorios de Polea' },
+    icon: '🔧',
+    equipmentIds: ['lat_bar', 'rope', 'single_handle', 'straight_bar_attachment', 'v_bar', 'ankle_strap'],
+  },
+  accessories: {
+    id: 'accessories',
+    name: { en: 'Accessories', es: 'Accesorios' },
+    icon: '🎒',
+    equipmentIds: ['dip_belt', 'lifting_belt', 'resistance_band', 'towel', 'jump_rope'],
+  },
+};
+
 // Helper: Get equipment by ID
 export const getEquipmentById = (equipmentId) => {
   return Object.values(equipment).find(eq => eq.id === equipmentId);
@@ -172,6 +208,16 @@ export const getEquipmentName = (equipmentId, lang = 'en') => {
   const eq = getEquipmentById(equipmentId);
   if (!eq) return equipmentId; // Fallback to ID if not found
   return eq.name[lang] || eq.name.en || equipmentId;
+};
+
+// Helper: Get all equipment IDs
+export const getAllEquipmentIds = () => {
+  return Object.values(equipment).map(eq => eq.id);
+};
+
+// Helper: Get localized category name
+export const getCategoryName = (category, lang = 'en') => {
+  return category.name[lang] || category.name.en;
 };
 
 // Helper: Get cable machine weights (same weight stack for all pulleys)
