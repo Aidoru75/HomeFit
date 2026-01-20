@@ -12,6 +12,8 @@ const KEYS = {
 // Default settings
 const DEFAULT_SETTINGS = {
   userName: '',
+  userHeight: '',  // in cm
+  userWeight: '',  // in kg
   language: 'en', // 'en' or 'es'
   soundEnabled: true,
   soundVolume: 1.0, // 0.0 to 1.0

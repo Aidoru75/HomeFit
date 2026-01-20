@@ -6,6 +6,7 @@ export const translations = {
     home: 'Home',
     exercises: 'Exercises',
     routines: 'Routines',
+    profile: 'Profile',
     settings: 'Settings',
     
     // Home Screen
@@ -93,11 +94,17 @@ export const translations = {
     unsavedChanges: 'You have unsaved changes. Do you want to save them?',
     changesDetected: '* Changes will be saved when you finish',
     
-    // Settings Screen
-    settingsTitle: 'Settings',
-    profile: 'Profile',
+    // Profile Screen
+    profileTitle: 'Profile',
+    personalInfo: 'Personal Information',
     yourName: 'Your Name',
     namePlaceholder: 'Enter your name',
+    height: 'Height',
+    bodyWeight: 'Body Weight',
+    stats: 'Stats',
+    
+    // Settings Screen
+    settingsTitle: 'Settings',
     sound: 'Sound',
     countdownSound: 'Countdown Sound',
     volume: 'Volume',
@@ -114,6 +121,7 @@ export const translations = {
     home: 'Inicio',
     exercises: 'Ejercicios',
     routines: 'Rutinas',
+    profile: 'Perfil',
     settings: 'Ajustes',
     
     // Home Screen
@@ -201,11 +209,17 @@ export const translations = {
     unsavedChanges: 'Tienes cambios sin guardar. ¿Quieres guardarlos?',
     changesDetected: '* Los cambios se guardarán al terminar',
     
-    // Settings Screen
-    settingsTitle: 'Ajustes',
-    profile: 'Perfil',
+    // Profile Screen
+    profileTitle: 'Perfil',
+    personalInfo: 'Información Personal',
     yourName: 'Tu Nombre',
     namePlaceholder: 'Introduce tu nombre',
+    height: 'Altura',
+    bodyWeight: 'Peso Corporal',
+    stats: 'Estadísticas',
+    
+    // Settings Screen
+    settingsTitle: 'Ajustes',
     sound: 'Sonido',
     countdownSound: 'Sonido de Cuenta Atrás',
     volume: 'Volumen',

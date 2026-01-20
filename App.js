@@ -10,6 +10,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import ExercisesScreen from './src/screens/ExercisesScreen';
 import RoutinesScreen from './src/screens/RoutinesScreen';
 import TrainingScreen from './src/screens/TrainingScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 
 // Theme and translations
@@ -38,20 +39,6 @@ export default function App() {
   useEffect(() => {
     loadLanguage();
   }, [loadLanguage]);
-
-  // Note: expo-navigation-bar's setBackgroundColorAsync, setPositionAsync, and setBehaviorAsync
-  // are not supported with edge-to-edge enabled (edgeToEdgeEnabled: true in app.json).
-  // The edge-to-edge mode handles the navigation bar automatically, so these calls are removed.
-  // If you want to disable edge-to-edge, set "edgeToEdgeEnabled": false in app.json and
-  // uncomment the NavigationBar calls below.
-
-  // useEffect(() => {
-  //   if (Platform.OS === 'android') {
-  //     NavigationBar.setBackgroundColorAsync('transparent');
-  //     NavigationBar.setPositionAsync('absolute');
-  //     NavigationBar.setBehaviorAsync('overlay-swipe');
-  //   }
-  // }, []);
 
   return (
     <SafeAreaProvider>
@@ -100,6 +87,14 @@ export default function App() {
             options={{
               tabBarLabel: t('routines', language),
               tabBarIcon: ({ focused }) => <TabIcon icon="📋" focused={focused} />,
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{
+              tabBarLabel: t('profile', language),
+              tabBarIcon: ({ focused }) => <TabIcon icon="👤" focused={focused} />,
             }}
           />
           <Tab.Screen

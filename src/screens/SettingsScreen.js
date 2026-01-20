@@ -1,10 +1,9 @@
-// Settings Screen - User preferences
+// Settings Screen - App preferences (without profile - moved to ProfileScreen)
 import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   ScrollView,
   Switch,
@@ -20,7 +19,6 @@ import { t } from '../data/translations';
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const [settings, setSettings] = useState({
-    userName: '',
     language: 'en',
     soundEnabled: true,
     soundVolume: 1.0,
@@ -104,19 +102,6 @@ export default function SettingsScreen() {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Profile Section */}
-        <Text style={styles.sectionTitle}>{t('profile', lang)}</Text>
-        <View style={styles.card}>
-          <Text style={styles.label}>{t('yourName', lang)}</Text>
-          <TextInput
-            style={styles.textInput}
-            value={settings.userName}
-            onChangeText={(text) => updateSetting('userName', text)}
-            placeholder={t('namePlaceholder', lang)}
-            placeholderTextColor={colors.textLight}
-          />
-        </View>
-
         {/* Language Section */}
         <Text style={styles.sectionTitle}>{t('language', lang)}</Text>
         <View style={styles.card}>
@@ -253,14 +238,6 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.textPrimary,
     marginBottom: spacing.sm,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    fontSize: fontSize.md,
-    color: colors.textPrimary,
   },
   languageButtons: {
     flexDirection: 'row',

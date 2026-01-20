@@ -34,6 +34,12 @@ export const equipment = {
     type: 'machine',
     weightRange: { min: 3.6, max: 68, increment: 4.6 },
   },
+  legPressStation: {
+    id: 'leg_press_station',
+    name: { en: 'Leg Press Station', es: 'Prensa de Piernas' },
+    type: 'machine',
+    weightRange: { min: 20, max: 200, increment: 5 },
+  },
   pecDeckStation: {
     id: 'pec_deck_station',
     name: { en: 'Pec Deck Station', es: 'Estación de Pecho' },
@@ -42,14 +48,14 @@ export const equipment = {
   },
   preacherPad: {
     id: 'preacher_pad',
-    name: { en: 'Preacher Pad', es: 'Pad de Preacher' },
+    name: { en: 'Preacher Pad', es: 'Banco Scott' },
     type: 'accessory',
   },
   
   // Racks and Benches
   rack: {
     id: 'rack',
-    name: { en: 'Squat Rack', es: 'Soporte para Sentadillas' },
+    name: { en: 'Squat Rack', es: 'Rack de Sentadillas' },
     type: 'rack',
     features: ['j_hooks', 'safety_arms', 'pullup_bar'],
   },
@@ -87,7 +93,7 @@ export const equipment = {
   // Weight Plates
   plates: {
     id: 'plates',
-    name: { en: 'Weight Plates', es: 'Platos de Peso' },
+    name: { en: 'Weight Plates', es: 'Discos de Peso' },
     type: 'plates',
     inventory: [
       { weight: 15, quantity: 2 },
@@ -99,25 +105,19 @@ export const equipment = {
   },
   
   // Cable Attachments & Accessories
-  
   latBar: {
     id: 'lat_bar',
-    name: { en: 'Lat Pulldown Bar', es: 'Barra de tracción de polea' },
-    type: 'accessory',
-  },
-  vBar: {
-    id: 'v_bar',
-    name: { en: 'V-Bar Handle', es: 'Barra V' },
+    name: { en: 'Lat Pulldown Bar', es: 'Barra de Jalón' },
     type: 'accessory',
   },
   rope: {
     id: 'rope',
-    name: { en: 'Tricep Rope', es: 'Cuerda para tríceps' },
+    name: { en: 'Tricep Rope', es: 'Cuerda para Tríceps' },
     type: 'accessory',
   },
   singleHandle: {
     id: 'single_handle',
-    name: { en: 'Single Cable Handle', es: 'Mango de Cable Único' },
+    name: { en: 'Single Cable Handle', es: 'Mango de Cable' },
     type: 'accessory',
   },
   straightBarAttachment: {
@@ -127,12 +127,12 @@ export const equipment = {
   },
   ankleStrap: {
     id: 'ankle_strap',
-    name: { en: 'Ankle Strap', es: 'Banda para tobillo' },
+    name: { en: 'Ankle Strap', es: 'Correa de Tobillo' },
     type: 'accessory',
   },
   dipBelt: {
     id: 'dip_belt',
-    name: { en: 'Dip Belt + Chain', es: 'Cinturón de Dip + Cadena' },
+    name: { en: 'Dip Belt + Chain', es: 'Cinturón de Fondos + Cadena' },
     type: 'accessory',
   },
   liftingBelt: {
@@ -145,11 +145,33 @@ export const equipment = {
     name: { en: 'V-Bar Handle', es: 'Barra V' },
     type: 'accessory',
   },
-  resistanceBands: {
-    id: 'resistance_bands',
-    name: { en: 'Resistance Bands', es: 'Bandas de Resistencia' },
+  resistanceBand: {
+    id: 'resistance_band',
+    name: { en: 'Resistance Band', es: 'Banda de Resistencia' },
     type: 'accessory',
   },
+  towel: {
+    id: 'towel',
+    name: { en: 'Towel', es: 'Toalla' },
+    type: 'accessory',
+  },
+  jumpRope: {
+    id: 'jump_rope',
+    name: { en: 'Jump Rope', es: 'Cuerda de Saltar' },
+    type: 'accessory',
+  },
+};
+
+// Helper: Get equipment by ID
+export const getEquipmentById = (equipmentId) => {
+  return Object.values(equipment).find(eq => eq.id === equipmentId);
+};
+
+// Helper: Get localized equipment name by ID
+export const getEquipmentName = (equipmentId, lang = 'en') => {
+  const eq = getEquipmentById(equipmentId);
+  if (!eq) return equipmentId; // Fallback to ID if not found
+  return eq.name[lang] || eq.name.en || equipmentId;
 };
 
 // Helper: Get cable machine weights (same weight stack for all pulleys)

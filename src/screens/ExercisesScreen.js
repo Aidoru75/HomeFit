@@ -20,6 +20,7 @@ import {
   getMuscleGroupName,
   getExerciseDescription,
 } from '../data/exercises';
+import { getEquipmentName } from '../data/equipment';
 import { loadSettings, loadExcludedExercises, toggleExerciseExclusion } from '../storage/storage';
 import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
@@ -57,6 +58,12 @@ export default function ExercisesScreen() {
     ? getExercisesByMuscle(selectedMuscle)
     : exercises;
 
+  // Helper to format equipment list with localized names
+  const formatEquipmentList = (equipmentIds) => {
+    if (!equipmentIds || equipmentIds.length === 0) return t('bodyweightOnly', lang);
+    return equipmentIds.map(eq => getEquipmentName(eq, lang)).join(' • ');
+  };
+
   const renderMuscleChip = (muscle) => {
     const isSelected = selectedMuscle === muscle.id;
     const muscleColor = colors.muscleColors[muscle.id] || colors.accent;
@@ -86,7 +93,7 @@ export default function ExercisesScreen() {
     
     return (
       <View style={[styles.exerciseCard, isExcluded && styles.exerciseCardExcluded]}>
-        <TouchableOpacity
+        <TouchableOpacity 
           style={styles.exerciseCardTouchable}
           onPress={() => setSelectedExercise(item)}
         >
@@ -96,9 +103,9 @@ export default function ExercisesScreen() {
               {getExerciseName(item, lang)}
             </Text>
             <Text style={styles.exerciseEquipment}>
-              {item.weightType === 'bodyweight' 
+              {item.equipment.length === 0
                 ? t('bodyweightOnly', lang)
-                : item.equipment.join(' • ')}
+                : formatEquipmentList(item.equipment)}
             </Text>
           </View>
           <Text style={styles.exerciseArrow}>›</Text>
@@ -209,7 +216,7 @@ export default function ExercisesScreen() {
 
                   <Text style={styles.modalSectionTitle}>{t('equipmentNeeded', lang)}</Text>
                   <View style={styles.equipmentList}>
-                    {selectedExercise.weightType === 'bodyweight' ? (
+                    {selectedExercise.equipment.length === 0 ? (
                       <View style={styles.equipmentItem}>
                         <Text style={styles.equipmentIcon}>👤</Text>
                         <Text style={styles.equipmentText}>{t('bodyweightOnly', lang)}</Text>
@@ -219,7 +226,7 @@ export default function ExercisesScreen() {
                         <View key={index} style={styles.equipmentItem}>
                           <Text style={styles.equipmentIcon}>•</Text>
                           <Text style={styles.equipmentText}>
-                            {eq.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                            {getEquipmentName(eq, lang)}
                           </Text>
                         </View>
                       ))
@@ -257,55 +264,52 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: colors.primary,
-    paddingBottom: 20,
     paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.lg,
   },
   headerTitle: {
-    fontSize: fontSize.xl,
+    fontSize: fontSize.xxl,
     fontWeight: 'bold',
     color: colors.white,
   },
   headerSubtitle: {
-    fontSize: fontSize.sm,
-    color: colors.textLight,
+    fontSize: fontSize.md,
+    color: 'rgba(255,255,255,0.8)',
     marginTop: spacing.xs,
   },
   filterContainer: {
     backgroundColor: colors.white,
-    paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    paddingVertical: spacing.md,
+    ...shadows.small,
   },
   muscleChips: {
     paddingHorizontal: spacing.md,
     gap: spacing.sm,
-    flexDirection: 'row',
   },
   muscleChip: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    borderRadius: borderRadius.round,
+    borderRadius: borderRadius.full,
     backgroundColor: colors.background,
     marginRight: spacing.sm,
   },
   muscleChipSelected: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.accent,
   },
   muscleChipText: {
     fontSize: fontSize.sm,
-    color: colors.textPrimary,
     fontWeight: '500',
+    color: colors.textPrimary,
   },
   hintContainer: {
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
     backgroundColor: colors.background,
   },
   hintText: {
     fontSize: fontSize.xs,
-    color: colors.textSecondary,
+    color: colors.textLight,
     fontStyle: 'italic',
-    textAlign: 'center',
   },
   exerciseList: {
     padding: spacing.md,
