@@ -13,7 +13,7 @@ import {
   Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, spacing, borderRadius, fontSize, shadows } from '../theme';
+import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { 
   loadSettings, 
   saveSettings, 
@@ -360,6 +360,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   loadingText: {
+    fontFamily: fonts.regular,
     color: colors.textSecondary,
     fontSize: fontSize.md,
   },
@@ -369,8 +370,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
   },
   headerTitle: {
-    fontSize: fontSize.xl,
-    fontWeight: 'bold',
+    fontFamily: fonts.regular,
+    fontSize: fontSize.xxl,
     color: colors.white,
   },
   content: {
@@ -390,9 +391,9 @@ const styles = StyleSheet.create({
     ...shadows.medium,
   },
   avatarText: {
+    fontFamily: fonts.bold,
     fontSize: 40,
     color: colors.white,
-    fontWeight: 'bold',
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -404,7 +405,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: fontSize.sm,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: colors.textSecondary,
     textTransform: 'uppercase',
     marginHorizontal: spacing.lg,
@@ -414,7 +415,7 @@ const styles = StyleSheet.create({
   sectionSubtitle: {
     fontSize: fontSize.sm,
     color: colors.accent,
-    fontWeight: '600',
+    fontFamily: fonts.bold,
   },
   card: {
     backgroundColor: colors.card,
@@ -430,9 +431,10 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.textPrimary,
     marginBottom: spacing.sm,
-    fontWeight: '500',
+    fontFamily: fonts.bold,
   },
   textInput: {
+    fontFamily: fonts.regular,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: borderRadius.md,
@@ -450,9 +452,9 @@ const styles = StyleSheet.create({
     marginRight: spacing.sm,
   },
   unitText: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.lg,
     color: colors.textSecondary,
-    fontWeight: '600',
     minWidth: 30,
   },
   statsRow: {
@@ -465,15 +467,17 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontSize: fontSize.xxl,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: colors.accent,
   },
   statLabel: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.sm,
     color: colors.textSecondary,
     marginTop: spacing.xs,
   },
   equipmentHint: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.sm,
     color: colors.textSecondary,
     marginBottom: spacing.md,
@@ -497,8 +501,8 @@ const styles = StyleSheet.create({
     borderColor: colors.accent,
   },
   quickActionText: {
+    fontFamily: fonts.bold,
     color: colors.white,
-    fontWeight: '600',
     fontSize: fontSize.sm,
   },
   quickActionTextOutline: {
@@ -524,15 +528,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   categoryIcon: {
+    fontFamily: fonts.regular,
     fontSize: 24,
     marginRight: spacing.md,
   },
   categoryName: {
     fontSize: fontSize.md,
-    fontWeight: '600',
+    fontFamily: fonts.bold,
     color: colors.textPrimary,
   },
   categoryCount: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.xs,
     color: colors.textSecondary,
     marginTop: 2,
@@ -543,6 +549,7 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   expandIcon: {
+    fontFamily: fonts.re,
     fontSize: fontSize.sm,
     color: colors.textLight,
     width: 20,
@@ -562,6 +569,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.border,
   },
   equipmentName: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: colors.textPrimary,
     flex: 1,

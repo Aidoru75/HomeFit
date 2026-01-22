@@ -11,7 +11,7 @@ import {
   Switch,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, spacing, borderRadius, fontSize, shadows } from '../theme';
+import { colors, spacing, borderRadius, fonts, fontSize, shadows } from '../theme';
 import { 
   exercises, 
   muscleGroups, 
@@ -98,6 +98,15 @@ export default function ExercisesScreen() {
           onPress={() => setSelectedExercise(item)}
         >
           <View style={[styles.exerciseColorBar, { backgroundColor: muscleColor }]} />
+          {/* Exercise Thumbnail */}
+          <View style={styles.exerciseThumbnail}>
+            <ExerciseImage 
+              exerciseId={item.id} 
+              size={48} 
+              showEndImage={true}
+              animate={false}
+            />
+          </View>
           <View style={styles.exerciseContent}>
             <Text style={[styles.exerciseName, isExcluded && styles.exerciseNameExcluded]}>
               {getExerciseName(item, lang)}
@@ -268,11 +277,12 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.lg,
   },
   headerTitle: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.xxl,
-    fontWeight: 'bold',
     color: colors.white,
   },
   headerSubtitle: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: 'rgba(255,255,255,0.8)',
     marginTop: spacing.xs,
@@ -287,6 +297,7 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   muscleChip: {
+    fontFamily: fonts.regular,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: borderRadius.full,
@@ -297,6 +308,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accent,
   },
   muscleChipText: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.sm,
     fontWeight: '500',
     color: colors.textPrimary,
@@ -307,12 +319,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   hintText: {
+    fontFamily: fonts.italic,
     fontSize: fontSize.xs,
     color: colors.textLight,
-    fontStyle: 'italic',
   },
   exerciseList: {
     padding: spacing.md,
+    paddingBottom: 100,
   },
   exerciseCard: {
     backgroundColor: colors.white,
@@ -337,14 +350,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
   },
+  exerciseThumbnail: {
+    marginLeft: spacing.sm,
+    marginVertical: spacing.xs,
+    borderRadius: borderRadius.sm,
+    overflow: 'hidden',
+  },
   exerciseContent: {
     flex: 1,
     padding: spacing.md,
-    paddingLeft: spacing.lg,
+    paddingLeft: spacing.sm,
   },
   exerciseName: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.md,
-    fontWeight: '600',
     color: colors.textPrimary,
   },
   exerciseNameExcluded: {
@@ -352,6 +371,7 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   exerciseEquipment: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.sm,
     color: colors.textSecondary,
     marginTop: spacing.xs,
@@ -383,13 +403,14 @@ const styles = StyleSheet.create({
     borderTopRightRadius: borderRadius.xl,
   },
   modalMuscle: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.sm,
     color: 'rgba(255,255,255,0.8)',
     textTransform: 'uppercase',
   },
   modalTitle: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.xl,
-    fontWeight: 'bold',
     color: colors.white,
     marginTop: spacing.xs,
   },
@@ -398,23 +419,24 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     alignItems: 'center',
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
   },
   modalSectionTitle: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.sm,
-    fontWeight: 'bold',
     color: colors.textSecondary,
     textTransform: 'uppercase',
     marginTop: spacing.md,
     marginBottom: spacing.sm,
   },
   modalDescription: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: colors.textPrimary,
-    lineHeight: 24,
+    lineHeight: 22,
   },
   equipmentList: {
-    gap: spacing.sm,
+    gap: spacing.xs,
   },
   equipmentItem: {
     flexDirection: 'row',
@@ -423,9 +445,9 @@ const styles = StyleSheet.create({
   },
   equipmentIcon: {
     fontSize: fontSize.md,
-    color: colors.accent,
   },
   equipmentText: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: colors.textPrimary,
   },
@@ -438,21 +460,20 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   weightTypeText: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.sm,
     color: colors.textPrimary,
-    fontWeight: '500',
   },
   modalCloseButton: {
-    backgroundColor: colors.primary,
     margin: spacing.lg,
-    marginTop: 0,
     padding: spacing.md,
+    backgroundColor: colors.primary,
     borderRadius: borderRadius.md,
     alignItems: 'center',
   },
   modalCloseText: {
-    color: colors.white,
+    fontFamily: fonts.bold,
     fontSize: fontSize.md,
-    fontWeight: 'bold',
+    color: colors.white,
   },
 });

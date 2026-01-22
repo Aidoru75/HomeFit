@@ -2,13 +2,13 @@
 
 export const colors = {
   // Primary palette
-  primary: '#2C3E50',
-  primaryLight: '#34495E',
-  primaryDark: '#1A252F',
+  primary: '#000000',
+  primaryLight: '#763208',
+  primaryDark: '#4c1e04',
   
   // Accent colors
-  accent: '#3498DB',
-  accentLight: '#5DADE2',
+  accent: '#d65a03',
+  accentLight: '#ff9b0e',
   
   // Semantic colors
   success: '#27AE60',
@@ -56,6 +56,7 @@ export const borderRadius = {
   lg: 12,
   xl: 16,
   round: 9999,
+  full: 9999,
 };
 
 export const fontSize = {
@@ -65,6 +66,15 @@ export const fontSize = {
   lg: 18,
   xl: 24,
   xxl: 32,
+};
+
+// Font families - Arial Narrow
+export const fonts = {
+  regular: 'JosefinSans',
+  bold: 'JosefinSans-Bold',
+  italic: 'JosefinSans-Italic',
+  boldItalic: 'JosefinSans-BoldItalic',
+  narrow: 'ArialNarrow',
 };
 
 export const shadows = {

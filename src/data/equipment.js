@@ -39,7 +39,7 @@ export const equipment = {
   },
   pecDeckStation: {
     id: 'pec_deck_station',
-    name: { en: 'Pec Deck Station', es: 'Estación de Pecho' },
+    name: { en: 'Pec Deck Station', es: 'Estación Pec Deck' },
     type: 'machine',
   },
   preacherPad: {
@@ -84,6 +84,28 @@ export const equipment = {
     type: 'dumbbell',
     handleWeight: 5,
     quantity: 2,
+  },
+
+  // Kettlebells
+  kettlebells: {
+    id: 'kettlebells',
+    name: { en: 'Kettlebells', es: 'Pesas rusas' },
+    type: 'kettlebell',
+    weights: [8, 12, 16, 20, 24],
+  },
+
+  // Plates
+  plates: {
+    id: 'plates',
+    name: { en: 'Weight Plates', es: 'Discos de Peso' },
+    type: 'plates',
+    inventory: [
+      { weight: 15, quantity: 2 },
+      { weight: 10, quantity: 4 },
+      { weight: 5, quantity: 4 },
+      { weight: 2.5, quantity: 4 },
+      { weight: 1.25, quantity: 4 },
+    ],
   },
   
   // Weight Plates
@@ -156,6 +178,16 @@ export const equipment = {
     name: { en: 'Jump Rope', es: 'Cuerda de Saltar' },
     type: 'accessory',
   },
+  ball: {
+    id: 'ball',
+    name: { en: 'Exercise Ball', es: 'Balón de Ejercicio' },
+    type: 'accessory',
+  },
+  absWheel: {
+    id: 'abs_wheel',
+    name: { en: 'Abs Wheel', es: 'Rueda Abdominales' },
+    type: 'accessory',
+  },
 };
 
 // Equipment categories for UI grouping
@@ -164,7 +196,7 @@ export const equipmentCategories = {
     id: 'freeWeights',
     name: { en: 'Free Weights', es: 'Pesos Libres' },
     icon: '🏋️',
-    equipmentIds: ['straight_bar', 'ez_bar', 'dumbbells', 'plates'],
+    equipmentIds: ['straight_bar', 'ez_bar', 'dumbbells', 'plates', 'kettlebells'],
   },
   racksAndBenches: {
     id: 'racksAndBenches',
@@ -194,7 +226,7 @@ export const equipmentCategories = {
     id: 'accessories',
     name: { en: 'Accessories', es: 'Accesorios' },
     icon: '🎒',
-    equipmentIds: ['dip_belt', 'lifting_belt', 'resistance_band', 'towel', 'jump_rope'],
+    equipmentIds: ['dip_belt', 'lifting_belt', 'resistance_band', 'towel', 'jump_rope', 'ball', 'abs_wheel'],
   },
 };
 

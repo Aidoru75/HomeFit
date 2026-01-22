@@ -12,7 +12,7 @@ import {
 import Slider from '@react-native-community/slider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Updates from 'expo-updates';
-import { colors, spacing, borderRadius, fontSize, shadows } from '../theme';
+import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { loadSettings, saveSettings } from '../storage/storage';
 import { t } from '../data/translations';
 
@@ -211,8 +211,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
   },
   headerTitle: {
-    fontSize: fontSize.xl,
-    fontWeight: 'bold',
+    fontFamily: fonts.regular,
+    fontSize: fontSize.xxl,
     color: colors.white,
   },
   content: {

@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, spacing, borderRadius, fontSize, shadows } from '../theme';
+import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { getLastWorkout, loadRoutines, loadSettings } from '../storage/storage';
 import { t } from '../data/translations';
 
@@ -131,8 +131,9 @@ export default function HomeScreen({ navigation }) {
         </View>
       )}
 
-      {/* Quick Actions */}
+      {/* Quick Actions
       <Text style={styles.sectionTitle}>{t('quickActions', lang)}</Text>
+      
       <View style={styles.actionsRow}>
         <TouchableOpacity 
           style={styles.actionCard}
@@ -151,7 +152,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.actionText}>{t('exercises', lang)}</Text>
           <Text style={styles.actionCount}>50 {t('exercisesCount', lang)}</Text>
         </TouchableOpacity>
-      </View>
+      </View>*/}
 
       {/* Last Workout Info */}
       {lastWorkout && (
@@ -194,6 +195,7 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+    fontFamily: fonts.regular,
     flex: 1,
     backgroundColor: colors.background,
   },
@@ -203,11 +205,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
   },
   greeting: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.xxl,
-    fontWeight: 'bold',
     color: colors.white,
   },
   subtitle: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: colors.textLight,
     marginTop: spacing.xs,
@@ -223,7 +226,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryLight,
   },
   suggestedBadge: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: 'rgba(0,0,0,1)',
     alignSelf: 'flex-start',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
@@ -231,21 +234,23 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   suggestedBadgeText: {
+    fontFamily: fonts.bold,
     color: colors.white,
     fontSize: fontSize.xs,
-    fontWeight: 'bold',
   },
   suggestedTitle: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.xl,
-    fontWeight: 'bold',
     color: colors.white,
   },
   suggestedDay: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: 'rgba(255,255,255,0.8)',
     marginTop: spacing.xs,
   },
   emptyWarning: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.sm,
     color: colors.warning,
     marginTop: spacing.sm,
@@ -262,8 +267,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.3)',
   },
   suggestedButtonText: {
+    fontFamily: fonts.bold,
     color: colors.accent,
-    fontWeight: 'bold',
     fontSize: fontSize.md,
   },
   suggestedButtonTextDisabled: {
@@ -282,8 +287,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   emptyTitle: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.lg,
-    fontWeight: 'bold',
     color: colors.textPrimary,
   },
   emptySubtitle: {
@@ -293,6 +298,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   sectionTitle: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.lg,
     fontWeight: 'bold',
     color: colors.textPrimary,
@@ -314,15 +320,17 @@ const styles = StyleSheet.create({
     ...shadows.small,
   },
   actionIcon: {
+    fontFamily: fonts.regular,
     fontSize: 32,
     marginBottom: spacing.sm,
   },
   actionText: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.md,
-    fontWeight: '600',
     color: colors.textPrimary,
   },
   actionCount: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.xs,
     color: colors.textSecondary,
     marginTop: spacing.xs,
@@ -335,21 +343,24 @@ const styles = StyleSheet.create({
     ...shadows.small,
   },
   lastWorkoutLabel: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.xs,
     color: colors.textSecondary,
     textTransform: 'uppercase',
   },
   lastWorkoutTitle: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.lg,
-    fontWeight: 'bold',
     color: colors.textPrimary,
     marginTop: spacing.xs,
   },
   lastWorkoutDay: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: colors.textSecondary,
   },
   lastWorkoutDate: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.sm,
     color: colors.accent,
     marginTop: spacing.sm,
@@ -369,10 +380,11 @@ const styles = StyleSheet.create({
   },
   routineName: {
     fontSize: fontSize.md,
-    fontWeight: '600',
+    fontFamily: fonts.bold,
     color: colors.textPrimary,
   },
   routineDays: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.sm,
     color: colors.textSecondary,
     marginTop: spacing.xs,

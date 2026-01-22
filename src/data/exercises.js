@@ -16,7 +16,7 @@ export const muscleGroups = [
 
 export const exercises = [
   // ============================================
-  // CHEST (19 exercises)
+  // CHEST
   // ============================================
   {
     id: 'bench_press',
@@ -162,6 +162,17 @@ export const exercises = [
     },
   },
   {
+    id: 'chest_press',
+    name: { en: 'Chest Press', es: 'Press de Pecho' },
+    muscleGroup: 'chest',
+    equipment: ['pec_deck_station'],
+    weightType: 'machine',
+    description: {
+      en: 'Sit on the chest press machine, back flat, feet firm. Grip handles at chest height, elbows bent 90°. Exhale, press forward smoothly to near-straight arms, squeezing chest. Inhale, return slowly with control.',
+      es: 'Siéntate en la máquina de press de pecho, espalda plana, pies firmes. Agarra las manijas a la altura del pecho, codos en 90°. Exhala, empuja hacia adelante hasta casi extender brazos, apretando pecho. Inhala, regresa lento con control.',
+    },
+  },
+  {
     id: 'push_ups',
     name: { en: 'Push-Ups', es: 'Flexiones' },
     muscleGroup: 'chest',
@@ -229,7 +240,7 @@ export const exercises = [
   },
 
   // ============================================
-  // BACK (28 exercises)
+  // BACK
   // ============================================
   {
     id: 'pullups_wide',
@@ -320,14 +331,14 @@ export const exercises = [
     },
   },
   {
-    id: 'straight_arm_pulldown',
-    name: { en: 'Straight-Arm Pulldown', es: 'Jalón con Brazos Rectos' },
+    id: 'behind_neck_pulldown',
+    name: { en: 'Behind-the-neck lat Pulldown', es: 'Jalón trasnuca' },
     muscleGroup: 'back',
     equipment: ['high_pulley', 'lat_bar'],
     weightType: 'machine',
     description: {
-      en: 'Isolation exercise for lats with arms extended. Stand facing the cable, keep arms straight throughout, pull the bar down to your thighs using only your lats, then return with control.',
-      es: 'Ejercicio de aislamiento para dorsales con brazos extendidos. De pie frente al cable, mantén brazos rectos, tira la barra a los muslos usando solo dorsales, luego regresa con control.',
+      en: 'Sit with thighs secured, grip the bar wide, pull down to beehind the neck, then return with controlled tempo.',
+      es: 'Siéntate con los muslos sujetos, agarra la barra con las manos separadas, tira hacia abajo hasta detrás del cuello y luego regresa con un tempo controlado.',
     },
   },
   {
@@ -541,7 +552,7 @@ export const exercises = [
   },
 
   // ============================================
-  // SHOULDERS (22 exercises)
+  // SHOULDERS
   // ============================================
   {
     id: 'overhead_press_standing',
@@ -787,7 +798,7 @@ export const exercises = [
   },
 
   // ============================================
-  // BICEPS (21 exercises)
+  // BICEPS
   // ============================================
   {
     id: 'barbell_curl_standing',
@@ -1022,7 +1033,7 @@ export const exercises = [
   },
 
   // ============================================
-  // TRICEPS (17 exercises)
+  // TRICEPS
   // ============================================
   {
     id: 'close_grip_bench',
@@ -1213,7 +1224,7 @@ export const exercises = [
   },
 
   // ============================================
-  // FOREARMS (11 exercises)
+  // FOREARMS
   // ============================================
   {
     id: 'barbell_wrist_curl',
@@ -1338,7 +1349,7 @@ export const exercises = [
   },
 
   // ============================================
-  // QUADRICEPS (18 exercises)
+  // QUADRICEPS
   // ============================================
   {
     id: 'back_squat',
@@ -1540,7 +1551,7 @@ export const exercises = [
   },
 
   // ============================================
-  // HAMSTRINGS (11 exercises)
+  // HAMSTRINGS
   // ============================================
   {
     id: 'rdl_barbell',
@@ -1598,14 +1609,14 @@ export const exercises = [
     },
   },
   {
-    id: 'lying_leg_curl',
-    name: { en: 'Lying Leg Curl', es: 'Curl de Piernas Acostado' },
+    id: 'leg_curl',
+    name: { en: 'Leg Curl', es: 'Curl de Piernas' },
     muscleGroup: 'hamstrings',
     equipment: ['leg_curl_station'],
     weightType: 'machine',
     description: {
-      en: 'Machine isolation for hamstring knee flexion. Lie face down, curl heels toward glutes, squeeze hamstrings at top, lower with control, keeps hips stable for strict isolation.',
-      es: 'Aislamiento en máquina para flexión de rodilla de isquiotibiales. Boca abajo, curl de talones hacia glúteos, aprieta isquios arriba, baja con control, mantiene caderas estables.',
+      en: 'Machine isolation for hamstring knee flexion. Curl heels toward glutes, squeeze hamstrings at top, lower with control, keeps hips stable for strict isolation.',
+      es: 'Aislamiento en máquina para flexión de rodilla de isquiotibiales. Curl de talones hacia glúteos, aprieta isquios arriba, baja con control, mantiene caderas estables.',
     },
   },
   {
@@ -1665,7 +1676,7 @@ export const exercises = [
   },
 
   // ============================================
-  // GLUTES (16 exercises)
+  // GLUTES
   // ============================================
   {
     id: 'hip_thrust_barbell',
@@ -1845,7 +1856,7 @@ export const exercises = [
   },
 
   // ============================================
-  // CALVES (8 exercises)
+  // CALVES
   // ============================================
   {
     id: 'standing_calf_raise_barbell',
@@ -1937,9 +1948,19 @@ export const exercises = [
   },
 
   // ============================================
-  // CORE (28 exercises)
+  // CORE
   // ============================================
   {
+    id: 'wheel_crunches',
+    name: { en: 'Wheel Crunches', es: 'Abdominales con Rueda' },
+    muscleGroup: 'core',
+    equipment: ['abs_wheel'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Kneel and grip the wheel. Roll it forward, extending your body while keeping your core tight. Stop before your hips sag, then use your abs to pull back to the start.',
+      es: 'Arrodíllate y sujeta la rueda. Rueda hacia adelante, extendiendo el cuerpo con el core activo. Detente antes de arquear la espalda y usa los abdominales para volver.',
+    },
+  },{
     id: 'crunches',
     name: { en: 'Crunches', es: 'Abdominales' },
     muscleGroup: 'core',

@@ -14,7 +14,7 @@ import {
   Animated,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, spacing, borderRadius, fontSize, shadows } from '../theme';
+import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { 
   exercises, 
   muscleGroups, 
@@ -55,6 +55,9 @@ export default function RoutinesScreen({ navigation, route }) {
     reps: [10, 10, 10],
     weights: [0, 0, 0],
   });
+
+  // Raw string inputs for weights (to preserve decimal point while typing)
+  const [weightInputs, setWeightInputs] = useState(['0', '0', '0']);
 
   // Drag state
   const [draggingIndex, setDraggingIndex] = useState(null);
@@ -104,82 +107,88 @@ export default function RoutinesScreen({ navigation, route }) {
     const days = [];
     for (let i = 0; i < newRoutineDays; i++) {
       days.push({
-        name: `Day ${i + 1}`, // Default English name
-        customName: null, // No custom name initially
+        name: `${t('days', lang).slice(0, -1)} ${i + 1}`,
+        customName: '',
         exercises: [],
       });
     }
 
-    const newRoutine = await addRoutine({
+    const routine = {
       name: newRoutineName.trim(),
+      days,
       restBetweenSets: parseInt(newRestBetweenSets) || 60,
       restBetweenExercises: parseInt(newRestBetweenExercises) || 90,
-      days,
-    });
+    };
 
-    setRoutines([...routines, newRoutine]);
+    const created = await addRoutine(routine);
+    setRoutines([...routines, created]);
     setShowNewRoutineModal(false);
     setNewRoutineName('');
     setNewRoutineDays(4);
     setNewRestBetweenSets('60');
     setNewRestBetweenExercises('90');
-    setSelectedRoutine(newRoutine);
+    setSelectedRoutine(created);
   };
 
-  const handleDeleteRoutine = (routine) => {
+  const handleDeleteRoutine = async (routineId) => {
+    const routine = routines.find(r => r.id === routineId);
     Alert.alert(
-      t('delete', lang),
-      `${t('confirmDelete', lang)} "${routine.name}"?`,
+      t('confirmDelete', lang),
+      `"${routine?.name}"?`,
       [
         { text: t('cancel', lang), style: 'cancel' },
         {
           text: t('delete', lang),
           style: 'destructive',
           onPress: async () => {
-            await deleteRoutine(routine.id);
-            setRoutines(routines.filter(r => r.id !== routine.id));
-            if (selectedRoutine?.id === routine.id) {
-              setSelectedRoutine(null);
-            }
+            await deleteRoutine(routineId);
+            setRoutines(routines.filter(r => r.id !== routineId));
           },
         },
       ]
     );
   };
 
-  // Day reordering functions
+  const startWorkout = (dayIndex) => {
+    if (selectedRoutine) {
+      const day = selectedRoutine.days[dayIndex];
+      if (!day.exercises || day.exercises.length === 0) {
+        Alert.alert('⚠️', t('emptyDayWarning', lang), [{ text: 'OK' }]);
+        return;
+      }
+      navigation.navigate('Training', {
+        routineId: selectedRoutine.id,
+        dayIndex,
+      });
+    }
+  };
+
   const moveDay = async (fromIndex, toIndex) => {
-    if (fromIndex === toIndex) return;
     if (toIndex < 0 || toIndex >= selectedRoutine.days.length) return;
     
     const updatedDays = [...selectedRoutine.days];
     const [moved] = updatedDays.splice(fromIndex, 1);
     updatedDays.splice(toIndex, 0, moved);
-
+    
     const updated = await updateRoutine(selectedRoutine.id, { days: updatedDays });
     setSelectedRoutine(updated);
     setRoutines(routines.map(r => r.id === updated.id ? updated : r));
   };
 
-  // Day renaming functions
   const openRenameDayModal = (dayIndex) => {
-    const day = selectedRoutine.days[dayIndex];
     setEditingDayIndex(dayIndex);
-    setDayNameInput(day.customName || '');
+    setDayNameInput(selectedRoutine.days[dayIndex].customName || '');
     setShowRenameDayModal(true);
   };
 
   const handleRenameDay = async () => {
     if (selectedRoutine && editingDayIndex !== null) {
       const updatedDays = [...selectedRoutine.days];
-      const trimmedName = dayNameInput.trim();
-      
-      // Set customName if provided, otherwise clear it
       updatedDays[editingDayIndex] = {
         ...updatedDays[editingDayIndex],
-        customName: trimmedName || null,
+        customName: dayNameInput.trim(),
       };
-
+      
       const updated = await updateRoutine(selectedRoutine.id, { days: updatedDays });
       setSelectedRoutine(updated);
       setRoutines(routines.map(r => r.id === updated.id ? updated : r));
@@ -197,6 +206,8 @@ export default function RoutinesScreen({ navigation, route }) {
       reps: [10, 10, 10],
       weights: [0, 0, 0],
     });
+    // Initialize weight inputs as strings
+    setWeightInputs(['0', '0', '0']);
     setShowAddExerciseModal(true);
   };
 
@@ -225,22 +236,70 @@ export default function RoutinesScreen({ navigation, route }) {
         weights: newWeights.slice(0, count),
       };
     });
+    
+    // Also update weight inputs
+    setWeightInputs(prev => {
+      const newInputs = [...prev];
+      while (newInputs.length < count) {
+        newInputs.push(newInputs[newInputs.length - 1] || '0');
+      }
+      return newInputs.slice(0, count);
+    });
   };
 
-  const updateRep = (index, value) => {
+  // Updated updateRep: auto-copy first set value to other sets in Add mode
+  const updateRep = (index, value, isAddMode = false) => {
     const numValue = typeof value === 'string' ? parseInt(value) || 0 : value;
     const clampedValue = Math.max(1, Math.min(99, numValue));
+    
     setExerciseConfig(prev => {
       const newReps = [...prev.reps];
-      newReps[index] = clampedValue;
+      
+      // If editing first set (index 0) in Add mode, propagate to all sets
+      if (index === 0 && isAddMode) {
+        for (let i = 0; i < newReps.length; i++) {
+          newReps[i] = clampedValue;
+        }
+      } else {
+        newReps[index] = clampedValue;
+      }
+      
       return { ...prev, reps: newReps };
     });
   };
 
-  const updateWeight = (index, value) => {
+  // Updated updateWeight: preserve decimal point and auto-copy first set value in Add mode
+  const updateWeight = (index, value, isAddMode = false) => {
+    // Store raw string value to preserve decimal point while typing
+    setWeightInputs(prev => {
+      const newInputs = [...prev];
+      
+      // If editing first set (index 0) in Add mode, propagate to all sets
+      if (index === 0 && isAddMode) {
+        for (let i = 0; i < newInputs.length; i++) {
+          newInputs[i] = value;
+        }
+      } else {
+        newInputs[index] = value;
+      }
+      
+      return newInputs;
+    });
+    
+    // Also update the numeric weights (for saving)
     setExerciseConfig(prev => {
       const newWeights = [...prev.weights];
-      newWeights[index] = parseFloat(value) || 0;
+      const numValue = parseFloat(value) || 0;
+      
+      // If editing first set (index 0) in Add mode, propagate to all sets
+      if (index === 0 && isAddMode) {
+        for (let i = 0; i < newWeights.length; i++) {
+          newWeights[i] = numValue;
+        }
+      } else {
+        newWeights[index] = numValue;
+      }
+      
       return { ...prev, weights: newWeights };
     });
   };
@@ -274,6 +333,9 @@ export default function RoutinesScreen({ navigation, route }) {
       reps: exercise.reps || Array(exercise.sets).fill(10),
       weights: exercise.weights || Array(exercise.sets).fill(0),
     });
+    // Initialize weight inputs from existing weights
+    const weights = exercise.weights || Array(exercise.sets).fill(0);
+    setWeightInputs(weights.map(w => String(w)));
     setShowEditExerciseModal(true);
   };
 
@@ -320,120 +382,58 @@ export default function RoutinesScreen({ navigation, route }) {
     setRoutines(routines.map(r => r.id === updated.id ? updated : r));
   };
 
-  const startWorkout = (dayIndex) => {
-    const day = selectedRoutine.days[dayIndex];
-    if (!day.exercises || day.exercises.length === 0) {
-      Alert.alert('⚠️', t('emptyDayWarning', lang));
-      return;
-    }
-    navigation.navigate('Training', {
-      routineId: selectedRoutine.id,
-      dayIndex,
-    });
+  // Get available exercises (not excluded)
+  const getAvailableExercises = () => {
+    return exercises.filter(ex => !excludedExercises.includes(ex.id));
   };
 
-  // Get filtered exercises for add modal (excluding disabled ones)
+  // Filter exercises by muscle group
   const getFilteredExercises = () => {
-    let filtered = exercises.filter(ex => !excludedExercises.includes(ex.id));
-    if (currentMuscleFilter !== 0) {
-      const muscle = muscleGroups[currentMuscleFilter - 1];
-      filtered = filtered.filter(ex => ex.muscleGroup === muscle.id);
-    }
-    return filtered;
+    const available = getAvailableExercises();
+    if (currentMuscleFilter === 0) return available;
+    const muscleId = muscleGroups[currentMuscleFilter - 1]?.id;
+    return available.filter(ex => ex.muscleGroup === muscleId);
   };
 
-  const nextMuscleFilter = () => {
-    setCurrentMuscleFilter(prev => (prev + 1) % (muscleGroups.length + 1));
-  };
-
-  const prevMuscleFilter = () => {
-    setCurrentMuscleFilter(prev => (prev - 1 + muscleGroups.length + 1) % (muscleGroups.length + 1));
-  };
-
-  const getCurrentFilterName = () => {
-    if (currentMuscleFilter === 0) return t('all', lang);
-    return getMuscleGroupName(muscleGroups[currentMuscleFilter - 1], lang);
-  };
-
-  // Render routine list
   const renderRoutineList = () => (
-    <ScrollView style={styles.container}>
-      <View style={[styles.header, { paddingTop: insets.top + 20 }]}>
-        <Text style={styles.headerTitle}>{t('myRoutines', lang)}</Text>
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => setShowNewRoutineModal(true)}
-        >
-          <Text style={styles.addButtonText}>+ {t('newRoutine', lang)}</Text>
-        </TouchableOpacity>
-      </View>
-
+    <ScrollView style={styles.content}>
       {routines.length === 0 ? (
         <View style={styles.emptyState}>
           <Text style={styles.emptyIcon}>📋</Text>
           <Text style={styles.emptyTitle}>{t('noRoutinesYet', lang)}</Text>
-          <Text style={styles.emptySubtitle}>{t('createYourFirst', lang)}</Text>
-          <TouchableOpacity
-            style={styles.emptyButton}
-            onPress={() => setShowNewRoutineModal(true)}
-          >
-            <Text style={styles.emptyButtonText}>{t('createRoutine', lang)}</Text>
-          </TouchableOpacity>
+          <Text style={styles.emptyText}>{t('createYourFirst', lang)}</Text>
         </View>
       ) : (
-        routines.map((routine) => (
-          <TouchableOpacity
-            key={routine.id}
-            style={styles.routineCard}
-            onPress={() => setSelectedRoutine(routine)}
-            onLongPress={() => handleDeleteRoutine(routine)}
-          >
-            <View style={styles.routineInfo}>
-              <Text style={styles.routineName}>{routine.name}</Text>
-              <Text style={styles.routineMeta}>
-                {routine.days?.length || 0} {t('days', lang).toLowerCase()} • {routine.restBetweenSets || 60}s {t('rest', lang).toLowerCase()}
-              </Text>
-            </View>
-            <Text style={styles.routineArrow}>→</Text>
-          </TouchableOpacity>
-        ))
+        <>
+          {routines.map((routine) => (
+            <TouchableOpacity
+              key={routine.id}
+              style={styles.routineCard}
+              onPress={() => setSelectedRoutine(routine)}
+              onLongPress={() => handleDeleteRoutine(routine.id)}
+            >
+              <View style={styles.routineInfo}>
+                <Text style={styles.routineName}>{routine.name}</Text>
+                <Text style={styles.routineDetails}>
+                  {routine.days?.length || 0} {t('days', lang)} • {routine.restBetweenSets}s {t('rest', lang)}
+                </Text>
+              </View>
+              <Text style={styles.routineArrow}>›</Text>
+            </TouchableOpacity>
+          ))}
+          <Text style={styles.hintText}>{t('longPressDelete', lang)}</Text>
+        </>
       )}
-
-      <Text style={styles.hint}>{t('longPressDelete', lang)}</Text>
       <View style={styles.bottomPadding} />
     </ScrollView>
   );
 
-  // Render routine detail
   const renderRoutineDetail = () => (
-    <ScrollView style={styles.container}>
-      <View style={[styles.header, { paddingTop: insets.top + 20 }]}>
-        <TouchableOpacity onPress={() => setSelectedRoutine(null)}>
-          <Text style={styles.backButton}>← {t('back', lang)}</Text>
-        </TouchableOpacity>
-        <Text style={styles.headerTitleSmall}>{selectedRoutine.name}</Text>
-        <View style={{ width: 50 }} />
-      </View>
-
-      <View style={styles.routineStats}>
-        <View style={styles.statItem}>
-          <Text style={styles.statValue}>{selectedRoutine.days?.length || 0}</Text>
-          <Text style={styles.statLabel}>{t('days', lang)}</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={styles.statValue}>{selectedRoutine.restBetweenSets || 60}s</Text>
-          <Text style={styles.statLabel}>{t('sets', lang)}</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={styles.statValue}>{selectedRoutine.restBetweenExercises || 90}s</Text>
-          <Text style={styles.statLabel}>{t('exercisesLabel', lang)}</Text>
-        </View>
-      </View>
-
+    <ScrollView style={styles.content}>
       {selectedRoutine.days?.map((day, dayIndex) => (
         <View key={dayIndex} style={styles.dayCard}>
           <View style={styles.dayHeader}>
-            <View style={styles.dayTitleRow}>
+            <View style={styles.dayTitleContainer}>
               {/* Day reorder buttons */}
               <View style={styles.dayReorderButtons}>
                 {dayIndex > 0 && (
@@ -496,8 +496,13 @@ export default function RoutinesScreen({ navigation, route }) {
                   style={styles.exerciseItem}
                   onPress={() => openEditExerciseModal(dayIndex, exIndex)}
                 >
-                  <View style={styles.dragHandle}>
-                    <Text style={styles.dragIcon}>☰</Text>
+                  <View style={styles.exerciseThumbnail}>
+                    <ExerciseImage 
+                      exerciseId={ex.exerciseId} 
+                      size={40} 
+                      showEndImage={true}
+                      animate={false}
+                    />
                   </View>
                   <View style={styles.exerciseInfo}>
                     <Text style={styles.exerciseItemName}>
@@ -539,6 +544,7 @@ export default function RoutinesScreen({ navigation, route }) {
   // Exercise config modal (shared between add and edit)
   const renderExerciseConfigModal = (isEdit = false) => {
     const exerciseData = exerciseConfig.exerciseId ? getExerciseById(exerciseConfig.exerciseId) : null;
+    const isAddMode = !isEdit; // For propagating first set values
     
     return (
       <Modal
@@ -554,17 +560,30 @@ export default function RoutinesScreen({ navigation, route }) {
             </Text>
 
             {!isEdit && !exerciseConfig.exerciseId ? (
-              // Exercise selection
+              // Exercise selection (Add mode only)
               <>
                 <View style={styles.muscleFilter}>
-                  <TouchableOpacity onPress={prevMuscleFilter}>
+                  <TouchableOpacity
+                    onPress={() => setCurrentMuscleFilter(prev => 
+                      prev === 0 ? muscleGroups.length : prev - 1
+                    )}
+                  >
                     <Text style={styles.filterArrow}>◀</Text>
                   </TouchableOpacity>
-                  <Text style={styles.filterName}>{getCurrentFilterName()}</Text>
-                  <TouchableOpacity onPress={nextMuscleFilter}>
+                  <Text style={styles.filterName}>
+                    {currentMuscleFilter === 0 
+                      ? t('all', lang)
+                      : getMuscleGroupName(muscleGroups[currentMuscleFilter - 1], lang)}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => setCurrentMuscleFilter(prev => 
+                      prev === muscleGroups.length ? 0 : prev + 1
+                    )}
+                  >
                     <Text style={styles.filterArrow}>▶</Text>
                   </TouchableOpacity>
                 </View>
+
                 <FlatList
                   data={getFilteredExercises()}
                   keyExtractor={(item) => item.id}
@@ -583,8 +602,8 @@ export default function RoutinesScreen({ navigation, route }) {
                 />
               </>
             ) : (
-              // Exercise configuration
-              <ScrollView>
+              // Exercise configuration (both Add and Edit modes)
+              <ScrollView showsVerticalScrollIndicator={false}>
                 {exerciseData && (
                   <View style={styles.selectedExercise}>
                     <ExerciseImage exerciseId={exerciseData.id} size={60} />
@@ -620,17 +639,19 @@ export default function RoutinesScreen({ navigation, route }) {
                       <TextInput
                         style={styles.setInputField}
                         value={String(exerciseConfig.reps[index] || 10)}
-                        onChangeText={(value) => updateRep(index, value)}
+                        onChangeText={(value) => updateRep(index, value, isAddMode)}
                         keyboardType="numeric"
+                        selectTextOnFocus={true}
                       />
                     </View>
                     <View style={styles.setInput}>
                       <Text style={styles.setInputLabel}>Kg</Text>
                       <TextInput
                         style={styles.setInputField}
-                        value={String(exerciseConfig.weights[index] || 0)}
-                        onChangeText={(value) => updateWeight(index, value)}
+                        value={weightInputs[index] || '0'}
+                        onChangeText={(value) => updateWeight(index, value, isAddMode)}
                         keyboardType="decimal-pad"
+                        selectTextOnFocus={true}
                       />
                     </View>
                   </View>
@@ -720,6 +741,28 @@ export default function RoutinesScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
+      {selectedRoutine ? (
+        // Routine detail view
+        <View style={[styles.header, { paddingTop: insets.top + spacing.md }]}>
+          <TouchableOpacity onPress={() => setSelectedRoutine(null)}>
+            <Text style={styles.backButton}>←{t('back', lang)}</Text>
+          </TouchableOpacity>
+          <Text style={styles.headerTitleSmall}>{selectedRoutine.name}</Text>
+          <View style={{ width: 50 }} />
+        </View>
+      ) : (
+        // Routine list header
+        <View style={[styles.header, { paddingTop: insets.top + spacing.md }]}>
+          <Text style={styles.headerTitle}>{t('routines', lang)}</Text>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => setShowNewRoutineModal(true)}
+          >
+            <Text style={styles.addButtonText}>+{t('newRoutine', lang)}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
       {selectedRoutine ? renderRoutineDetail() : renderRoutineList()}
 
       {/* New Routine Modal */}
@@ -827,18 +870,19 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   headerTitle: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.xxl,
-    fontWeight: 'bold',
     color: colors.white,
   },
   headerTitleSmall: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.lg,
-    fontWeight: 'bold',
     color: colors.white,
     flex: 1,
     textAlign: 'center',
   },
   backButton: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: colors.accentLight,
   },
@@ -849,9 +893,12 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
   },
   addButtonText: {
+    fontFamily: fonts.bold,
     color: colors.white,
-    fontWeight: 'bold',
     fontSize: fontSize.sm,
+  },
+  content: {
+    flex: 1,
   },
   emptyState: {
     alignItems: 'center',
@@ -863,93 +910,58 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   emptyTitle: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.xl,
-    fontWeight: 'bold',
     color: colors.textPrimary,
+    marginBottom: spacing.sm,
   },
-  emptySubtitle: {
+  emptyText: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.md,
     color: colors.textSecondary,
-    marginTop: spacing.sm,
-  },
-  emptyButton: {
-    backgroundColor: colors.accent,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    borderRadius: borderRadius.md,
-    marginTop: spacing.lg,
-  },
-  emptyButtonText: {
-    color: colors.white,
-    fontWeight: 'bold',
-    fontSize: fontSize.md,
+    textAlign: 'center',
   },
   routineCard: {
-    backgroundColor: colors.white,
-    marginHorizontal: spacing.md,
-    marginTop: spacing.md,
-    padding: spacing.md,
-    borderRadius: borderRadius.md,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: colors.card,
+    margin: spacing.md,
+    marginBottom: 0,
+    padding: spacing.lg,
+    borderRadius: borderRadius.lg,
     ...shadows.small,
   },
   routineInfo: {
     flex: 1,
   },
   routineName: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.lg,
-    fontWeight: '600',
     color: colors.textPrimary,
   },
-  routineMeta: {
+  routineDetails: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.sm,
     color: colors.textSecondary,
     marginTop: spacing.xs,
   },
   routineArrow: {
-    fontSize: fontSize.xl,
+    fontSize: fontSize.xxl,
     color: colors.accent,
-  },
-  hint: {
-    textAlign: 'center',
-    color: colors.textLight,
-    fontSize: fontSize.sm,
-    marginTop: spacing.lg,
   },
   hintText: {
-    color: colors.textLight,
+    fontFamily: fonts.italic,
     fontSize: fontSize.xs,
-    marginTop: spacing.xs,
-    fontStyle: 'italic',
-  },
-  routineStats: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: colors.white,
-    margin: spacing.md,
-    padding: spacing.md,
-    borderRadius: borderRadius.md,
-    ...shadows.small,
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: fontSize.xl,
-    fontWeight: 'bold',
-    color: colors.accent,
-  },
-  statLabel: {
-    fontSize: fontSize.sm,
-    color: colors.textSecondary,
+    color: colors.textLight,
+    textAlign: 'center',
+    marginTop: spacing.md,
   },
   dayCard: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.card,
     margin: spacing.md,
-    marginTop: 0,
+    marginBottom: 0,
     padding: spacing.md,
-    borderRadius: borderRadius.md,
+    borderRadius: borderRadius.lg,
     ...shadows.small,
   },
   dayHeader: {
@@ -958,7 +970,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.sm,
   },
-  dayTitleRow: {
+  dayTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
@@ -971,6 +983,7 @@ const styles = StyleSheet.create({
     padding: spacing.xs,
   },
   dayReorderIcon: {
+    fontFamily: fonts.regular,
     color: colors.accent,
     fontSize: fontSize.xs,
   },
@@ -980,11 +993,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   dayTitle: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.lg,
-    fontWeight: 'bold',
     color: colors.textPrimary,
   },
-  dayEditIcon: {
+  dayTitleSmall: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.sm,
     marginLeft: spacing.xs,
     opacity: 0.5,
@@ -1006,17 +1020,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.border,
   },
   dayActionText: {
+    fontFamily: fonts.regular,
     color: colors.textPrimary,
     fontSize: fontSize.sm,
   },
   dayActionTextPrimary: {
+    fontFamily: fonts.bold,
     color: colors.white,
     fontSize: fontSize.sm,
-    fontWeight: 'bold',
   },
   noExercises: {
+    fontFamily: fonts.italic,
     color: colors.textLight,
-    fontStyle: 'italic',
     textAlign: 'center',
     padding: spacing.md,
   },
@@ -1027,21 +1042,21 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: colors.border,
   },
-  dragHandle: {
-    paddingRight: spacing.sm,
-  },
-  dragIcon: {
-    color: colors.textLight,
-    fontSize: fontSize.md,
+  exerciseThumbnail: {
+    marginRight: spacing.sm,
+    borderRadius: borderRadius.sm,
+    overflow: 'hidden',
   },
   exerciseInfo: {
     flex: 1,
   },
   exerciseItemName: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: colors.textPrimary,
   },
   exerciseItemDetails: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.sm,
     color: colors.textSecondary,
   },
@@ -1053,6 +1068,7 @@ const styles = StyleSheet.create({
     padding: spacing.xs,
   },
   reorderIcon: {
+    fontFamily: fonts.regular,
     color: colors.accent,
     fontSize: fontSize.sm,
   },
@@ -1074,19 +1090,20 @@ const styles = StyleSheet.create({
     maxHeight: '80%',
   },
   modalTitle: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.xl,
-    fontWeight: 'bold',
     color: colors.textPrimary,
     marginBottom: spacing.lg,
   },
   inputLabel: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.sm,
-    fontWeight: '600',
     color: colors.textSecondary,
     marginBottom: spacing.xs,
     marginTop: spacing.md,
   },
   textInput: {
+    fontFamily: fonts.regular,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: borderRadius.md,
@@ -1109,8 +1126,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accent,
   },
   dayOptionText: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.lg,
-    fontWeight: 'bold',
     color: colors.textPrimary,
   },
   dayOptionTextSelected: {
@@ -1129,6 +1146,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalCancelText: {
+    fontFamily: fonts.regular,
     color: colors.textPrimary,
     fontSize: fontSize.md,
   },
@@ -1140,8 +1158,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalCreateText: {
+    fontFamily: fonts.bold,
     color: colors.white,
-    fontWeight: 'bold',
     fontSize: fontSize.md,
   },
   
@@ -1161,8 +1179,8 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
   },
   filterName: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.md,
-    fontWeight: 'bold',
     color: colors.textPrimary,
   },
   exerciseList: {
@@ -1176,6 +1194,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.border,
   },
   exerciseOptionName: {
+    fontFamily: fonts.regular,
     marginLeft: spacing.md,
     fontSize: fontSize.md,
     color: colors.textPrimary,
@@ -1189,9 +1208,9 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   selectedExerciseName: {
+    fontFamily: fonts.bold,
     marginLeft: spacing.md,
     fontSize: fontSize.lg,
-    fontWeight: 'bold',
     color: colors.textPrimary,
   },
   setsControl: {
@@ -1209,13 +1228,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   setsButtonText: {
+    fontFamily: fonts.bold,
     color: colors.white,
-    fontSize: fontSize.xl,
-    fontWeight: 'bold',
+    fontSize: fontSize.xxl,
   },
   setsValue: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.xxl,
-    fontWeight: 'bold',
     color: colors.textPrimary,
     minWidth: 40,
     textAlign: 'center',
@@ -1227,9 +1246,9 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   setNumber: {
+    fontFamily: fonts.bold,
     width: 24,
     fontSize: fontSize.md,
-    fontWeight: 'bold',
     color: colors.accent,
   },
   setInput: {
@@ -1241,11 +1260,13 @@ const styles = StyleSheet.create({
     padding: spacing.xs,
   },
   setInputLabel: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.xs,
     color: colors.textSecondary,
     marginRight: spacing.xs,
   },
   setInputField: {
+    fontFamily: fonts.regular,
     flex: 1,
     fontSize: fontSize.md,
     color: colors.textPrimary,
@@ -1259,8 +1280,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   deleteButtonText: {
+    fontFamily: fonts.bold,
     color: colors.white,
-    fontWeight: 'bold',
     fontSize: fontSize.md,
   },
 });

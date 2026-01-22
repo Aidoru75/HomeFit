@@ -10,10 +10,11 @@ import {
   Vibration,
   BackHandler,
   ScrollView,
+  ImageBackground,
 } from 'react-native';
 import { useAudioPlayer } from 'expo-audio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, spacing, borderRadius, fontSize } from '../theme';
+import { colors, spacing, borderRadius, fontSize, fonts } from '../theme';
 import { exercises, getExerciseName, getExerciseDescription } from '../data/exercises';
 import { loadRoutines, loadSettings, saveLastWorkout, addToHistory, updateRoutine } from '../storage/storage';
 import { t } from '../data/translations';
@@ -21,6 +22,10 @@ import ExerciseImage from '../components/ExerciseImage';
 
 // Audio source for beep sound
 const beepSource = require('../../assets/beep.mp3');
+
+// Background images
+const startBackground = require('../../assets/start.png');
+const successBackground = require('../../assets/success.png');
 
 export default function TrainingScreen({ route, navigation }) {
   const insets = useSafeAreaInsets();
@@ -42,7 +47,7 @@ export default function TrainingScreen({ route, navigation }) {
   
   const timerRef = useRef(null);
   const thumbnailScrollRef = useRef(null);
-  const soundPlayedRef = useRef(false); // Use ref instead of state to avoid closure issues
+  const soundPlayedRef = useRef(false);
   
   // Use the new expo-audio hook
   const player = useAudioPlayer(beepSource);
@@ -77,20 +82,17 @@ export default function TrainingScreen({ route, navigation }) {
         paramsRef.current.routineId !== routineId || 
         paramsRef.current.dayIndex !== dayIndex;
       
-      // Update paramsRef FIRST
       paramsRef.current = { routineId, dayIndex };
       
       if (isDifferentWorkout) {
         resetWorkoutState();
       }
       
-      // Then load data using the updated paramsRef
       loadData();
     }
   }, [routineId, dayIndex]);
 
   useEffect(() => {
-    // Cleanup on unmount
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
@@ -132,219 +134,175 @@ export default function TrainingScreen({ route, navigation }) {
         t('saveChanges', lang) || 'Save Changes?',
         t('unsavedChanges', lang) || 'You have unsaved changes. Do you want to save them?',
         [
-          { text: t('cancel', lang), style: 'cancel' },
-          { 
-            text: t('discardChanges', lang) || 'Discard',
-            style: 'destructive',
-            onPress: () => {
-              if (timerRef.current) clearInterval(timerRef.current);
-              stopSound();
-              resetWorkoutState();
-              allowNavigation.current = true;
-              navigation.navigate('Home');
-            }
-          },
-          { 
-            text: t('saveChanges', lang) || 'Save & Exit',
-            onPress: async () => {
-              await saveModifications();
-              if (timerRef.current) clearInterval(timerRef.current);
-              stopSound();
-              resetWorkoutState();
-              allowNavigation.current = true;
-              navigation.navigate('Home');
-            }
-          },
+          { text: t('discardChanges', lang) || 'Discard', style: 'destructive', onPress: exitWithoutSaving },
+          { text: t('cancel', lang) || 'Cancel', style: 'cancel' },
+          { text: t('save', lang) || 'Save', onPress: saveAndExit },
         ]
       );
     } else {
       Alert.alert(
-        t('endWorkout', lang),
-        t('endWorkoutConfirm', lang),
+        t('endWorkout', lang) || 'End Workout?',
+        t('endWorkoutConfirm', lang) || 'Are you sure you want to end this workout?',
         [
-          { text: t('continueButton', lang), style: 'cancel' },
-          { 
-            text: t('end', lang), 
-            style: 'destructive', 
-            onPress: () => {
-              if (timerRef.current) clearInterval(timerRef.current);
-              stopSound();
-              resetWorkoutState();
-              allowNavigation.current = true;
-              navigation.navigate('Home');
-            }
-          },
+          { text: t('continueButton', lang) || 'Continue', style: 'cancel' },
+          { text: t('end', lang) || 'End', style: 'destructive', onPress: exitWithoutSaving },
         ]
       );
     }
+  };
+
+  const exitWithoutSaving = () => {
+    allowNavigation.current = true;
+    navigation.goBack();
+  };
+
+  const saveAndExit = async () => {
+    await saveModifiedExercises();
+    allowNavigation.current = true;
+    navigation.goBack();
+  };
+
+  const saveModifiedExercises = async () => {
+    if (!hasChanges || !routine) return;
+
+    const updatedRoutine = { ...routine };
+    const day = updatedRoutine.days[paramsRef.current.dayIndex];
+
+    Object.keys(modifiedExercises).forEach(indexStr => {
+      const index = parseInt(indexStr);
+      const mods = modifiedExercises[index];
+      if (day.exercises[index]) {
+        if (mods.reps) day.exercises[index].reps = [...mods.reps];
+        if (mods.weights) day.exercises[index].weights = [...mods.weights];
+      }
+    });
+
+    await updateRoutine(routine.id, updatedRoutine);
   };
 
   const loadData = async () => {
     const routines = await loadRoutines();
     const userSettings = await loadSettings();
     
-    // Always use paramsRef.current to avoid stale closure issues
-    const id = paramsRef.current.routineId;
-    const dayIdx = paramsRef.current.dayIndex;
-    const found = routines.find(r => r.id === id);
-    
+    const found = routines.find(r => r.id === paramsRef.current.routineId);
+    setRoutine(found);
     setSettings(userSettings);
     
-    if (found) {
-      setRoutine(found);
-      // Initialize modified exercises with current values
-      initializeModifiedExercises(found, dayIdx);
-    } else if (id) {
-      Alert.alert('Error', 'Routine not found');
-      navigation.goBack();
+    if (userSettings.soundVolume !== undefined && player) {
+      player.volume = userSettings.soundVolume;
     }
   };
 
-  const initializeModifiedExercises = (routineData, dayIdx) => {
-    const day = routineData?.days?.[dayIdx];
-    if (!day?.exercises) return;
-    
-    const initial = {};
-    day.exercises.forEach((ex, idx) => {
-      initial[idx] = {
-        reps: [...(ex.reps || Array(ex.sets || 3).fill(10))],
-        weights: [...(ex.weights || Array(ex.sets || 3).fill(0))],
-      };
-    });
-    setModifiedExercises(initial);
+  const getExerciseData = (exerciseId) => {
+    return exercises.find(e => e.id === exerciseId);
   };
 
-  const saveModifications = async () => {
-    if (!routine || !hasChanges) return;
-    
-    const dayIdx = paramsRef.current.dayIndex;
-    const updatedDays = [...routine.days];
-    const updatedExercises = [...updatedDays[dayIdx].exercises];
-    
-    Object.keys(modifiedExercises).forEach(exIdx => {
-      const idx = parseInt(exIdx);
-      if (updatedExercises[idx]) {
-        updatedExercises[idx] = {
-          ...updatedExercises[idx],
-          reps: modifiedExercises[idx].reps,
-          weights: modifiedExercises[idx].weights,
-        };
-      }
-    });
-    
-    updatedDays[dayIdx] = {
-      ...updatedDays[dayIdx],
-      exercises: updatedExercises,
-    };
-    
-    await updateRoutine(routine.id, { days: updatedDays });
-  };
-
-  // Get current reps/weight (from modified state or original)
+  // Get current reps (modified or original)
   const getCurrentReps = () => {
-    if (modifiedExercises[currentExerciseIndex]) {
-      return modifiedExercises[currentExerciseIndex].reps[currentSetIndex] || 10;
-    }
     const day = routine?.days?.[paramsRef.current.dayIndex];
     const currentEx = day?.exercises?.[currentExerciseIndex];
-    return currentEx?.reps?.[currentSetIndex] || 10;
+    if (!currentEx) return 10;
+    
+    const modified = modifiedExercises[currentExerciseIndex];
+    if (modified?.reps?.[currentSetIndex] !== undefined) {
+      return modified.reps[currentSetIndex];
+    }
+    return currentEx.reps?.[currentSetIndex] || 10;
   };
 
+  // Get current weight (modified or original)
   const getCurrentWeight = () => {
-    if (modifiedExercises[currentExerciseIndex]) {
-      return modifiedExercises[currentExerciseIndex].weights[currentSetIndex] || 0;
-    }
     const day = routine?.days?.[paramsRef.current.dayIndex];
     const currentEx = day?.exercises?.[currentExerciseIndex];
-    return currentEx?.weights?.[currentSetIndex] || 0;
+    if (!currentEx) return 0;
+    
+    const modified = modifiedExercises[currentExerciseIndex];
+    if (modified?.weights?.[currentSetIndex] !== undefined) {
+      return modified.weights[currentSetIndex];
+    }
+    return currentEx.weights?.[currentSetIndex] || 0;
   };
 
   // Update reps for current set
   const updateReps = (delta) => {
+    const day = routine?.days?.[paramsRef.current.dayIndex];
+    const currentEx = day?.exercises?.[currentExerciseIndex];
+    if (!currentEx) return;
+
     const currentReps = getCurrentReps();
     const newReps = Math.max(1, currentReps + delta);
-    
+
     setModifiedExercises(prev => {
-      const updated = { ...prev };
-      if (!updated[currentExerciseIndex]) {
-        const day = routine?.days?.[paramsRef.current.dayIndex];
-        const currentEx = day?.exercises?.[currentExerciseIndex];
-        updated[currentExerciseIndex] = {
-          reps: [...(currentEx?.reps || Array(currentEx?.sets || 3).fill(10))],
-          weights: [...(currentEx?.weights || Array(currentEx?.sets || 3).fill(0))],
-        };
-      }
-      updated[currentExerciseIndex].reps[currentSetIndex] = newReps;
-      return updated;
+      const existing = prev[currentExerciseIndex] || {
+        reps: [...(currentEx.reps || Array(currentEx.sets).fill(10))],
+        weights: [...(currentEx.weights || Array(currentEx.sets).fill(0))]
+      };
+      const newRepsArray = [...existing.reps];
+      newRepsArray[currentSetIndex] = newReps;
+      return {
+        ...prev,
+        [currentExerciseIndex]: { ...existing, reps: newRepsArray }
+      };
     });
     setHasChanges(true);
   };
 
-  // Update weight for current set (step of 0.25)
+  // Update weight for current set
   const updateWeight = (delta) => {
+    const day = routine?.days?.[paramsRef.current.dayIndex];
+    const currentEx = day?.exercises?.[currentExerciseIndex];
+    if (!currentEx) return;
+
     const currentWeight = getCurrentWeight();
-    const newWeight = Math.max(0, Math.round((currentWeight + delta) * 100) / 100);
-    
+    const newWeight = Math.max(0, currentWeight + delta);
+
     setModifiedExercises(prev => {
-      const updated = { ...prev };
-      if (!updated[currentExerciseIndex]) {
-        const day = routine?.days?.[paramsRef.current.dayIndex];
-        const currentEx = day?.exercises?.[currentExerciseIndex];
-        updated[currentExerciseIndex] = {
-          reps: [...(currentEx?.reps || Array(currentEx?.sets || 3).fill(10))],
-          weights: [...(currentEx?.weights || Array(currentEx?.sets || 3).fill(0))],
-        };
-      }
-      updated[currentExerciseIndex].weights[currentSetIndex] = newWeight;
-      return updated;
+      const existing = prev[currentExerciseIndex] || {
+        reps: [...(currentEx.reps || Array(currentEx.sets).fill(10))],
+        weights: [...(currentEx.weights || Array(currentEx.sets).fill(0))]
+      };
+      const newWeightsArray = [...existing.weights];
+      newWeightsArray[currentSetIndex] = newWeight;
+      return {
+        ...prev,
+        [currentExerciseIndex]: { ...existing, weights: newWeightsArray }
+      };
     });
     setHasChanges(true);
   };
 
-  const playCountdownSound = () => {
-    if (!settings.soundEnabled || !player) return;
-    
-    try {
-      player.volume = settings.soundVolume;
-      player.seekTo(0);
-      player.play();
-    } catch (error) {
-      console.log('Error playing sound:', error);
-    }
-  };
-
-  const stopSound = () => {
-    try {
-      if (player) {
-        player.pause();
+  const playBeep = () => {
+    if (settings.soundEnabled && player) {
+      try {
         player.seekTo(0);
+        player.play();
+      } catch (error) {
+        console.log('Error playing sound:', error);
       }
-    } catch (error) {
-      console.log('Error stopping sound:', error);
     }
   };
 
-  const startRest = (betweenExercises = false) => {
-    setIsResting(true);
-    setIsExerciseRest(betweenExercises);
-    soundPlayedRef.current = false; // Reset sound flag using ref
-    
-    const restTime = betweenExercises 
+  const startRest = (isExRest = false) => {
+    const restTime = isExRest 
       ? (routine?.restBetweenExercises || 90)
       : (routine?.restBetweenSets || 60);
     
+    setIsResting(true);
+    setIsExerciseRest(isExRest);
     setRestTimeLeft(restTime);
-    
+    soundPlayedRef.current = false;
+
     timerRef.current = setInterval(() => {
       setRestTimeLeft(prev => {
-        // Play sound once when countdown reaches 8 seconds
-        if (prev < 10 && prev > 1 && !soundPlayedRef.current) {
-          soundPlayedRef.current = true; // Mark as played using ref
-          playCountdownSound();
+        if (prev <= 9 && prev > 1 && !soundPlayedRef.current) {
+          playBeep();
         }
         if (prev <= 1) {
           clearInterval(timerRef.current);
+          timerRef.current = null;
           Vibration.vibrate(500);
+          playBeep();
+          soundPlayedRef.current = true;
           setIsResting(false);
           setIsExerciseRest(false);
           return 0;
@@ -355,124 +313,93 @@ export default function TrainingScreen({ route, navigation }) {
   };
 
   const skipRest = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    stopSound();
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
     setIsResting(false);
     setIsExerciseRest(false);
-    setRestTimeLeft(0);
   };
 
   const completeSet = () => {
     const day = routine?.days?.[paramsRef.current.dayIndex];
     const currentEx = day?.exercises?.[currentExerciseIndex];
     
-    if (!currentEx) return;
-    
-    const totalSets = currentEx.sets || 3;
-    
-    if (currentSetIndex < totalSets - 1) {
-      setCurrentSetIndex(currentSetIndex + 1);
+    if (currentSetIndex < (currentEx?.sets || 3) - 1) {
+      setCurrentSetIndex(prev => prev + 1);
       startRest(false);
+    } else if (currentExerciseIndex < day?.exercises?.length - 1) {
+      setCurrentExerciseIndex(prev => prev + 1);
+      setCurrentSetIndex(0);
+      startRest(true);
     } else {
-      if (currentExerciseIndex < day.exercises.length - 1) {
-        setCurrentExerciseIndex(currentExerciseIndex + 1);
-        setCurrentSetIndex(0);
-        startRest(true);
-      } else {
-        finishWorkout();
-      }
+      finishWorkout();
     }
   };
 
   const finishWorkout = async () => {
-    if (timerRef.current) clearInterval(timerRef.current);
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
     
-    const day = routine?.days?.[paramsRef.current.dayIndex];
+    if (hasChanges) {
+      await saveModifiedExercises();
+    }
     
-    const workoutData = {
-      routineId: routine?.id,
-      routineName: routine?.name,
+    await saveLastWorkout({
+      routineId: paramsRef.current.routineId,
       dayIndex: paramsRef.current.dayIndex,
-      dayName: day?.name || day?.customName,
-      exerciseCount: day?.exercises?.length || 0,
-    };
-    
-    await saveLastWorkout(workoutData);
-    await addToHistory(workoutData);
-    
+      routineName: routine?.name,
+      dayName: routine?.days?.[paramsRef.current.dayIndex]?.name,
+    });
+
+    await addToHistory({
+      routineId: paramsRef.current.routineId,
+      dayIndex: paramsRef.current.dayIndex,
+      routineName: routine?.name,
+      dayName: routine?.days?.[paramsRef.current.dayIndex]?.name,
+      exerciseCount: routine?.days?.[paramsRef.current.dayIndex]?.exercises?.length || 0,
+    });
+
     setWorkoutComplete(true);
   };
 
-  const handleFinishAndGoHome = async () => {
-    if (hasChanges) {
-      Alert.alert(
-        t('saveChanges', lang) || 'Save Changes?',
-        t('saveChangesPrompt', lang) || 'You made changes to reps/weights. Save them?',
-        [
-          { 
-            text: t('discardChanges', lang) || 'Discard',
-            style: 'destructive',
-            onPress: () => {
-              resetWorkoutState();
-              allowNavigation.current = true;
-              navigation.navigate('Home');
-            }
-          },
-          { 
-            text: t('saveChanges', lang) || 'Save',
-            onPress: async () => {
-              await saveModifications();
-              resetWorkoutState();
-              allowNavigation.current = true;
-              navigation.navigate('Home');
-            }
-          },
-        ]
-      );
-    } else {
-      resetWorkoutState();
-      allowNavigation.current = true;
-      navigation.navigate('Home');
-    }
+  const handleFinishAndGoHome = () => {
+    allowNavigation.current = true;
+    navigation.navigate('Home');
   };
 
   const exitWorkout = () => {
-    if (workoutStarted && !workoutComplete) {
+    if (workoutStarted) {
       showExitConfirmation();
     } else {
-      resetWorkoutState();
       allowNavigation.current = true;
       navigation.goBack();
     }
   };
 
-  const getExerciseData = (exerciseId) => {
-    return exercises.find(e => e.id === exerciseId);
-  };
-
+  // Get info about next exercise/set for rest screen
   const getNextInfo = () => {
     const day = routine?.days?.[paramsRef.current.dayIndex];
-    if (!day?.exercises) return null;
+    const currentEx = day?.exercises?.[currentExerciseIndex];
     
-    const currentEx = day.exercises[currentExerciseIndex];
-    const totalSets = currentEx?.sets || 3;
-    
-    if (currentSetIndex < totalSets) {
-      const exerciseData = getExerciseData(currentEx.exerciseId);
+    if (currentSetIndex < (currentEx?.sets || 3) - 1) {
+      const exerciseData = getExerciseData(currentEx?.exerciseId);
       const nextReps = modifiedExercises[currentExerciseIndex]?.reps[currentSetIndex + 1] 
-        || currentEx.reps?.[currentSetIndex + 1] || 10;
+        || currentEx?.reps?.[currentSetIndex + 1] || 10;
       const nextWeight = modifiedExercises[currentExerciseIndex]?.weights[currentSetIndex + 1]
-        || currentEx.weights?.[currentSetIndex + 1] || 0;
+        || currentEx?.weights?.[currentSetIndex + 1] || 0;
       return {
-        exerciseId: currentEx.exerciseId,
+        exerciseId: currentEx?.exerciseId,
         name: exerciseData ? getExerciseName(exerciseData, lang) : 'Next Set',
-        set: currentSetIndex + 1,
+        set: currentSetIndex + 2,
         reps: nextReps,
         weight: nextWeight,
       };
     }
     
-    if (currentExerciseIndex < day.exercises.length - 1) {
+    if (currentExerciseIndex < day?.exercises?.length - 1) {
       const nextEx = day.exercises[currentExerciseIndex + 1];
       const exerciseData = getExerciseData(nextEx.exerciseId);
       const nextReps = modifiedExercises[currentExerciseIndex + 1]?.reps[0]
@@ -535,14 +462,14 @@ export default function TrainingScreen({ route, navigation }) {
   const currentWeight = getCurrentWeight();
   const nextInfo = getNextInfo();
 
-  // Format weight for display (show decimals only if needed)
+  // Format weight for display
   const formatWeight = (weight) => {
     if (weight === 0) return '0';
     if (weight % 1 === 0) return weight.toString();
     return weight.toFixed(2).replace(/\.?0+$/, '');
   };
 
-  // Get day name (prefer customName over translated name)
+  // Get day name
   const getDayName = (day) => {
     return day?.customName || day?.name || '';
   };
@@ -561,51 +488,66 @@ export default function TrainingScreen({ route, navigation }) {
   // Workout complete screen
   if (workoutComplete) {
     return (
-      <View style={[styles.completeContainer, { paddingTop: insets.top }]}>
-        <Text style={styles.completeIcon}>🎉</Text>
-        <Text style={styles.completeTitle}>{t('workoutComplete', lang)}</Text>
-        <Text style={styles.completeRoutine}>{routine.name}</Text>
-        <Text style={styles.completeDay}>{getDayName(day)}</Text>
-        {hasChanges && (
-          <Text style={styles.changesNote}>
-            {t('changesDetected', lang) || '* Changes were made to reps/weights'}
-          </Text>
-        )}
-        <TouchableOpacity 
-          style={[styles.finishButton, { marginBottom: insets.bottom + spacing.lg }]}
-          onPress={handleFinishAndGoHome}
-        >
-          <Text style={styles.finishButtonText}>{t('finish', lang)}</Text>
-        </TouchableOpacity>
-      </View>
+      <ImageBackground 
+        source={successBackground} 
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        <View style={[styles.completeContainer, { paddingTop: insets.top }]}>
+          <View style={styles.overlayCard}>
+            <Text style={styles.completeTitle}>{t('workoutComplete', lang)}</Text>
+            <Text style={styles.completeRoutine}>{routine.name}</Text>
+            <Text style={styles.completeDay}>{getDayName(day)}</Text>
+            {hasChanges && (
+              <Text style={styles.changesNote}>
+                {t('changesDetected', lang) || '* Changes were made to reps/weights'}
+              </Text>
+            )}
+            <TouchableOpacity 
+              style={styles.finishButton}
+              onPress={handleFinishAndGoHome}
+            >
+              <Text style={styles.finishButtonText}>{t('finish', lang)}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ImageBackground>
     );
   }
 
   // Pre-workout screen
   if (!workoutStarted) {
     return (
-      <View style={[styles.preWorkoutContainer, { paddingTop: insets.top }]}>
-        <View style={styles.preWorkoutHeader}>
-          <TouchableOpacity style={styles.exitButton} onPress={exitWorkout}>
-            <Text style={styles.exitButtonText}>{t('back', lang)}</Text>
-          </TouchableOpacity>
-        </View>
-        
-        <View style={styles.preWorkoutContent}>
-          <Text style={styles.preWorkoutRoutine}>{routine.name}</Text>
-          <Text style={styles.preWorkoutDay}>{getDayName(day)}</Text>
-          <Text style={styles.preWorkoutExercises}>
-            {day?.exercises?.length || 0} {t('exercisesLabel', lang).toLowerCase()}
-          </Text>
+      <ImageBackground 
+        source={startBackground} 
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        <View style={[styles.preWorkoutContainer, { paddingTop: insets.top }]}>
+          <View style={styles.preWorkoutHeader}>
+            <TouchableOpacity style={styles.exitButton} onPress={exitWorkout}>
+              <Text style={styles.exitButtonText}>{t('back', lang)}</Text>
+            </TouchableOpacity>
+          </View>
           
-          <TouchableOpacity 
-            style={styles.startButton}
-            onPress={() => setWorkoutStarted(true)}
-          >
-            <Text style={styles.startButtonText}>{t('startWorkoutButton', lang)}</Text>
-          </TouchableOpacity>
+          <View style={styles.preWorkoutContent}>
+            <View style={styles.overlayCard}>
+              <Text style={styles.preWorkoutRoutine}>{routine.name}</Text>
+              <Text style={styles.preWorkoutDay}>{getDayName(day)}</Text>
+              <Text style={styles.preWorkoutExercises}>
+                {day?.exercises?.length || 0} {t('exercisesLabel', lang).toLowerCase()}
+              </Text>
+              
+              <TouchableOpacity 
+                style={styles.startButton}
+                onPress={() => setWorkoutStarted(true)}
+              >
+                <Text style={styles.startButtonText}>{t('startWorkoutButton', lang)}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 
@@ -614,11 +556,11 @@ export default function TrainingScreen({ route, navigation }) {
   const exerciseData = currentEx ? getExerciseData(currentEx.exerciseId) : null;
 
   return isResting ? (
-    /* Rest screen - now light theme */
+    /* Rest screen */
     <View style={[styles.restScreen, { paddingTop: insets.top }]}>
       <View style={styles.restContent}>
         <Text style={styles.restLabel}>
-          {isExerciseRest ? t('restLabel', lang) : t('restLabel', lang)}
+          {t('restLabel', lang)}
         </Text>
         <Text style={styles.restTimer}>{restTimeLeft}</Text>
         <Text style={styles.restSeconds}>{t('seconds', lang)}</Text>
@@ -648,7 +590,7 @@ export default function TrainingScreen({ route, navigation }) {
       </View>
     </View>
   ) : (
-    /* Exercise mode - light theme */
+    /* Exercise mode */
     <View style={styles.exerciseScreen}>
       {/* Thumbnail strip */}
       {renderThumbnailStrip()}
@@ -672,7 +614,7 @@ export default function TrainingScreen({ route, navigation }) {
           {t('set', lang).toUpperCase()} {currentSetIndex + 1} / {currentEx?.sets || 3}
         </Text>
 
-        {/* Exercise Image - large */}
+        {/* Exercise Image */}
         <View style={styles.imageContainer}>
           <ExerciseImage 
             exerciseId={currentEx?.exerciseId} 
@@ -692,9 +634,8 @@ export default function TrainingScreen({ route, navigation }) {
           </Text>
         </TouchableOpacity>
 
-        {/* Reps and Weight controls */}
+        {/* Reps control */}
         <View style={styles.controlsRow}>
-          {/* Reps control */}
           <View style={styles.controlGroup}>
             <Text style={styles.controlLabel}>{t('reps', lang)}</Text>
             <View style={styles.controlButtons}>
@@ -715,8 +656,8 @@ export default function TrainingScreen({ route, navigation }) {
           </View>
         </View>
 
+        {/* Weight control */}
         <View style={styles.controlsRow}>
-          {/* Weight control */}
           <View style={styles.controlGroup}>
             <Text style={styles.controlLabel}>{t('weight', lang)}</Text>
             <View style={styles.controlButtons}>
@@ -741,7 +682,6 @@ export default function TrainingScreen({ route, navigation }) {
                 onPress={() => updateWeight(0.25)}
               >
                 <Text style={styles.controlButtonTextS}>+0.25</Text>
-
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -765,6 +705,22 @@ export default function TrainingScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  // Background image
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  
+  // Overlay card for content on background images
+  overlayCard: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: borderRadius.xl,
+    padding: spacing.xl,
+    alignItems: 'center',
+    marginHorizontal: spacing.lg,
+  },
+  
   // Loading
   loadingContainer: {
     flex: 1,
@@ -780,19 +736,13 @@ const styles = StyleSheet.create({
   // Complete screen
   completeContainer: {
     flex: 1,
-    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     padding: spacing.xl,
   },
-  completeIcon: {
-    fontSize: 80,
-    marginBottom: spacing.lg,
-  },
   completeTitle: {
     color: colors.white,
     fontSize: fontSize.xxl,
-    fontWeight: 'bold',
     marginBottom: spacing.md,
   },
   completeRoutine: {
@@ -802,14 +752,13 @@ const styles = StyleSheet.create({
   completeDay: {
     color: colors.accent,
     fontSize: fontSize.xl,
-    fontWeight: 'bold',
     marginTop: spacing.sm,
   },
   changesNote: {
+    fontFamily: fonts.italic,
     color: colors.accent,
     fontSize: fontSize.sm,
     marginTop: spacing.md,
-    fontStyle: 'italic',
   },
   finishButton: {
     backgroundColor: colors.accent,
@@ -821,13 +770,11 @@ const styles = StyleSheet.create({
   finishButtonText: {
     color: colors.white,
     fontSize: fontSize.lg,
-    fontWeight: 'bold',
   },
   
-  // Pre-workout (dark)
+  // Pre-workout
   preWorkoutContainer: {
     flex: 1,
-    backgroundColor: colors.primary,
   },
   preWorkoutHeader: {
     flexDirection: 'row',
@@ -836,9 +783,12 @@ const styles = StyleSheet.create({
   },
   exitButton: {
     paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: borderRadius.md,
   },
   exitButtonText: {
-    color: colors.accentLight,
+    color: colors.white,
     fontSize: fontSize.md,
   },
   preWorkoutContent: {
@@ -853,9 +803,9 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   preWorkoutDay: {
+    fontFamily: fonts.bold,
     color: colors.white,
     fontSize: fontSize.xxl,
-    fontWeight: 'bold',
     marginTop: spacing.sm,
   },
   preWorkoutExercises: {
@@ -871,12 +821,12 @@ const styles = StyleSheet.create({
     marginTop: spacing.xl,
   },
   startButtonText: {
+    fontFamily: fonts.bold,
     color: colors.white,
     fontSize: fontSize.xl,
-    fontWeight: 'bold',
   },
   
-  // Rest screen (now light theme)
+  // Rest screen
   restScreen: {
     flex: 1,
     backgroundColor: '#FFFFFF',
@@ -895,7 +845,6 @@ const styles = StyleSheet.create({
   restTimer: {
     color: '#000000',
     fontSize: 120,
-    fontWeight: 'bold',
   },
   restSeconds: {
     color: '#666666',
@@ -910,18 +859,18 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   nextLabel: {
+    fontFamily: fonts.bold,
     color: colors.accent,
     fontSize: fontSize.xs,
-    fontWeight: 'bold',
     letterSpacing: 2,
   },
   nextImageContainer: {
     marginVertical: spacing.sm,
   },
   nextExercise: {
+    fontFamily: fonts.bold,
     color: '#000000',
     fontSize: fontSize.lg,
-    fontWeight: 'bold',
     marginTop: spacing.sm,
     textAlign: 'center',
   },
@@ -938,13 +887,13 @@ const styles = StyleSheet.create({
     marginTop: spacing.xl,
   },
   skipRestButtonText: {
+    fontFamily: fonts.bold,
     color: '#FFFFFF',
     fontSize: fontSize.lg,
-    fontWeight: 'bold',
     letterSpacing: 1,
   },
   
-  // Exercise screen (light theme)
+  // Exercise screen
   exerciseScreen: {
     flex: 1,
     backgroundColor: '#FFFFFF',
@@ -980,12 +929,13 @@ const styles = StyleSheet.create({
     paddingTop: spacing.lg,
   },
   exerciseName: {
+    fontFamily: fonts.bold,
     color: '#000000',
     fontSize: fontSize.xl,
-    fontWeight: 'bold',
     textAlign: 'center',
   },
   exerciseDescription: {
+    fontFamily: fonts.narrow,
     color: '#666666',
     fontSize: fontSize.sm,
     textAlign: 'center',
@@ -1013,13 +963,13 @@ const styles = StyleSheet.create({
     marginVertical: spacing.md,
   },
   doneButtonText: {
+    fontFamily: fonts.bold,
     color: '#FFFFFF',
     fontSize: fontSize.lg,
-    fontWeight: 'bold',
     letterSpacing: 1,
   },
   
-  // Controls row
+  // Controls
   controlsRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -1050,20 +1000,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   controlButtonText: {
+    fontFamily: fonts.bold,
     color: '#FFFFFF',
     fontSize: fontSize.xl,
-    fontWeight: 'bold',
     lineHeight: fontSize.xl,
   },
   controlButtonTextS: {
+    fontFamily: fonts.bold,
     color: '#FFFFFF',
     fontSize: fontSize.xs,
-    fontWeight: 'bold',
   },
   controlValue: {
+    fontFamily: fonts.bold,
     color: '#000000',
     fontSize: fontSize.xxl,
-    fontWeight: 'bold',
     minWidth: 90,
     textAlign: 'center',
     marginHorizontal: spacing.sm,
@@ -1071,9 +1021,9 @@ const styles = StyleSheet.create({
   
   // Changes indicator
   changesIndicator: {
+    fontFamily: fonts.italic,
     color: colors.accent,
     fontSize: fontSize.xs,
     marginTop: spacing.md,
-    fontStyle: 'italic',
   },
 });
