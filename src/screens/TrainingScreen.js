@@ -294,15 +294,14 @@ export default function TrainingScreen({ route, navigation }) {
 
     timerRef.current = setInterval(() => {
       setRestTimeLeft(prev => {
-        if (prev <= 9 && prev > 1 && !soundPlayedRef.current) {
+        if (prev === 9 && !soundPlayedRef.current) {
           playBeep();
+          soundPlayedRef.current = true;
         }
         if (prev <= 1) {
           clearInterval(timerRef.current);
           timerRef.current = null;
           Vibration.vibrate(500);
-          playBeep();
-          soundPlayedRef.current = true;
           setIsResting(false);
           setIsExerciseRest(false);
           return 0;
@@ -384,7 +383,7 @@ export default function TrainingScreen({ route, navigation }) {
     const day = routine?.days?.[paramsRef.current.dayIndex];
     const currentEx = day?.exercises?.[currentExerciseIndex];
     
-    if (currentSetIndex < (currentEx?.sets || 3) - 1) {
+    if (currentSetIndex < (currentEx?.sets || 3)) {
       const exerciseData = getExerciseData(currentEx?.exerciseId);
       const nextReps = modifiedExercises[currentExerciseIndex]?.reps[currentSetIndex + 1] 
         || currentEx?.reps?.[currentSetIndex + 1] || 10;
@@ -393,7 +392,7 @@ export default function TrainingScreen({ route, navigation }) {
       return {
         exerciseId: currentEx?.exerciseId,
         name: exerciseData ? getExerciseName(exerciseData, lang) : 'Next Set',
-        set: currentSetIndex + 2,
+        set: currentSetIndex + 1,
         reps: nextReps,
         weight: nextWeight,
       };
@@ -741,15 +740,19 @@ const styles = StyleSheet.create({
     padding: spacing.xl,
   },
   completeTitle: {
+    fontFamily: fonts.bold,
+    textAlign: 'center',
     color: colors.white,
     fontSize: fontSize.xxl,
     marginBottom: spacing.md,
   },
   completeRoutine: {
+    fontFamily: fonts.regular,
     color: colors.textLight,
     fontSize: fontSize.lg,
   },
   completeDay: {
+    fontFamily: fonts.regular,
     color: colors.accent,
     fontSize: fontSize.xl,
     marginTop: spacing.sm,
@@ -768,6 +771,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xl,
   },
   finishButtonText: {
+    fontFamily: fonts.regular,
     color: colors.white,
     fontSize: fontSize.lg,
   },
@@ -788,6 +792,7 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
   },
   exitButtonText: {
+    fontFamily: fonts.regular,
     color: colors.white,
     fontSize: fontSize.md,
   },
@@ -798,6 +803,7 @@ const styles = StyleSheet.create({
     padding: spacing.xl,
   },
   preWorkoutRoutine: {
+    fontFamily: fonts.regular,
     color: colors.textLight,
     fontSize: fontSize.md,
     textTransform: 'uppercase',
@@ -821,6 +827,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xl,
   },
   startButtonText: {
+    textAlign: 'center',
     fontFamily: fonts.bold,
     color: colors.white,
     fontSize: fontSize.xl,
@@ -838,15 +845,18 @@ const styles = StyleSheet.create({
     padding: spacing.xl,
   },
   restLabel: {
+    fontFamily: fonts.regular,
     color: '#666666',
     fontSize: fontSize.lg,
     letterSpacing: 4,
   },
   restTimer: {
+    fontFamily: fonts.regular,
     color: '#000000',
-    fontSize: 120,
+    fontSize: 170,
   },
   restSeconds: {
+    fontFamily: fonts.regular,
     color: '#666666',
     fontSize: fontSize.lg,
   },
@@ -875,6 +885,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   nextDetails: {
+    fontFamily: fonts.regular,
     color: '#666666',
     fontSize: fontSize.md,
     marginTop: spacing.xs,
@@ -943,6 +954,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
   },
   setIndicator: {
+    fontFamily: fonts.regular,
     color: '#666666',
     fontSize: fontSize.md,
     marginTop: spacing.xs,

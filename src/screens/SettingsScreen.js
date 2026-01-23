@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   loadingText: {
+    fontFamily: fonts.regular,
     color: colors.textSecondary,
     fontSize: fontSize.md,
   },
@@ -219,8 +220,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sectionTitle: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.sm,
-    fontWeight: 'bold',
     color: colors.textSecondary,
     textTransform: 'uppercase',
     marginHorizontal: spacing.lg,
@@ -235,6 +236,7 @@ const styles = StyleSheet.create({
     ...shadows.small,
   },
   label: {
+    fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: colors.textPrimary,
     marginBottom: spacing.sm,
@@ -254,9 +256,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accent,
   },
   languageButtonText: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.md,
     color: colors.textPrimary,
-    fontWeight: '500',
   },
   languageButtonTextActive: {
     color: colors.white,
@@ -282,11 +284,13 @@ const styles = StyleSheet.create({
     height: 40,
   },
   volumeIcon: {
+    fontFamily: fonts.regular,
     fontSize: 18,
     width: 30,
     textAlign: 'center',
   },
   volumeValue: {
+    fontFamily: fonts.regular,
     textAlign: 'center',
     color: colors.textSecondary,
     fontSize: fontSize.sm,
@@ -297,8 +301,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   aboutLabel: {
+    fontFamily: fonts.bold,
     fontSize: fontSize.md,
-    fontWeight: '600',
     color: colors.textPrimary,
   },
   aboutValue: {
