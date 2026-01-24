@@ -7,11 +7,14 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Image,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { getLastWorkout, loadRoutines, loadSettings } from '../storage/storage';
 import { t } from '../data/translations';
+
+const faviconIcon = require('../../assets/icons/homeicon.png');
 
 export default function HomeScreen({ navigation }) {
   const insets = useSafeAreaInsets();
@@ -86,7 +89,9 @@ export default function HomeScreen({ navigation }) {
     <ScrollView style={styles.container}>
       {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + 20 }]}>
-        <Text style={styles.greeting}>💪 {t('appName', lang)}</Text>
+        <View style={styles.greetingRow}>
+          <Image source={faviconIcon} style={styles.faviconIcon} />
+        </View>
         <Text style={styles.subtitle}>{t('tagline', lang)}</Text>
       </View>
 
@@ -204,12 +209,18 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     paddingHorizontal: spacing.lg,
   },
-  greeting: {
-    fontFamily: fonts.regular,
-    fontSize: fontSize.xxl,
-    color: colors.white,
+  greetingRow: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  faviconIcon: {
+    width: 100,
+    height: 100,
+    marginRight: spacing.sm,
+    resizeMode: 'contain',
   },
   subtitle: {
+    textAlign: 'center',
     fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: colors.textLight,

@@ -11,6 +11,7 @@ import {
   BackHandler,
   ScrollView,
   ImageBackground,
+  AppState,
 } from 'react-native';
 import { useAudioPlayer } from 'expo-audio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -51,6 +52,7 @@ export default function TrainingScreen({ route, navigation }) {
   const thumbnailScrollRef = useRef(null);
   const soundPlayedRef = useRef(false);
   const modifiedExercisesRef = useRef({});
+  const restEndTimeRef = useRef(null); // Stores timestamp when rest should end
   
   // Use the new expo-audio hook
   const player = useAudioPlayer(beepSource);
@@ -66,6 +68,7 @@ export default function TrainingScreen({ route, navigation }) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
+    restEndTimeRef.current = null;
     setCurrentExerciseIndex(0);
     setCurrentSetIndex(0);
     setIsResting(false);
@@ -103,6 +106,40 @@ export default function TrainingScreen({ route, navigation }) {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
+  }, []);
+
+  // Handle app returning from background - recalculate rest timer
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState) => {
+      if (nextAppState === 'active' && restEndTimeRef.current) {
+        // App came back to foreground while resting - recalculate remaining time
+        const remaining = Math.ceil((restEndTimeRef.current - Date.now()) / 1000);
+
+        if (remaining <= 0) {
+          // Rest period ended while in background
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+          }
+          restEndTimeRef.current = null;
+          Vibration.vibrate(500);
+          setIsResting(false);
+          setIsExerciseRest(false);
+          setRestTimeLeft(0);
+        } else {
+          // Update display with actual remaining time
+          setRestTimeLeft(remaining);
+          // Play beep if we're in the warning zone and haven't played it yet
+          if (remaining <= 8 && !soundPlayedRef.current) {
+            playBeep();
+            soundPlayedRef.current = true;
+          }
+        }
+      }
+    };
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    return () => subscription?.remove();
   }, []);
 
   // Keep ref in sync with state to avoid closure issues
@@ -437,31 +474,37 @@ export default function TrainingScreen({ route, navigation }) {
   };
 
   const startRest = (isExRest = false) => {
-    const restTime = isExRest 
+    const restTime = isExRest
       ? (routine?.restBetweenExercises || 90)
       : (routine?.restBetweenSets || 60);
-    
+
     setIsResting(true);
     setIsExerciseRest(isExRest);
     setRestTimeLeft(restTime);
     soundPlayedRef.current = false;
 
+    // Store the end time for background-aware countdown
+    restEndTimeRef.current = Date.now() + (restTime * 1000);
+
     timerRef.current = setInterval(() => {
-      setRestTimeLeft(prev => {
-        if (prev === 9 && !soundPlayedRef.current) {
-          playBeep();
-          soundPlayedRef.current = true;
-        }
-        if (prev <= 1) {
-          clearInterval(timerRef.current);
-          timerRef.current = null;
-          Vibration.vibrate(500);
-          setIsResting(false);
-          setIsExerciseRest(false);
-          return 0;
-        }
-        return prev - 1;
-      });
+      // Calculate remaining time based on actual end time (works even after background)
+      const remaining = Math.ceil((restEndTimeRef.current - Date.now()) / 1000);
+
+      if (remaining <= 8 && remaining > 0 && !soundPlayedRef.current) {
+        playBeep();
+        soundPlayedRef.current = true;
+      }
+      if (remaining <= 0) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+        restEndTimeRef.current = null;
+        Vibration.vibrate(500);
+        setIsResting(false);
+        setIsExerciseRest(false);
+        setRestTimeLeft(0);
+        return;
+      }
+      setRestTimeLeft(remaining);
     }, 1000);
   };
 
@@ -470,6 +513,7 @@ export default function TrainingScreen({ route, navigation }) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
+    restEndTimeRef.current = null;
     setIsResting(false);
     setIsExerciseRest(false);
   };

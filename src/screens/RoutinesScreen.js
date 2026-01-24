@@ -12,12 +12,16 @@ import {
   Alert,
   PanResponder,
   Animated,
+  Dimensions,
+  Image,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CameraView, useCameraPermissions } from 'expo-camera';
+import QRCode from 'react-native-qrcode-svg';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
-import { 
-  exercises, 
-  muscleGroups, 
+import {
+  exercises,
+  muscleGroups,
   getExercisesByMuscle,
   getExerciseName,
   getMuscleGroupName,
@@ -26,9 +30,21 @@ import {
 import { loadRoutines, addRoutine, updateRoutine, deleteRoutine, loadSettings, loadExcludedExercises } from '../storage/storage';
 import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
+import { encodeRoutine, decodeRoutine, isValidRoutineCode, MAX_QR_SIZE } from '../utils/routineCodec';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+// Icons
+const editIcon = require('../../assets/icons/edit.png');
+const editAccentIcon = require('../../assets/icons/edit_accent.png');
+const importIcon = require('../../assets/icons/import.png');
+const importAccentIcon = require('../../assets/icons/import_accent.png');
+const exportIcon = require('../../assets/icons/export.png');
+const exportAccentIcon = require('../../assets/icons/export_accent.png');
 
 export default function RoutinesScreen({ navigation, route }) {
   const insets = useSafeAreaInsets();
+  const [permission, requestPermission] = useCameraPermissions();
   const [routines, setRoutines] = useState([]);
   const [selectedRoutine, setSelectedRoutine] = useState(null);
   const [showNewRoutineModal, setShowNewRoutineModal] = useState(false);
@@ -42,6 +58,15 @@ export default function RoutinesScreen({ navigation, route }) {
   const [settings, setSettings] = useState({ language: 'en' });
   const [dayNameInput, setDayNameInput] = useState('');
   const [excludedExercises, setExcludedExercises] = useState([]);
+
+  // QR Import/Export state
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [showScannerModal, setShowScannerModal] = useState(false);
+  const [showImportPreviewModal, setShowImportPreviewModal] = useState(false);
+  const [encodedRoutine, setEncodedRoutine] = useState('');
+  const [pendingImport, setPendingImport] = useState(null);
+  const [importRoutineName, setImportRoutineName] = useState('');
+  const [scannerActive, setScannerActive] = useState(true);
   
   // New routine form state
   const [newRoutineName, setNewRoutineName] = useState('');
@@ -443,6 +468,98 @@ export default function RoutinesScreen({ navigation, route }) {
     return available.filter(ex => ex.muscleGroup === muscleId);
   };
 
+  // ============ QR EXPORT/IMPORT ============
+
+  // Handle share button press - encode and show QR
+  const handleShareRoutine = () => {
+    if (!selectedRoutine) return;
+
+    const encoded = encodeRoutine(selectedRoutine);
+    if (!encoded) {
+      Alert.alert('Error', t('routineTooLarge', lang));
+      return;
+    }
+
+    if (encoded.length > MAX_QR_SIZE) {
+      Alert.alert(t('routineTooLarge', lang), t('routineTooLargeMessage', lang));
+      return;
+    }
+
+    setEncodedRoutine(encoded);
+    setShowQRModal(true);
+  };
+
+  // Handle import button press - open scanner
+  const handleOpenScanner = async () => {
+    if (!permission?.granted) {
+      const result = await requestPermission();
+      if (!result.granted) {
+        Alert.alert(t('cameraPermission', lang), t('cameraPermissionMessage', lang));
+        return;
+      }
+    }
+    setScannerActive(true);
+    setShowScannerModal(true);
+  };
+
+  // Handle QR code scanned
+  const handleBarCodeScanned = ({ data }) => {
+    if (!scannerActive) return;
+    setScannerActive(false);
+
+    if (!isValidRoutineCode(data)) {
+      setShowScannerModal(false);
+      Alert.alert(t('invalidQRCode', lang), t('invalidQRCodeMessage', lang));
+      return;
+    }
+
+    const decoded = decodeRoutine(data);
+    if (!decoded) {
+      setShowScannerModal(false);
+      Alert.alert(t('invalidQRCode', lang), t('invalidQRCodeMessage', lang));
+      return;
+    }
+
+    // Count total exercises
+    let totalExercises = 0;
+    decoded.days?.forEach(day => {
+      totalExercises += day.exercises?.length || 0;
+    });
+    decoded.totalExercises = totalExercises;
+
+    setPendingImport(decoded);
+    setImportRoutineName(decoded.name || 'Imported Routine');
+    setShowScannerModal(false);
+    setShowImportPreviewModal(true);
+  };
+
+  // Handle import confirmation
+  const handleConfirmImport = async () => {
+    if (!pendingImport) return;
+
+    // Use the user-edited name or default
+    let routineName = importRoutineName.trim() || 'Imported Routine';
+    const existingNames = routines.map(r => r.name);
+    let counter = 1;
+    let finalName = routineName;
+    while (existingNames.includes(finalName)) {
+      finalName = `${routineName} (${counter})`;
+      counter++;
+    }
+
+    const newRoutine = {
+      ...pendingImport,
+      name: finalName,
+    };
+
+    const created = await addRoutine(newRoutine);
+    setRoutines([...routines, created]);
+    setShowImportPreviewModal(false);
+    setPendingImport(null);
+    setImportRoutineName('');
+    Alert.alert('✓', t('routineImported', lang));
+  };
+
   const renderRoutineList = () => (
     <ScrollView style={styles.content}>
       {routines.length === 0 ? (
@@ -503,12 +620,12 @@ export default function RoutinesScreen({ navigation, route }) {
               </View>
               
               {/* Day title (tappable to rename) */}
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.dayTitleTouchable}
                 onPress={() => openRenameDayModal(dayIndex)}
               >
                 <Text style={styles.dayTitle}>{getDayDisplayName(day, dayIndex)}</Text>
-                <Text style={styles.dayEditIcon}>✏️</Text>
+                <Image source={editIcon} style={styles.dayEditIconImage} />
               </TouchableOpacity>
             </View>
             
@@ -796,20 +913,36 @@ export default function RoutinesScreen({ navigation, route }) {
             <Text style={styles.backButton}>← {t('back', lang)}</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitleSmall}>{selectedRoutine.name}</Text>
-          <TouchableOpacity onPress={openEditRoutineModal}>
-            <Text style={styles.editButton}>✏️</Text>
-          </TouchableOpacity>
+          <View style={styles.headerActions}>
+            <TouchableOpacity onPress={handleShareRoutine} style={styles.headerActionButton}>
+              <Image source={exportAccentIcon} style={styles.headerActionIconImage} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={openEditRoutineModal} style={styles.headerActionButton}>
+              <Image source={editAccentIcon} style={styles.headerActionIconImage} />
+            </TouchableOpacity>
+          </View>
         </View>
       ) : (
         // Routine list header
         <View style={[styles.header, { paddingTop: insets.top + spacing.md }]}>
           <Text style={styles.headerTitle}>{t('routines', lang)}</Text>
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => setShowNewRoutineModal(true)}
-          >
-            <Text style={styles.addButtonText}>+{t('newRoutine', lang)}</Text>
-          </TouchableOpacity>
+          <View style={styles.headerButtons}>
+            <TouchableOpacity
+              style={styles.importButton}
+              onPress={handleOpenScanner}
+            >
+              <View style={styles.importButtonContent}>
+                <Image source={importAccentIcon} style={styles.importButtonIcon} />
+                <Text style={styles.importButtonText}>{t('importRoutine', lang)}</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setShowNewRoutineModal(true)}
+            >
+              <Text style={styles.addButtonText}>+{t('newRoutine', lang)}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
 
@@ -955,6 +1088,133 @@ export default function RoutinesScreen({ navigation, route }) {
                 onPress={handleEditRoutine}
               >
                 <Text style={styles.modalCreateText}>{t('save', lang)}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* QR Code Display Modal */}
+      <Modal
+        visible={showQRModal}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setShowQRModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.qrModalContent}>
+            <Text style={styles.qrModalTitle}>{t('routineShared', lang)}</Text>
+            <Text style={styles.qrRoutineName}>{selectedRoutine?.name}</Text>
+
+            <View style={styles.qrContainer}>
+              {encodedRoutine ? (
+                <QRCode
+                  value={encodedRoutine}
+                  size={SCREEN_WIDTH * 0.6}
+                  backgroundColor={colors.white}
+                  color={colors.primary}
+                />
+              ) : null}
+            </View>
+
+            <Text style={styles.qrHint}>{t('scanToImport', lang)}</Text>
+
+            <TouchableOpacity
+              style={styles.qrCloseButton}
+              onPress={() => setShowQRModal(false)}
+            >
+              <Text style={styles.qrCloseButtonText}>{t('close', lang)}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* QR Scanner Modal */}
+      <Modal
+        visible={showScannerModal}
+        animationType="slide"
+        onRequestClose={() => setShowScannerModal(false)}
+      >
+        <View style={styles.scannerContainer}>
+          <View style={[styles.scannerHeader, { paddingTop: insets.top + spacing.md }]}>
+            <TouchableOpacity onPress={() => setShowScannerModal(false)}>
+              <Text style={styles.scannerBackButton}>← {t('back', lang)}</Text>
+            </TouchableOpacity>
+            <Text style={styles.scannerTitle}>{t('scanQRCode', lang)}</Text>
+            <View style={{ width: 60 }} />
+          </View>
+
+          <View style={styles.cameraContainer}>
+            <CameraView
+              style={styles.camera}
+              facing="back"
+              barcodeScannerSettings={{
+                barcodeTypes: ['qr'],
+              }}
+              onBarcodeScanned={scannerActive ? handleBarCodeScanned : undefined}
+            />
+            <View style={styles.scannerOverlay}>
+              <View style={styles.scannerFrame} />
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Import Preview Modal */}
+      <Modal
+        visible={showImportPreviewModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => {
+          setShowImportPreviewModal(false);
+          setPendingImport(null);
+          setImportRoutineName('');
+        }}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>{t('importPreview', lang)}</Text>
+
+            {pendingImport && (
+              <View style={styles.importPreview}>
+                <Text style={styles.inputLabel}>{t('routineName', lang)}</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={importRoutineName}
+                  onChangeText={setImportRoutineName}
+                  placeholder={t('routineNamePlaceholder', lang)}
+                  placeholderTextColor={colors.textLight}
+                  selectTextOnFocus={true}
+                />
+                <View style={styles.importPreviewItem}>
+                  <Text style={styles.importPreviewLabel}>{t('days', lang)}</Text>
+                  <Text style={styles.importPreviewValue}>{pendingImport.days?.length || 0}</Text>
+                </View>
+                <View style={styles.importPreviewItem}>
+                  <Text style={styles.importPreviewLabel}>{t('exercisesLabel', lang)}</Text>
+                  <Text style={styles.importPreviewValue}>
+                    {pendingImport.totalExercises} {t('exercisesTotal', lang)}
+                  </Text>
+                </View>
+              </View>
+            )}
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.modalCancelButton}
+                onPress={() => {
+                  setShowImportPreviewModal(false);
+                  setPendingImport(null);
+                  setImportRoutineName('');
+                }}
+              >
+                <Text style={styles.modalCancelText}>{t('cancel', lang)}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.modalCreateButton}
+                onPress={handleConfirmImport}
+              >
+                <Text style={styles.modalCreateText}>{t('importRoutine', lang)}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -1108,6 +1368,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: fontSize.lg,
     color: colors.textPrimary,
+  },
+  dayEditIconImage: {
+    width: 16,
+    height: 16,
+    marginLeft: spacing.xs,
+    resizeMode: 'contain',
+    opacity: 0.6,
   },
   dayTitleSmall: {
     fontFamily: fonts.regular,
@@ -1395,5 +1662,162 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     color: colors.white,
     fontSize: fontSize.md,
+  },
+
+  // Header actions
+  headerActions: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+  headerActionButton: {
+    padding: spacing.xs,
+  },
+  headerActionIcon: {
+    fontSize: fontSize.lg,
+  },
+  headerActionIconImage: {
+    width: 22,
+    height: 22,
+    resizeMode: 'contain',
+  },
+  headerButtons: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+  importButton: {
+    backgroundColor: 'transparent',
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.accentLight,
+  },
+  importButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  importButtonIcon: {
+    width: 16,
+    height: 16,
+    resizeMode: 'contain',
+  },
+  importButtonText: {
+    fontFamily: fonts.regular,
+    color: colors.accentLight,
+    fontSize: fontSize.sm,
+  },
+
+  // QR Modal styles
+  qrModalContent: {
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.lg,
+    padding: spacing.xl,
+    alignItems: 'center',
+  },
+  qrModalTitle: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.xl,
+    color: colors.textPrimary,
+    marginBottom: spacing.sm,
+  },
+  qrRoutineName: {
+    fontFamily: fonts.regular,
+    fontSize: fontSize.md,
+    color: colors.textSecondary,
+    marginBottom: spacing.lg,
+  },
+  qrContainer: {
+    padding: spacing.lg,
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.lg,
+    ...shadows.medium,
+  },
+  qrHint: {
+    fontFamily: fonts.italic,
+    fontSize: fontSize.sm,
+    color: colors.textLight,
+    marginTop: spacing.lg,
+    textAlign: 'center',
+  },
+  qrCloseButton: {
+    marginTop: spacing.lg,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
+    backgroundColor: colors.accent,
+    borderRadius: borderRadius.md,
+  },
+  qrCloseButtonText: {
+    fontFamily: fonts.bold,
+    color: colors.white,
+    fontSize: fontSize.md,
+  },
+
+  // Scanner styles
+  scannerContainer: {
+    flex: 1,
+    backgroundColor: colors.primary,
+  },
+  scannerHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.md,
+    backgroundColor: colors.primary,
+  },
+  scannerBackButton: {
+    fontFamily: fonts.regular,
+    fontSize: fontSize.md,
+    color: colors.accentLight,
+  },
+  scannerTitle: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.lg,
+    color: colors.white,
+  },
+  cameraContainer: {
+    flex: 1,
+    position: 'relative',
+  },
+  camera: {
+    flex: 1,
+  },
+  scannerOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  scannerFrame: {
+    width: 250,
+    height: 250,
+    borderWidth: 3,
+    borderColor: colors.accent,
+    borderRadius: borderRadius.lg,
+    backgroundColor: 'transparent',
+  },
+
+  // Import preview styles
+  importPreview: {
+    backgroundColor: colors.background,
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    gap: spacing.sm,
+  },
+  importPreviewItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  importPreviewLabel: {
+    fontFamily: fonts.regular,
+    fontSize: fontSize.md,
+    color: colors.textSecondary,
+  },
+  importPreviewValue: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
   },
 });

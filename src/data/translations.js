@@ -71,7 +71,25 @@ export const translations = {
     dayName: 'Day Name',
     dayNamePlaceholder: 'e.g., Push Day, Leg Day',
     renameDayHint: 'Leave empty to use default name',
-    
+
+    // QR Sharing
+    shareRoutine: 'Share',
+    importRoutine: 'Import',
+    scanQRCode: 'Scan QR Code',
+    routineShared: 'Routine QR Code',
+    scanToImport: 'Scan this code to import the routine',
+    importPreview: 'Import Routine',
+    invalidQRCode: 'Invalid QR Code',
+    invalidQRCodeMessage: 'This QR code does not contain a valid routine.',
+    routineImported: 'Routine Imported!',
+    cameraPermission: 'Camera Permission',
+    cameraPermissionMessage: 'We need camera access to scan QR codes.',
+    grantPermission: 'Grant Permission',
+    routineTooLarge: 'Routine Too Large',
+    routineTooLargeMessage: 'This routine is too large to fit in a QR code. Try reducing the number of exercises.',
+    importConfirm: 'Import this routine?',
+    exercisesTotal: 'exercises total',
+
     // Training Screen
     loadingWorkout: 'Loading workout...',
     workoutComplete: 'Workout Complete!',
@@ -200,7 +218,25 @@ export const translations = {
     dayName: 'Nombre del Día',
     dayNamePlaceholder: 'ej., Día de Empuje, Día de Piernas',
     renameDayHint: 'Déjalo vacío para usar el nombre por defecto',
-    
+
+    // QR Sharing
+    shareRoutine: 'Compartir',
+    importRoutine: 'Importar',
+    scanQRCode: 'Escanear Código QR',
+    routineShared: 'Código QR de Rutina',
+    scanToImport: 'Escanea este código para importar la rutina',
+    importPreview: 'Importar Rutina',
+    invalidQRCode: 'Código QR Inválido',
+    invalidQRCodeMessage: 'Este código QR no contiene una rutina válida.',
+    routineImported: '¡Rutina Importada!',
+    cameraPermission: 'Permiso de Cámara',
+    cameraPermissionMessage: 'Necesitamos acceso a la cámara para escanear códigos QR.',
+    grantPermission: 'Dar Permiso',
+    routineTooLarge: 'Rutina Muy Grande',
+    routineTooLargeMessage: 'Esta rutina es muy grande para un código QR. Intenta reducir el número de ejercicios.',
+    importConfirm: '¿Importar esta rutina?',
+    exercisesTotal: 'ejercicios en total',
+
     // Training Screen
     loadingWorkout: 'Cargando entrenamiento...',
     workoutComplete: '¡Entrenamiento Completado!',

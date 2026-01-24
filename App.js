@@ -1,6 +1,6 @@
 // HomeFit - Main App Entry Point
 import React, { useState, useEffect, useCallback } from 'react';
-import { StatusBar, Platform, Image, StyleSheet, View, ActivityIndicator, Text } from 'react-native';
+import { StatusBar, Platform, Image, StyleSheet, View, ActivityIndicator, Text, AppState } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -75,7 +75,7 @@ export default function App() {
     setLanguage(settings.language || 'en');
   }, []);
 
-  // Configure Android navigation bar on mount
+  // Configure Android navigation bar on mount and when app returns from background
   useEffect(() => {
     const configureNavigationBar = async () => {
       if (Platform.OS === 'android') {
@@ -87,7 +87,19 @@ export default function App() {
         }
       }
     };
+
+    // Configure on mount
     configureNavigationBar();
+
+    // Re-configure when app returns from background
+    const handleAppStateChange = (nextAppState) => {
+      if (nextAppState === 'active') {
+        configureNavigationBar();
+      }
+    };
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    return () => subscription?.remove();
   }, []);
 
   useEffect(() => {
