@@ -40,7 +40,9 @@ export default function TrainingScreen({ route, navigation }) {
   const [isExerciseRest, setIsExerciseRest] = useState(false);
   const [workoutStarted, setWorkoutStarted] = useState(false);
   const [workoutComplete, setWorkoutComplete] = useState(false);
-  
+  const [workoutStartTime, setWorkoutStartTime] = useState(null);
+  const [caloriesBurned, setCaloriesBurned] = useState(0);
+
   // Track modifications to reps/weights during workout
   const [modifiedExercises, setModifiedExercises] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
@@ -71,6 +73,8 @@ export default function TrainingScreen({ route, navigation }) {
     setIsExerciseRest(false);
     setWorkoutStarted(false);
     setWorkoutComplete(false);
+    setWorkoutStartTime(null);
+    setCaloriesBurned(0);
     soundPlayedRef.current = false;
     setModifiedExercises({});
     setHasChanges(false);
@@ -241,6 +245,57 @@ export default function TrainingScreen({ route, navigation }) {
     return exercises.find(e => e.id === exerciseId);
   };
 
+  // Calculate calories burned during the workout
+  // Formula: Exercise Calories = Sets × (BMC + (WF × Weight)) × (Reps ÷ 10)
+  // Plus baseline: Duration (minutes) × 2.5 kcal/min
+  const calculateCalories = (startTime) => {
+    const day = routine?.days?.[paramsRef.current.dayIndex];
+    if (!day?.exercises || !startTime) return 0;
+
+    // Use ref to get the latest modifications
+    const currentModifiedExercises = modifiedExercisesRef.current;
+
+    let totalExerciseCalories = 0;
+
+    // Calculate calories for each exercise
+    day.exercises.forEach((ex, exIndex) => {
+      const exerciseData = getExerciseData(ex.exerciseId);
+      if (!exerciseData) return;
+
+      const bmc = exerciseData.bmc || 1.0;
+      const wf = exerciseData.wf || 0.0;
+      const sets = ex.sets || 3;
+
+      // Get reps and weights (modified or original)
+      const mods = currentModifiedExercises[exIndex];
+      const repsArray = mods?.reps || ex.reps || Array(sets).fill(10);
+      const weightsArray = mods?.weights || ex.weights || Array(sets).fill(0);
+
+      // Calculate calories for each set
+      for (let setIdx = 0; setIdx < sets; setIdx++) {
+        const reps = repsArray[setIdx] || 10;
+        const weight = weightsArray[setIdx] || 0;
+
+        // Formula: (BMC + (WF × Weight)) × (Reps ÷ 10)
+        const setCalories = (bmc + (wf * weight)) * (reps / 10);
+        totalExerciseCalories += setCalories;
+      }
+    });
+
+    // Calculate session duration in minutes
+    const endTime = new Date();
+    const durationMs = endTime - startTime;
+    const durationMinutes = durationMs / (1000 * 60);
+
+    // Baseline calories: 2.5 kcal per minute
+    const baselineCalories = durationMinutes * 2.5;
+
+    // Total calories
+    const totalCalories = totalExerciseCalories + baselineCalories;
+
+    return Math.round(totalCalories);
+  };
+
   // Get current reps (modified or original)
   const getCurrentReps = () => {
     const day = routine?.days?.[paramsRef.current.dayIndex];
@@ -394,16 +449,27 @@ export default function TrainingScreen({ route, navigation }) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
-    
+
     if (hasChanges) {
       await saveModifiedExercises();
     }
-    
+
+    // Calculate calories burned
+    const calories = calculateCalories(workoutStartTime);
+    setCaloriesBurned(calories);
+
+    // Calculate workout duration in minutes
+    const durationMinutes = workoutStartTime
+      ? Math.round((new Date() - workoutStartTime) / (1000 * 60))
+      : 0;
+
     await saveLastWorkout({
       routineId: paramsRef.current.routineId,
       dayIndex: paramsRef.current.dayIndex,
       routineName: routine?.name,
       dayName: routine?.days?.[paramsRef.current.dayIndex]?.name,
+      calories,
+      durationMinutes,
     });
 
     await addToHistory({
@@ -412,6 +478,8 @@ export default function TrainingScreen({ route, navigation }) {
       routineName: routine?.name,
       dayName: routine?.days?.[paramsRef.current.dayIndex]?.name,
       exerciseCount: routine?.days?.[paramsRef.current.dayIndex]?.exercises?.length || 0,
+      calories,
+      durationMinutes,
     });
 
     setWorkoutComplete(true);
@@ -550,12 +618,19 @@ export default function TrainingScreen({ route, navigation }) {
             <Text style={styles.completeTitle}>{t('workoutComplete', lang)}</Text>
             <Text style={styles.completeRoutine}>{routine.name}</Text>
             <Text style={styles.completeDay}>{getDayName(day)}</Text>
+
+            {/* Calories burned display */}
+            <View style={styles.caloriesContainer}>
+              <Text style={styles.caloriesValue}>{caloriesBurned}</Text>
+              <Text style={styles.caloriesLabel}>{t('estimatedCalories', lang) || 'estimated calories'}</Text>
+            </View>
+
             {hasChanges && (
               <Text style={styles.changesNote}>
                 {t('changesDetected', lang) || '* Changes were made to reps/weights'}
               </Text>
             )}
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.finishButton}
               onPress={handleFinishAndGoHome}
             >
@@ -590,9 +665,12 @@ export default function TrainingScreen({ route, navigation }) {
                 {day?.exercises?.length || 0} {t('exercisesLabel', lang).toLowerCase()}
               </Text>
               
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.startButton}
-                onPress={() => setWorkoutStarted(true)}
+                onPress={() => {
+                  setWorkoutStartTime(new Date());
+                  setWorkoutStarted(true);
+                }}
               >
                 <Text style={styles.startButtonText}>{t('startWorkoutButton', lang)}</Text>
               </TouchableOpacity>
@@ -769,7 +847,7 @@ const styles = StyleSheet.create({
   
   // Overlay card for content on background images
   overlayCard: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
     borderRadius: borderRadius.xl,
     padding: spacing.xl,
     alignItems: 'center',
@@ -819,6 +897,27 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     marginTop: spacing.md,
   },
+  caloriesContainer: {
+    alignItems: 'center',
+    marginTop: spacing.lg,
+    marginBottom: spacing.sm,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xl,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: borderRadius.lg,
+  },
+  caloriesValue: {
+    fontFamily: fonts.bold,
+    color: colors.accent,
+    fontSize: 48,
+  },
+  caloriesLabel: {
+    fontFamily: fonts.regular,
+    color: colors.textLight,
+    fontSize: fontSize.sm,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
   finishButton: {
     backgroundColor: colors.accent,
     paddingHorizontal: spacing.xl,
@@ -844,7 +943,7 @@ const styles = StyleSheet.create({
   exitButton: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
     borderRadius: borderRadius.md,
   },
   exitButtonText: {

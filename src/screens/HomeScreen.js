@@ -241,12 +241,12 @@ const styles = StyleSheet.create({
   suggestedTitle: {
     fontFamily: fonts.bold,
     fontSize: fontSize.xl,
-    color: colors.white,
+    color: 'rgba(0,0,0,1)',
   },
   suggestedDay: {
     fontFamily: fonts.regular,
     fontSize: fontSize.md,
-    color: 'rgba(255,255,255,0.8)',
+    color: 'rgba(0,0,0,1)',
     marginTop: spacing.xs,
   },
   emptyWarning: {
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
   },
   suggestedButtonText: {
     fontFamily: fonts.bold,
-    color: colors.accent,
+    color: colors.textPrimary,
     fontSize: fontSize.md,
   },
   suggestedButtonTextDisabled: {
