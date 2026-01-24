@@ -1,5 +1,5 @@
 // Exercises Screen - Browse all exercises by muscle group
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
   Switch,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 import { colors, spacing, borderRadius, fonts, fontSize, shadows } from '../theme';
 import { 
   exercises, 
@@ -32,10 +33,12 @@ export default function ExercisesScreen() {
   const [settings, setSettings] = useState({ language: 'en' });
   const [excludedExercises, setExcludedExercises] = useState([]);
 
-  useEffect(() => {
-    loadUserSettings();
-    loadExcluded();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadUserSettings();
+      loadExcluded();
+    }, [])
+  );
 
   const loadUserSettings = async () => {
     const saved = await loadSettings();

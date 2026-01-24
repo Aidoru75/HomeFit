@@ -160,11 +160,19 @@ export default function TrainingScreen({ route, navigation }) {
   };
 
   const exitWithoutSaving = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
     allowNavigation.current = true;
     navigation.goBack();
   };
 
   const saveAndExit = async () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
     try {
       await saveModifiedExercises();
       allowNavigation.current = true;
