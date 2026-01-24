@@ -260,7 +260,7 @@ export default function ProfileScreen() {
                 onChangeText={(text) => {
                   const numericValue = text.replace(/[^0-9.]/g, '');
                   const parts = numericValue.split('.');
-                  const sanitized = parts.length > 2 
+                  const sanitized = parts.length > 2
                     ? parts[0] + '.' + parts.slice(1).join('')
                     : numericValue;
                   updateSetting('userWeight', sanitized);
@@ -271,6 +271,75 @@ export default function ProfileScreen() {
                 maxLength={5}
               />
               <Text style={styles.unitText}>kg</Text>
+            </View>
+          </View>
+
+          {/* Age */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>{t('age', lang)}</Text>
+            <View style={styles.inputWithUnit}>
+              <TextInput
+                style={[styles.textInput, styles.numberInput]}
+                value={settings.userAge}
+                onChangeText={(text) => {
+                  const numericValue = text.replace(/[^0-9]/g, '');
+                  updateSetting('userAge', numericValue);
+                }}
+                placeholder="30"
+                placeholderTextColor={colors.textLight}
+                keyboardType="numeric"
+                maxLength={3}
+              />
+              <Text style={styles.unitText}>{t('years', lang)}</Text>
+            </View>
+          </View>
+
+          {/* Sex */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>{t('sex', lang)}</Text>
+            <View style={styles.sexOptions}>
+              <TouchableOpacity
+                style={[
+                  styles.sexOption,
+                  settings.userSex === 'male' && styles.sexOptionSelected,
+                ]}
+                onPress={() => updateSetting('userSex', 'male')}
+              >
+                <Text style={[
+                  styles.sexOptionText,
+                  settings.userSex === 'male' && styles.sexOptionTextSelected,
+                ]}>
+                  {t('male', lang)}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.sexOption,
+                  settings.userSex === 'female' && styles.sexOptionSelected,
+                ]}
+                onPress={() => updateSetting('userSex', 'female')}
+              >
+                <Text style={[
+                  styles.sexOptionText,
+                  settings.userSex === 'female' && styles.sexOptionTextSelected,
+                ]}>
+                  {t('female', lang)}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.sexOption,
+                  settings.userSex === 'prefer_not_to_say' && styles.sexOptionSelected,
+                ]}
+                onPress={() => updateSetting('userSex', 'prefer_not_to_say')}
+              >
+                <Text style={[
+                  styles.sexOptionText,
+                  settings.userSex === 'prefer_not_to_say' && styles.sexOptionTextSelected,
+                ]}>
+                  {t('preferNotToSay', lang)}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -456,6 +525,32 @@ const styles = StyleSheet.create({
     fontSize: fontSize.lg,
     color: colors.textSecondary,
     minWidth: 30,
+  },
+  sexOptions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  sexOption: {
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.white,
+  },
+  sexOptionSelected: {
+    backgroundColor: colors.accent,
+    borderColor: colors.accent,
+  },
+  sexOptionText: {
+    fontFamily: fonts.regular,
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
+  },
+  sexOptionTextSelected: {
+    color: colors.white,
+    fontFamily: fonts.bold,
   },
   statsRow: {
     flexDirection: 'row',

@@ -17,6 +17,8 @@ const DEFAULT_SETTINGS = {
   userName: '',
   userHeight: '',  // in cm
   userWeight: '',  // in kg
+  userAge: '',     // years
+  userSex: '',     // 'male', 'female', or 'prefer_not_to_say'
   language: 'en', // 'en' or 'es'
   soundEnabled: true,
   soundVolume: 1.0, // 0.0 to 1.0

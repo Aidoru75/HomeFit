@@ -245,15 +245,50 @@ export default function TrainingScreen({ route, navigation }) {
     return exercises.find(e => e.id === exerciseId);
   };
 
-  // Calculate calories burned during the workout
-  // Formula: Exercise Calories = Sets × (BMC + (WF × Weight)) × (Reps ÷ 10)
-  // Plus baseline: Duration (minutes) × 2.5 kcal/min
+  // Calculate calories burned during the workout using personalized data
+  // Enhanced formula incorporating user weight, height, age, and sex
   const calculateCalories = (startTime) => {
     const day = routine?.days?.[paramsRef.current.dayIndex];
     if (!day?.exercises || !startTime) return 0;
 
     // Use ref to get the latest modifications
     const currentModifiedExercises = modifiedExercisesRef.current;
+
+    // Get user data with fallbacks
+    const userWeight = parseFloat(settings.userWeight) || 75; // Default 75kg
+    const userHeight = parseFloat(settings.userHeight) || 170; // Default 170cm
+    const userAge = parseInt(settings.userAge) || 30; // Default 30 years
+    const userSex = settings.userSex || 'male'; // Default male
+
+    // Calculate BMR using Mifflin-St Jeor Equation
+    let bmr;
+    if (userSex === 'female') {
+      // Women: BMR = (10 × weight_kg) + (6.25 × height_cm) - (5 × age_years) - 161
+      bmr = (10 * userWeight) + (6.25 * userHeight) - (5 * userAge) - 161;
+    } else {
+      // Men (and "prefer not to say"): BMR = (10 × weight_kg) + (6.25 × height_cm) - (5 × age_years) + 5
+      bmr = (10 * userWeight) + (6.25 * userHeight) - (5 * userAge) + 5;
+    }
+
+    // Calculate personalized baseline rate
+    // BMR per minute with activity factor of 2.0 for gym activity
+    const bmrPerMinute = bmr / 1440; // 1440 minutes in a day
+    const activityFactor = 2.0;
+    const personalizedBaselineRate = bmrPerMinute * activityFactor;
+
+    // Calculate User Mass Factor (75kg is reference weight)
+    // Using 0.75 exponent for metabolic scaling
+    const massFactor = Math.pow(userWeight / 75, 0.75);
+
+    // Calculate BMI and Metabolic Efficiency
+    const heightM = userHeight / 100;
+    const bmi = userWeight / (heightM * heightM);
+    let metabolicEfficiency = 1.0;
+    if (bmi < 18.5) {
+      metabolicEfficiency = 1.1; // Underweight - higher metabolic rate per kg
+    } else if (bmi > 25) {
+      metabolicEfficiency = 0.9; // Overweight - lower metabolic rate per kg
+    }
 
     let totalExerciseCalories = 0;
 
@@ -265,6 +300,7 @@ export default function TrainingScreen({ route, navigation }) {
       const bmc = exerciseData.bmc || 1.0;
       const wf = exerciseData.wf || 0.0;
       const sets = ex.sets || 3;
+      const isBodyweight = wf === 0.0; // Bodyweight exercises have wf = 0
 
       // Get reps and weights (modified or original)
       const mods = currentModifiedExercises[exIndex];
@@ -276,8 +312,14 @@ export default function TrainingScreen({ route, navigation }) {
         const reps = repsArray[setIdx] || 10;
         const weight = weightsArray[setIdx] || 0;
 
-        // Formula: (BMC + (WF × Weight)) × (Reps ÷ 10)
-        const setCalories = (bmc + (wf * weight)) * (reps / 10);
+        let setCalories;
+        if (isBodyweight) {
+          // Bodyweight exercise: calories = (BMC × user_weight/75) × (reps/10)
+          setCalories = (bmc * userWeight / 75) * (reps / 10);
+        } else {
+          // Weighted exercise: calories = (BMC + (WF × weight_lifted)) × (reps/10) × mass_factor
+          setCalories = (bmc + (wf * weight)) * (reps / 10) * massFactor;
+        }
         totalExerciseCalories += setCalories;
       }
     });
@@ -287,11 +329,15 @@ export default function TrainingScreen({ route, navigation }) {
     const durationMs = endTime - startTime;
     const durationMinutes = durationMs / (1000 * 60);
 
-    // Baseline calories: 2.5 kcal per minute
-    const baselineCalories = durationMinutes * 2.5;
+    // Calculate baseline calories with personalized rate
+    const baselineCalories = durationMinutes * personalizedBaselineRate;
+
+    // Apply metabolic efficiency to both exercise and baseline calories
+    const adjustedExerciseCalories = totalExerciseCalories * metabolicEfficiency;
+    const adjustedBaselineCalories = baselineCalories * metabolicEfficiency;
 
     // Total calories
-    const totalCalories = totalExerciseCalories + baselineCalories;
+    const totalCalories = adjustedExerciseCalories + adjustedBaselineCalories;
 
     return Math.round(totalCalories);
   };
