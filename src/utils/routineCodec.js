@@ -33,7 +33,9 @@ export const encodeRoutine = (routine) => {
       }
 
       const setsData = encodeSets(ex.sets, ex.reps, ex.weights);
-      return `(${numericId}|${setsData})`;
+      // Include superset group if present
+      const supersetPart = ex.supersetGroup ? `|s${ex.supersetGroup}` : '';
+      return `(${numericId}|${setsData}${supersetPart})`;
     }).filter(Boolean).join('');
 
     return `${restSets},${restEx}${encodedExercises}`;
@@ -130,12 +132,14 @@ export const decodeRoutine = (code) => {
         restBetweenExercises = parseInt(restMatch[2]);
       }
 
-      // Parse exercises: (id|setsData)
+      // Parse exercises: (id|setsData) or (id|setsData|sN) for supersets
       const exerciseMatches = dayContent.match(/\((\d+)\|([^)]+)\)/g);
       const exercises = exerciseMatches ? exerciseMatches.map(exStr => {
         // Remove parentheses and parse
         const inner = exStr.slice(1, -1);
-        const [numericIdStr, setsData] = inner.split('|');
+        const parts = inner.split('|');
+        const numericIdStr = parts[0];
+        const setsData = parts[1];
         const numericId = parseInt(numericIdStr);
         const exerciseId = getExerciseId(numericId);
 
@@ -146,11 +150,18 @@ export const decodeRoutine = (code) => {
 
         const { sets, reps, weights } = decodeSets(setsData);
 
+        // Parse superset group if present (format: sN where N is group number)
+        let supersetGroup = null;
+        if (parts[2] && parts[2].startsWith('s')) {
+          supersetGroup = parseInt(parts[2].slice(1)) || null;
+        }
+
         return {
           exerciseId,
           sets,
           reps,
           weights,
+          supersetGroup,
         };
       }).filter(Boolean) : [];
 

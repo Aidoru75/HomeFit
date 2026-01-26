@@ -282,6 +282,88 @@ export default function TrainingScreen({ route, navigation }) {
     return exercises.find(e => e.id === exerciseId);
   };
 
+  // ============ SUPERSET HELPERS ============
+
+  // Get all exercises in the same superset as the given exercise
+  const getSupersetExercises = (exerciseIndex) => {
+    const day = routine?.days?.[paramsRef.current.dayIndex];
+    if (!day?.exercises) return [exerciseIndex];
+
+    const currentEx = day.exercises[exerciseIndex];
+    if (!currentEx?.supersetGroup) return [exerciseIndex];
+
+    const group = currentEx.supersetGroup;
+    const indices = [];
+
+    // Find consecutive exercises with the same superset group
+    // Start from exerciseIndex and go backwards to find the start
+    let start = exerciseIndex;
+    while (start > 0 && day.exercises[start - 1]?.supersetGroup === group) {
+      start--;
+    }
+
+    // Now collect all consecutive exercises with this group
+    for (let i = start; i < day.exercises.length; i++) {
+      if (day.exercises[i]?.supersetGroup === group) {
+        indices.push(i);
+      } else {
+        break;
+      }
+    }
+
+    return indices.length > 1 ? indices : [exerciseIndex];
+  };
+
+  // Check if current exercise is in a superset
+  const isInSuperset = () => {
+    return getSupersetExercises(currentExerciseIndex).length > 1;
+  };
+
+  // Check if current exercise is the last in its superset
+  const isLastInSuperset = () => {
+    const supersetIndices = getSupersetExercises(currentExerciseIndex);
+    return supersetIndices[supersetIndices.length - 1] === currentExerciseIndex;
+  };
+
+  // Get the first exercise index in the current superset
+  const getFirstInSuperset = () => {
+    return getSupersetExercises(currentExerciseIndex)[0];
+  };
+
+  // Get the next exercise index in the superset (or null if at end)
+  const getNextInSuperset = () => {
+    const supersetIndices = getSupersetExercises(currentExerciseIndex);
+    const currentPos = supersetIndices.indexOf(currentExerciseIndex);
+    if (currentPos < supersetIndices.length - 1) {
+      return supersetIndices[currentPos + 1];
+    }
+    return null;
+  };
+
+  // Get the exercise index after the superset ends
+  const getExerciseAfterSuperset = () => {
+    const day = routine?.days?.[paramsRef.current.dayIndex];
+    const supersetIndices = getSupersetExercises(currentExerciseIndex);
+    const lastInSuperset = supersetIndices[supersetIndices.length - 1];
+    if (lastInSuperset < day?.exercises?.length - 1) {
+      return lastInSuperset + 1;
+    }
+    return null;
+  };
+
+  // Get the minimum sets count across all exercises in current superset
+  const getSupersetSetsCount = () => {
+    const day = routine?.days?.[paramsRef.current.dayIndex];
+    const supersetIndices = getSupersetExercises(currentExerciseIndex);
+    let minSets = Infinity;
+    supersetIndices.forEach(idx => {
+      const ex = day?.exercises?.[idx];
+      const sets = ex?.sets || 3;
+      if (sets < minSets) minSets = sets;
+    });
+    return minSets === Infinity ? 3 : minSets;
+  };
+
   // Calculate calories burned during the workout using personalized data
   // Enhanced formula incorporating user weight, height, age, and sex
   const calculateCalories = (startTime) => {
@@ -521,16 +603,50 @@ export default function TrainingScreen({ route, navigation }) {
   const completeSet = () => {
     const day = routine?.days?.[paramsRef.current.dayIndex];
     const currentEx = day?.exercises?.[currentExerciseIndex];
-    
-    if (currentSetIndex < (currentEx?.sets || 3) - 1) {
-      setCurrentSetIndex(prev => prev + 1);
-      startRest(false);
-    } else if (currentExerciseIndex < day?.exercises?.length - 1) {
-      setCurrentExerciseIndex(prev => prev + 1);
-      setCurrentSetIndex(0);
-      startRest(true);
+    const supersetIndices = getSupersetExercises(currentExerciseIndex);
+    const inSuperset = supersetIndices.length > 1;
+    const supersetSets = inSuperset ? getSupersetSetsCount() : (currentEx?.sets || 3);
+
+    if (inSuperset) {
+      // SUPERSET FLOW
+      const nextInSuperset = getNextInSuperset();
+
+      if (nextInSuperset !== null) {
+        // More exercises in superset for this round - move to next (NO REST)
+        setCurrentExerciseIndex(nextInSuperset);
+        // Keep same set index
+      } else {
+        // Completed all exercises in superset for this set
+        if (currentSetIndex < supersetSets - 1) {
+          // More sets to do - go back to first exercise in superset
+          const firstInSuperset = getFirstInSuperset();
+          setCurrentExerciseIndex(firstInSuperset);
+          setCurrentSetIndex(prev => prev + 1);
+          startRest(false); // Rest between superset rounds
+        } else {
+          // Superset complete - move to next exercise/superset or finish
+          const nextAfterSuperset = getExerciseAfterSuperset();
+          if (nextAfterSuperset !== null) {
+            setCurrentExerciseIndex(nextAfterSuperset);
+            setCurrentSetIndex(0);
+            startRest(true); // Rest between exercises/supersets
+          } else {
+            finishWorkout();
+          }
+        }
+      }
     } else {
-      finishWorkout();
+      // NORMAL FLOW (no superset)
+      if (currentSetIndex < (currentEx?.sets || 3) - 1) {
+        setCurrentSetIndex(prev => prev + 1);
+        startRest(false);
+      } else if (currentExerciseIndex < day?.exercises?.length - 1) {
+        setCurrentExerciseIndex(prev => prev + 1);
+        setCurrentSetIndex(0);
+        startRest(true);
+      } else {
+        finishWorkout();
+      }
     }
   };
 
@@ -593,8 +709,49 @@ export default function TrainingScreen({ route, navigation }) {
   const getNextInfo = () => {
     const day = routine?.days?.[paramsRef.current.dayIndex];
     const currentEx = day?.exercises?.[currentExerciseIndex];
+    const supersetIndices = getSupersetExercises(currentExerciseIndex);
+    const inSuperset = supersetIndices.length > 1;
 
-    // After completeSet(), currentSetIndex already points to the next set we're about to do
+    if (inSuperset) {
+      // SUPERSET: Show info about first exercise in superset for the upcoming set
+      const firstIdx = supersetIndices[0];
+      const firstEx = day?.exercises?.[firstIdx];
+      const exerciseData = getExerciseData(firstEx?.exerciseId);
+      const nextReps = modifiedExercises[firstIdx]?.reps[currentSetIndex]
+        || firstEx?.reps?.[currentSetIndex] || 10;
+      const nextWeight = modifiedExercises[firstIdx]?.weights[currentSetIndex]
+        || firstEx?.weights?.[currentSetIndex] || 0;
+
+      // Get names of all exercises in superset
+      const supersetNames = supersetIndices.map(idx => {
+        const ex = day?.exercises?.[idx];
+        const data = getExerciseData(ex?.exerciseId);
+        return data ? getExerciseName(data, lang) : 'Exercise';
+      });
+
+      // Weight change comparison
+      const prevWeight = currentSetIndex > 0
+        ? (modifiedExercises[firstIdx]?.weights[currentSetIndex - 1]
+           || firstEx?.weights?.[currentSetIndex - 1] || 0)
+        : null;
+      const weightChanged = prevWeight !== null && nextWeight !== prevWeight;
+
+      return {
+        exerciseId: firstEx?.exerciseId,
+        name: supersetNames[0],
+        set: currentSetIndex + 1,
+        reps: nextReps,
+        weight: nextWeight,
+        weightChanged,
+        isSuperset: true,
+        supersetExercises: supersetIndices.map(idx => ({
+          exerciseId: day?.exercises?.[idx]?.exerciseId,
+          name: supersetNames[supersetIndices.indexOf(idx)],
+        })),
+      };
+    }
+
+    // Normal flow (not in superset)
     if (currentSetIndex < (currentEx?.sets || 3)) {
       const exerciseData = getExerciseData(currentEx?.exerciseId);
       const nextReps = modifiedExercises[currentExerciseIndex]?.reps[currentSetIndex]
@@ -602,8 +759,6 @@ export default function TrainingScreen({ route, navigation }) {
       const nextWeight = modifiedExercises[currentExerciseIndex]?.weights[currentSetIndex]
         || currentEx?.weights?.[currentSetIndex] || 0;
 
-      // Get previous set's weight for comparison (only for set > 1)
-      // currentSetIndex is the next set (0-indexed), so previous set is at index currentSetIndex - 1
       const prevWeight = currentSetIndex > 0
         ? (modifiedExercises[currentExerciseIndex]?.weights[currentSetIndex - 1]
            || currentEx?.weights?.[currentSetIndex - 1] || 0)
@@ -617,6 +772,7 @@ export default function TrainingScreen({ route, navigation }) {
         reps: nextReps,
         weight: nextWeight,
         weightChanged,
+        isSuperset: false,
       };
     }
 
@@ -633,7 +789,8 @@ export default function TrainingScreen({ route, navigation }) {
         set: 1,
         reps: nextReps,
         weight: nextWeight,
-        weightChanged: false,  // First set of new exercise, no comparison
+        weightChanged: false,
+        isSuperset: false,
       };
     }
 
@@ -802,22 +959,48 @@ export default function TrainingScreen({ route, navigation }) {
         
         {nextInfo && (
           <View style={styles.nextPreview}>
-            <Text style={styles.nextLabel}>{t('upNext', lang)}</Text>
-            <View style={styles.nextImageContainer}>
-              <ExerciseImage 
-                exerciseId={nextInfo.exerciseId} 
-                size={80}
-                animate={true}
-                animationDuration={1500}
-              />
-            </View>
-            <Text style={styles.nextExercise}>{nextInfo.name}</Text>
-            <Text style={styles.nextDetails}>
-              {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {t('reps', lang).toLowerCase()}
+            <Text style={styles.nextLabel}>
+              {nextInfo.isSuperset ? `${t('superset', lang).toUpperCase()} - ${t('upNext', lang)}` : t('upNext', lang)}
             </Text>
-            <Text style={[styles.nextWeight, nextInfo.weightChanged && styles.nextWeightChanged]}>
-              {nextInfo.weight > 0 && ` ${formatWeight(nextInfo.weight)}kg`}
-            </Text>
+
+            {nextInfo.isSuperset && nextInfo.supersetExercises ? (
+              // Superset preview - show all exercises
+              <View style={styles.supersetPreview}>
+                {nextInfo.supersetExercises.map((ex, idx) => (
+                  <View key={idx} style={styles.supersetExerciseRow}>
+                    <ExerciseImage
+                      exerciseId={ex.exerciseId}
+                      size={50}
+                      animate={true}
+                      animationDuration={1500}
+                    />
+                    <Text style={styles.supersetExerciseName}>{ex.name}</Text>
+                  </View>
+                ))}
+                <Text style={styles.nextDetails}>
+                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {t('reps', lang).toLowerCase()}
+                </Text>
+              </View>
+            ) : (
+              // Normal single exercise preview
+              <>
+                <View style={styles.nextImageContainer}>
+                  <ExerciseImage
+                    exerciseId={nextInfo.exerciseId}
+                    size={80}
+                    animate={true}
+                    animationDuration={1500}
+                  />
+                </View>
+                <Text style={styles.nextExercise}>{nextInfo.name}</Text>
+                <Text style={styles.nextDetails}>
+                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {t('reps', lang).toLowerCase()}
+                </Text>
+                <Text style={[styles.nextWeight, nextInfo.weightChanged && styles.nextWeightChanged]}>
+                  {nextInfo.weight > 0 && ` ${formatWeight(nextInfo.weight)}kg`}
+                </Text>
+              </>
+            )}
           </View>
         )}
         
@@ -850,6 +1033,15 @@ export default function TrainingScreen({ route, navigation }) {
         <Text style={styles.setIndicator}>
           {t('set', lang).toUpperCase()} {currentSetIndex + 1} / {currentEx?.sets || 3}
         </Text>
+
+        {/* Superset indicator */}
+        {isInSuperset() && (
+          <View style={styles.supersetIndicator}>
+            <Text style={styles.supersetIndicatorText}>
+              ⛓ {t('superset', lang)} {getSupersetExercises(currentExerciseIndex).indexOf(currentExerciseIndex) + 1}/{getSupersetExercises(currentExerciseIndex).length}
+            </Text>
+          </View>
+        )}
 
         {/* Exercise Image */}
         <View style={styles.imageContainer}>
@@ -1158,6 +1350,39 @@ const styles = StyleSheet.create({
   },
   nextWeightChanged: {
     color: colors.accent,
+  },
+  supersetPreview: {
+    width: '100%',
+    alignItems: 'center',
+    marginTop: spacing.sm,
+  },
+  supersetExerciseRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: borderRadius.md,
+    padding: spacing.sm,
+    marginVertical: spacing.xs,
+    width: '100%',
+  },
+  supersetExerciseName: {
+    fontFamily: fonts.bold,
+    color: '#000000',
+    fontSize: fontSize.md,
+    marginLeft: spacing.md,
+    flex: 1,
+  },
+  supersetIndicator: {
+    backgroundColor: 'rgba(255, 107, 107, 0.15)',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.round,
+    marginTop: spacing.xs,
+  },
+  supersetIndicatorText: {
+    fontFamily: fonts.bold,
+    color: colors.accent,
+    fontSize: fontSize.sm,
   },
   skipRestButton: {
     backgroundColor: '#000000',

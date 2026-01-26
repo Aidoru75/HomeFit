@@ -72,6 +72,13 @@ export const translations = {
     dayNamePlaceholder: 'e.g., Push Day, Leg Day',
     renameDayHint: 'Leave empty to use default name',
 
+    // Supersets
+    superset: 'Superset',
+    linkSuperset: 'Link as Superset',
+    unlinkSuperset: 'Unlink Superset',
+    supersetWith: 'Superset with next',
+    inSuperset: 'In superset',
+
     // QR Sharing
     shareRoutine: 'Share',
     importRoutine: 'Import',
@@ -218,6 +225,13 @@ export const translations = {
     dayName: 'Nombre del Día',
     dayNamePlaceholder: 'ej., Día de Empuje, Día de Piernas',
     renameDayHint: 'Déjalo vacío para usar el nombre por defecto',
+
+    // Supersets
+    superset: 'Superserie',
+    linkSuperset: 'Vincular como Superserie',
+    unlinkSuperset: 'Desvincular Superserie',
+    supersetWith: 'Superserie con siguiente',
+    inSuperset: 'En superserie',
 
     // QR Sharing
     shareRoutine: 'Compartir',

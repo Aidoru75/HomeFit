@@ -443,7 +443,7 @@ export default function RoutinesScreen({ navigation, route }) {
 
   const moveExercise = async (dayIndex, fromIndex, toIndex) => {
     if (fromIndex === toIndex) return;
-    
+
     const updatedDays = [...selectedRoutine.days];
     const exercises = [...updatedDays[dayIndex].exercises];
     const [moved] = exercises.splice(fromIndex, 1);
@@ -453,6 +453,73 @@ export default function RoutinesScreen({ navigation, route }) {
     const updated = await updateRoutine(selectedRoutine.id, { days: updatedDays });
     setSelectedRoutine(updated);
     setRoutines(routines.map(r => r.id === updated.id ? updated : r));
+  };
+
+  // Toggle superset link between two consecutive exercises
+  const toggleSuperset = async (dayIndex, exerciseIndex) => {
+    const updatedDays = [...selectedRoutine.days];
+    const exercises = [...updatedDays[dayIndex].exercises];
+
+    const currentEx = exercises[exerciseIndex];
+    const nextEx = exercises[exerciseIndex + 1];
+
+    if (!nextEx) return;
+
+    // Check if they're already in the same superset
+    const currentGroup = currentEx.supersetGroup;
+    const nextGroup = nextEx.supersetGroup;
+    const areLinked = currentGroup && nextGroup && currentGroup === nextGroup;
+
+    if (areLinked) {
+      // Unlink: remove superset group from both
+      exercises[exerciseIndex] = { ...currentEx, supersetGroup: null };
+      exercises[exerciseIndex + 1] = { ...nextEx, supersetGroup: null };
+    } else {
+      // Link: assign same superset group
+      // Find the highest existing group number and use next
+      let maxGroup = 0;
+      exercises.forEach(ex => {
+        if (ex.supersetGroup && ex.supersetGroup > maxGroup) {
+          maxGroup = ex.supersetGroup;
+        }
+      });
+      const newGroup = currentGroup || nextGroup || (maxGroup + 1);
+      exercises[exerciseIndex] = { ...currentEx, supersetGroup: newGroup };
+      exercises[exerciseIndex + 1] = { ...nextEx, supersetGroup: newGroup };
+    }
+
+    updatedDays[dayIndex].exercises = exercises;
+    const updated = await updateRoutine(selectedRoutine.id, { days: updatedDays });
+    setSelectedRoutine(updated);
+    setRoutines(routines.map(r => r.id === updated.id ? updated : r));
+  };
+
+  // Check if exercise is in a superset with the next exercise
+  const isLinkedWithNext = (dayIndex, exerciseIndex) => {
+    const exercises = selectedRoutine?.days?.[dayIndex]?.exercises;
+    if (!exercises || exerciseIndex >= exercises.length - 1) return false;
+
+    const currentEx = exercises[exerciseIndex];
+    const nextEx = exercises[exerciseIndex + 1];
+
+    return currentEx.supersetGroup && nextEx.supersetGroup &&
+           currentEx.supersetGroup === nextEx.supersetGroup;
+  };
+
+  // Check if exercise is part of any superset
+  const isInSuperset = (dayIndex, exerciseIndex) => {
+    const exercises = selectedRoutine?.days?.[dayIndex]?.exercises;
+    if (!exercises) return false;
+
+    const currentEx = exercises[exerciseIndex];
+    if (!currentEx.supersetGroup) return false;
+
+    // Check if any adjacent exercise has the same group
+    const prevEx = exercises[exerciseIndex - 1];
+    const nextEx = exercises[exerciseIndex + 1];
+
+    return (prevEx?.supersetGroup === currentEx.supersetGroup) ||
+           (nextEx?.supersetGroup === currentEx.supersetGroup);
   };
 
   // Get available exercises (not excluded)
@@ -655,48 +722,83 @@ export default function RoutinesScreen({ navigation, route }) {
             day.exercises.map((ex, exIndex) => {
               const exerciseData = getExerciseById(ex.exerciseId);
               const totalWeight = ex.weights ? ex.weights.reduce((a, b) => a + b, 0) : 0;
+              const inSuperset = isInSuperset(dayIndex, exIndex);
+              const linkedWithNext = isLinkedWithNext(dayIndex, exIndex);
+              const isLastExercise = exIndex === day.exercises.length - 1;
+
               return (
-                <TouchableOpacity 
-                  key={exIndex} 
-                  style={styles.exerciseItem}
-                  onPress={() => openEditExerciseModal(dayIndex, exIndex)}
-                >
-                  <View style={styles.exerciseThumbnail}>
-                    <ExerciseImage 
-                      exerciseId={ex.exerciseId} 
-                      size={40} 
-                      showEndImage={true}
-                      animate={false}
-                    />
-                  </View>
-                  <View style={styles.exerciseInfo}>
-                    <Text style={styles.exerciseItemName}>
-                      {exerciseData ? getExerciseName(exerciseData, lang) : 'Unknown'}
-                    </Text>
-                    <Text style={styles.exerciseItemDetails}>
-                      {ex.sets} {t('sets', lang).toLowerCase()} • {ex.reps?.[0] || 10} {t('reps', lang).toLowerCase()}
-                      {totalWeight > 0 && ` • ${ex.weights[0]}kg`}
-                    </Text>
-                  </View>
-                  <View style={styles.reorderButtons}>
-                    {exIndex > 0 && (
-                      <TouchableOpacity
-                        style={styles.reorderButton}
-                        onPress={() => moveExercise(dayIndex, exIndex, exIndex - 1)}
-                      >
-                        <Text style={styles.reorderIcon}>▲</Text>
-                      </TouchableOpacity>
-                    )}
-                    {exIndex < day.exercises.length - 1 && (
-                      <TouchableOpacity
-                        style={styles.reorderButton}
-                        onPress={() => moveExercise(dayIndex, exIndex, exIndex + 1)}
-                      >
-                        <Text style={styles.reorderIcon}>▼</Text>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                </TouchableOpacity>
+                <React.Fragment key={exIndex}>
+                  <TouchableOpacity
+                    style={[
+                      styles.exerciseItem,
+                      inSuperset && styles.exerciseItemSuperset,
+                    ]}
+                    onPress={() => openEditExerciseModal(dayIndex, exIndex)}
+                  >
+                    {/* Superset indicator bar */}
+                    {inSuperset && <View style={styles.supersetBar} />}
+
+                    <View style={styles.exerciseThumbnail}>
+                      <ExerciseImage
+                        exerciseId={ex.exerciseId}
+                        size={40}
+                        showEndImage={true}
+                        animate={false}
+                      />
+                    </View>
+                    <View style={styles.exerciseInfo}>
+                      <Text style={styles.exerciseItemName}>
+                        {exerciseData ? getExerciseName(exerciseData, lang) : 'Unknown'}
+                      </Text>
+                      <Text style={styles.exerciseItemDetails}>
+                        {ex.sets} {t('sets', lang).toLowerCase()} • {ex.reps?.[0] || 10} {t('reps', lang).toLowerCase()}
+                        {totalWeight > 0 && ` • ${ex.weights[0]}kg`}
+                      </Text>
+                    </View>
+                    <View style={styles.reorderButtons}>
+                      {exIndex > 0 && (
+                        <TouchableOpacity
+                          style={styles.reorderButton}
+                          onPress={() => moveExercise(dayIndex, exIndex, exIndex - 1)}
+                        >
+                          <Text style={styles.reorderIcon}>▲</Text>
+                        </TouchableOpacity>
+                      )}
+                      {exIndex < day.exercises.length - 1 && (
+                        <TouchableOpacity
+                          style={styles.reorderButton}
+                          onPress={() => moveExercise(dayIndex, exIndex, exIndex + 1)}
+                        >
+                          <Text style={styles.reorderIcon}>▼</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  </TouchableOpacity>
+
+                  {/* Superset link button between exercises */}
+                  {!isLastExercise && (
+                    <TouchableOpacity
+                      style={[
+                        styles.supersetLinkButton,
+                        linkedWithNext && styles.supersetLinkButtonActive,
+                      ]}
+                      onPress={() => toggleSuperset(dayIndex, exIndex)}
+                    >
+                      <Text style={[
+                        styles.supersetLinkIcon,
+                        linkedWithNext && styles.supersetLinkIconActive,
+                      ]}>
+                        {linkedWithNext ? '⛓' : '○'}
+                      </Text>
+                      <Text style={[
+                        styles.supersetLinkText,
+                        linkedWithNext && styles.supersetLinkTextActive,
+                      ]}>
+                        {linkedWithNext ? t('inSuperset', lang) : t('linkSuperset', lang)}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </React.Fragment>
               );
             })
           )}
@@ -1420,6 +1522,21 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
     borderTopWidth: 1,
     borderTopColor: colors.border,
+    position: 'relative',
+  },
+  exerciseItemSuperset: {
+    backgroundColor: 'rgba(255, 107, 107, 0.08)',
+    marginLeft: spacing.sm,
+    borderRadius: borderRadius.sm,
+  },
+  supersetBar: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 3,
+    backgroundColor: colors.accent,
+    borderRadius: 2,
   },
   exerciseThumbnail: {
     marginRight: spacing.sm,
@@ -1450,6 +1567,40 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     color: colors.accent,
     fontSize: fontSize.sm,
+  },
+  supersetLinkButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.xs,
+    marginVertical: 2,
+    marginHorizontal: spacing.lg,
+    borderRadius: borderRadius.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderStyle: 'dashed',
+  },
+  supersetLinkButtonActive: {
+    backgroundColor: 'rgba(255, 107, 107, 0.15)',
+    borderColor: colors.accent,
+    borderStyle: 'solid',
+  },
+  supersetLinkIcon: {
+    fontSize: fontSize.sm,
+    marginRight: spacing.xs,
+    color: colors.textLight,
+  },
+  supersetLinkIconActive: {
+    color: colors.accent,
+  },
+  supersetLinkText: {
+    fontFamily: fonts.regular,
+    fontSize: fontSize.xs,
+    color: colors.textLight,
+  },
+  supersetLinkTextActive: {
+    fontFamily: fonts.bold,
+    color: colors.accent,
   },
   bottomPadding: {
     height: 100,

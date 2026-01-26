@@ -95,6 +95,7 @@ The active workout screen has complex state management:
 - **Background handling**: Uses `restEndTimeRef` timestamp to correctly calculate remaining rest time when app returns from background
 - **Modification tracking**: Changes to reps/weights during workout are stored in `modifiedExercises` state and saved to the routine on workout completion
 - **Navigation blocking**: Prevents accidental exit with unsaved changes
+- **Superset handling**: Helper functions detect superset groupings and modify flow to skip rest between superset exercises
 
 ### Routine Data Structure
 Routines stored in AsyncStorage follow this structure:
@@ -111,11 +112,19 @@ Routines stored in AsyncStorage follow this structure:
       exerciseId: string,
       sets: number,
       reps: number[],   // Per-set reps
-      weights: number[] // Per-set weights in kg
+      weights: number[], // Per-set weights in kg
+      supersetGroup: number|null // Superset grouping (null = standalone)
     }]
   }]
 }
 ```
+
+### Superset System
+Exercises can be grouped into supersets for back-to-back execution without rest:
+- **Data**: Exercises with the same non-null `supersetGroup` value are linked
+- **Editing**: RoutinesScreen shows a link button between exercises to toggle superset grouping
+- **Training flow**: Complete Exercise A set 1 → Exercise B set 1 → REST → Exercise A set 2 → Exercise B set 2 → REST
+- **QR sharing**: Superset groups are encoded as `|sN` suffix in the routine codec
 
 ### Audio System
 The app uses expo-audio for workout timer sounds. Sound settings (enabled/volume) are stored in settings. Audio files should be in `assets/audio/` if needed.
