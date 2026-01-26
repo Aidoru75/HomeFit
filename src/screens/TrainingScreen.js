@@ -593,22 +593,33 @@ export default function TrainingScreen({ route, navigation }) {
   const getNextInfo = () => {
     const day = routine?.days?.[paramsRef.current.dayIndex];
     const currentEx = day?.exercises?.[currentExerciseIndex];
-    
+
+    // After completeSet(), currentSetIndex already points to the next set we're about to do
     if (currentSetIndex < (currentEx?.sets || 3)) {
       const exerciseData = getExerciseData(currentEx?.exerciseId);
-      const nextReps = modifiedExercises[currentExerciseIndex]?.reps[currentSetIndex + 1] 
-        || currentEx?.reps?.[currentSetIndex + 1] || 10;
-      const nextWeight = modifiedExercises[currentExerciseIndex]?.weights[currentSetIndex + 1]
-        || currentEx?.weights?.[currentSetIndex + 1] || 0;
+      const nextReps = modifiedExercises[currentExerciseIndex]?.reps[currentSetIndex]
+        || currentEx?.reps?.[currentSetIndex] || 10;
+      const nextWeight = modifiedExercises[currentExerciseIndex]?.weights[currentSetIndex]
+        || currentEx?.weights?.[currentSetIndex] || 0;
+
+      // Get previous set's weight for comparison (only for set > 1)
+      // currentSetIndex is the next set (0-indexed), so previous set is at index currentSetIndex - 1
+      const prevWeight = currentSetIndex > 0
+        ? (modifiedExercises[currentExerciseIndex]?.weights[currentSetIndex - 1]
+           || currentEx?.weights?.[currentSetIndex - 1] || 0)
+        : null;
+      const weightChanged = prevWeight !== null && nextWeight !== prevWeight;
+
       return {
         exerciseId: currentEx?.exerciseId,
         name: exerciseData ? getExerciseName(exerciseData, lang) : 'Next Set',
         set: currentSetIndex + 1,
         reps: nextReps,
         weight: nextWeight,
+        weightChanged,
       };
     }
-    
+
     if (currentExerciseIndex < day?.exercises?.length - 1) {
       const nextEx = day.exercises[currentExerciseIndex + 1];
       const exerciseData = getExerciseData(nextEx.exerciseId);
@@ -622,9 +633,10 @@ export default function TrainingScreen({ route, navigation }) {
         set: 1,
         reps: nextReps,
         weight: nextWeight,
+        weightChanged: false,  // First set of new exercise, no comparison
       };
     }
-    
+
     return null;
   };
 
@@ -802,7 +814,9 @@ export default function TrainingScreen({ route, navigation }) {
             <Text style={styles.nextExercise}>{nextInfo.name}</Text>
             <Text style={styles.nextDetails}>
               {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {t('reps', lang).toLowerCase()}
-              {nextInfo.weight > 0 && ` • ${formatWeight(nextInfo.weight)}kg`}
+            </Text>
+            <Text style={[styles.nextWeight, nextInfo.weightChanged && styles.nextWeightChanged]}>
+              {nextInfo.weight > 0 && ` ${formatWeight(nextInfo.weight)}kg`}
             </Text>
           </View>
         )}
@@ -1002,6 +1016,7 @@ const styles = StyleSheet.create({
     fontSize: 48,
   },
   caloriesLabel: {
+    textAlign: 'center',
     fontFamily: fonts.regular,
     color: colors.textLight,
     fontSize: fontSize.sm,
@@ -1134,6 +1149,15 @@ const styles = StyleSheet.create({
     color: '#666666',
     fontSize: fontSize.md,
     marginTop: spacing.xs,
+  },
+  nextWeight: {
+    fontFamily: fonts.bold,
+    color: '#666666',
+    fontSize: fontSize.xl,
+    marginTop: spacing.xs,
+  },
+  nextWeightChanged: {
+    color: colors.accent,
   },
   skipRestButton: {
     backgroundColor: '#000000',

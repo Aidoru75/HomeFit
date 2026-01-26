@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   suggestedCard: {
-    backgroundColor: colors.accent,
+    backgroundColor: colors.accentlight,
     margin: spacing.md,
     padding: spacing.lg,
     borderRadius: borderRadius.lg,
@@ -252,12 +252,12 @@ const styles = StyleSheet.create({
   suggestedTitle: {
     fontFamily: fonts.bold,
     fontSize: fontSize.xl,
-    color: 'rgba(0,0,0,1)',
+    color: 'rgba(255,255,255,1)',
   },
   suggestedDay: {
     fontFamily: fonts.regular,
     fontSize: fontSize.md,
-    color: 'rgba(0,0,0,1)',
+    color: 'rgba(255,255,255,1)',
     marginTop: spacing.xs,
   },
   emptyWarning: {
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
   suggestedButtonDisabled: {
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: colors.accent,
   },
   suggestedButtonText: {
     fontFamily: fonts.bold,

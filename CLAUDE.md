@@ -34,7 +34,7 @@ All app data is persisted locally using AsyncStorage. No backend server or API.
 - `homefit_routines` - User-created workout routines
 - `homefit_last_workout` - Most recent workout session
 - `homefit_history` - Last 100 workout sessions
-- `homefit_settings` - User preferences (name, height, weight, language, sound)
+- `homefit_settings` - User preferences (name, height, weight, age, sex, language, sound)
 - `homefit_excluded_exercises` - Exercises hidden from selection
 - `homefit_available_equipment` - Equipment user has access to
 
@@ -48,8 +48,19 @@ The app includes 199 pre-defined exercises covering all major muscle groups. Eac
 - `equipment` - Array of equipment IDs required (empty for bodyweight)
 - `weightType` - 'barbell', 'dumbbell', 'bodyweight', 'machine', 'cable', or 'other'
 - `description` - Bilingual exercise instructions
+- `bmc` - Base metabolic cost for calorie calculation
+- `wf` - Weight factor (0 for bodyweight exercises)
 
 **Exercise images**: Located in `assets/exercises/` as PNG files. Naming convention: `{exercise_id}_start.png` and `{exercise_id}_end.png`. The ExerciseImage component handles loading and fallback.
+
+### Calorie Estimation System
+TrainingScreen calculates personalized calorie burn using the Mifflin-St Jeor equation combined with exercise-specific metabolic costs. The calculation considers:
+- User profile (weight, height, age, sex from settings)
+- Exercise `bmc` and `wf` values for each exercise
+- Workout duration and completed sets/reps
+
+### QR Routine Sharing
+Users can share routines via QR codes generated with `react-native-qrcode-svg`. Other users can scan QR codes using `expo-camera` to import routines.
 
 ### Equipment System ([src/data/equipment.js](src/data/equipment.js))
 Equipment definitions with bilingual names. Users select available equipment in Settings, which automatically filters exercises. An exercise is excluded if the user doesn't have ALL required equipment.
@@ -77,6 +88,34 @@ Each screen in [src/screens/](src/screens/) is a functional component that handl
 - Use `useFocusEffect` to reload data when screen comes into focus
 - Load language setting from storage to display translated content
 - Use theme constants for consistent styling
+
+### TrainingScreen Workflow
+The active workout screen has complex state management:
+- **State tracking**: Current exercise index, set index, rest timers, modifications to reps/weights
+- **Background handling**: Uses `restEndTimeRef` timestamp to correctly calculate remaining rest time when app returns from background
+- **Modification tracking**: Changes to reps/weights during workout are stored in `modifiedExercises` state and saved to the routine on workout completion
+- **Navigation blocking**: Prevents accidental exit with unsaved changes
+
+### Routine Data Structure
+Routines stored in AsyncStorage follow this structure:
+```javascript
+{
+  id: string,           // UUID
+  name: string,         // Routine name
+  restBetweenSets: number,      // Seconds (default 60)
+  restBetweenExercises: number, // Seconds (default 90)
+  days: [{
+    name: string,       // Day name
+    customName: string, // Optional user-defined name
+    exercises: [{
+      exerciseId: string,
+      sets: number,
+      reps: number[],   // Per-set reps
+      weights: number[] // Per-set weights in kg
+    }]
+  }]
+}
+```
 
 ### Audio System
 The app uses expo-audio for workout timer sounds. Sound settings (enabled/volume) are stored in settings. Audio files should be in `assets/audio/` if needed.
