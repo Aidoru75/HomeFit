@@ -1,10 +1,9 @@
 // HomeFit - Main App Entry Point
 import React, { useState, useEffect, useCallback } from 'react';
-import { StatusBar, Platform, Image, StyleSheet, View, ActivityIndicator, Text, AppState } from 'react-native';
+import { StatusBar, Image, StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import * as NavigationBar from 'expo-navigation-bar';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Font from 'expo-font';
 
 // Screens
@@ -44,6 +43,42 @@ const TabIcon = ({ routeName, focused }) => (
   </View>
 );
 
+// Tab navigator with safe area handling
+function MainNavigator() {
+  const insets = useSafeAreaInsets();
+
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarStyle: route.name === 'Training'
+          ? { display: 'none' }
+          : {
+              backgroundColor: '#000000',
+              borderTopWidth: 0,
+              height: 50 + insets.bottom,
+              paddingBottom: insets.bottom,
+            },
+        tabBarShowLabel: false,
+        tabBarIcon: ({ focused }) => (
+          <TabIcon routeName={route.name} focused={focused} />
+        ),
+      })}
+    >
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Exercises" component={ExercisesScreen} />
+      <Tab.Screen name="Routines" component={RoutinesScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen
+        name="Training"
+        component={TrainingScreen}
+        options={{ tabBarButton: () => null }}
+      />
+    </Tab.Navigator>
+  );
+}
+
 export default function App() {
   const [language, setLanguage] = useState('en');
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -75,33 +110,6 @@ export default function App() {
     setLanguage(settings.language || 'en');
   }, []);
 
-  // Configure Android navigation bar on mount and when app returns from background
-  useEffect(() => {
-    const configureNavigationBar = async () => {
-      if (Platform.OS === 'android') {
-        try {
-          // Hide the navigation bar (swipe from bottom to reveal temporarily)
-          await NavigationBar.setVisibilityAsync('hidden');
-        } catch (error) {
-          console.log('NavigationBar configuration not supported:', error.message);
-        }
-      }
-    };
-
-    // Configure on mount
-    configureNavigationBar();
-
-    // Re-configure when app returns from background
-    const handleAppStateChange = (nextAppState) => {
-      if (nextAppState === 'active') {
-        configureNavigationBar();
-      }
-    };
-
-    const subscription = AppState.addEventListener('change', handleAppStateChange);
-    return () => subscription?.remove();
-  }, []);
-
   useEffect(() => {
     loadLanguage();
   }, [loadLanguage]);
@@ -119,64 +127,11 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer onStateChange={loadLanguage}>
-        <StatusBar 
-          barStyle="light-content" 
+        <StatusBar
+          barStyle="light-content"
           backgroundColor={colors.primary}
         />
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            headerShown: false,
-            // Hide tab bar on Training screen
-            tabBarStyle: route.name === 'Training' 
-              ? { display: 'none' }
-              : {
-                  backgroundColor: '#000000',
-                  borderTopWidth: 0,
-                  height: 60,
-                },
-            tabBarItemStyle: {
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            },
-            tabBarIconStyle: {
-              flex: 1,
-              alignSelf: 'center',
-            },
-            tabBarShowLabel: false, // No text labels
-            tabBarIcon: ({ focused }) => (
-              <TabIcon routeName={route.name} focused={focused} />
-            ),
-          })}
-        >
-          <Tab.Screen
-            name="Home"
-            component={HomeScreen}
-          />
-          <Tab.Screen
-            name="Exercises"
-            component={ExercisesScreen}
-          />
-          <Tab.Screen
-            name="Routines"
-            component={RoutinesScreen}
-          />
-          <Tab.Screen
-            name="Profile"
-            component={ProfileScreen}
-          />
-          <Tab.Screen
-            name="Settings"
-            component={SettingsScreen}
-          />
-          <Tab.Screen
-            name="Training"
-            component={TrainingScreen}
-            options={{
-              tabBarButton: () => null, // Hidden from tab bar
-            }}
-          />
-        </Tab.Navigator>
+        <MainNavigator />
       </NavigationContainer>
     </SafeAreaProvider>
   );
@@ -195,15 +150,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   tabIconContainer: {
-    flex: 1,
-    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   tabIcon: {
-    width: 50,
-    height: 40,
-    marginTop: 10,
-    marginLeft: 60,
+    width: 34,
+    height: 34,
   },
 });

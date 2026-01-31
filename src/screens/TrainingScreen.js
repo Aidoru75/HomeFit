@@ -20,9 +20,12 @@ import { exercises, getExerciseName, getExerciseDescription } from '../data/exer
 import { loadRoutines, loadSettings, saveLastWorkout, addToHistory, updateRoutine } from '../storage/storage';
 import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
+import { lbToKg, inchesToCm, getWeightIncrement, getSmallWeightIncrement } from '../utils/unitConversions';
 
-// Audio source for beep sound
+// Audio sources for countdown sounds
 const beepSource = require('../../assets/beep.mp3');
+const countdownSource = require('../../assets/countdown.mp3');
+const bellSource = require('../../assets/bell.mp3');
 
 // Background images
 const startBackground = require('../../assets/start.png');
@@ -50,14 +53,20 @@ export default function TrainingScreen({ route, navigation }) {
 
   const timerRef = useRef(null);
   const thumbnailScrollRef = useRef(null);
-  const soundPlayedRef = useRef(false);
   const modifiedExercisesRef = useRef({});
   const restEndTimeRef = useRef(null); // Stores timestamp when rest should end
   
-  // Use the new expo-audio hook
-  const player = useAudioPlayer(beepSource);
+  // Audio players for countdown sounds
+  const beepPlayer = useAudioPlayer(beepSource);
+  const countdownPlayer = useAudioPlayer(countdownSource);
+  const bellPlayer = useAudioPlayer(bellSource);
+
+  // Track which seconds have already played their sound
+  const playedSecondsRef = useRef(new Set());
 
   const lang = settings.language || 'en';
+  const isImperial = settings.measurementSystem === 'imperial';
+  const weightUnit = isImperial ? t('lbs', lang) : t('kg', lang);
 
   const allowNavigation = useRef(false);
   const paramsRef = useRef({ routineId: null, dayIndex: null });
@@ -78,7 +87,7 @@ export default function TrainingScreen({ route, navigation }) {
     setWorkoutComplete(false);
     setWorkoutStartTime(null);
     setCaloriesBurned(0);
-    soundPlayedRef.current = false;
+    playedSecondsRef.current = new Set();
     setModifiedExercises({});
     setHasChanges(false);
   }, []);
@@ -116,12 +125,13 @@ export default function TrainingScreen({ route, navigation }) {
         const remaining = Math.ceil((restEndTimeRef.current - Date.now()) / 1000);
 
         if (remaining <= 0) {
-          // Rest period ended while in background
+          // Rest period ended while in background - play bell and finish
           if (timerRef.current) {
             clearInterval(timerRef.current);
             timerRef.current = null;
           }
           restEndTimeRef.current = null;
+          playCountdownSound(0); // Play bell
           Vibration.vibrate(500);
           setIsResting(false);
           setIsExerciseRest(false);
@@ -129,10 +139,9 @@ export default function TrainingScreen({ route, navigation }) {
         } else {
           // Update display with actual remaining time
           setRestTimeLeft(remaining);
-          // Play beep if we're in the warning zone and haven't played it yet
-          if (remaining <= 8 && !soundPlayedRef.current) {
-            playBeep();
-            soundPlayedRef.current = true;
+          // Play appropriate sound if we're in the countdown zone
+          if (remaining <= 10) {
+            playCountdownSound(remaining);
           }
         }
       }
@@ -140,7 +149,7 @@ export default function TrainingScreen({ route, navigation }) {
 
     const subscription = AppState.addEventListener('change', handleAppStateChange);
     return () => subscription?.remove();
-  }, []);
+  }, [settings.soundEnabled]);
 
   // Keep ref in sync with state to avoid closure issues
   useEffect(() => {
@@ -273,8 +282,10 @@ export default function TrainingScreen({ route, navigation }) {
     setRoutine(found);
     setSettings(userSettings);
     
-    if (userSettings.soundVolume !== undefined && player) {
-      player.volume = userSettings.soundVolume;
+    if (userSettings.soundVolume !== undefined) {
+      if (beepPlayer) beepPlayer.volume = userSettings.soundVolume;
+      if (countdownPlayer) countdownPlayer.volume = userSettings.soundVolume;
+      if (bellPlayer) bellPlayer.volume = userSettings.soundVolume;
     }
   };
 
@@ -374,10 +385,17 @@ export default function TrainingScreen({ route, navigation }) {
     const currentModifiedExercises = modifiedExercisesRef.current;
 
     // Get user data with fallbacks
-    const userWeight = parseFloat(settings.userWeight) || 75; // Default 75kg
-    const userHeight = parseFloat(settings.userHeight) || 170; // Default 170cm
+    const isImperial = settings.measurementSystem === 'imperial';
+    let userWeight = parseFloat(settings.userWeight) || (isImperial ? 165 : 75);
+    let userHeight = parseFloat(settings.userHeight) || (isImperial ? 70 : 170);
     const userAge = parseInt(settings.userAge) || 30; // Default 30 years
     const userSex = settings.userSex || 'male'; // Default male
+
+    // Convert to metric for BMR calculation if using imperial
+    if (isImperial) {
+      userWeight = lbToKg(userWeight);  // Convert lbs to kg
+      userHeight = inchesToCm(userHeight);  // Convert inches to cm
+    }
 
     // Calculate BMR using Mifflin-St Jeor Equation
     let bmr;
@@ -544,14 +562,36 @@ export default function TrainingScreen({ route, navigation }) {
     setHasChanges(true);
   };
 
-  const playBeep = () => {
-    if (settings.soundEnabled && player) {
-      try {
-        player.seekTo(0);
-        player.play();
-      } catch (error) {
-        console.log('Error playing sound:', error);
+  // Play the appropriate sound based on the remaining seconds
+  const playCountdownSound = (seconds) => {
+    if (!settings.soundEnabled) return;
+
+    // Don't play if already played for this second
+    if (playedSecondsRef.current.has(seconds)) return;
+    playedSecondsRef.current.add(seconds);
+
+    try {
+      if (seconds >= 4 && seconds <= 10) {
+        // Beep at 10, 9, 8, 7, 6, 5, 4
+        if (beepPlayer) {
+          beepPlayer.seekTo(0);
+          beepPlayer.play();
+        }
+      } else if (seconds >= 1 && seconds <= 3) {
+        // Countdown at 3, 2, 1
+        if (countdownPlayer) {
+          countdownPlayer.seekTo(0);
+          countdownPlayer.play();
+        }
+      } else if (seconds === 0) {
+        // Bell at 0
+        if (bellPlayer) {
+          bellPlayer.seekTo(0);
+          bellPlayer.play();
+        }
       }
+    } catch (error) {
+      console.log('Error playing sound:', error);
     }
   };
 
@@ -563,7 +603,9 @@ export default function TrainingScreen({ route, navigation }) {
     setIsResting(true);
     setIsExerciseRest(isExRest);
     setRestTimeLeft(restTime);
-    soundPlayedRef.current = false;
+
+    // Reset played sounds tracking for new rest period
+    playedSecondsRef.current = new Set();
 
     // Store the end time for background-aware countdown
     restEndTimeRef.current = Date.now() + (restTime * 1000);
@@ -572,10 +614,11 @@ export default function TrainingScreen({ route, navigation }) {
       // Calculate remaining time based on actual end time (works even after background)
       const remaining = Math.ceil((restEndTimeRef.current - Date.now()) / 1000);
 
-      if (remaining <= 8 && remaining > 0 && !soundPlayedRef.current) {
-        playBeep();
-        soundPlayedRef.current = true;
+      // Play countdown sounds at appropriate seconds
+      if (remaining >= 0 && remaining <= 10) {
+        playCountdownSound(remaining);
       }
+
       if (remaining <= 0) {
         clearInterval(timerRef.current);
         timerRef.current = null;
@@ -596,6 +639,8 @@ export default function TrainingScreen({ route, navigation }) {
       timerRef.current = null;
     }
     restEndTimeRef.current = null;
+    // Clear played sounds to prevent any pending sounds
+    playedSecondsRef.current = new Set();
     setIsResting(false);
     setIsExerciseRest(false);
   };
@@ -797,6 +842,42 @@ export default function TrainingScreen({ route, navigation }) {
     return null;
   };
 
+  // Handle thumbnail tap with confirmation
+  const handleThumbnailPress = (index) => {
+    if (index === currentExerciseIndex) return;
+
+    const day = routine?.days?.[paramsRef.current.dayIndex];
+    const targetEx = day?.exercises?.[index];
+    const exerciseData = targetEx ? getExerciseData(targetEx.exerciseId) : null;
+    const exerciseName = exerciseData ? getExerciseName(exerciseData, lang) : 'this exercise';
+
+    Alert.alert(
+      t('switchExercise', lang) || 'Switch Exercise?',
+      (t('switchExerciseConfirm', lang) || 'Do you want to switch to {exercise}?').replace('{exercise}', exerciseName),
+      [
+        { text: t('cancel', lang) || 'Cancel', style: 'cancel' },
+        {
+          text: t('switch', lang) || 'Switch',
+          onPress: () => {
+            // Stop any active rest timer
+            if (timerRef.current) {
+              clearInterval(timerRef.current);
+              timerRef.current = null;
+            }
+            restEndTimeRef.current = null;
+            playedSecondsRef.current = new Set();
+
+            // Switch to the selected exercise at set 1
+            setIsResting(false);
+            setIsExerciseRest(false);
+            setCurrentExerciseIndex(index);
+            setCurrentSetIndex(0);
+          },
+        },
+      ]
+    );
+  };
+
   // Render thumbnail strip
   const renderThumbnailStrip = () => {
     const day = routine?.days?.[paramsRef.current.dayIndex];
@@ -817,15 +898,10 @@ export default function TrainingScreen({ route, navigation }) {
                 styles.thumbnailWrapper,
                 index === currentExerciseIndex && styles.thumbnailWrapperActive,
               ]}
-              onPress={() => {
-                if (index !== currentExerciseIndex) {
-                  setCurrentExerciseIndex(index);
-                  setCurrentSetIndex(0);
-                }
-              }}
+              onPress={() => handleThumbnailPress(index)}
             >
-              <ExerciseImage 
-                exerciseId={ex.exerciseId} 
+              <ExerciseImage
+                exerciseId={ex.exerciseId}
                 size={50}
                 animate={false}
               />
@@ -997,7 +1073,7 @@ export default function TrainingScreen({ route, navigation }) {
                   {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {t('reps', lang).toLowerCase()}
                 </Text>
                 <Text style={[styles.nextWeight, nextInfo.weightChanged && styles.nextWeightChanged]}>
-                  {nextInfo.weight > 0 && ` ${formatWeight(nextInfo.weight)}kg`}
+                  {nextInfo.weight > 0 && ` ${formatWeight(nextInfo.weight)} ${weightUnit}`}
                 </Text>
               </>
             )}
@@ -1088,36 +1164,36 @@ export default function TrainingScreen({ route, navigation }) {
         {/* Weight control */}
         <View style={styles.controlsRow}>
           <View style={styles.controlGroup}>
-            <Text style={styles.controlLabel}>{t('weight', lang)}</Text>
+            <Text style={styles.controlLabel}>{isImperial ? t('weightLbs', lang) : t('weight', lang)}</Text>
             <View style={styles.controlButtons}>
               <TouchableOpacity
                 style={styles.controlButton}
-                onPress={() => updateWeight(-1)}
+                onPress={() => updateWeight(-getWeightIncrement(settings.measurementSystem))}
               >
-                <Text style={styles.controlButtonText}>-1</Text>
+                <Text style={styles.controlButtonText}>-{getWeightIncrement(settings.measurementSystem)}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.controlButton}
-                onPress={() => updateWeight(-0.25)}
+                onPress={() => updateWeight(-getSmallWeightIncrement(settings.measurementSystem))}
               >
-                <Text style={styles.controlButtonTextS}>−0.25</Text>
+                <Text style={styles.controlButtonTextS}>−{getSmallWeightIncrement(settings.measurementSystem)}</Text>
               </TouchableOpacity>
 
               <Text style={styles.controlValue}>{formatWeight(currentWeight)}</Text>
 
               <TouchableOpacity
                 style={styles.controlButton}
-                onPress={() => updateWeight(0.25)}
+                onPress={() => updateWeight(getSmallWeightIncrement(settings.measurementSystem))}
               >
-                <Text style={styles.controlButtonTextS}>+0.25</Text>
+                <Text style={styles.controlButtonTextS}>+{getSmallWeightIncrement(settings.measurementSystem)}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.controlButton}
-                onPress={() => updateWeight(1)}
+                onPress={() => updateWeight(getWeightIncrement(settings.measurementSystem))}
               >
-                <Text style={styles.controlButtonText}>+1</Text>
+                <Text style={styles.controlButtonText}>+{getWeightIncrement(settings.measurementSystem)}</Text>
               </TouchableOpacity>
             </View>
           </View>
