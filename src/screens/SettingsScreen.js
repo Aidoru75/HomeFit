@@ -15,6 +15,12 @@ import * as Updates from 'expo-updates';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { loadSettings, saveSettings } from '../storage/storage';
 import { t } from '../data/translations';
+import {
+  inchesToCm,
+  cmToInches,
+  lbToKg,
+  kgToLb,
+} from '../utils/unitConversions';
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
@@ -37,6 +43,51 @@ export default function SettingsScreen() {
 
   const updateSetting = async (key, value) => {
     const newSettings = { ...settings, [key]: value };
+    setSettings(newSettings);
+    await saveSettings(newSettings);
+  };
+
+  const isImperial = settings.measurementSystem === 'imperial';
+
+  // Handle measurement system change with value conversion
+  const changeMeasurementSystem = async (newSystem) => {
+    const currentSystem = settings.measurementSystem || 'metric';
+    if (newSystem === currentSystem) return;
+
+    const newSettings = { ...settings, measurementSystem: newSystem };
+
+    // Convert height if it exists
+    if (settings.userHeight) {
+      const currentHeight = parseFloat(settings.userHeight);
+      if (!isNaN(currentHeight) && currentHeight > 0) {
+        if (newSystem === 'imperial') {
+          // cm -> inches
+          const totalInches = Math.round(cmToInches(currentHeight));
+          newSettings.userHeight = String(totalInches);
+        } else {
+          // inches -> cm
+          const cm = Math.round(inchesToCm(currentHeight));
+          newSettings.userHeight = String(cm);
+        }
+      }
+    }
+
+    // Convert weight if it exists
+    if (settings.userWeight) {
+      const currentWeight = parseFloat(settings.userWeight);
+      if (!isNaN(currentWeight) && currentWeight > 0) {
+        if (newSystem === 'imperial') {
+          // kg -> lbs
+          const lbs = Math.round(kgToLb(currentWeight));
+          newSettings.userWeight = String(lbs);
+        } else {
+          // lbs -> kg
+          const kg = Math.round(lbToKg(currentWeight));
+          newSettings.userWeight = String(kg);
+        }
+      }
+    }
+
     setSettings(newSettings);
     await saveSettings(newSettings);
   };
@@ -133,6 +184,41 @@ export default function SettingsScreen() {
                 settings.language === 'es' && styles.languageButtonTextActive,
               ]}>
                 🇪🇸 {t('spanish', lang)}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Measurement System Section */}
+        <Text style={styles.sectionTitle}>{t('measurementSystem', lang)}</Text>
+        <View style={styles.card}>
+          <View style={styles.languageButtons}>
+            <TouchableOpacity
+              style={[
+                styles.languageButton,
+                !isImperial && styles.languageButtonActive,
+              ]}
+              onPress={() => changeMeasurementSystem('metric')}
+            >
+              <Text style={[
+                styles.languageButtonText,
+                !isImperial && styles.languageButtonTextActive,
+              ]}>
+                {t('metric', lang)}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.languageButton,
+                isImperial && styles.languageButtonActive,
+              ]}
+              onPress={() => changeMeasurementSystem('imperial')}
+            >
+              <Text style={[
+                styles.languageButtonText,
+                isImperial && styles.languageButtonTextActive,
+              ]}>
+                {t('imperial', lang)}
               </Text>
             </TouchableOpacity>
           </View>

@@ -15,11 +15,12 @@ const KEYS = {
 // Default settings
 const DEFAULT_SETTINGS = {
   userName: '',
-  userHeight: '',  // in cm
-  userWeight: '',  // in kg
+  userHeight: '',  // in cm (metric) or total inches (imperial)
+  userWeight: '',  // in kg (metric) or lbs (imperial)
   userAge: '',     // years
   userSex: '',     // 'male', 'female', or 'prefer_not_to_say'
   language: 'en', // 'en' or 'es'
+  measurementSystem: 'metric', // 'metric' or 'imperial'
   soundEnabled: true,
   soundVolume: 1.0, // 0.0 to 1.0
 };
@@ -220,6 +221,17 @@ export const getHistory = async () => {
   } catch (error) {
     console.error('Error getting history:', error);
     return [];
+  }
+};
+
+export const clearHistory = async () => {
+  try {
+    await AsyncStorage.removeItem(KEYS.WORKOUT_HISTORY);
+    await AsyncStorage.removeItem(KEYS.LAST_WORKOUT);
+    return true;
+  } catch (error) {
+    console.error('Error clearing history:', error);
+    return false;
   }
 };
 

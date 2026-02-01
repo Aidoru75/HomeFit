@@ -11,6 +11,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import ExercisesScreen from './src/screens/ExercisesScreen';
 import RoutinesScreen from './src/screens/RoutinesScreen';
 import TrainingScreen from './src/screens/TrainingScreen';
+import StatsScreen from './src/screens/StatsScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 
@@ -25,6 +26,7 @@ const tabIcons = {
   Home: require('./assets/icons/home.png'),
   Exercises: require('./assets/icons/exercises.png'),
   Routines: require('./assets/icons/routines.png'),
+  Stats: require('./assets/icons/stats.png'),
   Profile: require('./assets/icons/profile.png'),
   Settings: require('./assets/icons/settings.png'),
 };
@@ -60,6 +62,10 @@ function MainNavigator() {
               paddingBottom: insets.bottom,
             },
         tabBarShowLabel: false,
+        tabBarItemStyle: {
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
         tabBarIcon: ({ focused }) => (
           <TabIcon routeName={route.name} focused={focused} />
         ),
@@ -68,6 +74,7 @@ function MainNavigator() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Exercises" component={ExercisesScreen} />
       <Tab.Screen name="Routines" component={RoutinesScreen} />
+      <Tab.Screen name="Stats" component={StatsScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
       <Tab.Screen
@@ -150,6 +157,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   tabIconContainer: {
+    flex: 1,
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },

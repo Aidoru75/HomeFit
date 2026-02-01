@@ -1,5 +1,5 @@
 // Profile Screen - User profile and equipment management
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import {
   Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { 
   loadSettings, 
@@ -28,6 +29,12 @@ import {
   getAllEquipmentIds,
 } from '../data/equipment';
 import { t } from '../data/translations';
+import {
+  totalInchesToFeetInches,
+  feetInchesToTotalInches,
+  inchesToCm,
+  lbToKg,
+} from '../utils/unitConversions';
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
@@ -40,16 +47,32 @@ export default function ProfileScreen() {
   const [availableEquipment, setAvailableEquipment] = useState([]);
   const [expandedCategories, setExpandedCategories] = useState({});
   const [loaded, setLoaded] = useState(false);
+  // Separate state for feet/inches when in imperial mode
+  const [heightFeet, setHeightFeet] = useState('');
+  const [heightInches, setHeightInches] = useState('');
 
-  useEffect(() => {
-    loadUserData();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      loadUserData();
+    }, [])
+  );
 
   const loadUserData = async () => {
     const savedSettings = await loadSettings();
     const savedEquipment = await loadAvailableEquipment();
     setSettings(savedSettings);
     setAvailableEquipment(savedEquipment);
+
+    // Parse height into feet/inches if imperial and height exists
+    if (savedSettings.measurementSystem === 'imperial' && savedSettings.userHeight) {
+      const totalInches = parseFloat(savedSettings.userHeight);
+      if (!isNaN(totalInches)) {
+        const { feet, inches } = totalInchesToFeetInches(totalInches);
+        setHeightFeet(String(feet));
+        setHeightInches(String(inches));
+      }
+    }
+
     setLoaded(true);
   };
 
@@ -60,6 +83,22 @@ export default function ProfileScreen() {
   };
 
   const lang = settings.language || 'en';
+  const isImperial = settings.measurementSystem === 'imperial';
+
+  // Update height from feet/inches input (imperial mode)
+  const updateImperialHeight = async (newFeet, newInches) => {
+    setHeightFeet(newFeet);
+    setHeightInches(newInches);
+
+    const feet = parseInt(newFeet) || 0;
+    const inches = parseInt(newInches) || 0;
+    const totalInches = feetInchesToTotalInches(feet, inches);
+
+    // Store as total inches
+    const newSettings = { ...settings, userHeight: String(totalInches) };
+    setSettings(newSettings);
+    await saveSettings(newSettings);
+  };
 
   const toggleCategory = (categoryId) => {
     setExpandedCategories(prev => ({
@@ -233,21 +272,56 @@ export default function ProfileScreen() {
           {/* Height */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>{t('height', lang)}</Text>
-            <View style={styles.inputWithUnit}>
-              <TextInput
-                style={[styles.textInput, styles.numberInput]}
-                value={settings.userHeight}
-                onChangeText={(text) => {
-                  const numericValue = text.replace(/[^0-9]/g, '');
-                  updateSetting('userHeight', numericValue);
-                }}
-                placeholder="175"
-                placeholderTextColor={colors.textLight}
-                keyboardType="numeric"
-                maxLength={3}
-              />
-              <Text style={styles.unitText}>cm</Text>
-            </View>
+            {isImperial ? (
+              <View style={styles.inputWithUnit}>
+                <TextInput
+                  style={[styles.textInput, styles.smallNumberInput]}
+                  value={heightFeet}
+                  onChangeText={(text) => {
+                    const numericValue = text.replace(/[^0-9]/g, '');
+                    updateImperialHeight(numericValue, heightInches);
+                  }}
+                  placeholder="5"
+                  placeholderTextColor={colors.textLight}
+                  keyboardType="numeric"
+                  maxLength={1}
+                />
+                <Text style={styles.unitText}>{t('feet', lang)}</Text>
+                <TextInput
+                  style={[styles.textInput, styles.smallNumberInput]}
+                  value={heightInches}
+                  onChangeText={(text) => {
+                    const numericValue = text.replace(/[^0-9]/g, '');
+                    // Limit inches to 0-11
+                    const inches = parseInt(numericValue) || 0;
+                    if (inches <= 11) {
+                      updateImperialHeight(heightFeet, numericValue);
+                    }
+                  }}
+                  placeholder="10"
+                  placeholderTextColor={colors.textLight}
+                  keyboardType="numeric"
+                  maxLength={2}
+                />
+                <Text style={styles.unitText}>{t('inches', lang)}</Text>
+              </View>
+            ) : (
+              <View style={styles.inputWithUnit}>
+                <TextInput
+                  style={[styles.textInput, styles.numberInput]}
+                  value={settings.userHeight}
+                  onChangeText={(text) => {
+                    const numericValue = text.replace(/[^0-9]/g, '');
+                    updateSetting('userHeight', numericValue);
+                  }}
+                  placeholder="175"
+                  placeholderTextColor={colors.textLight}
+                  keyboardType="numeric"
+                  maxLength={3}
+                />
+                <Text style={styles.unitText}>{t('cm', lang)}</Text>
+              </View>
+            )}
           </View>
 
           {/* Weight */}
@@ -265,12 +339,12 @@ export default function ProfileScreen() {
                     : numericValue;
                   updateSetting('userWeight', sanitized);
                 }}
-                placeholder="70"
+                placeholder={isImperial ? "155" : "70"}
                 placeholderTextColor={colors.textLight}
                 keyboardType="decimal-pad"
                 maxLength={5}
               />
-              <Text style={styles.unitText}>kg</Text>
+              <Text style={styles.unitText}>{isImperial ? t('lbs', lang) : t('kg', lang)}</Text>
             </View>
           </View>
 
@@ -342,6 +416,7 @@ export default function ProfileScreen() {
               </TouchableOpacity>
             </View>
           </View>
+
         </View>
 
         {/* Stats Preview */}
@@ -352,21 +427,41 @@ export default function ProfileScreen() {
               <View style={styles.statsRow}>
                 {settings.userHeight ? (
                   <View style={styles.statItem}>
-                    <Text style={styles.statValue}>{settings.userHeight}</Text>
-                    <Text style={styles.statLabel}>cm</Text>
+                    {isImperial ? (
+                      <>
+                        <Text style={styles.statValue}>{heightFeet}'{heightInches}"</Text>
+                        <Text style={styles.statLabel}>{t('feet', lang)}/{t('inches', lang)}</Text>
+                      </>
+                    ) : (
+                      <>
+                        <Text style={styles.statValue}>{settings.userHeight}</Text>
+                        <Text style={styles.statLabel}>{t('cm', lang)}</Text>
+                      </>
+                    )}
                   </View>
                 ) : null}
                 {settings.userWeight ? (
                   <View style={styles.statItem}>
                     <Text style={styles.statValue}>{settings.userWeight}</Text>
-                    <Text style={styles.statLabel}>kg</Text>
+                    <Text style={styles.statLabel}>{isImperial ? t('lbs', lang) : t('kg', lang)}</Text>
                   </View>
                 ) : null}
                 {settings.userHeight && settings.userWeight ? (
                   <View style={styles.statItem}>
                     <Text style={styles.statValue}>
-                      {(parseFloat(settings.userWeight) / 
-                        Math.pow(parseFloat(settings.userHeight) / 100, 2)).toFixed(1)}
+                      {(() => {
+                        // Convert to metric for BMI calculation
+                        let heightCm, weightKg;
+                        if (isImperial) {
+                          heightCm = inchesToCm(parseFloat(settings.userHeight));
+                          weightKg = lbToKg(parseFloat(settings.userWeight));
+                        } else {
+                          heightCm = parseFloat(settings.userHeight);
+                          weightKg = parseFloat(settings.userWeight);
+                        }
+                        const heightM = heightCm / 100;
+                        return (weightKg / (heightM * heightM)).toFixed(1);
+                      })()}
                     </Text>
                     <Text style={styles.statLabel}>BMI</Text>
                   </View>
@@ -519,6 +614,11 @@ const styles = StyleSheet.create({
   numberInput: {
     flex: 1,
     marginRight: spacing.sm,
+  },
+  smallNumberInput: {
+    width: 60,
+    marginRight: spacing.xs,
+    textAlign: 'center',
   },
   unitText: {
     fontFamily: fonts.bold,

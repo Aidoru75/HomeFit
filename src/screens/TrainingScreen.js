@@ -23,9 +23,9 @@ import ExerciseImage from '../components/ExerciseImage';
 import { lbToKg, inchesToCm, getWeightIncrement, getSmallWeightIncrement } from '../utils/unitConversions';
 
 // Audio sources for countdown sounds
-const beepSource = require('../../assets/beep.mp3');
-const countdownSource = require('../../assets/countdown.mp3');
-const bellSource = require('../../assets/bell.mp3');
+const beepSource = require('../../assets/audio/beep.mp3');
+const countdownSource = require('../../assets/audio/countdown.mp3');
+const bellSource = require('../../assets/audio/bell.mp3');
 
 // Background images
 const startBackground = require('../../assets/start.png');
@@ -571,13 +571,13 @@ export default function TrainingScreen({ route, navigation }) {
     playedSecondsRef.current.add(seconds);
 
     try {
-      if (seconds >= 4 && seconds <= 10) {
+      if (seconds >= 5 && seconds <= 10) {
         // Beep at 10, 9, 8, 7, 6, 5, 4
         if (beepPlayer) {
           beepPlayer.seekTo(0);
           beepPlayer.play();
         }
-      } else if (seconds >= 1 && seconds <= 3) {
+      } else if (seconds >= 1 && seconds <= 4) {
         // Countdown at 3, 2, 1
         if (countdownPlayer) {
           countdownPlayer.seekTo(0);
@@ -709,28 +709,31 @@ export default function TrainingScreen({ route, navigation }) {
     const calories = calculateCalories(workoutStartTime);
     setCaloriesBurned(calories);
 
-    // Calculate workout duration in minutes
-    const durationMinutes = workoutStartTime
-      ? Math.round((new Date() - workoutStartTime) / (1000 * 60))
+    // Calculate workout duration in seconds
+    const durationSeconds = workoutStartTime
+      ? Math.round((new Date() - workoutStartTime) / 1000)
       : 0;
+
+    const currentDay = routine?.days?.[paramsRef.current.dayIndex];
+    const dayDisplayName = currentDay?.customName || currentDay?.name;
 
     await saveLastWorkout({
       routineId: paramsRef.current.routineId,
       dayIndex: paramsRef.current.dayIndex,
       routineName: routine?.name,
-      dayName: routine?.days?.[paramsRef.current.dayIndex]?.name,
-      calories,
-      durationMinutes,
+      dayName: dayDisplayName,
+      caloriesBurned: calories,
+      duration: durationSeconds,
     });
 
     await addToHistory({
       routineId: paramsRef.current.routineId,
       dayIndex: paramsRef.current.dayIndex,
       routineName: routine?.name,
-      dayName: routine?.days?.[paramsRef.current.dayIndex]?.name,
-      exerciseCount: routine?.days?.[paramsRef.current.dayIndex]?.exercises?.length || 0,
-      calories,
-      durationMinutes,
+      dayName: dayDisplayName,
+      exerciseCount: currentDay?.exercises?.length || 0,
+      caloriesBurned: calories,
+      duration: durationSeconds,
     });
 
     setWorkoutComplete(true);

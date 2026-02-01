@@ -47,7 +47,7 @@ export default function HomeScreen({ navigation }) {
         setSuggestedNext({
           routine,
           dayIndex: nextDayIndex,
-          dayName: nextDay?.name || `Day ${nextDayIndex + 1}`,
+          dayName: nextDay?.customName || nextDay?.name || `Day ${nextDayIndex + 1}`,
           isEmpty: !nextDay?.exercises || nextDay.exercises.length === 0,
         });
       }
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   suggestedCard: {
-    backgroundColor: colors.accentlight,
+    backgroundColor: colors.accent,
     margin: spacing.md,
     padding: spacing.lg,
     borderRadius: borderRadius.lg,
