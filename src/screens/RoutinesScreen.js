@@ -55,6 +55,7 @@ export default function RoutinesScreen({ navigation, route }) {
   const [editingDayIndex, setEditingDayIndex] = useState(null);
   const [editingExerciseIndex, setEditingExerciseIndex] = useState(null);
   const [currentMuscleFilter, setCurrentMuscleFilter] = useState(0); // Index in muscleGroups, 0 = all
+  const [exerciseSearchText, setExerciseSearchText] = useState(''); // Search filter for "All" tab
   const [settings, setSettings] = useState({ language: 'en' });
   const [dayNameInput, setDayNameInput] = useState('');
   const [excludedExercises, setExcludedExercises] = useState([]);
@@ -281,6 +282,7 @@ export default function RoutinesScreen({ navigation, route }) {
     });
     // Initialize weight inputs as strings
     setWeightInputs(['0', '0', '0']);
+    setExerciseSearchText(''); // Reset search when opening modal
     setShowAddExerciseModal(true);
   };
 
@@ -527,10 +529,20 @@ export default function RoutinesScreen({ navigation, route }) {
     return exercises.filter(ex => !excludedExercises.includes(ex.id));
   };
 
-  // Filter exercises by muscle group
+  // Filter exercises by muscle group and search text
   const getFilteredExercises = () => {
     const available = getAvailableExercises();
-    if (currentMuscleFilter === 0) return available;
+    if (currentMuscleFilter === 0) {
+      // In "All" tab, also filter by search text if present
+      if (exerciseSearchText.trim()) {
+        const searchLower = exerciseSearchText.toLowerCase().trim();
+        return available.filter(ex => {
+          const name = ex.name?.[lang]?.toLowerCase() || '';
+          return name.includes(searchLower);
+        });
+      }
+      return available;
+    }
     const muscleId = muscleGroups[currentMuscleFilter - 1]?.id;
     return available.filter(ex => ex.muscleGroup === muscleId);
   };
@@ -618,6 +630,9 @@ export default function RoutinesScreen({ navigation, route }) {
       ...pendingImport,
       name: finalName,
     };
+
+    // Remove totalExercises (only used for preview)
+    delete newRoutine.totalExercises;
 
     const created = await addRoutine(newRoutine);
     setRoutines([...routines, created]);
@@ -752,7 +767,7 @@ export default function RoutinesScreen({ navigation, route }) {
                       </Text>
                       <Text style={styles.exerciseItemDetails}>
                         {ex.sets} {t('sets', lang).toLowerCase()} • {ex.reps?.[0] || 10} {t('reps', lang).toLowerCase()}
-                        {totalWeight > 0 && ` • ${ex.weights[0]}kg`}
+                        {totalWeight > 0 && ` • ${ex.weights[0]}${settings.measurementSystem === 'imperial' ? t('lbs', lang) : t('kg', lang)}`}
                       </Text>
                     </View>
                     <View style={styles.reorderButtons}>
@@ -831,25 +846,44 @@ export default function RoutinesScreen({ navigation, route }) {
               <>
                 <View style={styles.muscleFilter}>
                   <TouchableOpacity
-                    onPress={() => setCurrentMuscleFilter(prev => 
-                      prev === 0 ? muscleGroups.length : prev - 1
-                    )}
+                    onPress={() => {
+                      setCurrentMuscleFilter(prev =>
+                        prev === 0 ? muscleGroups.length : prev - 1
+                      );
+                      setExerciseSearchText(''); // Reset search when changing filter
+                    }}
                   >
                     <Text style={styles.filterArrow}>◀</Text>
                   </TouchableOpacity>
                   <Text style={styles.filterName}>
-                    {currentMuscleFilter === 0 
+                    {currentMuscleFilter === 0
                       ? t('all', lang)
                       : getMuscleGroupName(muscleGroups[currentMuscleFilter - 1], lang)}
                   </Text>
                   <TouchableOpacity
-                    onPress={() => setCurrentMuscleFilter(prev => 
-                      prev === muscleGroups.length ? 0 : prev + 1
-                    )}
+                    onPress={() => {
+                      setCurrentMuscleFilter(prev =>
+                        prev === muscleGroups.length ? 0 : prev + 1
+                      );
+                      setExerciseSearchText(''); // Reset search when changing filter
+                    }}
                   >
                     <Text style={styles.filterArrow}>▶</Text>
                   </TouchableOpacity>
                 </View>
+
+                {/* Search input - only visible in "All" tab */}
+                {currentMuscleFilter === 0 && (
+                  <TextInput
+                    style={styles.exerciseSearchInput}
+                    value={exerciseSearchText}
+                    onChangeText={setExerciseSearchText}
+                    placeholder={t('searchExercises', lang)}
+                    placeholderTextColor={colors.textLight}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                  />
+                )}
 
                 <FlatList
                   data={getFilteredExercises()}
@@ -897,7 +931,7 @@ export default function RoutinesScreen({ navigation, route }) {
                   </TouchableOpacity>
                 </View>
 
-                <Text style={styles.inputLabel}>{t('reps', lang)} & {t('weight', lang)}</Text>
+                <Text style={styles.inputLabel}>{t('reps', lang)} & {settings.measurementSystem === 'imperial' ? t('weightLbs', lang) : t('weight', lang)}</Text>
                 {Array.from({ length: exerciseConfig.sets }).map((_, index) => (
                   <View key={index} style={styles.setRow}>
                     <Text style={styles.setNumber}>{index + 1}</Text>
@@ -912,7 +946,7 @@ export default function RoutinesScreen({ navigation, route }) {
                       />
                     </View>
                     <View style={styles.setInput}>
-                      <Text style={styles.setInputLabel}>Kg</Text>
+                      <Text style={styles.setInputLabel}>{settings.measurementSystem === 'imperial' ? t('lbs', lang) : t('kg', lang)}</Text>
                       <TextInput
                         style={styles.setInputField}
                         value={weightInputs[index] || '0'}
@@ -1712,6 +1746,17 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: fontSize.md,
     color: colors.textPrimary,
+  },
+  exerciseSearchInput: {
+    fontFamily: fonts.regular,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: borderRadius.md,
+    padding: spacing.sm,
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
+    marginBottom: spacing.sm,
+    backgroundColor: colors.white,
   },
   exerciseList: {
     maxHeight: 300,
