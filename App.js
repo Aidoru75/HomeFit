@@ -1,10 +1,12 @@
 // HomeFit - Main App Entry Point
 import React, { useState, useEffect, useCallback } from 'react';
-import { StatusBar, Image, StyleSheet, View, ActivityIndicator, Text } from 'react-native';
+import { Image, StyleSheet, View, ActivityIndicator, Text, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Font from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
+import * as NavigationBar from 'expo-navigation-bar';
 
 // Screens
 import HomeScreen from './src/screens/HomeScreen';
@@ -31,24 +33,12 @@ const tabIcons = {
   Settings: require('./assets/icons/settings.png'),
 };
 
-// Custom icon component using PNG images
-const TabIcon = ({ routeName, focused }) => (
-  <View style={styles.tabIconContainer}>
-    <Image
-      source={tabIcons[routeName]}
-      style={[
-        styles.tabIcon,
-        { opacity: focused ? 1 : 0.5 }
-      ]}
-      resizeMode="contain"
-    />
-  </View>
-);
+// Tab bar configuration
+const TAB_BAR_HEIGHT = 56;
+const ICON_SIZE = 28;
 
-// Tab navigator with safe area handling
+// Tab navigator
 function MainNavigator() {
-  const insets = useSafeAreaInsets();
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -58,16 +48,21 @@ function MainNavigator() {
           : {
               backgroundColor: '#000000',
               borderTopWidth: 0,
-              height: 50 + insets.bottom,
-              paddingBottom: insets.bottom,
+              height: TAB_BAR_HEIGHT,
+              paddingTop: 8,
+              paddingBottom: 8,
             },
         tabBarShowLabel: false,
-        tabBarItemStyle: {
-          justifyContent: 'center',
-          alignItems: 'center',
-        },
         tabBarIcon: ({ focused }) => (
-          <TabIcon routeName={route.name} focused={focused} />
+          <Image
+            source={tabIcons[route.name]}
+            style={{
+              width: ICON_SIZE,
+              height: ICON_SIZE,
+              opacity: focused ? 1 : 0.5,
+            }}
+            resizeMode="contain"
+          />
         ),
       })}
     >
@@ -89,6 +84,25 @@ function MainNavigator() {
 export default function App() {
   const [language, setLanguage] = useState('en');
   const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  // Configure Android navigation bar (immersive mode)
+  useEffect(() => {
+    async function configureNavigationBar() {
+      if (Platform.OS === 'android') {
+        try {
+          // Hide the Android navigation bar
+          await NavigationBar.setVisibilityAsync('hidden');
+          // Allow user to reveal it by swiping from edge
+          await NavigationBar.setBehaviorAsync('overlay-swipe');
+          // Set navigation bar color to black (when visible)
+          await NavigationBar.setBackgroundColorAsync('#000000');
+        } catch (error) {
+          console.warn('Failed to configure navigation bar:', error);
+        }
+      }
+    }
+    configureNavigationBar();
+  }, []);
 
   // Load fonts
   useEffect(() => {
@@ -134,10 +148,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer onStateChange={loadLanguage}>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor={colors.primary}
-        />
+        <StatusBar style="light" backgroundColor={colors.primary} />
         <MainNavigator />
       </NavigationContainer>
     </SafeAreaProvider>
@@ -155,15 +166,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: colors.white,
     fontSize: 16,
-  },
-  tabIconContainer: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  tabIcon: {
-    width: 34,
-    height: 34,
   },
 });

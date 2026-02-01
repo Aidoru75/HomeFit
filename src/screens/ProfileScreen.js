@@ -11,7 +11,18 @@ import {
   TouchableOpacity,
   Switch,
   Alert,
+  Image,
 } from 'react-native';
+
+// Category icons
+const categoryIcons = {
+  freeWeights: require('../../assets/icons/cat_weights.png'),
+  racksAndBenches: require('../../assets/icons/cat_benches.png'),
+  cableMachine: require('../../assets/icons/cat_cables.png'),
+  machineStations: require('../../assets/icons/cat_machines.png'),
+  cableAttachments: require('../../assets/icons/cat_cable_accessories.png'),
+  accessories: require('../../assets/icons/cat_accessories.png'),
+};
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
@@ -183,13 +194,17 @@ export default function ProfileScreen() {
     
     return (
       <View key={categoryKey} style={styles.categoryContainer}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.categoryHeader}
           onPress={() => toggleCategory(categoryKey)}
           activeOpacity={0.7}
         >
           <View style={styles.categoryLeft}>
-            <Text style={styles.categoryIcon}>{category.icon}</Text>
+            <Image
+              source={categoryIcons[categoryKey]}
+              style={styles.categoryIcon}
+              resizeMode="contain"
+            />
             <View>
               <Text style={styles.categoryName}>
                 {getCategoryName(category, lang)}
@@ -723,8 +738,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   categoryIcon: {
-    fontFamily: fonts.regular,
-    fontSize: 24,
+    width: 28,
+    height: 28,
     marginRight: spacing.md,
   },
   categoryName: {
