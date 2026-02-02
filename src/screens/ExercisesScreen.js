@@ -9,6 +9,7 @@ import {
   FlatList,
   Modal,
   Switch,
+  TextInput,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -32,6 +33,7 @@ export default function ExercisesScreen() {
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [settings, setSettings] = useState({ language: 'en' });
   const [excludedExercises, setExcludedExercises] = useState([]);
+  const [exerciseSearchText, setExerciseSearchText] = useState('');
 
   useFocusEffect(
     useCallback(() => {
@@ -57,9 +59,14 @@ export default function ExercisesScreen() {
 
   const lang = settings.language || 'en';
 
-  const filteredExercises = selectedMuscle 
+  const filteredExercises = selectedMuscle
     ? getExercisesByMuscle(selectedMuscle)
-    : exercises;
+    : exerciseSearchText.trim()
+      ? exercises.filter(ex => {
+          const name = ex.name?.[lang]?.toLowerCase() || '';
+          return name.includes(exerciseSearchText.toLowerCase().trim());
+        })
+      : exercises;
 
   // Helper to format equipment list with localized names
   const formatEquipmentList = (equipmentIds) => {
@@ -78,7 +85,10 @@ export default function ExercisesScreen() {
           styles.muscleChip,
           isSelected && { backgroundColor: muscleColor },
         ]}
-        onPress={() => setSelectedMuscle(isSelected ? null : muscle.id)}
+        onPress={() => {
+          setSelectedMuscle(isSelected ? null : muscle.id);
+          setExerciseSearchText('');
+        }}
       >
         <Text style={[
           styles.muscleChipText,
@@ -159,7 +169,10 @@ export default function ExercisesScreen() {
               styles.muscleChip,
               !selectedMuscle && styles.muscleChipSelected,
             ]}
-            onPress={() => setSelectedMuscle(null)}
+            onPress={() => {
+              setSelectedMuscle(null);
+              setExerciseSearchText('');
+            }}
           >
             <Text style={[
               styles.muscleChipText,
@@ -171,6 +184,21 @@ export default function ExercisesScreen() {
           {muscleGroups.map(renderMuscleChip)}
         </ScrollView>
       </View>
+
+      {/* Search input - only visible in "All" tab */}
+      {!selectedMuscle && (
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.exerciseSearchInput}
+            value={exerciseSearchText}
+            onChangeText={setExerciseSearchText}
+            placeholder={t('searchExercises', lang)}
+            placeholderTextColor={colors.textLight}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+        </View>
+      )}
 
       {/* Hint text */}
       <View style={styles.hintContainer}>
@@ -216,7 +244,7 @@ export default function ExercisesScreen() {
                   <View style={styles.imageContainer}>
                     <ExerciseImage 
                       exerciseId={selectedExercise.id} 
-                      size={180}
+                      size={350}
                       animate={true}
                     />
                   </View>
@@ -315,6 +343,21 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     fontWeight: '500',
     color: colors.textPrimary,
+  },
+  searchContainer: {
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.sm,
+    backgroundColor: colors.white,
+  },
+  exerciseSearchInput: {
+    fontFamily: fonts.regular,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: borderRadius.md,
+    padding: spacing.sm,
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
+    backgroundColor: colors.white,
   },
   hintContainer: {
     paddingHorizontal: spacing.lg,
