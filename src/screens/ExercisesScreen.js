@@ -1,5 +1,5 @@
 // Exercises Screen - Browse all exercises by muscle group
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -34,6 +34,7 @@ export default function ExercisesScreen() {
   const [settings, setSettings] = useState({ language: 'en' });
   const [excludedExercises, setExcludedExercises] = useState([]);
   const [exerciseSearchText, setExerciseSearchText] = useState('');
+  const listRef = useRef(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -74,10 +75,19 @@ export default function ExercisesScreen() {
     return equipmentIds.map(eq => getEquipmentName(eq, lang)).join(' • ');
   };
 
+  const scrollToTop = () => {
+    listRef.current?.scrollToOffset({ offset: 0, animated: false });
+  };
+
+  const handleSearchChange = (text) => {
+    setExerciseSearchText(text);
+    scrollToTop();
+  };
+
   const renderMuscleChip = (muscle) => {
     const isSelected = selectedMuscle === muscle.id;
     const muscleColor = colors.muscleColors[muscle.id] || colors.accent;
-    
+
     return (
       <TouchableOpacity
         key={muscle.id}
@@ -88,6 +98,7 @@ export default function ExercisesScreen() {
         onPress={() => {
           setSelectedMuscle(isSelected ? null : muscle.id);
           setExerciseSearchText('');
+          scrollToTop();
         }}
       >
         <Text style={[
@@ -172,6 +183,7 @@ export default function ExercisesScreen() {
             onPress={() => {
               setSelectedMuscle(null);
               setExerciseSearchText('');
+              scrollToTop();
             }}
           >
             <Text style={[
@@ -191,7 +203,7 @@ export default function ExercisesScreen() {
           <TextInput
             style={styles.exerciseSearchInput}
             value={exerciseSearchText}
-            onChangeText={setExerciseSearchText}
+            onChangeText={handleSearchChange}
             placeholder={t('searchExercises', lang)}
             placeholderTextColor={colors.textLight}
             autoCapitalize="none"
@@ -209,6 +221,7 @@ export default function ExercisesScreen() {
 
       {/* Exercise List */}
       <FlatList
+        ref={listRef}
         data={filteredExercises}
         renderItem={renderExerciseItem}
         keyExtractor={(item) => item.id}
