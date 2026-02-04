@@ -15,6 +15,10 @@ export const muscleGroups = [
 ];
 
 export const exercises = [
+  // ############################################
+  // FREE EXERCISES (Home Gym Equipment Only)
+  // ############################################
+
   // ============================================
   // CHEST
   // ============================================
@@ -136,71 +140,6 @@ export const exercises = [
     wf: 0.02,
   },
   {
-    id: 'cable_crossover_high',
-    name: { en: 'Cable Crossover (High)', es: 'Cruce de Cables (Alto)' },
-    muscleGroup: 'chest',
-    equipment: ['high_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Constant tension chest isolation from high pulleys. Step forward, pull handles down and across your body in an arc, crossing at the bottom while squeezing your lower chest intensely.',
-      es: 'Aislamiento de pecho con tensión constante desde poleas altas. Da un paso adelante, tira los mangos hacia abajo y cruza en arco, cruzando abajo mientras aprietas intensamente el pecho inferior.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_crossover_low',
-    name: { en: 'Cable Crossover (Low to High)', es: 'Cruce de Cables (Bajo a Alto)' },
-    muscleGroup: 'chest',
-    equipment: ['low_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Targets upper chest with upward cable motion. From low pulleys, bring handles up and together in front of your face, focusing on contracting the upper chest fibers throughout.',
-      es: 'Trabaja el pecho superior con movimiento de cable ascendente. Desde poleas bajas, lleva los mangos arriba y júntalos frente a la cara, enfocándote en contraer las fibras del pecho superior.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_flyes_mid',
-    name: { en: 'Cable Flyes (Mid)', es: 'Aperturas en Polea (Media)' },
-    muscleGroup: 'chest',
-    equipment: ['mid_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Mid-level cable fly for overall chest development. With pulleys at chest height, bring handles together in front maintaining slight elbow bend, squeezing hard at the center.',
-      es: 'Apertura con polea media para desarrollo general del pecho. Con poleas a altura del pecho, junta los mangos al frente manteniendo codos ligeramente flexionados, apretando fuerte en el centro.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
-  },
-  {
-    id: 'pec_deck',
-    name: { en: 'Pec Deck / Butterfly', es: 'Pec Deck / Mariposa' },
-    muscleGroup: 'chest',
-    equipment: ['pec_deck_station'],
-    weightType: 'machine',
-    description: {
-      en: 'Machine-based chest isolation with guided movement path. Sit with back flat, bring padded arms together in front of your chest, hold the squeeze for a second, then return with control.',
-      es: 'Aislamiento de pecho en máquina con trayectoria guiada. Siéntate con espalda plana, junta los brazos acolchados frente al pecho, mantén la contracción un segundo, luego regresa con control.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
-  },
-  {
-    id: 'chest_press',
-    name: { en: 'Chest Press', es: 'Press de Pecho' },
-    muscleGroup: 'chest',
-    equipment: ['chest_press_station'],
-    weightType: 'machine',
-    description: {
-      en: 'Sit on the chest press machine, back flat, feet firm. Grip handles at chest height, elbows bent 90°. Exhale, press forward smoothly to near-straight arms, squeezing chest. Inhale, return slowly with control.',
-      es: 'Siéntate en la máquina de press de pecho, espalda plana, pies firmes. Agarra las manijas a la altura del pecho, codos en 90°. Exhala, empuja hacia adelante hasta casi extender brazos, apretando pecho. Inhala, regresa lento con control.',
-    },
-    bmc: 1.8,
-    wf: 0.03,
-  },
-  {
     id: 'push_ups',
     name: { en: 'Push-Ups', es: 'Flexiones' },
     muscleGroup: 'chest',
@@ -238,19 +177,6 @@ export const exercises = [
     },
     bmc: 1.8,
     wf: 0.0,
-  },
-  {
-    id: 'dips_chest',
-    name: { en: 'Dips (Chest Focus)', es: 'Fondos (Enfoque Pecho)' },
-    muscleGroup: 'chest',
-    equipment: ['parallels'],
-    weightType: 'bodyweight',
-    description: {
-      en: 'Compound movement for lower chest when performed with forward lean. Keep torso tilted forward, lower until shoulders are below elbows, then push up maintaining the chest-focused position.',
-      es: 'Movimiento compuesto para pecho inferior realizado con inclinación hacia adelante. Mantén el torso inclinado, baja hasta que los hombros estén bajo los codos, luego empuja manteniendo la posición.',
-    },
-    bmc: 2.5,
-    wf: 0.04,
   },
   {
     id: 'svend_press',
@@ -333,110 +259,6 @@ export const exercises = [
     },
     bmc: 2.5,
     wf: 0.0,
-  },
-  {
-    id: 'lat_pulldown_wide',
-    name: { en: 'Lat Pulldown (Wide)', es: 'Jalón al Pecho (Ancho)' },
-    muscleGroup: 'back',
-    equipment: ['lat_station', 'lat_bar'],
-    weightType: 'machine',
-    description: {
-      en: 'Machine alternative to wide-grip pull-ups. Sit with thighs secured, grip the bar wide, pull down to upper chest while squeezing shoulder blades together, then return with controlled tempo.',
-      es: 'Alternativa en máquina a dominadas con agarre ancho. Siéntate con muslos asegurados, agarra la barra ancho, tira al pecho superior apretando escápulas, luego regresa con tempo controlado.',
-    },
-    bmc: 3.0,
-    wf: 0.03,
-  },
-  {
-    id: 'lat_pulldown_close',
-    name: { en: 'Lat Pulldown (Close/Neutral)', es: 'Jalón al Pecho (Cerrado/Neutro)' },
-    muscleGroup: 'back',
-    equipment: ['lat_station', 'rowing_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Close-grip variation targeting lower lats. Using a rowing handle or close-grip attachment, pull to your sternum while leaning slightly back, focusing on a strong lat contraction at the bottom.',
-      es: 'Variación con agarre cerrado que trabaja dorsales inferiores. Usando barra de remo o agarre cerrado, tira al esternón inclinándote ligeramente atrás, enfocándote en fuerte contracción de dorsales.',
-    },
-    bmc: 3.0,
-    wf: 0.03,
-  },
-  {
-    id: 'lat_pulldown_reverse',
-    name: { en: 'Lat Pulldown (Reverse Grip)', es: 'Jalón al Pecho (Agarre Inverso)' },
-    muscleGroup: 'back',
-    equipment: ['lat_station', 'lat_bar'],
-    weightType: 'machine',
-    description: {
-      en: 'Underhand grip pulldown for lower lat emphasis. Grip the bar with palms facing you, pull down to your upper chest, squeezing your lats and biceps at the bottom of each repetition.',
-      es: 'Jalón con agarre supino para énfasis en dorsales inferiores. Agarra la barra con palmas hacia ti, tira hacia el pecho superior, apretando dorsales y bíceps en la parte inferior.',
-    },
-    bmc: 3.0,
-    wf: 0.03,
-  },
-  {
-    id: 'behind_neck_pulldown',
-    name: { en: 'Behind-the-neck lat Pulldown', es: 'Jalón trasnuca' },
-    muscleGroup: 'back',
-    equipment: ['lat_station', 'lat_bar'],
-    weightType: 'machine',
-    description: {
-      en: 'Sit with thighs secured, grip the bar wide, pull down to beehind the neck, then return with controlled tempo.',
-      es: 'Siéntate con los muslos sujetos, agarra la barra con las manos separadas, tira hacia abajo hasta detrás del cuello y luego regresa con un tempo controlado.',
-    },
-    bmc: 3.0,
-    wf: 0.03,
-  },
-  {
-    id: 'seated_cable_row',
-    name: { en: 'Seated Cable Row', es: 'Remo Sentado en Polea' },
-    muscleGroup: 'back',
-    equipment: ['low_pulley', 'rowing_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Builds mid-back thickness with constant tension. Sit with feet braced, pull handle to lower chest while squeezing shoulder blades together, extend arms fully to stretch lats between reps.',
-      es: 'Construye grosor de espalda media con tensión constante. Siéntate con pies apoyados, tira el agarre al pecho bajo apretando escápulas, extiende brazos completamente para estirar dorsales.',
-    },
-    bmc: 3.0,
-    wf: 0.03,
-  },
-  {
-    id: 'seated_cable_row_wide',
-    name: { en: 'Seated Cable Row (Wide)', es: 'Remo Sentado en Polea (Ancho)' },
-    muscleGroup: 'back',
-    equipment: ['low_pulley', 'lat_bar'],
-    weightType: 'machine',
-    description: {
-      en: 'Wide grip variation targeting rear delts and upper back. Pull the wide bar to your upper abdomen with elbows flared out, focusing on squeezing your shoulder blades together.',
-      es: 'Variación con agarre ancho que trabaja deltoides posteriores y espalda alta. Tira la barra ancha al abdomen superior con codos afuera, enfocándote en apretar las escápulas juntas.',
-    },
-    bmc: 3.0,
-    wf: 0.03,
-  },
-  {
-    id: 'face_pulls',
-    name: { en: 'Face Pulls', es: 'Tirón a la Cara' },
-    muscleGroup: 'back',
-    equipment: ['high_pulley', 'straight_bar_attachment'],
-    weightType: 'machine',
-    description: {
-      en: 'Essential for rear delts and upper back health. Pull the bar to your face with elbows high, externally rotate at the end position, squeezing rear delts and upper back muscles.',
-      es: 'Esencial para deltoides posteriores y salud de espalda alta. Tira la barra a la cara con codos altos, rota externamente al final, apretando deltoides posteriores y músculos de espalda alta.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
-  },
-  {
-    id: 'single_arm_cable_row',
-    name: { en: 'Single-Arm Cable Row', es: 'Remo Unilateral en Polea' },
-    muscleGroup: 'back',
-    equipment: ['low_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Unilateral rowing for balanced back development. Stand or kneel, pull the handle to your hip while rotating your torso slightly, focusing on a full stretch and strong contraction.',
-      es: 'Remo unilateral para desarrollo equilibrado de espalda. De pie o arrodillado, tira el mango a la cadera rotando ligeramente el torso, enfocándote en estiramiento completo y contracción fuerte.',
-    },
-    bmc: 2.5,
-    wf: 0.03,
   },
   {
     id: 'barbell_row',
@@ -620,19 +442,6 @@ export const exercises = [
     bmc: 1.5,
     wf: 0.02,
   },
-  {
-    id: 'cable_shrugs',
-    name: { en: 'Cable Shrugs', es: 'Encogimientos en Polea' },
-    muscleGroup: 'back',
-    equipment: ['low_pulley', 'straight_bar_attachment'],
-    weightType: 'machine',
-    description: {
-      en: 'Constant tension shrug variation using cables. Stand between low pulleys or facing one, shrug shoulders up while keeping arms straight, focus on peak contraction, then lower with resistance.',
-      es: 'Variación de encogimiento con tensión constante usando poleas. De pie entre poleas bajas o frente a una, encoge hombros manteniendo brazos rectos, enfócate en contracción máxima.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
-  },
 
   // ============================================
   // SHOULDERS
@@ -781,58 +590,6 @@ export const exercises = [
     wf: 0.02,
   },
   {
-    id: 'cable_lateral_raise',
-    name: { en: 'Cable Lateral Raise', es: 'Elevación Lateral en Polea' },
-    muscleGroup: 'shoulders',
-    equipment: ['low_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Constant tension lateral raise with cable. Stand sideways to low pulley, raise arm out to side against resistance, the cable provides tension throughout the entire range of motion.',
-      es: 'Elevación lateral con tensión constante usando polea. De pie lateral a polea baja, eleva el brazo al lado contra resistencia, el cable proporciona tensión durante todo el rango.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_front_raise',
-    name: { en: 'Cable Front Raise', es: 'Elevación Frontal en Polea' },
-    muscleGroup: 'shoulders',
-    equipment: ['low_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Cable version of front raises for constant tension. Face away from low pulley, raise handle in front to shoulder height, the cable ensures resistance even at the bottom.',
-      es: 'Versión con cable de elevaciones frontales para tensión constante. De espaldas a polea baja, eleva el mango al frente hasta altura de hombros, el cable asegura resistencia incluso abajo.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_rear_delt_fly',
-    name: { en: 'Cable Rear Delt Fly', es: 'Aperturas Posteriores en Polea' },
-    muscleGroup: 'shoulders',
-    equipment: ['high_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Rear delt isolation using cables for constant tension. Using high pulleys or rope, pull apart to engage rear delts, hold the squeeze, return with control maintaining tension.',
-      es: 'Aislamiento de deltoides posterior usando cables para tensión constante. Usando poleas altas o cuerda, separa para activar deltoides posteriores, mantén la contracción, regresa con control.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'face_pulls_shoulders',
-    name: { en: 'Face Pulls (Shoulders)', es: 'Tirón a la Cara (Hombros)' },
-    muscleGroup: 'shoulders',
-    equipment: ['high_pulley', 'rope'],
-    weightType: 'machine',
-    description: {
-      en: 'Excellent for rear delt and rotator cuff health. Pull rope toward face with elbows high, externally rotate hands at end position, essential for shoulder stability and posture.',
-      es: 'Excelente para deltoides posterior y salud del manguito rotador. Tira la cuerda hacia la cara con codos altos, rota externamente las manos al final, esencial para estabilidad y postura.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
-  },
-  {
     id: 'upright_row_barbell',
     name: { en: 'Upright Row (Barbell)', es: 'Remo al Mentón (Barra)' },
     muscleGroup: 'shoulders',
@@ -854,19 +611,6 @@ export const exercises = [
     description: {
       en: 'Dumbbell version allowing more natural arm path. Pull dumbbells up along body with elbows leading, this variation is often more comfortable for those with shoulder mobility limitations.',
       es: 'Versión con mancuernas permitiendo trayectoria más natural de brazos. Tira las mancuernas hacia arriba con codos liderando, esta variación es más cómoda para quienes tienen limitaciones.',
-    },
-    bmc: 2.0,
-    wf: 0.03,
-  },
-  {
-    id: 'upright_row_cable',
-    name: { en: 'Upright Row (Cable)', es: 'Remo al Mentón (Polea)' },
-    muscleGroup: 'shoulders',
-    equipment: ['low_pulley', 'lat_bar'],
-    weightType: 'machine',
-    description: {
-      en: 'Cable upright row for constant tension throughout. Using low pulley with bar attachment, pull up leading with elbows, the cable maintains resistance through the entire range.',
-      es: 'Remo al mentón con cable para tensión constante. Usando polea baja con barra, tira hacia arriba liderando con codos, el cable mantiene resistencia durante todo el rango.',
     },
     bmc: 2.0,
     wf: 0.03,
@@ -993,19 +737,6 @@ export const exercises = [
     wf: 0.02,
   },
   {
-    id: 'ez_bar_preacher_curl',
-    name: { en: 'EZ Bar Preacher Curl', es: 'Curl en Banco Scott con Barra Z' },
-    muscleGroup: 'biceps',
-    equipment: ['ez_bar', 'plates', 'preacher_pad'],
-    weightType: 'barbell',
-    description: {
-      en: 'Strict bicep isolation eliminating momentum. Rest arms on preacher pad, curl bar up squeezing biceps, lower fully to stretch, the pad prevents cheating and isolates completely.',
-      es: 'Aislamiento estricto de bíceps eliminando impulso. Apoya brazos en el pad, curl subiendo y apretando bíceps, baja completamente para estirar, el pad previene trampa y aísla completamente.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
     id: 'db_curl_standing',
     name: { en: 'Dumbbell Curl (Standing)', es: 'Curl con Mancuernas (De Pie)' },
     muscleGroup: 'biceps',
@@ -1071,19 +802,6 @@ export const exercises = [
     wf: 0.02,
   },
   {
-    id: 'db_preacher_curl',
-    name: { en: 'Dumbbell Preacher Curl', es: 'Curl en Banco Scott con Mancuerna' },
-    muscleGroup: 'biceps',
-    equipment: ['dumbbells', 'preacher_pad'],
-    weightType: 'dumbbell',
-    description: {
-      en: 'Unilateral preacher curl for balanced development. One arm at a time on preacher pad, allows full focus on each bicep, eliminates strength imbalances between arms effectively.',
-      es: 'Curl en banco scott unilateral para desarrollo equilibrado. Un brazo a la vez en el pad, permite enfoque completo en cada bíceps, elimina desequilibrios de fuerza entre brazos.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
     id: 'zottman_curl',
     name: { en: 'Dumbbell Zottman Curl', es: 'Curl Zottman con Mancuernas' },
     muscleGroup: 'biceps',
@@ -1094,71 +812,6 @@ export const exercises = [
       es: 'Curl compuesto trabajando bíceps y antebrazos juntos. Curl con agarre supino, rota a pronado arriba, baja con palmas abajo, trabaja bíceps al subir y antebrazos al bajar.',
     },
     bmc: 1.2,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_curl_bar',
-    name: { en: 'Cable Curl (Straight Bar)', es: 'Curl en Polea (Barra Recta)' },
-    muscleGroup: 'biceps',
-    equipment: ['low_pulley', 'straight_bar_attachment'],
-    weightType: 'machine',
-    description: {
-      en: 'Constant tension bicep curl using cable. Using low pulley with bar, curl up while keeping elbows stationary, the cable provides resistance throughout entire range including bottom.',
-      es: 'Curl de bíceps con tensión constante usando cable. Usando polea baja con barra, curl manteniendo codos fijos, el cable proporciona resistencia durante todo el rango incluyendo abajo.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_curl_rope',
-    name: { en: 'Cable Curl (Rope - Hammer)', es: 'Curl en Polea (Cuerda - Martillo)' },
-    muscleGroup: 'biceps',
-    equipment: ['low_pulley', 'rope'],
-    weightType: 'machine',
-    description: {
-      en: 'Neutral grip cable curl using rope attachment. Curl rope up keeping neutral grip, split ends apart at top for extra contraction, excellent for brachialis and forearm development.',
-      es: 'Curl con cable con agarre neutro usando cuerda. Curl con cuerda manteniendo agarre neutro, separa los extremos arriba para contracción extra, excelente para braquial y antebrazos.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_curl_single',
-    name: { en: 'Cable Curl (Single Arm)', es: 'Curl en Polea (Un Brazo)' },
-    muscleGroup: 'biceps',
-    equipment: ['low_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Unilateral cable curl for isolation and balance. Stand sideways to low pulley, curl single handle while keeping elbow fixed, excellent for addressing strength imbalances between arms.',
-      es: 'Curl unilateral con cable para aislamiento y equilibrio. De pie lateral a polea baja, curl con un mango manteniendo codo fijo, excelente para corregir desequilibrios de fuerza.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_high_curl',
-    name: { en: 'Cable High Curl', es: 'Curl Alto en Polea' },
-    muscleGroup: 'biceps',
-    equipment: ['high_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Bicep curl from high pulley position. Stand between high pulleys, curl handles toward your head, excellent for hitting biceps from a unique angle and creating a strong peak contraction.',
-      es: 'Curl de bíceps desde posición de polea alta. De pie entre poleas altas, curl hacia la cabeza, excelente para trabajar bíceps desde un ángulo único y crear fuerte contracción de pico.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_preacher_curl',
-    name: { en: 'Cable Preacher Curl', es: 'Curl en Banco Scott con Polea' },
-    muscleGroup: 'biceps',
-    equipment: ['low_pulley', 'preacher_pad', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Preacher curl with constant cable tension. Position preacher pad facing low pulley, curl keeping upper arms on pad, the cable ensures tension throughout the entire movement.',
-      es: 'Curl en banco scott con tensión constante de cable. Posiciona el pad frente a polea baja, curl manteniendo brazos en el pad, el cable asegura tensión durante todo el movimiento.',
-    },
-    bmc: 1.0,
     wf: 0.02,
   },
   {
@@ -1281,110 +934,6 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.02,
-  },
-  {
-    id: 'cable_pushdown_rope',
-    name: { en: 'Cable Pushdown (Rope)', es: 'Empuje en Polea (Cuerda)' },
-    muscleGroup: 'triceps',
-    equipment: ['high_pulley', 'rope'],
-    weightType: 'machine',
-    description: {
-      en: 'Classic tricep isolation with rope attachment. Push rope down while keeping elbows at sides, split the rope apart at bottom for extra contraction, return with control.',
-      es: 'Aislamiento clásico de tríceps con cuerda. Empuja la cuerda hacia abajo manteniendo codos a los lados, separa la cuerda abajo para contracción extra, regresa con control.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_pushdown_bar',
-    name: { en: 'Cable Pushdown (Straight Bar)', es: 'Empuje en Polea (Barra Recta)' },
-    muscleGroup: 'triceps',
-    equipment: ['high_pulley', 'straight_bar_attachment'],
-    weightType: 'machine',
-    description: {
-      en: 'Straight bar pushdown for heavy tricep work. Using bar attachment, push down until arms are fully extended, keep elbows pinned to sides, allows heavier loads than rope.',
-      es: 'Empuje con barra recta para trabajo pesado de tríceps. Usando accesorio de barra, empuja hasta extensión completa de brazos, mantén codos fijos a los lados.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_pushdown_vbar',
-    name: { en: 'Cable Pushdown (V-Bar/Handle)', es: 'Empuje en Polea (Barra V/Mango)' },
-    muscleGroup: 'triceps',
-    equipment: ['high_pulley', 'v_bar'],
-    weightType: 'machine',
-    description: {
-      en: 'V-bar pushdown for comfortable wrist position. The angled grip of V-bar is easier on wrists while still providing effective tricep isolation, push down and squeeze at bottom.',
-      es: 'Empuje con barra V para posición cómoda de muñecas. El agarre angular de la barra V es más cómodo mientras proporciona aislamiento efectivo de tríceps, empuja y aprieta abajo.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_pushdown_reverse',
-    name: { en: 'Cable Pushdown (Reverse Grip)', es: 'Empuje en Polea (Agarre Inverso)' },
-    muscleGroup: 'triceps',
-    equipment: ['high_pulley', 'straight_bar_attachment'],
-    weightType: 'machine',
-    description: {
-      en: 'Underhand grip pushdown for medial head emphasis. Grip bar with palms up, push down focusing on tricep contraction, this variation shifts emphasis to the medial tricep head.',
-      es: 'Empuje con agarre supino para énfasis en cabeza medial. Agarra la barra con palmas arriba, empuja enfocándote en contracción de tríceps, esta variación enfatiza la cabeza medial.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_overhead_extension_rope',
-    name: { en: 'Cable Overhead Extension (Rope)', es: 'Extensión sobre Cabeza en Polea (Cuerda)' },
-    muscleGroup: 'triceps',
-    equipment: ['low_pulley', 'rope'],
-    weightType: 'machine',
-    description: {
-      en: 'Overhead cable extension for long head emphasis. Face away from low pulley, extend rope overhead, the stretched position at bottom maximally targets the tricep long head.',
-      es: 'Extensión sobre cabeza con cable para énfasis en cabeza larga. De espaldas a polea baja, extiende la cuerda sobre la cabeza, la posición estirada trabaja máximamente la cabeza larga.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_overhead_extension_single',
-    name: { en: 'Cable Overhead Extension (Single Arm)', es: 'Extensión sobre Cabeza en Polea (Un Brazo)' },
-    muscleGroup: 'triceps',
-    equipment: ['low_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Unilateral overhead extension for balanced triceps. Single arm allows full focus on each tricep, extend fully overhead while keeping upper arm stationary, great for imbalances.',
-      es: 'Extensión sobre cabeza unilateral para tríceps equilibrados. Un brazo permite enfoque completo en cada tríceps, extiende completamente manteniendo brazo superior fijo.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_kickback',
-    name: { en: 'Cable Kickback', es: 'Patada Trasera en Polea' },
-    muscleGroup: 'triceps',
-    equipment: ['low_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Cable version of kickbacks for constant tension. Hinge forward, extend arm back against cable resistance, the cable maintains tension throughout entire range of motion.',
-      es: 'Versión con cable de patadas traseras para tensión constante. Inclínate hacia adelante, extiende el brazo atrás contra la resistencia del cable, el cable mantiene tensión durante todo.',
-    },
-    bmc: 1.0,
-    wf: 0.02,
-  },
-  {
-    id: 'dips_triceps',
-    name: { en: 'Dips (Tricep Focus)', es: 'Fondos (Enfoque Tríceps)' },
-    muscleGroup: 'triceps',
-    equipment: ['parallels'],
-    weightType: 'bodyweight',
-    description: {
-      en: 'Compound tricep builder with upright torso. Keep body vertical, lower until upper arms are parallel to floor, push up focusing on tricep contraction, elbows close to body.',
-      es: 'Constructor compuesto de tríceps con torso erguido. Mantén el cuerpo vertical, baja hasta que brazos estén paralelos al suelo, empuja enfocándote en contracción de tríceps.',
-    },
-    bmc: 2.5,
-    wf: 0.04,
   },
   {
     id: 'bench_dips',
@@ -1532,19 +1081,6 @@ export const exercises = [
     },
     bmc: 3.0,
     wf: 0.04,
-  },
-  {
-    id: 'cable_wrist_curl',
-    name: { en: 'Cable Wrist Curl', es: 'Curl de Muñeca en Polea' },
-    muscleGroup: 'forearms',
-    equipment: ['low_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Constant tension wrist curl using cable. Kneel facing low pulley, curl wrist up against cable resistance, the cable provides smooth resistance through entire range of movement.',
-      es: 'Curl de muñeca con tensión constante usando cable. Arrodíllate frente a polea baja, curl de muñeca contra resistencia del cable, el cable proporciona resistencia suave durante todo el rango.',
-    },
-    bmc: 0.5,
-    wf: 0.02,
   },
   {
     id: 'reverse_curl_barbell',
@@ -1746,32 +1282,6 @@ export const exercises = [
     wf: 0.03,
   },
   {
-    id: 'leg_extension',
-    name: { en: 'Leg Extension', es: 'Extensión de Piernas' },
-    muscleGroup: 'quads',
-    equipment: ['leg_extension_station'],
-    weightType: 'machine',
-    description: {
-      en: 'Isolation exercise targeting quadriceps directly. Sit with knees at edge of pad, extend legs fully, squeeze quads at top, lower with control, excellent for quad isolation and definition.',
-      es: 'Ejercicio de aislamiento que trabaja los cuádriceps directamente. Siéntate con rodillas en el borde del pad, extiende piernas completamente, aprieta arriba, baja con control.',
-    },
-    bmc: 2.0,
-    wf: 0.03,
-  },
-  {
-    id: 'leg_press',
-    name: { en: 'Leg Press', es: 'Prensa de Piernas' },
-    muscleGroup: 'quads',
-    equipment: ['leg_press_station'],
-    weightType: 'machine',
-    description: {
-      en: 'Machine compound movement for heavy quad loading. Press platform away by extending legs, lower with control, foot placement affects muscle emphasis, allows very heavy weights safely.',
-      es: 'Movimiento compuesto en máquina para carga pesada de cuádriceps. Empuja la plataforma extendiendo piernas, baja con control, la posición de pies afecta el énfasis muscular.',
-    },
-    bmc: 4.0,
-    wf: 0.04,
-  },
-  {
     id: 'sissy_squat',
     name: { en: 'Sissy Squat', es: 'Sentadilla Sissy' },
     muscleGroup: 'quads',
@@ -1880,45 +1390,6 @@ export const exercises = [
     wf: 0.03,
   },
   {
-    id: 'leg_curl',
-    name: { en: 'Leg Curl', es: 'Curl de Piernas' },
-    muscleGroup: 'hamstrings',
-    equipment: ['lying_leg_curl_station'],
-    weightType: 'machine',
-    description: {
-      en: 'Machine isolation for hamstring knee flexion. Curl heels toward glutes, squeeze hamstrings at top, lower with control, keeps hips stable for strict isolation.',
-      es: 'Aislamiento en máquina para flexión de rodilla de isquiotibiales. Curl de talones hacia glúteos, aprieta isquios arriba, baja con control, mantiene caderas estables.',
-    },
-    bmc: 2.0,
-    wf: 0.03,
-  },
-  {
-    id: 'seated_leg_curl',
-    name: { en: 'Seated Leg Curl', es: 'Curl de Piernas Sentado' },
-    muscleGroup: 'hamstrings',
-    equipment: ['leg_curl_station'],
-    weightType: 'machine',
-    description: {
-      en: 'Seated version of leg curl machine. Sit with pad above ankles, curl legs down and back, the seated position provides different hamstring stretch than lying version.',
-      es: 'Versión sentada de la máquina de curl de piernas. Siéntate con pad sobre los tobillos, curl de piernas hacia abajo y atrás, la posición sentada proporciona diferente estiramiento.',
-    },
-    bmc: 2.0,
-    wf: 0.03,
-  },
-  {
-    id: 'cable_pull_through',
-    name: { en: 'Cable Pull-Through', es: 'Tirón de Cable entre Piernas' },
-    muscleGroup: 'hamstrings',
-    equipment: ['low_pulley', 'rope'],
-    weightType: 'machine',
-    description: {
-      en: 'Hip hinge with constant cable tension. Face away from low pulley, rope between legs, hinge forward then thrust hips to stand, excellent hip hinge pattern practice with resistance.',
-      es: 'Bisagra de cadera con tensión constante de cable. De espaldas a polea baja, cuerda entre piernas, inclínate y empuja caderas para pararte, excelente práctica de bisagra con resistencia.',
-    },
-    bmc: 3.0,
-    wf: 0.03,
-  },
-  {
     id: 'nordic_curl',
     name: { en: 'Nordic Curl (Assisted)', es: 'Curl Nórdico (Asistido)' },
     muscleGroup: 'hamstrings',
@@ -2022,32 +1493,6 @@ export const exercises = [
     description: {
       en: 'Simple glute bridge with dumbbell on hips. Lie on floor, place dumbbell on lower abdomen, bridge up squeezing glutes, great starting exercise for glute activation and development.',
       es: 'Puente de glúteos simple con mancuerna en caderas. Acuéstate en el suelo, coloca mancuerna en abdomen bajo, eleva apretando glúteos, excelente ejercicio inicial para activación.',
-    },
-    bmc: 3.0,
-    wf: 0.03,
-  },
-  {
-    id: 'cable_kickback_glutes',
-    name: { en: 'Cable Kickback', es: 'Patada Trasera en Polea' },
-    muscleGroup: 'glutes',
-    equipment: ['low_pulley', 'ankle_strap'],
-    weightType: 'machine',
-    description: {
-      en: 'Glute isolation using cable and ankle strap. Attach strap to ankle, face low pulley, kick leg back squeezing glute at top, constant tension throughout entire range of motion.',
-      es: 'Aislamiento de glúteos usando cable y correa de tobillo. Conecta la correa al tobillo, de frente a polea baja, patea hacia atrás apretando glúteo arriba, tensión constante.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_pull_through_glutes',
-    name: { en: 'Cable Pull-Through', es: 'Tirón de Cable entre Piernas' },
-    muscleGroup: 'glutes',
-    equipment: ['low_pulley', 'rope'],
-    weightType: 'machine',
-    description: {
-      en: 'Hip hinge for glutes with cable resistance. Face away from low pulley, rope between legs, hinge and thrust hips forward, excellent glute activation with constant cable tension.',
-      es: 'Bisagra de cadera para glúteos con resistencia de cable. De espaldas a polea baja, cuerda entre piernas, inclínate y empuja caderas adelante, excelente activación con tensión constante.',
     },
     bmc: 3.0,
     wf: 0.03,
@@ -2239,19 +1684,6 @@ export const exercises = [
     wf: 0.02,
   },
   {
-    id: 'leg_press_calf_raise',
-    name: { en: 'Leg Press Calf Raise', es: 'Elevación de Talones en Prensa' },
-    muscleGroup: 'calves',
-    equipment: ['leg_press_station'],
-    weightType: 'machine',
-    description: {
-      en: 'Calf raise using leg press machine. Position toes on bottom of platform, press through toes to extend calves, allows heavy loading with machine support for safe calf training.',
-      es: 'Elevación de talones usando la prensa de piernas. Posiciona puntas en la parte baja de la plataforma, empuja con puntas para extender gemelos, permite carga pesada con soporte.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
-  },
-  {
     id: 'donkey_calf_raise',
     name: { en: 'Donkey Calf Raise', es: 'Elevación de Talones Burro' },
     muscleGroup: 'calves',
@@ -2306,7 +1738,8 @@ export const exercises = [
     },
     bmc: 2.0,
     wf: 0.0,
-  },{
+  },
+  {
     id: 'crunches',
     name: { en: 'Crunches', es: 'Abdominales' },
     muscleGroup: 'core',
@@ -2448,58 +1881,6 @@ export const exercises = [
     },
     bmc: 2.5,
     wf: 0.0,
-  },
-  {
-    id: 'cable_crunch',
-    name: { en: 'Cable Crunch (Kneeling)', es: 'Crunch en Polea (Arrodillado)' },
-    muscleGroup: 'core',
-    equipment: ['high_pulley', 'rope'],
-    weightType: 'machine',
-    description: {
-      en: 'Weighted crunch using cable for progressive resistance. Kneel facing away from high pulley, crunch down contracting abs against cable resistance, allows heavy loading for ab strength.',
-      es: 'Crunch con peso usando cable para resistencia progresiva. Arrodíllate de espaldas a polea alta, crunch contrayendo abdominales contra resistencia del cable, permite carga pesada.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_woodchop_high',
-    name: { en: 'Cable Woodchop (High to Low)', es: 'Leñador en Polea (Alto a Bajo)' },
-    muscleGroup: 'core',
-    equipment: ['high_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Rotational core exercise from high to low. Pull cable diagonally across body from high to low, rotating through core, excellent for building rotational power and oblique strength.',
-      es: 'Ejercicio rotacional de core de alto a bajo. Tira el cable diagonalmente a través del cuerpo de alto a bajo, rotando el core, excelente para potencia rotacional y fuerza de oblicuos.',
-    },
-    bmc: 2.0,
-    wf: 0.02,
-  },
-  {
-    id: 'cable_woodchop_low',
-    name: { en: 'Cable Woodchop (Low to High)', es: 'Leñador en Polea (Bajo a Alto)' },
-    muscleGroup: 'core',
-    equipment: ['low_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Rotational movement from low to high position. Pull cable diagonally upward across body, rotating through core, works obliques and rotational muscles from a different angle.',
-      es: 'Movimiento rotacional de posición baja a alta. Tira el cable diagonalmente hacia arriba a través del cuerpo, rotando el core, trabaja oblicuos desde otro ángulo.',
-    },
-    bmc: 2.0,
-    wf: 0.02,
-  },
-  {
-    id: 'pallof_press',
-    name: { en: 'Cable Pallof Press', es: 'Press Pallof en Polea' },
-    muscleGroup: 'core',
-    equipment: ['mid_pulley', 'single_handle'],
-    weightType: 'machine',
-    description: {
-      en: 'Anti-rotation exercise for core stability. Stand perpendicular to cable, press handle straight out resisting rotation, return to chest, builds crucial rotational stability for sports.',
-      es: 'Ejercicio anti-rotación para estabilidad del core. De pie perpendicular al cable, empuja el mango hacia afuera resistiendo rotación, regresa al pecho, construye estabilidad rotacional.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
   },
   {
     id: 'plank',
@@ -2670,7 +2051,682 @@ export const exercises = [
     bmc: 1.5,
     wf: 0.03,
   },
+
+  // ############################################
+  // PRO EXERCISES (Gym/Cable/Machine Equipment)
+  // ############################################
+
+  // ============================================
+  // CHEST
+  // ============================================
+  {
+    id: 'cable_crossover_high',
+    name: { en: 'Cable Crossover (High)', es: 'Cruce de Cables (Alto)' },
+    muscleGroup: 'chest',
+    equipment: ['high_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Constant tension chest isolation from high pulleys. Step forward, pull handles down and across your body in an arc, crossing at the bottom while squeezing your lower chest intensely.',
+      es: 'Aislamiento de pecho con tensión constante desde poleas altas. Da un paso adelante, tira los mangos hacia abajo y cruza en arco, cruzando abajo mientras aprietas intensamente el pecho inferior.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_crossover_low',
+    name: { en: 'Cable Crossover (Low to High)', es: 'Cruce de Cables (Bajo a Alto)' },
+    muscleGroup: 'chest',
+    equipment: ['low_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Targets upper chest with upward cable motion. From low pulleys, bring handles up and together in front of your face, focusing on contracting the upper chest fibers throughout.',
+      es: 'Trabaja el pecho superior con movimiento de cable ascendente. Desde poleas bajas, lleva los mangos arriba y júntalos frente a la cara, enfocándote en contraer las fibras del pecho superior.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_flyes_mid',
+    name: { en: 'Cable Flyes (Mid)', es: 'Aperturas en Polea (Media)' },
+    muscleGroup: 'chest',
+    equipment: ['mid_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Mid-level cable fly for overall chest development. With pulleys at chest height, bring handles together in front maintaining slight elbow bend, squeezing hard at the center.',
+      es: 'Apertura con polea media para desarrollo general del pecho. Con poleas a altura del pecho, junta los mangos al frente manteniendo codos ligeramente flexionados, apretando fuerte en el centro.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+  {
+    id: 'pec_deck',
+    name: { en: 'Pec Deck / Butterfly', es: 'Pec Deck / Mariposa' },
+    muscleGroup: 'chest',
+    equipment: ['pec_deck_station'],
+    weightType: 'machine',
+    description: {
+      en: 'Machine-based chest isolation with guided movement path. Sit with back flat, bring padded arms together in front of your chest, hold the squeeze for a second, then return with control.',
+      es: 'Aislamiento de pecho en máquina con trayectoria guiada. Siéntate con espalda plana, junta los brazos acolchados frente al pecho, mantén la contracción un segundo, luego regresa con control.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+  {
+    id: 'chest_press',
+    name: { en: 'Chest Press', es: 'Press de Pecho' },
+    muscleGroup: 'chest',
+    equipment: ['chest_press_station'],
+    weightType: 'machine',
+    description: {
+      en: 'Sit on the chest press machine, back flat, feet firm. Grip handles at chest height, elbows bent 90°. Exhale, press forward smoothly to near-straight arms, squeezing chest. Inhale, return slowly with control.',
+      es: 'Siéntate en la máquina de press de pecho, espalda plana, pies firmes. Agarra las manijas a la altura del pecho, codos en 90°. Exhala, empuja hacia adelante hasta casi extender brazos, apretando pecho. Inhala, regresa lento con control.',
+    },
+    bmc: 1.8,
+    wf: 0.03,
+  },
+  {
+    id: 'dips_chest',
+    name: { en: 'Dips (Chest Focus)', es: 'Fondos (Enfoque Pecho)' },
+    muscleGroup: 'chest',
+    equipment: ['parallels'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Compound movement for lower chest when performed with forward lean. Keep torso tilted forward, lower until shoulders are below elbows, then push up maintaining the chest-focused position.',
+      es: 'Movimiento compuesto para pecho inferior realizado con inclinación hacia adelante. Mantén el torso inclinado, baja hasta que los hombros estén bajo los codos, luego empuja manteniendo la posición.',
+    },
+    bmc: 2.5,
+    wf: 0.04,
+  },
+
+  // ============================================
+  // BACK
+  // ============================================
+  {
+    id: 'lat_pulldown_wide',
+    name: { en: 'Lat Pulldown (Wide)', es: 'Jalón al Pecho (Ancho)' },
+    muscleGroup: 'back',
+    equipment: ['lat_station', 'lat_bar'],
+    weightType: 'machine',
+    description: {
+      en: 'Machine alternative to wide-grip pull-ups. Sit with thighs secured, grip the bar wide, pull down to upper chest while squeezing shoulder blades together, then return with controlled tempo.',
+      es: 'Alternativa en máquina a dominadas con agarre ancho. Siéntate con muslos asegurados, agarra la barra ancho, tira al pecho superior apretando escápulas, luego regresa con tempo controlado.',
+    },
+    bmc: 3.0,
+    wf: 0.03,
+  },
+  {
+    id: 'lat_pulldown_close',
+    name: { en: 'Lat Pulldown (Close/Neutral)', es: 'Jalón al Pecho (Cerrado/Neutro)' },
+    muscleGroup: 'back',
+    equipment: ['lat_station', 'rowing_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Close-grip variation targeting lower lats. Using a rowing handle or close-grip attachment, pull to your sternum while leaning slightly back, focusing on a strong lat contraction at the bottom.',
+      es: 'Variación con agarre cerrado que trabaja dorsales inferiores. Usando barra de remo o agarre cerrado, tira al esternón inclinándote ligeramente atrás, enfocándote en fuerte contracción de dorsales.',
+    },
+    bmc: 3.0,
+    wf: 0.03,
+  },
+  {
+    id: 'lat_pulldown_reverse',
+    name: { en: 'Lat Pulldown (Reverse Grip)', es: 'Jalón al Pecho (Agarre Inverso)' },
+    muscleGroup: 'back',
+    equipment: ['lat_station', 'lat_bar'],
+    weightType: 'machine',
+    description: {
+      en: 'Underhand grip pulldown for lower lat emphasis. Grip the bar with palms facing you, pull down to your upper chest, squeezing your lats and biceps at the bottom of each repetition.',
+      es: 'Jalón con agarre supino para énfasis en dorsales inferiores. Agarra la barra con palmas hacia ti, tira hacia el pecho superior, apretando dorsales y bíceps en la parte inferior.',
+    },
+    bmc: 3.0,
+    wf: 0.03,
+  },
+  {
+    id: 'behind_neck_pulldown',
+    name: { en: 'Behind-the-neck lat Pulldown', es: 'Jalón trasnuca' },
+    muscleGroup: 'back',
+    equipment: ['lat_station', 'lat_bar'],
+    weightType: 'machine',
+    description: {
+      en: 'Sit with thighs secured, grip the bar wide, pull down to beehind the neck, then return with controlled tempo.',
+      es: 'Siéntate con los muslos sujetos, agarra la barra con las manos separadas, tira hacia abajo hasta detrás del cuello y luego regresa con un tempo controlado.',
+    },
+    bmc: 3.0,
+    wf: 0.03,
+  },
+  {
+    id: 'seated_cable_row',
+    name: { en: 'Seated Cable Row', es: 'Remo Sentado en Polea' },
+    muscleGroup: 'back',
+    equipment: ['low_pulley', 'rowing_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Builds mid-back thickness with constant tension. Sit with feet braced, pull handle to lower chest while squeezing shoulder blades together, extend arms fully to stretch lats between reps.',
+      es: 'Construye grosor de espalda media con tensión constante. Siéntate con pies apoyados, tira el agarre al pecho bajo apretando escápulas, extiende brazos completamente para estirar dorsales.',
+    },
+    bmc: 3.0,
+    wf: 0.03,
+  },
+  {
+    id: 'seated_cable_row_wide',
+    name: { en: 'Seated Cable Row (Wide)', es: 'Remo Sentado en Polea (Ancho)' },
+    muscleGroup: 'back',
+    equipment: ['low_pulley', 'lat_bar'],
+    weightType: 'machine',
+    description: {
+      en: 'Wide grip variation targeting rear delts and upper back. Pull the wide bar to your upper abdomen with elbows flared out, focusing on squeezing your shoulder blades together.',
+      es: 'Variación con agarre ancho que trabaja deltoides posteriores y espalda alta. Tira la barra ancha al abdomen superior con codos afuera, enfocándote en apretar las escápulas juntas.',
+    },
+    bmc: 3.0,
+    wf: 0.03,
+  },
+  {
+    id: 'face_pulls',
+    name: { en: 'Face Pulls', es: 'Tirón a la Cara' },
+    muscleGroup: 'back',
+    equipment: ['high_pulley', 'straight_bar_attachment'],
+    weightType: 'machine',
+    description: {
+      en: 'Essential for rear delts and upper back health. Pull the bar to your face with elbows high, externally rotate at the end position, squeezing rear delts and upper back muscles.',
+      es: 'Esencial para deltoides posteriores y salud de espalda alta. Tira la barra a la cara con codos altos, rota externamente al final, apretando deltoides posteriores y músculos de espalda alta.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+  {
+    id: 'single_arm_cable_row',
+    name: { en: 'Single-Arm Cable Row', es: 'Remo Unilateral en Polea' },
+    muscleGroup: 'back',
+    equipment: ['low_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Unilateral rowing for balanced back development. Stand or kneel, pull the handle to your hip while rotating your torso slightly, focusing on a full stretch and strong contraction.',
+      es: 'Remo unilateral para desarrollo equilibrado de espalda. De pie o arrodillado, tira el mango a la cadera rotando ligeramente el torso, enfocándote en estiramiento completo y contracción fuerte.',
+    },
+    bmc: 2.5,
+    wf: 0.03,
+  },
+  {
+    id: 'cable_shrugs',
+    name: { en: 'Cable Shrugs', es: 'Encogimientos en Polea' },
+    muscleGroup: 'back',
+    equipment: ['low_pulley', 'straight_bar_attachment'],
+    weightType: 'machine',
+    description: {
+      en: 'Constant tension shrug variation using cables. Stand between low pulleys or facing one, shrug shoulders up while keeping arms straight, focus on peak contraction, then lower with resistance.',
+      es: 'Variación de encogimiento con tensión constante usando poleas. De pie entre poleas bajas o frente a una, encoge hombros manteniendo brazos rectos, enfócate en contracción máxima.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+
+  // ============================================
+  // SHOULDERS
+  // ============================================
+  {
+    id: 'cable_lateral_raise',
+    name: { en: 'Cable Lateral Raise', es: 'Elevación Lateral en Polea' },
+    muscleGroup: 'shoulders',
+    equipment: ['low_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Constant tension lateral raise with cable. Stand sideways to low pulley, raise arm out to side against resistance, the cable provides tension throughout the entire range of motion.',
+      es: 'Elevación lateral con tensión constante usando polea. De pie lateral a polea baja, eleva el brazo al lado contra resistencia, el cable proporciona tensión durante todo el rango.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_front_raise',
+    name: { en: 'Cable Front Raise', es: 'Elevación Frontal en Polea' },
+    muscleGroup: 'shoulders',
+    equipment: ['low_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Cable version of front raises for constant tension. Face away from low pulley, raise handle in front to shoulder height, the cable ensures resistance even at the bottom.',
+      es: 'Versión con cable de elevaciones frontales para tensión constante. De espaldas a polea baja, eleva el mango al frente hasta altura de hombros, el cable asegura resistencia incluso abajo.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_rear_delt_fly',
+    name: { en: 'Cable Rear Delt Fly', es: 'Aperturas Posteriores en Polea' },
+    muscleGroup: 'shoulders',
+    equipment: ['high_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Rear delt isolation using cables for constant tension. Using high pulleys or rope, pull apart to engage rear delts, hold the squeeze, return with control maintaining tension.',
+      es: 'Aislamiento de deltoides posterior usando cables para tensión constante. Usando poleas altas o cuerda, separa para activar deltoides posteriores, mantén la contracción, regresa con control.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'face_pulls_shoulders',
+    name: { en: 'Face Pulls (Shoulders)', es: 'Tirón a la Cara (Hombros)' },
+    muscleGroup: 'shoulders',
+    equipment: ['high_pulley', 'rope'],
+    weightType: 'machine',
+    description: {
+      en: 'Excellent for rear delt and rotator cuff health. Pull rope toward face with elbows high, externally rotate hands at end position, essential for shoulder stability and posture.',
+      es: 'Excelente para deltoides posterior y salud del manguito rotador. Tira la cuerda hacia la cara con codos altos, rota externamente las manos al final, esencial para estabilidad y postura.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+  {
+    id: 'upright_row_cable',
+    name: { en: 'Upright Row (Cable)', es: 'Remo al Mentón (Polea)' },
+    muscleGroup: 'shoulders',
+    equipment: ['low_pulley', 'lat_bar'],
+    weightType: 'machine',
+    description: {
+      en: 'Cable upright row for constant tension throughout. Using low pulley with bar attachment, pull up leading with elbows, the cable maintains resistance through the entire range.',
+      es: 'Remo al mentón con cable para tensión constante. Usando polea baja con barra, tira hacia arriba liderando con codos, el cable mantiene resistencia durante todo el rango.',
+    },
+    bmc: 2.0,
+    wf: 0.03,
+  },
+
+  // ============================================
+  // BICEPS
+  // ============================================
+  {
+    id: 'ez_bar_preacher_curl',
+    name: { en: 'EZ Bar Preacher Curl', es: 'Curl en Banco Scott con Barra Z' },
+    muscleGroup: 'biceps',
+    equipment: ['ez_bar', 'plates', 'preacher_pad'],
+    weightType: 'barbell',
+    description: {
+      en: 'Strict bicep isolation eliminating momentum. Rest arms on preacher pad, curl bar up squeezing biceps, lower fully to stretch, the pad prevents cheating and isolates completely.',
+      es: 'Aislamiento estricto de bíceps eliminando impulso. Apoya brazos en el pad, curl subiendo y apretando bíceps, baja completamente para estirar, el pad previene trampa y aísla completamente.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'db_preacher_curl',
+    name: { en: 'Dumbbell Preacher Curl', es: 'Curl en Banco Scott con Mancuerna' },
+    muscleGroup: 'biceps',
+    equipment: ['dumbbells', 'preacher_pad'],
+    weightType: 'dumbbell',
+    description: {
+      en: 'Unilateral preacher curl for balanced development. One arm at a time on preacher pad, allows full focus on each bicep, eliminates strength imbalances between arms effectively.',
+      es: 'Curl en banco scott unilateral para desarrollo equilibrado. Un brazo a la vez en el pad, permite enfoque completo en cada bíceps, elimina desequilibrios de fuerza entre brazos.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_curl_bar',
+    name: { en: 'Cable Curl (Straight Bar)', es: 'Curl en Polea (Barra Recta)' },
+    muscleGroup: 'biceps',
+    equipment: ['low_pulley', 'straight_bar_attachment'],
+    weightType: 'machine',
+    description: {
+      en: 'Constant tension bicep curl using cable. Using low pulley with bar, curl up while keeping elbows stationary, the cable provides resistance throughout entire range including bottom.',
+      es: 'Curl de bíceps con tensión constante usando cable. Usando polea baja con barra, curl manteniendo codos fijos, el cable proporciona resistencia durante todo el rango incluyendo abajo.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_curl_rope',
+    name: { en: 'Cable Curl (Rope - Hammer)', es: 'Curl en Polea (Cuerda - Martillo)' },
+    muscleGroup: 'biceps',
+    equipment: ['low_pulley', 'rope'],
+    weightType: 'machine',
+    description: {
+      en: 'Neutral grip cable curl using rope attachment. Curl rope up keeping neutral grip, split ends apart at top for extra contraction, excellent for brachialis and forearm development.',
+      es: 'Curl con cable con agarre neutro usando cuerda. Curl con cuerda manteniendo agarre neutro, separa los extremos arriba para contracción extra, excelente para braquial y antebrazos.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_curl_single',
+    name: { en: 'Cable Curl (Single Arm)', es: 'Curl en Polea (Un Brazo)' },
+    muscleGroup: 'biceps',
+    equipment: ['low_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Unilateral cable curl for isolation and balance. Stand sideways to low pulley, curl single handle while keeping elbow fixed, excellent for addressing strength imbalances between arms.',
+      es: 'Curl unilateral con cable para aislamiento y equilibrio. De pie lateral a polea baja, curl con un mango manteniendo codo fijo, excelente para corregir desequilibrios de fuerza.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_high_curl',
+    name: { en: 'Cable High Curl', es: 'Curl Alto en Polea' },
+    muscleGroup: 'biceps',
+    equipment: ['high_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Bicep curl from high pulley position. Stand between high pulleys, curl handles toward your head, excellent for hitting biceps from a unique angle and creating a strong peak contraction.',
+      es: 'Curl de bíceps desde posición de polea alta. De pie entre poleas altas, curl hacia la cabeza, excelente para trabajar bíceps desde un ángulo único y crear fuerte contracción de pico.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_preacher_curl',
+    name: { en: 'Cable Preacher Curl', es: 'Curl en Banco Scott con Polea' },
+    muscleGroup: 'biceps',
+    equipment: ['low_pulley', 'preacher_pad', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Preacher curl with constant cable tension. Position preacher pad facing low pulley, curl keeping upper arms on pad, the cable ensures tension throughout the entire movement.',
+      es: 'Curl en banco scott con tensión constante de cable. Posiciona el pad frente a polea baja, curl manteniendo brazos en el pad, el cable asegura tensión durante todo el movimiento.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+
+  // ============================================
+  // TRICEPS
+  // ============================================
+  {
+    id: 'cable_pushdown_rope',
+    name: { en: 'Cable Pushdown (Rope)', es: 'Empuje en Polea (Cuerda)' },
+    muscleGroup: 'triceps',
+    equipment: ['high_pulley', 'rope'],
+    weightType: 'machine',
+    description: {
+      en: 'Classic tricep isolation with rope attachment. Push rope down while keeping elbows at sides, split the rope apart at bottom for extra contraction, return with control.',
+      es: 'Aislamiento clásico de tríceps con cuerda. Empuja la cuerda hacia abajo manteniendo codos a los lados, separa la cuerda abajo para contracción extra, regresa con control.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_pushdown_bar',
+    name: { en: 'Cable Pushdown (Straight Bar)', es: 'Empuje en Polea (Barra Recta)' },
+    muscleGroup: 'triceps',
+    equipment: ['high_pulley', 'straight_bar_attachment'],
+    weightType: 'machine',
+    description: {
+      en: 'Straight bar pushdown for heavy tricep work. Using bar attachment, push down until arms are fully extended, keep elbows pinned to sides, allows heavier loads than rope.',
+      es: 'Empuje con barra recta para trabajo pesado de tríceps. Usando accesorio de barra, empuja hasta extensión completa de brazos, mantén codos fijos a los lados.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_pushdown_vbar',
+    name: { en: 'Cable Pushdown (V-Bar/Handle)', es: 'Empuje en Polea (Barra V/Mango)' },
+    muscleGroup: 'triceps',
+    equipment: ['high_pulley', 'v_bar'],
+    weightType: 'machine',
+    description: {
+      en: 'V-bar pushdown for comfortable wrist position. The angled grip of V-bar is easier on wrists while still providing effective tricep isolation, push down and squeeze at bottom.',
+      es: 'Empuje con barra V para posición cómoda de muñecas. El agarre angular de la barra V es más cómodo mientras proporciona aislamiento efectivo de tríceps, empuja y aprieta abajo.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_pushdown_reverse',
+    name: { en: 'Cable Pushdown (Reverse Grip)', es: 'Empuje en Polea (Agarre Inverso)' },
+    muscleGroup: 'triceps',
+    equipment: ['high_pulley', 'straight_bar_attachment'],
+    weightType: 'machine',
+    description: {
+      en: 'Underhand grip pushdown for medial head emphasis. Grip bar with palms up, push down focusing on tricep contraction, this variation shifts emphasis to the medial tricep head.',
+      es: 'Empuje con agarre supino para énfasis en cabeza medial. Agarra la barra con palmas arriba, empuja enfocándote en contracción de tríceps, esta variación enfatiza la cabeza medial.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_overhead_extension_rope',
+    name: { en: 'Cable Overhead Extension (Rope)', es: 'Extensión sobre Cabeza en Polea (Cuerda)' },
+    muscleGroup: 'triceps',
+    equipment: ['low_pulley', 'rope'],
+    weightType: 'machine',
+    description: {
+      en: 'Overhead cable extension for long head emphasis. Face away from low pulley, extend rope overhead, the stretched position at bottom maximally targets the tricep long head.',
+      es: 'Extensión sobre cabeza con cable para énfasis en cabeza larga. De espaldas a polea baja, extiende la cuerda sobre la cabeza, la posición estirada trabaja máximamente la cabeza larga.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_overhead_extension_single',
+    name: { en: 'Cable Overhead Extension (Single Arm)', es: 'Extensión sobre Cabeza en Polea (Un Brazo)' },
+    muscleGroup: 'triceps',
+    equipment: ['low_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Unilateral overhead extension for balanced triceps. Single arm allows full focus on each tricep, extend fully overhead while keeping upper arm stationary, great for imbalances.',
+      es: 'Extensión sobre cabeza unilateral para tríceps equilibrados. Un brazo permite enfoque completo en cada tríceps, extiende completamente manteniendo brazo superior fijo.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_kickback',
+    name: { en: 'Cable Kickback', es: 'Patada Trasera en Polea' },
+    muscleGroup: 'triceps',
+    equipment: ['low_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Cable version of kickbacks for constant tension. Hinge forward, extend arm back against cable resistance, the cable maintains tension throughout entire range of motion.',
+      es: 'Versión con cable de patadas traseras para tensión constante. Inclínate hacia adelante, extiende el brazo atrás contra la resistencia del cable, el cable mantiene tensión durante todo.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'dips_triceps',
+    name: { en: 'Dips (Tricep Focus)', es: 'Fondos (Enfoque Tríceps)' },
+    muscleGroup: 'triceps',
+    equipment: ['parallels'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Compound tricep builder with upright torso. Keep body vertical, lower until upper arms are parallel to floor, push up focusing on tricep contraction, elbows close to body.',
+      es: 'Constructor compuesto de tríceps con torso erguido. Mantén el cuerpo vertical, baja hasta que brazos estén paralelos al suelo, empuja enfocándote en contracción de tríceps.',
+    },
+    bmc: 2.5,
+    wf: 0.04,
+  },
+
+  // ============================================
+  // FOREARMS
+  // ============================================
+  {
+    id: 'cable_wrist_curl',
+    name: { en: 'Cable Wrist Curl', es: 'Curl de Muñeca en Polea' },
+    muscleGroup: 'forearms',
+    equipment: ['low_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Constant tension wrist curl using cable. Kneel facing low pulley, curl wrist up against cable resistance, the cable provides smooth resistance through entire range of movement.',
+      es: 'Curl de muñeca con tensión constante usando cable. Arrodíllate frente a polea baja, curl de muñeca contra resistencia del cable, el cable proporciona resistencia suave durante todo el rango.',
+    },
+    bmc: 0.5,
+    wf: 0.02,
+  },
+
+  // ============================================
+  // QUADRICEPS
+  // ============================================
+  {
+    id: 'leg_extension',
+    name: { en: 'Leg Extension', es: 'Extensión de Piernas' },
+    muscleGroup: 'quads',
+    equipment: ['leg_extension_station'],
+    weightType: 'machine',
+    description: {
+      en: 'Isolation exercise targeting quadriceps directly. Sit with knees at edge of pad, extend legs fully, squeeze quads at top, lower with control, excellent for quad isolation and definition.',
+      es: 'Ejercicio de aislamiento que trabaja los cuádriceps directamente. Siéntate con rodillas en el borde del pad, extiende piernas completamente, aprieta arriba, baja con control.',
+    },
+    bmc: 2.0,
+    wf: 0.03,
+  },
+  {
+    id: 'leg_press',
+    name: { en: 'Leg Press', es: 'Prensa de Piernas' },
+    muscleGroup: 'quads',
+    equipment: ['leg_press_station'],
+    weightType: 'machine',
+    description: {
+      en: 'Machine compound movement for heavy quad loading. Press platform away by extending legs, lower with control, foot placement affects muscle emphasis, allows very heavy weights safely.',
+      es: 'Movimiento compuesto en máquina para carga pesada de cuádriceps. Empuja la plataforma extendiendo piernas, baja con control, la posición de pies afecta el énfasis muscular.',
+    },
+    bmc: 4.0,
+    wf: 0.04,
+  },
+
+  // ============================================
+  // HAMSTRINGS
+  // ============================================
+  {
+    id: 'leg_curl',
+    name: { en: 'Leg Curl', es: 'Curl de Piernas' },
+    muscleGroup: 'hamstrings',
+    equipment: ['lying_leg_curl_station'],
+    weightType: 'machine',
+    description: {
+      en: 'Machine isolation for hamstring knee flexion. Curl heels toward glutes, squeeze hamstrings at top, lower with control, keeps hips stable for strict isolation.',
+      es: 'Aislamiento en máquina para flexión de rodilla de isquiotibiales. Curl de talones hacia glúteos, aprieta isquios arriba, baja con control, mantiene caderas estables.',
+    },
+    bmc: 2.0,
+    wf: 0.03,
+  },
+  {
+    id: 'seated_leg_curl',
+    name: { en: 'Seated Leg Curl', es: 'Curl de Piernas Sentado' },
+    muscleGroup: 'hamstrings',
+    equipment: ['leg_curl_station'],
+    weightType: 'machine',
+    description: {
+      en: 'Seated version of leg curl machine. Sit with pad above ankles, curl legs down and back, the seated position provides different hamstring stretch than lying version.',
+      es: 'Versión sentada de la máquina de curl de piernas. Siéntate con pad sobre los tobillos, curl de piernas hacia abajo y atrás, la posición sentada proporciona diferente estiramiento.',
+    },
+    bmc: 2.0,
+    wf: 0.03,
+  },
+  {
+    id: 'cable_pull_through',
+    name: { en: 'Cable Pull-Through', es: 'Tirón de Cable entre Piernas' },
+    muscleGroup: 'hamstrings',
+    equipment: ['low_pulley', 'rope'],
+    weightType: 'machine',
+    description: {
+      en: 'Hip hinge with constant cable tension. Face away from low pulley, rope between legs, hinge forward then thrust hips to stand, excellent hip hinge pattern practice with resistance.',
+      es: 'Bisagra de cadera con tensión constante de cable. De espaldas a polea baja, cuerda entre piernas, inclínate y empuja caderas para pararte, excelente práctica de bisagra con resistencia.',
+    },
+    bmc: 3.0,
+    wf: 0.03,
+  },
+
+  // ============================================
+  // GLUTES
+  // ============================================
+  {
+    id: 'cable_kickback_glutes',
+    name: { en: 'Cable Kickback', es: 'Patada Trasera en Polea' },
+    muscleGroup: 'glutes',
+    equipment: ['low_pulley', 'ankle_strap'],
+    weightType: 'machine',
+    description: {
+      en: 'Glute isolation using cable and ankle strap. Attach strap to ankle, face low pulley, kick leg back squeezing glute at top, constant tension throughout entire range of motion.',
+      es: 'Aislamiento de glúteos usando cable y correa de tobillo. Conecta la correa al tobillo, de frente a polea baja, patea hacia atrás apretando glúteo arriba, tensión constante.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_pull_through_glutes',
+    name: { en: 'Cable Pull-Through', es: 'Tirón de Cable entre Piernas' },
+    muscleGroup: 'glutes',
+    equipment: ['low_pulley', 'rope'],
+    weightType: 'machine',
+    description: {
+      en: 'Hip hinge for glutes with cable resistance. Face away from low pulley, rope between legs, hinge and thrust hips forward, excellent glute activation with constant cable tension.',
+      es: 'Bisagra de cadera para glúteos con resistencia de cable. De espaldas a polea baja, cuerda entre piernas, inclínate y empuja caderas adelante, excelente activación con tensión constante.',
+    },
+    bmc: 3.0,
+    wf: 0.03,
+  },
+
+  // ============================================
+  // CALVES
+  // ============================================
+  {
+    id: 'leg_press_calf_raise',
+    name: { en: 'Leg Press Calf Raise', es: 'Elevación de Talones en Prensa' },
+    muscleGroup: 'calves',
+    equipment: ['leg_press_station'],
+    weightType: 'machine',
+    description: {
+      en: 'Calf raise using leg press machine. Position toes on bottom of platform, press through toes to extend calves, allows heavy loading with machine support for safe calf training.',
+      es: 'Elevación de talones usando la prensa de piernas. Posiciona puntas en la parte baja de la plataforma, empuja con puntas para extender gemelos, permite carga pesada con soporte.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+
+  // ============================================
+  // CORE
+  // ============================================
+  {
+    id: 'cable_crunch',
+    name: { en: 'Cable Crunch (Kneeling)', es: 'Crunch en Polea (Arrodillado)' },
+    muscleGroup: 'core',
+    equipment: ['high_pulley', 'rope'],
+    weightType: 'machine',
+    description: {
+      en: 'Weighted crunch using cable for progressive resistance. Kneel facing away from high pulley, crunch down contracting abs against cable resistance, allows heavy loading for ab strength.',
+      es: 'Crunch con peso usando cable para resistencia progresiva. Arrodíllate de espaldas a polea alta, crunch contrayendo abdominales contra resistencia del cable, permite carga pesada.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_woodchop_high',
+    name: { en: 'Cable Woodchop (High to Low)', es: 'Leñador en Polea (Alto a Bajo)' },
+    muscleGroup: 'core',
+    equipment: ['high_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Rotational core exercise from high to low. Pull cable diagonally across body from high to low, rotating through core, excellent for building rotational power and oblique strength.',
+      es: 'Ejercicio rotacional de core de alto a bajo. Tira el cable diagonalmente a través del cuerpo de alto a bajo, rotando el core, excelente para potencia rotacional y fuerza de oblicuos.',
+    },
+    bmc: 2.0,
+    wf: 0.02,
+  },
+  {
+    id: 'cable_woodchop_low',
+    name: { en: 'Cable Woodchop (Low to High)', es: 'Leñador en Polea (Bajo a Alto)' },
+    muscleGroup: 'core',
+    equipment: ['low_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Rotational movement from low to high position. Pull cable diagonally upward across body, rotating through core, works obliques and rotational muscles from a different angle.',
+      es: 'Movimiento rotacional de posición baja a alta. Tira el cable diagonalmente hacia arriba a través del cuerpo, rotando el core, trabaja oblicuos desde otro ángulo.',
+    },
+    bmc: 2.0,
+    wf: 0.02,
+  },
+  {
+    id: 'pallof_press',
+    name: { en: 'Cable Pallof Press', es: 'Press Pallof en Polea' },
+    muscleGroup: 'core',
+    equipment: ['mid_pulley', 'single_handle'],
+    weightType: 'machine',
+    description: {
+      en: 'Anti-rotation exercise for core stability. Stand perpendicular to cable, press handle straight out resisting rotation, return to chest, builds crucial rotational stability for sports.',
+      es: 'Ejercicio anti-rotación para estabilidad del core. De pie perpendicular al cable, empuja el mango hacia afuera resistiendo rotación, regresa al pecho, construye estabilidad rotacional.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+
 ];
+
+
 
 // Helper: Get exercises by muscle group
 export const getExercisesByMuscle = (muscleId) => {
