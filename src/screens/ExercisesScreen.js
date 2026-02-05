@@ -10,6 +10,7 @@ import {
   Modal,
   Switch,
   TextInput,
+  Linking,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -289,10 +290,22 @@ export default function ExercisesScreen() {
                   <Text style={styles.modalSectionTitle}>{t('weightType', lang)}</Text>
                   <View style={styles.weightTypeBadge}>
                     <Text style={styles.weightTypeText}>
-                      {selectedExercise.weightType.charAt(0).toUpperCase() + 
-                       selectedExercise.weightType.slice(1)}
+                      {t(`weightType${selectedExercise.weightType.charAt(0).toUpperCase()}${selectedExercise.weightType.slice(1)}`, lang)}
                     </Text>
                   </View>
+
+                  <TouchableOpacity
+                    style={styles.videoLinkButton}
+                    onPress={() => {
+                      const exerciseName = getExerciseName(selectedExercise, lang);
+                      const query = lang === 'es'
+                        ? `como hacer ${exerciseName}`.replace(/\s+/g, '+')
+                        : `how to ${exerciseName}`.replace(/\s+/g, '+');
+                      Linking.openURL(`https://www.youtube.com/results?search_query=${query}`);
+                    }}
+                  >
+                    <Text style={styles.videoLinkText}>{t('searchVideo', lang)} ▶</Text>
+                  </TouchableOpacity>
                 </ScrollView>
 
                 <TouchableOpacity
@@ -522,6 +535,19 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: fontSize.sm,
     color: colors.textPrimary,
+  },
+  videoLinkButton: {
+    marginTop: spacing.lg,
+    backgroundColor: '#FF0000',
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    borderRadius: borderRadius.md,
+    alignSelf: 'center',
+  },
+  videoLinkText: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.md,
+    color: colors.white,
   },
   modalCloseButton: {
     margin: spacing.lg,
