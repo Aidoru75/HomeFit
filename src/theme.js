@@ -1,14 +1,15 @@
 // App Theme and Colors
+import { IS_PRO } from './config';
 
 export const colors = {
   // Primary palette
   primary: '#000000',
-  primaryLight: '#763208',
-  primaryDark: '#4c1e04',
-  
+  primaryLight: IS_PRO ? '#763208' : '#1a5c2a',
+  primaryDark: IS_PRO ? '#4c1e04' : '#0d3318',
+
   // Accent colors
-  accent: '#d65a03',
-  accentLight: '#ff9b0e',
+  accent: IS_PRO ? '#d65a03' : '#27AE60',
+  accentLight: IS_PRO ? '#ff9b0e' : '#52D889',
   
   // Semantic colors
   success: '#27AE60',

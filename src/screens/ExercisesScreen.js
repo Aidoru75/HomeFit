@@ -157,7 +157,8 @@ export default function ExercisesScreen() {
   };
 
   // Count included exercises
-  const includedCount = availableExercises.length - excludedExercises.length;
+  const relevantExcluded = excludedExercises.filter(id => availableExercises.some(ex => ex.id === id));
+  const includedCount = availableExercises.length - relevantExcluded.length;
 
   return (
     <View style={styles.container}>

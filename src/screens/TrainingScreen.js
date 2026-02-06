@@ -490,6 +490,9 @@ export default function TrainingScreen({ route, navigation }) {
       const wf = exerciseData.wf || 0.0;
       const sets = ex.sets || 3;
       const isBodyweight = wf === 0.0; // Bodyweight exercises have wf = 0
+      // Dumbbell exercises: weight entered is per hand, so total = 2x unless singleWeight
+      const isDumbbell = exerciseData.weightType === 'dumbbell';
+      const weightMultiplier = (isDumbbell && !exerciseData.singleWeight) ? 2 : 1;
 
       // Get reps and weights (modified or original)
       const mods = currentModifiedExercises[exIndex];
@@ -499,12 +502,14 @@ export default function TrainingScreen({ route, navigation }) {
       // Calculate calories for each set
       for (let setIdx = 0; setIdx < sets; setIdx++) {
         const reps = repsArray[setIdx] || 10;
-        const weight = weightsArray[setIdx] || 0;
+        const weight = (weightsArray[setIdx] || 0) * weightMultiplier;
 
         let setCalories;
         if (isBodyweight) {
-          // Bodyweight exercise: calories = (BMC × user_weight/75) × (reps/10)
-          setCalories = (bmc * userWeight / 75) * (reps / 10);
+          // Bodyweight exercise: calories = (BMC × effective_weight/75) × (reps/10)
+          // If user added extra weight (e.g., weighted pull-ups), include it
+          const effectiveWeight = userWeight + weight;
+          setCalories = (bmc * effectiveWeight / 75) * (reps / 10);
         } else {
           // Weighted exercise: calories = (BMC + (WF × weight_lifted)) × (reps/10) × mass_factor
           setCalories = (bmc + (wf * weight)) * (reps / 10) * massFactor;

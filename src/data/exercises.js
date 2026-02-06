@@ -28,6 +28,7 @@ export const exercises = [
     id: 'bench_press',
     name: { en: 'Barbell Bench Press', es: 'Press de Banca con Barra' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.60, triceps: 0.25, shoulders: 0.15 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -41,6 +42,7 @@ export const exercises = [
     id: 'incline_press',
     name: { en: 'Barbell Incline Press', es: 'Press Inclinado con Barra' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.50, shoulders: 0.30, triceps: 0.20 },
     equipment: ['straight_bar', 'incline_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -54,6 +56,7 @@ export const exercises = [
     id: 'decline_press',
     name: { en: 'Barbell Decline Press', es: 'Press Declinado con Barra' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.65, triceps: 0.25, shoulders: 0.10 },
     equipment: ['straight_bar', 'decline_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -67,6 +70,7 @@ export const exercises = [
     id: 'db_bench_press',
     name: { en: 'Dumbbell Bench Press', es: 'Press de Banca con Mancuernas' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.60, triceps: 0.25, shoulders: 0.15 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
     description: {
@@ -80,6 +84,7 @@ export const exercises = [
     id: 'db_incline_press',
     name: { en: 'Dumbbell Incline Press', es: 'Press Inclinado con Mancuernas' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.50, shoulders: 0.30, triceps: 0.20 },
     equipment: ['dumbbells', 'incline_bench'],
     weightType: 'dumbbell',
     description: {
@@ -93,6 +98,7 @@ export const exercises = [
     id: 'db_decline_press',
     name: { en: 'Dumbbell Decline Press', es: 'Press Declinado con Mancuernas' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.65, triceps: 0.25, shoulders: 0.10 },
     equipment: ['dumbbells', 'decline_bench'],
     weightType: 'dumbbell',
     description: {
@@ -106,6 +112,7 @@ export const exercises = [
     id: 'dumbbell_flyes',
     name: { en: 'Dumbbell Flyes', es: 'Aperturas con Mancuernas' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.80, shoulders: 0.15, biceps: 0.05 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
     description: {
@@ -119,6 +126,7 @@ export const exercises = [
     id: 'incline_dumbbell_flyes',
     name: { en: 'Incline Dumbbell Flyes', es: 'Aperturas Inclinadas con Mancuernas' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.70, shoulders: 0.25, biceps: 0.05 },
     equipment: ['dumbbells', 'incline_bench'],
     weightType: 'dumbbell',
     description: {
@@ -132,6 +140,7 @@ export const exercises = [
     id: 'decline_dumbbell_flyes',
     name: { en: 'Decline Dumbbell Flyes', es: 'Aperturas Declinadas con Mancuernas' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.80, shoulders: 0.10, biceps: 0.10 },
     equipment: ['dumbbells', 'decline_bench'],
     weightType: 'dumbbell',
     description: {
@@ -145,6 +154,7 @@ export const exercises = [
     id: 'push_ups',
     name: { en: 'Push-Ups', es: 'Flexiones' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -158,6 +168,7 @@ export const exercises = [
     id: 'incline_push_ups',
     name: { en: 'Incline Push-Ups', es: 'Flexiones Inclinadas' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
     equipment: ['flat_bench'],
     weightType: 'bodyweight',
     description: {
@@ -171,6 +182,7 @@ export const exercises = [
     id: 'decline_push_ups',
     name: { en: 'Decline Push-Ups', es: 'Flexiones Declinadas' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.50, shoulders: 0.30, triceps: 0.20 },
     equipment: ['flat_bench'],
     weightType: 'bodyweight',
     description: {
@@ -184,6 +196,7 @@ export const exercises = [
     id: 'svend_press',
     name: { en: 'Svend Press', es: 'Press Svend' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.80, shoulders: 0.15, triceps: 0.05 },
     equipment: ['plates'],
     weightType: 'plate',
     description: {
@@ -197,8 +210,10 @@ export const exercises = [
     id: 'pullover_chest',
     name: { en: 'Pullover (Chest Focus)', es: 'Pullover (Enfoque Pecho)' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.55, back: 0.30, triceps: 0.10, core: 0.05 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
+    singleWeight: true,
     description: {
       en: 'Stretches and works the chest through a long range of motion. Lie across a bench, lower dumbbell behind head with slight elbow bend, then pull over using chest muscles to starting position.',
       es: 'Estira y trabaja el pecho con amplio rango de movimiento. Acuéstate cruzado en un banco, baja la mancuerna detrás de la cabeza con codos flexionados, luego tira usando los músculos del pecho.',
@@ -214,6 +229,7 @@ export const exercises = [
     id: 'pullups_wide',
     name: { en: 'Pull-Ups (Wide Grip)', es: 'Dominadas (Agarre Ancho)' },
     muscleGroup: 'back',
+    muscles: { back: 0.65, biceps: 0.25, shoulders: 0.10 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
     description: {
@@ -227,6 +243,7 @@ export const exercises = [
     id: 'pullups_close',
     name: { en: 'Pull-Ups (Close Grip)', es: 'Dominadas (Agarre Cerrado)' },
     muscleGroup: 'back',
+    muscles: { back: 0.60, biceps: 0.30, shoulders: 0.10 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
     description: {
@@ -240,6 +257,7 @@ export const exercises = [
     id: 'chinups',
     name: { en: 'Chin-Ups (Supinated)', es: 'Dominadas Supinas' },
     muscleGroup: 'back',
+    muscles: { back: 0.50, biceps: 0.40, shoulders: 0.10 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
     description: {
@@ -253,6 +271,7 @@ export const exercises = [
     id: 'band_assisted_pullups',
     name: { en: 'Band-Assisted Pull-Ups', es: 'Dominadas Asistidas con Banda' },
     muscleGroup: 'back',
+    muscles: { back: 0.60, biceps: 0.30, shoulders: 0.10 },
     equipment: ['pullup_rack', 'resistance_band'],
     weightType: 'bodyweight',
     description: {
@@ -266,6 +285,7 @@ export const exercises = [
     id: 'barbell_row',
     name: { en: 'Barbell Bent-Over Row', es: 'Remo con Barra Inclinado' },
     muscleGroup: 'back',
+    muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -279,6 +299,7 @@ export const exercises = [
     id: 'barbell_row_underhand',
     name: { en: 'Barbell Bent-Over Row (Underhand)', es: 'Remo con Barra (Agarre Supino)' },
     muscleGroup: 'back',
+    muscles: { back: 0.55, biceps: 0.30, shoulders: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -292,6 +313,7 @@ export const exercises = [
     id: 'pendlay_row',
     name: { en: 'Barbell Pendlay Row', es: 'Remo Pendlay con Barra' },
     muscleGroup: 'back',
+    muscles: { back: 0.65, biceps: 0.20, shoulders: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -305,8 +327,10 @@ export const exercises = [
     id: 'dumbbell_row',
     name: { en: 'Dumbbell Single-Arm Row', es: 'Remo con Mancuerna a Una Mano' },
     muscleGroup: 'back',
+    muscles: { back: 0.65, biceps: 0.25, shoulders: 0.10 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
+    singleWeight: true,
     description: {
       en: 'Unilateral back exercise allowing full range of motion. Support yourself on a bench, row the dumbbell to your hip, focusing on driving your elbow back and squeezing your lat at the top.',
       es: 'Ejercicio unilateral de espalda permitiendo rango completo de movimiento. Apóyate en un banco, rema la mancuerna a la cadera, enfocándote en llevar el codo atrás y apretar el dorsal.',
@@ -318,6 +342,7 @@ export const exercises = [
     id: 'db_bent_over_row',
     name: { en: 'Dumbbell Bent-Over Row', es: 'Remo Inclinado con Mancuernas' },
     muscleGroup: 'back',
+    muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -331,8 +356,10 @@ export const exercises = [
     id: 'pullover_back',
     name: { en: 'Dumbbell Pullover (Back Focus)', es: 'Pullover con Mancuerna (Enfoque Espalda)' },
     muscleGroup: 'back',
+    muscles: { back: 0.65, chest: 0.20, triceps: 0.10, core: 0.05 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
+    singleWeight: true,
     description: {
       en: 'Stretches and works the lats through a unique angle. Lie across a bench, keep arms straighter than chest version, lower dumbbell behind head, pull back over using your lats primarily.',
       es: 'Estira y trabaja los dorsales desde un ángulo único. Acuéstate cruzado en un banco, mantén brazos más rectos que la versión de pecho, baja la mancuerna detrás, tira usando principalmente dorsales.',
@@ -344,6 +371,7 @@ export const exercises = [
     id: 'tbar_row',
     name: { en: 'T-Bar Row (Landmine)', es: 'Remo en T (Landmine)' },
     muscleGroup: 'back',
+    muscles: { back: 0.65, biceps: 0.20, shoulders: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'landmine_handle', 'plates'],
     weightType: 'barbell',
     description: {
@@ -357,6 +385,7 @@ export const exercises = [
     id: 'deadlift',
     name: { en: 'Deadlift', es: 'Peso Muerto' },
     muscleGroup: 'back',
+    muscles: { back: 0.30, hamstrings: 0.25, glutes: 0.25, quads: 0.10, core: 0.10 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -370,6 +399,7 @@ export const exercises = [
     id: 'romanian_deadlift_barbell',
     name: { en: 'Romanian Deadlift (Barbell)', es: 'Peso Muerto Rumano (Barra)' },
     muscleGroup: 'back',
+    muscles: { hamstrings: 0.40, back: 0.30, glutes: 0.25, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -383,6 +413,7 @@ export const exercises = [
     id: 'romanian_deadlift_dumbbell',
     name: { en: 'Dumbbell Romanian Deadlift', es: 'Peso Muerto Rumano con Mancuernas' },
     muscleGroup: 'back',
+    muscles: { hamstrings: 0.40, back: 0.30, glutes: 0.25, core: 0.05 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -396,6 +427,7 @@ export const exercises = [
     id: 'good_mornings',
     name: { en: 'Good Mornings', es: 'Buenos Días' },
     muscleGroup: 'back',
+    muscles: { back: 0.35, hamstrings: 0.35, glutes: 0.20, core: 0.10 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -409,6 +441,7 @@ export const exercises = [
     id: 'hyperextension',
     name: { en: 'Hyperextensions (on bench)', es: 'Hiperextensiones (en banco)' },
     muscleGroup: 'back',
+    muscles: { back: 0.45, glutes: 0.30, hamstrings: 0.25 },
     equipment: ['incline_bench'],
     weightType: 'bodyweight',
     description: {
@@ -422,6 +455,7 @@ export const exercises = [
     id: 'shrugs_barbell',
     name: { en: 'Shrugs (Barbell)', es: 'Encogimientos (Barra)' },
     muscleGroup: 'back',
+    muscles: { back: 0.85, shoulders: 0.15 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -435,6 +469,7 @@ export const exercises = [
     id: 'shrugs_dumbbell',
     name: { en: 'Shrugs (Dumbbell)', es: 'Encogimientos (Mancuernas)' },
     muscleGroup: 'back',
+    muscles: { back: 0.85, shoulders: 0.15 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -452,6 +487,7 @@ export const exercises = [
     id: 'overhead_press_standing',
     name: { en: 'Barbell Overhead Press (Standing)', es: 'Press Militar de Pie' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.60, triceps: 0.25, core: 0.10, chest: 0.05 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -465,6 +501,7 @@ export const exercises = [
     id: 'overhead_press_seated',
     name: { en: 'Barbell Overhead Press (Seated)', es: 'Press Militar Sentado' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.65, triceps: 0.25, chest: 0.10 },
     equipment: ['straight_bar', 'upright_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -478,6 +515,7 @@ export const exercises = [
     id: 'push_press',
     name: { en: 'Barbell Push Press', es: 'Push Press con Barra' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.50, triceps: 0.20, quads: 0.15, core: 0.10, chest: 0.05 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -491,6 +529,7 @@ export const exercises = [
     id: 'behind_neck_press',
     name: { en: 'Barbell Behind-Neck Press', es: 'Press Tras Nuca con Barra' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.70, triceps: 0.25, back: 0.05 },
     equipment: ['straight_bar', 'upright_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -504,6 +543,7 @@ export const exercises = [
     id: 'db_shoulder_press_seated',
     name: { en: 'Dumbbell Shoulder Press (Seated)', es: 'Press de Hombros con Mancuernas (Sentado)' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.65, triceps: 0.25, chest: 0.10 },
     equipment: ['dumbbells', 'upright_bench'],
     weightType: 'dumbbell',
     description: {
@@ -517,6 +557,7 @@ export const exercises = [
     id: 'db_shoulder_press_standing',
     name: { en: 'Dumbbell Shoulder Press (Standing)', es: 'Press de Hombros con Mancuernas (De Pie)' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.60, triceps: 0.25, core: 0.10, chest: 0.05 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -530,6 +571,7 @@ export const exercises = [
     id: 'arnold_press',
     name: { en: 'Arnold Press', es: 'Press Arnold' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.65, triceps: 0.20, chest: 0.15 },
     equipment: ['dumbbells', 'upright_bench'],
     weightType: 'dumbbell',
     description: {
@@ -543,6 +585,7 @@ export const exercises = [
     id: 'lateral_raise',
     name: { en: 'Dumbbell Lateral Raise', es: 'Elevaciones Laterales con Mancuernas' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.90, back: 0.10 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -556,6 +599,7 @@ export const exercises = [
     id: 'front_raise',
     name: { en: 'Dumbbell Front Raise', es: 'Elevaciones Frontales con Mancuernas' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.85, chest: 0.15 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -569,6 +613,7 @@ export const exercises = [
     id: 'rear_delt_fly_bent',
     name: { en: 'Dumbbell Rear Delt Fly (Bent Over)', es: 'Aperturas Posteriores (Inclinado)' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.75, back: 0.25 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -582,6 +627,7 @@ export const exercises = [
     id: 'rear_delt_fly_incline',
     name: { en: 'Dumbbell Rear Delt Fly (Incline)', es: 'Aperturas Posteriores (En Banco Inclinado)' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.75, back: 0.25 },
     equipment: ['dumbbells', 'incline_bench'],
     weightType: 'dumbbell',
     description: {
@@ -595,6 +641,7 @@ export const exercises = [
     id: 'upright_row_barbell',
     name: { en: 'Upright Row (Barbell)', es: 'Remo al Mentón (Barra)' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.55, back: 0.30, biceps: 0.15 },
     equipment: ['ez_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -608,6 +655,7 @@ export const exercises = [
     id: 'upright_row_dumbbell',
     name: { en: 'Upright Row (Dumbbells)', es: 'Remo al Mentón (Mancuernas)' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.55, back: 0.30, biceps: 0.15 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -621,6 +669,7 @@ export const exercises = [
     id: 'plate_front_raise',
     name: { en: 'Plate Front Raise', es: 'Elevación Frontal con Disco' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.85, chest: 0.15 },
     equipment: ['plates'],
     weightType: 'plate',
     description: {
@@ -634,6 +683,7 @@ export const exercises = [
     id: 'bus_drivers',
     name: { en: 'Bus Drivers', es: 'Conductores de Bus' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.80, chest: 0.10, core: 0.10 },
     equipment: ['plates'],
     weightType: 'plate',
     description: {
@@ -647,6 +697,7 @@ export const exercises = [
     id: 'band_pull_aparts',
     name: { en: 'Band Pull-Aparts', es: 'Separaciones con Banda' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.70, back: 0.30 },
     equipment: ['resistance_band'],
     weightType: 'bodyweight',
     description: {
@@ -660,6 +711,7 @@ export const exercises = [
     id: 'barbell_high_pull',
     name: { en: 'Barbell High Pull', es: 'Tirón Alto con Barra' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.40, back: 0.30, biceps: 0.15, quads: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -677,6 +729,7 @@ export const exercises = [
     id: 'barbell_curl_standing',
     name: { en: 'Barbell Curl (Standing)', es: 'Curl con Barra (De Pie)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -690,6 +743,7 @@ export const exercises = [
     id: 'barbell_curl_wide',
     name: { en: 'Barbell Curl (Wide Grip)', es: 'Curl con Barra (Agarre Ancho)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -703,6 +757,7 @@ export const exercises = [
     id: 'barbell_curl_close',
     name: { en: 'Barbell Curl (Close Grip)', es: 'Curl con Barra (Agarre Cerrado)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -716,6 +771,7 @@ export const exercises = [
     id: 'ez_bar_curl',
     name: { en: 'EZ Bar Curl', es: 'Curl con Barra Z' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['ez_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -729,6 +785,7 @@ export const exercises = [
     id: 'ez_bar_curl_wide',
     name: { en: 'EZ Bar Curl (Wide Grip)', es: 'Curl con Barra Z (Agarre Ancho)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['ez_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -742,6 +799,7 @@ export const exercises = [
     id: 'db_curl_standing',
     name: { en: 'Dumbbell Curl (Standing)', es: 'Curl con Mancuernas (De Pie)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -755,6 +813,7 @@ export const exercises = [
     id: 'db_curl_seated',
     name: { en: 'Dumbbell Curl (Seated)', es: 'Curl con Mancuernas (Sentado)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.90, shoulders: 0.10 },
     equipment: ['dumbbells', 'upright_bench'],
     weightType: 'dumbbell',
     description: {
@@ -768,6 +827,7 @@ export const exercises = [
     id: 'db_curl_incline',
     name: { en: 'Dumbbell Curl (Incline)', es: 'Curl con Mancuernas (Inclinado)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.90, shoulders: 0.10 },
     equipment: ['dumbbells', 'incline_bench'],
     weightType: 'dumbbell',
     description: {
@@ -781,6 +841,7 @@ export const exercises = [
     id: 'hammer_curl',
     name: { en: 'Dumbbell Hammer Curl', es: 'Curl Martillo con Mancuernas' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.75, shoulders: 0.10, back: 0.15 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -794,8 +855,10 @@ export const exercises = [
     id: 'concentration_curl',
     name: { en: 'Dumbbell Concentration Curl', es: 'Curl Concentrado con Mancuerna' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.95, shoulders: 0.05 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
+    singleWeight: true,
     description: {
       en: 'Maximum isolation for bicep peak. Sit with elbow braced against inner thigh, curl dumbbell to shoulder, squeeze hard at top, excellent for mind-muscle connection and peak development.',
       es: 'Máximo aislamiento para el pico del bíceps. Siéntate con codo apoyado en muslo interno, curl hacia el hombro, aprieta fuerte arriba, excelente para conexión mente-músculo.',
@@ -807,6 +870,7 @@ export const exercises = [
     id: 'zottman_curl',
     name: { en: 'Dumbbell Zottman Curl', es: 'Curl Zottman con Mancuernas' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.75, shoulders: 0.15, back: 0.10 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -820,6 +884,7 @@ export const exercises = [
     id: 'drag_curl',
     name: { en: 'Drag Curl (Barbell)', es: 'Curl Arrastrado (Barra)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -833,6 +898,7 @@ export const exercises = [
     id: 'chinups_biceps',
     name: { en: 'Chin-Ups (Bicep Focus)', es: 'Dominadas Supinas (Enfoque Bíceps)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.55, back: 0.35, shoulders: 0.10 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
     description: {
@@ -846,6 +912,7 @@ export const exercises = [
     id: 'band_curl',
     name: { en: 'Band Curl', es: 'Curl con Banda' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['resistance_band'],
     weightType: 'bodyweight',
     description: {
@@ -863,6 +930,7 @@ export const exercises = [
     id: 'close_grip_bench',
     name: { en: 'Close-Grip Bench Press', es: 'Press de Banca Agarre Cerrado' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.55, chest: 0.35, shoulders: 0.10 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -876,6 +944,7 @@ export const exercises = [
     id: 'skull_crushers',
     name: { en: 'Barbell Skull Crushers', es: 'Rompecráneos con Barra' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.85, shoulders: 0.10, chest: 0.05 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -889,6 +958,7 @@ export const exercises = [
     id: 'db_skull_crushers',
     name: { en: 'Dumbbell Skull Crushers', es: 'Rompecráneos con Mancuernas' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.85, shoulders: 0.10, chest: 0.05 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
     description: {
@@ -902,8 +972,10 @@ export const exercises = [
     id: 'db_overhead_extension_two',
     name: { en: 'Dumbbell Overhead Extension (Two Hands)', es: 'Extensión sobre Cabeza (Dos Manos)' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['dumbbells', 'upright_bench'],
     weightType: 'dumbbell',
+    singleWeight: true,
     description: {
       en: 'Overhead tricep extension holding one dumbbell with both hands. Lower dumbbell behind head, extend up fully, the stretched position at bottom emphasizes the long head.',
       es: 'Extensión de tríceps sobre cabeza sosteniendo una mancuerna con ambas manos. Baja la mancuerna detrás de la cabeza, extiende completamente, la posición estirada enfatiza la cabeza larga.',
@@ -915,8 +987,10 @@ export const exercises = [
     id: 'db_overhead_extension_single',
     name: { en: 'Dumbbell Overhead Extension (Single Arm)', es: 'Extensión sobre Cabeza (Un Brazo)' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['dumbbells', 'upright_bench'],
     weightType: 'dumbbell',
+    singleWeight: true,
     description: {
       en: 'Single-arm overhead extension for balanced development. Extend one arm overhead, lower dumbbell behind head, extend fully, allows full focus on each tricep independently.',
       es: 'Extensión sobre cabeza a un brazo para desarrollo equilibrado. Extiende un brazo arriba, baja mancuerna detrás de la cabeza, extiende completamente, permite enfoque en cada tríceps.',
@@ -928,8 +1002,10 @@ export const exercises = [
     id: 'db_kickback',
     name: { en: 'Dumbbell Kickback', es: 'Patada Trasera con Mancuerna' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
+    singleWeight: true,
     description: {
       en: 'Isolation exercise for tricep contraction. Hinge forward, keep upper arm parallel to floor, extend forearm back and squeeze at top, focus on peak contraction rather than weight.',
       es: 'Ejercicio de aislamiento para contracción del tríceps. Inclínate hacia adelante, mantén brazo superior paralelo al suelo, extiende antebrazo atrás y aprieta arriba.',
@@ -941,6 +1017,7 @@ export const exercises = [
     id: 'bench_dips',
     name: { en: 'Bench Dips', es: 'Fondos en Banco' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.60, chest: 0.25, shoulders: 0.15 },
     equipment: ['flat_bench'],
     weightType: 'bodyweight',
     description: {
@@ -954,6 +1031,7 @@ export const exercises = [
     id: 'diamond_push_ups',
     name: { en: 'Diamond Push-Ups', es: 'Flexiones Diamante' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.55, chest: 0.30, shoulders: 0.15 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -967,6 +1045,7 @@ export const exercises = [
     id: 'band_pushdown',
     name: { en: 'Band Pushdown', es: 'Empuje con Banda' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['resistance_band'],
     weightType: 'bodyweight',
     description: {
@@ -984,6 +1063,7 @@ export const exercises = [
     id: 'barbell_wrist_curl',
     name: { en: 'Barbell Wrist Curl', es: 'Curl de Muñeca con Barra' },
     muscleGroup: 'forearms',
+    muscles: { biceps: 1.0 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -997,6 +1077,7 @@ export const exercises = [
     id: 'barbell_reverse_wrist_curl',
     name: { en: 'Barbell Reverse Wrist Curl', es: 'Curl de Muñeca Inverso con Barra' },
     muscleGroup: 'forearms',
+    muscles: { biceps: 1.0 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1010,6 +1091,7 @@ export const exercises = [
     id: 'db_wrist_curl',
     name: { en: 'Dumbbell Wrist Curl', es: 'Curl de Muñeca con Mancuernas' },
     muscleGroup: 'forearms',
+    muscles: { biceps: 1.0 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
     description: {
@@ -1023,6 +1105,7 @@ export const exercises = [
     id: 'db_reverse_wrist_curl',
     name: { en: 'Dumbbell Reverse Wrist Curl', es: 'Curl de Muñeca Inverso con Mancuernas' },
     muscleGroup: 'forearms',
+    muscles: { biceps: 1.0 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
     description: {
@@ -1036,6 +1119,7 @@ export const exercises = [
     id: 'farmers_walk',
     name: { en: "Farmer's Walk", es: 'Paseo del Granjero' },
     muscleGroup: 'forearms',
+    muscles: { biceps: 0.35, back: 0.25, shoulders: 0.20, core: 0.10, calves: 0.10 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -1049,6 +1133,7 @@ export const exercises = [
     id: 'plate_pinch_hold',
     name: { en: 'Plate Pinch Hold', es: 'Agarre de Disco' },
     muscleGroup: 'forearms',
+    muscles: { biceps: 1.0 },
     equipment: ['plates'],
     weightType: 'plate',
     description: {
@@ -1062,6 +1147,7 @@ export const exercises = [
     id: 'dead_hang',
     name: { en: 'Dead Hang', es: 'Colgado Pasivo' },
     muscleGroup: 'forearms',
+    muscles: { biceps: 0.50, back: 0.30, shoulders: 0.20 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
     description: {
@@ -1075,6 +1161,7 @@ export const exercises = [
     id: 'towel_pullups',
     name: { en: 'Towel Pull-Ups', es: 'Dominadas con Toalla' },
     muscleGroup: 'forearms',
+    muscles: { biceps: 0.40, back: 0.45, shoulders: 0.15 },
     equipment: ['rack', 'towel'],
     weightType: 'bodyweight',
     description: {
@@ -1088,6 +1175,7 @@ export const exercises = [
     id: 'reverse_curl_barbell',
     name: { en: 'Reverse Curl (Barbell)', es: 'Curl Inverso (Barra)' },
     muscleGroup: 'forearms',
+    muscles: { biceps: 0.80, shoulders: 0.20 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1101,6 +1189,7 @@ export const exercises = [
     id: 'reverse_curl_ez',
     name: { en: 'Reverse Curl (EZ Bar)', es: 'Curl Inverso (Barra Z)' },
     muscleGroup: 'forearms',
+    muscles: { biceps: 0.80, shoulders: 0.20 },
     equipment: ['ez_bar',  'plates'],
     weightType: 'barbell',
     description: {
@@ -1118,6 +1207,7 @@ export const exercises = [
     id: 'back_squat',
     name: { en: 'Barbell Back Squat', es: 'Sentadilla con Barra' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.15, core: 0.10 },
     equipment: ['straight_bar', 'rack', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1131,6 +1221,7 @@ export const exercises = [
     id: 'front_squat',
     name: { en: 'Barbell Front Squat', es: 'Sentadilla Frontal con Barra' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.55, glutes: 0.20, core: 0.15, hamstrings: 0.10 },
     equipment: ['straight_bar', 'rack', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1144,6 +1235,7 @@ export const exercises = [
     id: 'box_squat',
     name: { en: 'Barbell Box Squat', es: 'Sentadilla en Caja con Barra' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.40, glutes: 0.35, hamstrings: 0.15, core: 0.10 },
     equipment: ['straight_bar', 'rack', 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1157,6 +1249,7 @@ export const exercises = [
     id: 'pause_squat',
     name: { en: 'Barbell Pause Squat', es: 'Sentadilla con Pausa' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.15, core: 0.10 },
     equipment: ['straight_bar', 'rack', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1170,8 +1263,10 @@ export const exercises = [
     id: 'goblet_squat',
     name: { en: 'Goblet Squat', es: 'Sentadilla Goblet' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.50, glutes: 0.30, core: 0.15, hamstrings: 0.05 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
+    singleWeight: true,
     description: {
       en: 'Beginner-friendly squat holding dumbbell at chest. Hold dumbbell vertically against chest, squat deep keeping torso upright, excellent for learning squat form and building foundation.',
       es: 'Sentadilla amigable para principiantes sosteniendo mancuerna en el pecho. Sostén mancuerna vertical contra el pecho, sentadilla profunda con torso erguido, excelente para aprender técnica.',
@@ -1183,6 +1278,7 @@ export const exercises = [
     id: 'dumbbell_squat',
     name: { en: 'Dumbbell Squat', es: 'Sentadilla con Mancuernas' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.15, core: 0.10 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -1196,6 +1292,7 @@ export const exercises = [
     id: 'lunges_forward',
     name: { en: 'Dumbbell Lunges (Forward)', es: 'Zancadas Frontales con Mancuernas' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.35, hamstrings: 0.15, core: 0.05 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -1209,6 +1306,7 @@ export const exercises = [
     id: 'lunges_reverse',
     name: { en: 'Dumbbell Lunges (Reverse)', es: 'Zancadas Inversas con Mancuernas' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.40, glutes: 0.35, hamstrings: 0.20, core: 0.05 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -1222,6 +1320,7 @@ export const exercises = [
     id: 'lunges_walking',
     name: { en: 'Dumbbell Lunges (Walking)', es: 'Zancadas Caminando con Mancuernas' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.35, hamstrings: 0.15, core: 0.05 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -1235,6 +1334,7 @@ export const exercises = [
     id: 'barbell_lunges',
     name: { en: 'Barbell Lunges', es: 'Zancadas con Barra' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.35, hamstrings: 0.15, core: 0.05 },
     equipment: ['straight_bar', 'rack', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1248,6 +1348,7 @@ export const exercises = [
     id: 'bulgarian_split_squat_db',
     name: { en: 'Dumbbell Bulgarian Split Squat', es: 'Sentadilla Búlgara con Mancuernas' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.50, glutes: 0.35, hamstrings: 0.10, core: 0.05 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
     description: {
@@ -1261,6 +1362,7 @@ export const exercises = [
     id: 'bulgarian_split_squat_bb',
     name: { en: 'Barbell Bulgarian Split Squat', es: 'Sentadilla Búlgara con Barra' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.50, glutes: 0.35, hamstrings: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'rack', 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1274,6 +1376,7 @@ export const exercises = [
     id: 'step_ups',
     name: { en: 'Dumbbell Step-Ups', es: 'Step-Ups con Mancuernas' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.35, hamstrings: 0.15, core: 0.05 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
     description: {
@@ -1287,6 +1390,7 @@ export const exercises = [
     id: 'sissy_squat',
     name: { en: 'Sissy Squat', es: 'Sentadilla Sissy' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.90, core: 0.10 },
     equipment: ['rack'],
     weightType: 'bodyweight',
     description: {
@@ -1300,6 +1404,7 @@ export const exercises = [
     id: 'wall_sit',
     name: { en: 'Wall Sit', es: 'Sentadilla en Pared' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.80, glutes: 0.15, core: 0.05 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1313,6 +1418,7 @@ export const exercises = [
     id: 'band_squat',
     name: { en: 'Band Squat', es: 'Sentadilla con Banda' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.15, core: 0.10 },
     equipment: ['resistance_band'],
     weightType: 'bodyweight',
     description: {
@@ -1330,6 +1436,7 @@ export const exercises = [
     id: 'rdl_barbell',
     name: { en: 'Romanian Deadlift (Barbell)', es: 'Peso Muerto Rumano (Barra)' },
     muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.45, glutes: 0.30, back: 0.20, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1343,6 +1450,7 @@ export const exercises = [
     id: 'rdl_dumbbell',
     name: { en: 'Romanian Deadlift (Dumbbell)', es: 'Peso Muerto Rumano (Mancuernas)' },
     muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.45, glutes: 0.30, back: 0.20, core: 0.05 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -1356,6 +1464,7 @@ export const exercises = [
     id: 'stiff_leg_deadlift',
     name: { en: 'Stiff-Leg Deadlift', es: 'Peso Muerto con Piernas Rígidas' },
     muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.50, back: 0.25, glutes: 0.20, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1369,6 +1478,7 @@ export const exercises = [
     id: 'single_leg_rdl',
     name: { en: 'Single-Leg Romanian Deadlift', es: 'Peso Muerto Rumano a Una Pierna' },
     muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.45, glutes: 0.30, back: 0.15, core: 0.10 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -1382,6 +1492,7 @@ export const exercises = [
     id: 'good_mornings_hamstrings',
     name: { en: 'Good Mornings', es: 'Buenos Días' },
     muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.40, back: 0.30, glutes: 0.20, core: 0.10 },
     equipment: ['straight_bar', 'rack', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1395,6 +1506,7 @@ export const exercises = [
     id: 'nordic_curl',
     name: { en: 'Nordic Curl (Assisted)', es: 'Curl Nórdico (Asistido)' },
     muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.80, glutes: 0.15, calves: 0.05 },
     equipment: ['flat_bench'],
     weightType: 'bodyweight',
     description: {
@@ -1408,6 +1520,7 @@ export const exercises = [
     id: 'glute_ham_raise',
     name: { en: 'Glute-Ham Raise (on bench)', es: 'Elevación Glúteo-Isquio (en banco)' },
     muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.55, glutes: 0.35, back: 0.10 },
     equipment: ['flat_bench'],
     weightType: 'bodyweight',
     description: {
@@ -1421,6 +1534,7 @@ export const exercises = [
     id: 'band_leg_curl',
     name: { en: 'Band Leg Curl', es: 'Curl de Piernas con Banda' },
     muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.85, calves: 0.15 },
     equipment: ['resistance_band'],
     weightType: 'bodyweight',
     description: {
@@ -1438,6 +1552,7 @@ export const exercises = [
     id: 'hip_thrust_barbell',
     name: { en: 'Barbell Hip Thrust', es: 'Empuje de Cadera con Barra' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.65, hamstrings: 0.25, core: 0.10 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1451,8 +1566,10 @@ export const exercises = [
     id: 'hip_thrust_dumbbell',
     name: { en: 'Dumbbell Hip Thrust', es: 'Empuje de Cadera con Mancuerna' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.65, hamstrings: 0.25, core: 0.10 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
+    singleWeight: true,
     description: {
       en: 'Hip thrust with dumbbell for lighter loading. Place dumbbell on hips, perform hip thrust movement, good for beginners or higher rep glute work without need for barbell setup.',
       es: 'Empuje de cadera con mancuerna para carga más ligera. Coloca mancuerna en caderas, realiza el movimiento de empuje, bueno para principiantes o trabajo de más repeticiones.',
@@ -1464,6 +1581,7 @@ export const exercises = [
     id: 'single_leg_hip_thrust',
     name: { en: 'Single-Leg Hip Thrust', es: 'Empuje de Cadera a Una Pierna' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.70, hamstrings: 0.20, core: 0.10 },
     equipment: ['flat_bench'],
     weightType: 'bodyweight',
     description: {
@@ -1477,6 +1595,7 @@ export const exercises = [
     id: 'glute_bridge_barbell',
     name: { en: 'Barbell Glute Bridge', es: 'Puente de Glúteos con Barra' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.70, hamstrings: 0.20, core: 0.10 },
     equipment: ['straight_bar' , 'plates'],
     weightType: 'barbell',
     description: {
@@ -1490,8 +1609,10 @@ export const exercises = [
     id: 'glute_bridge_dumbbell',
     name: { en: 'Dumbbell Glute Bridge', es: 'Puente de Glúteos con Mancuerna' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.70, hamstrings: 0.20, core: 0.10 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
+    singleWeight: true,
     description: {
       en: 'Simple glute bridge with dumbbell on hips. Lie on floor, place dumbbell on lower abdomen, bridge up squeezing glutes, great starting exercise for glute activation and development.',
       es: 'Puente de glúteos simple con mancuerna en caderas. Acuéstate en el suelo, coloca mancuerna en abdomen bajo, eleva apretando glúteos, excelente ejercicio inicial para activación.',
@@ -1503,6 +1624,7 @@ export const exercises = [
     id: 'sumo_deadlift',
     name: { en: 'Sumo Deadlift', es: 'Peso Muerto Sumo' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.35, quads: 0.25, hamstrings: 0.20, back: 0.15, core: 0.05 },
     equipment: ['straight_bar', 'plates', 'rack'],
     weightType: 'barbell',
     description: {
@@ -1516,6 +1638,7 @@ export const exercises = [
     id: 'sumo_squat',
     name: { en: 'Sumo Squat', es: 'Sentadilla Sumo' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.40, quads: 0.35, hamstrings: 0.15, core: 0.10 },
     equipment: ['straight_bar', 'plates', 'rack'],
     weightType: 'barbell',
     description: {
@@ -1529,8 +1652,10 @@ export const exercises = [
     id: 'db_sumo_squat',
     name: { en: 'Sumo Squat (Dumbbells)', es: 'Sentadilla Sumo con Mancuernas' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.40, quads: 0.35, hamstrings: 0.15, core: 0.10 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
+    singleWeight: true,
     description: {
       en: 'Wide stance squat for inner thighs and glutes. Hold dumbbell between legs, squat with wide stance and toes pointed out, emphasizes glutes and adductors more than standard squat.',
       es: 'Sentadilla con postura ancha para muslos internos y glúteos. Sostén mancuerna entre piernas, sentadilla con postura ancha y puntas afuera, enfatiza glúteos y aductores.',
@@ -1542,6 +1667,7 @@ export const exercises = [
     id: 'rdl_glutes',
     name: { en: 'Romanian Deadlift', es: 'Peso Muerto Rumano' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.40, hamstrings: 0.35, back: 0.20, core: 0.05 },
     equipment: ['straight_bar', 'plates', 'rack'],
     weightType: 'barbell',
     description: {
@@ -1555,6 +1681,7 @@ export const exercises = [
     id: 'step_ups_glutes',
     name: { en: 'Step-Ups (Glute Focus)', es: 'Step-Ups (Enfoque Glúteos)' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.50, quads: 0.30, hamstrings: 0.15, core: 0.05 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
     description: {
@@ -1568,6 +1695,7 @@ export const exercises = [
     id: 'lateral_band_walk',
     name: { en: 'Lateral Band Walk', es: 'Caminata Lateral con Banda' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.80, quads: 0.20 },
     equipment: ['resistance_band'],
     weightType: 'bodyweight',
     description: {
@@ -1581,6 +1709,7 @@ export const exercises = [
     id: 'clamshells',
     name: { en: 'Clamshells', es: 'Conchas' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.90, core: 0.10 },
     equipment: ['resistance_band'],
     weightType: 'bodyweight',
     description: {
@@ -1594,6 +1723,7 @@ export const exercises = [
     id: 'donkey_kicks',
     name: { en: 'Donkey Kicks', es: 'Patadas de Burro' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.80, hamstrings: 0.15, core: 0.05 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1607,6 +1737,7 @@ export const exercises = [
     id: 'fire_hydrants',
     name: { en: 'Fire Hydrants', es: 'Hidrantes' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.85, core: 0.15 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1620,6 +1751,7 @@ export const exercises = [
     id: 'frog_bridge',
     name: { en: 'Frog Bridge', es: 'Puente de Rana' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.80, hamstrings: 0.15, core: 0.05 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1637,6 +1769,7 @@ export const exercises = [
     id: 'standing_calf_raise_barbell',
     name: { en: 'Standing Calf Raise (Barbell)', es: 'Elevación de Talones de Pie (Barra)' },
     muscleGroup: 'calves',
+    muscles: { calves: 1.0 },
     equipment: ['straight_bar', 'rack', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1650,6 +1783,7 @@ export const exercises = [
     id: 'standing_calf_raise_dumbbell',
     name: { en: 'Standing Calf Raise (Dumbbell)', es: 'Elevación de Talones de Pie (Mancuernas)' },
     muscleGroup: 'calves',
+    muscles: { calves: 1.0 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -1663,6 +1797,7 @@ export const exercises = [
     id: 'standing_calf_raise_single',
     name: { en: 'Standing Calf Raise (Single Leg)', es: 'Elevación de Talones a Una Pierna' },
     muscleGroup: 'calves',
+    muscles: { calves: 1.0 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -1676,6 +1811,7 @@ export const exercises = [
     id: 'seated_calf_raise',
     name: { en: 'Seated Calf Raise', es: 'Elevación de Talones Sentado' },
     muscleGroup: 'calves',
+    muscles: { calves: 1.0 },
     equipment: ['dumbbells', 'flat_bench'],
     weightType: 'dumbbell',
     description: {
@@ -1689,6 +1825,7 @@ export const exercises = [
     id: 'donkey_calf_raise',
     name: { en: 'Donkey Calf Raise', es: 'Elevación de Talones Burro' },
     muscleGroup: 'calves',
+    muscles: { calves: 1.0 },
     equipment: ['dip_belt', 'rack', 'plates'],
     weightType: 'plate',
     description: {
@@ -1702,6 +1839,7 @@ export const exercises = [
     id: 'jump_rope',
     name: { en: 'Jump Rope', es: 'Saltar la Cuerda' },
     muscleGroup: 'calves',
+    muscles: { calves: 0.70, quads: 0.15, core: 0.15 },
     equipment: ['jump_rope'],
     weightType: 'bodyweight',
     description: {
@@ -1715,6 +1853,7 @@ export const exercises = [
     id: 'calf_raise_bodyweight',
     name: { en: 'Calf Raise (Bodyweight)', es: 'Elevación de Talones (Peso Corporal)' },
     muscleGroup: 'calves',
+    muscles: { calves: 1.0 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1732,6 +1871,7 @@ export const exercises = [
     id: 'wheel_crunches',
     name: { en: 'Wheel Crunches', es: 'Abdominales con Rueda' },
     muscleGroup: 'core',
+    muscles: { core: 0.85, shoulders: 0.15 },
     equipment: ['abs_wheel'],
     weightType: 'bodyweight',
     description: {
@@ -1745,6 +1885,7 @@ export const exercises = [
     id: 'crunches',
     name: { en: 'Crunches', es: 'Crunches' },
     muscleGroup: 'core',
+    muscles: { core: 1.0 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1758,6 +1899,7 @@ export const exercises = [
     id: 'reverse_crunches',
     name: { en: 'Reverse Crunches', es: 'Crunches Invertidos' },
     muscleGroup: 'core',
+    muscles: { core: 0.90, quads: 0.10 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1771,6 +1913,7 @@ export const exercises = [
     id: 'bicycle_crunches',
     name: { en: 'Bicycle Crunches', es: 'Bicicleta' },
     muscleGroup: 'core',
+    muscles: { core: 0.90, quads: 0.10 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1784,6 +1927,7 @@ export const exercises = [
     id: 'sit_ups',
     name: { en: 'Sit-Ups', es: 'Sit-Ups' },
     muscleGroup: 'core',
+    muscles: { core: 0.80, quads: 0.20 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1797,6 +1941,7 @@ export const exercises = [
     id: 'decline_sit_ups',
     name: { en: 'Decline Sit-Ups', es: 'Sit-Ups Declinados' },
     muscleGroup: 'core',
+    muscles: { core: 0.85, quads: 0.15 },
     equipment: ['decline_bench'],
     weightType: 'bodyweight',
     description: {
@@ -1810,6 +1955,7 @@ export const exercises = [
     id: 'weighted_decline_sit_ups',
     name: { en: 'Weighted Decline Sit-Ups', es: 'Sit-Ups Declinados con Peso' },
     muscleGroup: 'core',
+    muscles: { core: 0.85, quads: 0.15 },
     equipment: ['decline_bench', 'plates'],
     weightType: 'plate',
     description: {
@@ -1823,6 +1969,7 @@ export const exercises = [
     id: 'hanging_leg_raise',
     name: { en: 'Hanging Leg Raise', es: 'Elevación de Piernas Colgado' },
     muscleGroup: 'core',
+    muscles: { core: 0.75, quads: 0.15, biceps: 0.10 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
     description: {
@@ -1836,6 +1983,7 @@ export const exercises = [
     id: 'hanging_knee_raise',
     name: { en: 'Hanging Knee Raise', es: 'Elevación de Rodillas Colgado' },
     muscleGroup: 'core',
+    muscles: { core: 0.80, quads: 0.10, biceps: 0.10 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
     description: {
@@ -1849,6 +1997,7 @@ export const exercises = [
     id: 'hanging_oblique_knee_raise',
     name: { en: 'Hanging Oblique Knee Raise', es: 'Elevación Oblicua de Rodillas Colgado' },
     muscleGroup: 'core',
+    muscles: { core: 0.80, quads: 0.10, biceps: 0.10 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
     description: {
@@ -1862,6 +2011,7 @@ export const exercises = [
     id: 'toes_to_bar',
     name: { en: 'Toes to Bar', es: 'Dedos a la Barra' },
     muscleGroup: 'core',
+    muscles: { core: 0.70, quads: 0.15, biceps: 0.15 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
     description: {
@@ -1875,6 +2025,7 @@ export const exercises = [
     id: 'windshield_wipers',
     name: { en: 'Windshield Wipers', es: 'Limpiaparabrisas' },
     muscleGroup: 'core',
+    muscles: { core: 0.80, quads: 0.10, biceps: 0.10 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
     description: {
@@ -1888,6 +2039,7 @@ export const exercises = [
     id: 'plank',
     name: { en: 'Plank', es: 'Plancha' },
     muscleGroup: 'core',
+    muscles: { core: 0.80, shoulders: 0.15, quads: 0.05 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1901,6 +2053,7 @@ export const exercises = [
     id: 'side_plank',
     name: { en: 'Side Plank', es: 'Plancha Lateral' },
     muscleGroup: 'core',
+    muscles: { core: 0.85, shoulders: 0.15 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1914,6 +2067,7 @@ export const exercises = [
     id: 'weighted_plank',
     name: { en: 'Weighted Plank', es: 'Plancha con Peso' },
     muscleGroup: 'core',
+    muscles: { core: 0.80, shoulders: 0.15, quads: 0.05 },
     equipment: ['plates'],
     weightType: 'plate',
     description: {
@@ -1927,6 +2081,7 @@ export const exercises = [
     id: 'mountain_climbers',
     name: { en: 'Mountain Climbers', es: 'Escaladores' },
     muscleGroup: 'core',
+    muscles: { core: 0.50, quads: 0.25, shoulders: 0.25 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1940,6 +2095,7 @@ export const exercises = [
     id: 'dead_bug',
     name: { en: 'Dead Bug', es: 'Bicho Muerto' },
     muscleGroup: 'core',
+    muscles: { core: 0.90, quads: 0.10 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1953,6 +2109,7 @@ export const exercises = [
     id: 'bird_dog',
     name: { en: 'Bird Dog', es: 'Perro Pájaro' },
     muscleGroup: 'core',
+    muscles: { core: 0.70, glutes: 0.20, shoulders: 0.10 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -1966,6 +2123,7 @@ export const exercises = [
     id: 'ab_rollout',
     name: { en: 'Ab Rollout (Barbell)', es: 'Rueda Abdominal (Barra)' },
     muscleGroup: 'core',
+    muscles: { core: 0.70, shoulders: 0.20, triceps: 0.10 },
     equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
@@ -1979,6 +2137,7 @@ export const exercises = [
     id: 'russian_twist',
     name: { en: 'Russian Twist', es: 'Giro Ruso' },
     muscleGroup: 'core',
+    muscles: { core: 0.85, shoulders: 0.15 },
     equipment: ['plates'],
     weightType: 'plate',
     description: {
@@ -1992,6 +2151,7 @@ export const exercises = [
     id: 'v_ups',
     name: { en: 'V-Ups', es: 'V-Ups' },
     muscleGroup: 'core',
+    muscles: { core: 0.85, quads: 0.15 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -2005,6 +2165,7 @@ export const exercises = [
     id: 'l_sit_hold',
     name: { en: 'L-Sit Hold', es: 'Aguante en L' },
     muscleGroup: 'core',
+    muscles: { core: 0.60, quads: 0.25, triceps: 0.15 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
     description: {
@@ -2018,6 +2179,7 @@ export const exercises = [
     id: 'hyperextension_core',
     name: { en: 'Hyperextension (Lower Back)', es: 'Hiperextensión (Espalda Baja)' },
     muscleGroup: 'core',
+    muscles: { core: 0.50, back: 0.30, glutes: 0.20 },
     equipment: ['decline_bench'],
     weightType: 'bodyweight',
     description: {
@@ -2031,6 +2193,7 @@ export const exercises = [
     id: 'superman',
     name: { en: 'Superman', es: 'Superman' },
     muscleGroup: 'core',
+    muscles: { core: 0.40, back: 0.35, glutes: 0.25 },
     equipment: [],
     weightType: 'bodyweight',
     description: {
@@ -2044,6 +2207,7 @@ export const exercises = [
     id: 'db_side_bend',
     name: { en: 'Dumbbell Side Bend', es: 'Flexiones Laterales con Mancuernas' },
     muscleGroup: 'core',
+    muscles: { core: 0.90, back: 0.10 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
     description: {
@@ -2065,6 +2229,7 @@ export const exercises = [
     id: 'cable_crossover_high',
     name: { en: 'Cable Crossover (High)', es: 'Cruce de Cables (Alto)' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.80, shoulders: 0.15, core: 0.05 },
     equipment: ['high_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2078,6 +2243,7 @@ export const exercises = [
     id: 'cable_crossover_low',
     name: { en: 'Cable Crossover (Low to High)', es: 'Cruce de Cables (Bajo a Alto)' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.75, shoulders: 0.20, core: 0.05 },
     equipment: ['low_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2091,6 +2257,7 @@ export const exercises = [
     id: 'cable_flyes_mid',
     name: { en: 'Cable Flyes (Mid)', es: 'Aperturas en Polea (Media)' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.80, shoulders: 0.15, core: 0.05 },
     equipment: ['mid_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2104,6 +2271,7 @@ export const exercises = [
     id: 'pec_deck',
     name: { en: 'Pec Deck / Butterfly', es: 'Pec Deck / Mariposa' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.85, shoulders: 0.15 },
     equipment: ['pec_deck_station'],
     weightType: 'machine',
     description: {
@@ -2117,6 +2285,7 @@ export const exercises = [
     id: 'chest_press',
     name: { en: 'Chest Press', es: 'Press de Pecho' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.60, triceps: 0.25, shoulders: 0.15 },
     equipment: ['chest_press_station'],
     weightType: 'machine',
     description: {
@@ -2130,6 +2299,7 @@ export const exercises = [
     id: 'dips_chest',
     name: { en: 'Dips (Chest Focus)', es: 'Fondos (Enfoque Pecho)' },
     muscleGroup: 'chest',
+    muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
     equipment: ['parallels'],
     weightType: 'bodyweight',
     description: {
@@ -2147,6 +2317,7 @@ export const exercises = [
     id: 'lat_pulldown_wide',
     name: { en: 'Lat Pulldown (Wide)', es: 'Jalón al Pecho (Ancho)' },
     muscleGroup: 'back',
+    muscles: { back: 0.65, biceps: 0.25, shoulders: 0.10 },
     equipment: ['lat_station', 'lat_bar'],
     weightType: 'machine',
     description: {
@@ -2160,6 +2331,7 @@ export const exercises = [
     id: 'lat_pulldown_close',
     name: { en: 'Lat Pulldown (Close/Neutral)', es: 'Jalón al Pecho (Cerrado/Neutro)' },
     muscleGroup: 'back',
+    muscles: { back: 0.60, biceps: 0.30, shoulders: 0.10 },
     equipment: ['lat_station', 'lat_bar'],
     weightType: 'machine',
     description: {
@@ -2173,6 +2345,7 @@ export const exercises = [
     id: 'lat_pulldown_reverse',
     name: { en: 'Lat Pulldown (Reverse Grip)', es: 'Jalón al Pecho (Agarre Inverso)' },
     muscleGroup: 'back',
+    muscles: { back: 0.55, biceps: 0.35, shoulders: 0.10 },
     equipment: ['lat_station', 'lat_bar'],
     weightType: 'machine',
     description: {
@@ -2186,6 +2359,7 @@ export const exercises = [
     id: 'behind_neck_pulldown',
     name: { en: 'Behind-the-neck lat Pulldown', es: 'Jalón trasnuca' },
     muscleGroup: 'back',
+    muscles: { back: 0.65, biceps: 0.20, shoulders: 0.15 },
     equipment: ['lat_station', 'lat_bar'],
     weightType: 'machine',
     description: {
@@ -2199,6 +2373,7 @@ export const exercises = [
     id: 'seated_cable_row',
     name: { en: 'Seated Cable Row', es: 'Remo Sentado en Polea' },
     muscleGroup: 'back',
+    muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
     equipment: ['low_pulley', 'rowing_handle'],
     weightType: 'machine',
     description: {
@@ -2212,6 +2387,7 @@ export const exercises = [
     id: 'seated_cable_row_wide',
     name: { en: 'Seated Cable Row (Wide)', es: 'Remo Sentado en Polea (Ancho)' },
     muscleGroup: 'back',
+    muscles: { back: 0.65, biceps: 0.20, shoulders: 0.10, core: 0.05 },
     equipment: ['low_pulley', 'lat_bar'],
     weightType: 'machine',
     description: {
@@ -2225,6 +2401,7 @@ export const exercises = [
     id: 'face_pulls',
     name: { en: 'Face Pulls', es: 'Tirón a la Cara' },
     muscleGroup: 'back',
+    muscles: { back: 0.50, shoulders: 0.40, biceps: 0.10 },
     equipment: ['high_pulley', 'straight_bar_attachment'],
     weightType: 'machine',
     description: {
@@ -2238,6 +2415,7 @@ export const exercises = [
     id: 'single_arm_cable_row',
     name: { en: 'Single-Arm Cable Row', es: 'Remo Unilateral en Polea' },
     muscleGroup: 'back',
+    muscles: { back: 0.60, biceps: 0.25, core: 0.10, shoulders: 0.05 },
     equipment: ['low_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2251,6 +2429,7 @@ export const exercises = [
     id: 'cable_shrugs',
     name: { en: 'Cable Shrugs', es: 'Encogimientos en Polea' },
     muscleGroup: 'back',
+    muscles: { back: 0.85, shoulders: 0.15 },
     equipment: ['low_pulley', 'straight_bar_attachment'],
     weightType: 'machine',
     description: {
@@ -2268,6 +2447,7 @@ export const exercises = [
     id: 'cable_lateral_raise',
     name: { en: 'Cable Lateral Raise', es: 'Elevación Lateral en Polea' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.90, back: 0.10 },
     equipment: ['low_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2281,6 +2461,7 @@ export const exercises = [
     id: 'cable_front_raise',
     name: { en: 'Cable Front Raise', es: 'Elevación Frontal en Polea' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.85, chest: 0.15 },
     equipment: ['low_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2294,6 +2475,7 @@ export const exercises = [
     id: 'cable_rear_delt_fly',
     name: { en: 'Cable Rear Delt Fly', es: 'Aperturas Posteriores en Polea' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.75, back: 0.25 },
     equipment: ['high_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2307,6 +2489,7 @@ export const exercises = [
     id: 'face_pulls_shoulders',
     name: { en: 'Face Pulls (Shoulders)', es: 'Tirón a la Cara (Hombros)' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.50, back: 0.40, biceps: 0.10 },
     equipment: ['high_pulley', 'rope'],
     weightType: 'machine',
     description: {
@@ -2320,6 +2503,7 @@ export const exercises = [
     id: 'upright_row_cable',
     name: { en: 'Upright Row (Cable)', es: 'Remo al Mentón (Polea)' },
     muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.55, back: 0.30, biceps: 0.15 },
     equipment: ['low_pulley', 'straight_bar_attachment'],
     weightType: 'machine',
     description: {
@@ -2337,6 +2521,7 @@ export const exercises = [
     id: 'ez_bar_preacher_curl',
     name: { en: 'EZ Bar Preacher Curl', es: 'Curl en Banco Scott con Barra Z' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.95, shoulders: 0.05 },
     equipment: ['ez_bar', 'plates', 'preacher_pad'],
     weightType: 'barbell',
     description: {
@@ -2350,6 +2535,7 @@ export const exercises = [
     id: 'db_preacher_curl',
     name: { en: 'Dumbbell Preacher Curl', es: 'Curl en Banco Scott con Mancuerna' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.95, shoulders: 0.05 },
     equipment: ['dumbbells', 'preacher_pad'],
     weightType: 'dumbbell',
     description: {
@@ -2363,6 +2549,7 @@ export const exercises = [
     id: 'cable_curl_bar',
     name: { en: 'Cable Curl (Straight Bar)', es: 'Curl en Polea (Barra Recta)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['low_pulley', 'straight_bar_attachment'],
     weightType: 'machine',
     description: {
@@ -2376,6 +2563,7 @@ export const exercises = [
     id: 'cable_curl_rope',
     name: { en: 'Cable Curl (Rope - Hammer)', es: 'Curl en Polea (Cuerda - Martillo)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['low_pulley', 'rope'],
     weightType: 'machine',
     description: {
@@ -2389,6 +2577,7 @@ export const exercises = [
     id: 'cable_curl_single',
     name: { en: 'Cable Curl (Single Arm)', es: 'Curl en Polea (Un Brazo)' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.90, shoulders: 0.10 },
     equipment: ['low_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2402,6 +2591,7 @@ export const exercises = [
     id: 'cable_high_curl',
     name: { en: 'Cable High Curl', es: 'Curl Alto en Polea' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['high_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2415,6 +2605,7 @@ export const exercises = [
     id: 'cable_preacher_curl',
     name: { en: 'Cable Preacher Curl', es: 'Curl en Banco Scott con Polea' },
     muscleGroup: 'biceps',
+    muscles: { biceps: 0.95, shoulders: 0.05 },
     equipment: ['low_pulley', 'preacher_pad', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2432,6 +2623,7 @@ export const exercises = [
     id: 'cable_pushdown_rope',
     name: { en: 'Cable Pushdown (Rope)', es: 'Empuje en Polea (Cuerda)' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.85, shoulders: 0.10, core: 0.05 },
     equipment: ['high_pulley', 'rope'],
     weightType: 'machine',
     description: {
@@ -2445,6 +2637,7 @@ export const exercises = [
     id: 'cable_pushdown_bar',
     name: { en: 'Cable Pushdown (Straight Bar)', es: 'Empuje en Polea (Barra Recta)' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.85, shoulders: 0.10, core: 0.05 },
     equipment: ['high_pulley', 'straight_bar_attachment'],
     weightType: 'machine',
     description: {
@@ -2458,6 +2651,7 @@ export const exercises = [
     id: 'cable_pushdown_vbar',
     name: { en: 'Cable Pushdown (V-Bar/Handle)', es: 'Empuje en Polea (Barra V/Mango)' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.85, shoulders: 0.10, core: 0.05 },
     equipment: ['high_pulley', 'v_bar'],
     weightType: 'machine',
     description: {
@@ -2471,6 +2665,7 @@ export const exercises = [
     id: 'cable_pushdown_reverse',
     name: { en: 'Cable Pushdown (Reverse Grip)', es: 'Empuje en Polea (Agarre Inverso)' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.80, shoulders: 0.10, biceps: 0.10 },
     equipment: ['high_pulley', 'straight_bar_attachment'],
     weightType: 'machine',
     description: {
@@ -2484,6 +2679,7 @@ export const exercises = [
     id: 'cable_overhead_extension_rope',
     name: { en: 'Cable Overhead Extension (Rope)', es: 'Extensión sobre Cabeza en Polea (Cuerda)' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['low_pulley', 'rope'],
     weightType: 'machine',
     description: {
@@ -2497,6 +2693,7 @@ export const exercises = [
     id: 'cable_overhead_extension_single',
     name: { en: 'Cable Overhead Extension (Single Arm)', es: 'Extensión sobre Cabeza en Polea (Un Brazo)' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['low_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2510,6 +2707,7 @@ export const exercises = [
     id: 'cable_kickback',
     name: { en: 'Cable Kickback', es: 'Patada Trasera en Polea' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['low_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2523,6 +2721,7 @@ export const exercises = [
     id: 'dips_triceps',
     name: { en: 'Dips (Tricep Focus)', es: 'Fondos (Enfoque Tríceps)' },
     muscleGroup: 'triceps',
+    muscles: { triceps: 0.55, chest: 0.30, shoulders: 0.15 },
     equipment: ['parallels'],
     weightType: 'bodyweight',
     description: {
@@ -2540,6 +2739,7 @@ export const exercises = [
     id: 'cable_wrist_curl',
     name: { en: 'Cable Wrist Curl', es: 'Curl de Muñeca en Polea' },
     muscleGroup: 'forearms',
+    muscles: { biceps: 1.0 },
     equipment: ['low_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2557,6 +2757,7 @@ export const exercises = [
     id: 'leg_extension',
     name: { en: 'Leg Extension', es: 'Extensión de Piernas' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.95, core: 0.05 },
     equipment: ['leg_extension_station'],
     weightType: 'machine',
     description: {
@@ -2570,6 +2771,7 @@ export const exercises = [
     id: 'leg_press',
     name: { en: 'Leg Press', es: 'Prensa de Piernas' },
     muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.20, calves: 0.05 },
     equipment: ['leg_press_station'],
     weightType: 'machine',
     description: {
@@ -2587,6 +2789,7 @@ export const exercises = [
     id: 'leg_curl',
     name: { en: 'Leg Curl', es: 'Curl de Piernas' },
     muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.85, calves: 0.15 },
     equipment: ['lying_leg_curl_station'],
     weightType: 'machine',
     description: {
@@ -2600,6 +2803,7 @@ export const exercises = [
     id: 'seated_leg_curl',
     name: { en: 'Seated Leg Curl', es: 'Curl de Piernas Sentado' },
     muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.85, calves: 0.15 },
     equipment: ['leg_curl_station'],
     weightType: 'machine',
     description: {
@@ -2613,6 +2817,7 @@ export const exercises = [
     id: 'cable_pull_through',
     name: { en: 'Cable Pull-Through', es: 'Tirón de Cable entre Piernas' },
     muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.40, glutes: 0.40, back: 0.15, core: 0.05 },
     equipment: ['low_pulley', 'rope'],
     weightType: 'machine',
     description: {
@@ -2630,6 +2835,7 @@ export const exercises = [
     id: 'cable_kickback_glutes',
     name: { en: 'Cable Kickback', es: 'Patada Trasera en Polea' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.75, hamstrings: 0.20, core: 0.05 },
     equipment: ['low_pulley', 'ankle_strap'],
     weightType: 'machine',
     description: {
@@ -2643,6 +2849,7 @@ export const exercises = [
     id: 'cable_pull_through_glutes',
     name: { en: 'Cable Pull-Through', es: 'Tirón de Cable entre Piernas' },
     muscleGroup: 'glutes',
+    muscles: { glutes: 0.45, hamstrings: 0.35, back: 0.15, core: 0.05 },
     equipment: ['low_pulley', 'rope'],
     weightType: 'machine',
     description: {
@@ -2660,6 +2867,7 @@ export const exercises = [
     id: 'leg_press_calf_raise',
     name: { en: 'Leg Press Calf Raise', es: 'Elevación de Talones en Prensa' },
     muscleGroup: 'calves',
+    muscles: { calves: 1.0 },
     equipment: ['leg_press_station'],
     weightType: 'machine',
     description: {
@@ -2677,6 +2885,7 @@ export const exercises = [
     id: 'cable_crunch',
     name: { en: 'Cable Crunch (Kneeling)', es: 'Crunch en Polea (Arrodillado)' },
     muscleGroup: 'core',
+    muscles: { core: 0.90, shoulders: 0.10 },
     equipment: ['high_pulley', 'rope'],
     weightType: 'machine',
     description: {
@@ -2690,6 +2899,7 @@ export const exercises = [
     id: 'cable_woodchop_high',
     name: { en: 'Cable Woodchop (High to Low)', es: 'Leñador en Polea (Alto a Bajo)' },
     muscleGroup: 'core',
+    muscles: { core: 0.65, shoulders: 0.20, back: 0.15 },
     equipment: ['high_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2703,6 +2913,7 @@ export const exercises = [
     id: 'cable_woodchop_low',
     name: { en: 'Cable Woodchop (Low to High)', es: 'Leñador en Polea (Bajo a Alto)' },
     muscleGroup: 'core',
+    muscles: { core: 0.65, shoulders: 0.20, quads: 0.15 },
     equipment: ['low_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
@@ -2716,6 +2927,7 @@ export const exercises = [
     id: 'pallof_press',
     name: { en: 'Cable Pallof Press', es: 'Press Pallof en Polea' },
     muscleGroup: 'core',
+    muscles: { core: 0.80, shoulders: 0.15, chest: 0.05 },
     equipment: ['mid_pulley', 'single_handle'],
     weightType: 'machine',
     description: {
