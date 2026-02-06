@@ -306,6 +306,8 @@ export default function ExercisesScreen() {
                   >
                     <Text style={styles.videoLinkText}>{t('searchVideo', lang)} ▶</Text>
                   </TouchableOpacity>
+
+                  <Text style={styles.imageDisclaimer}>{t('imageDisclaimer', lang)}</Text>
                 </ScrollView>
 
                 <TouchableOpacity
@@ -529,7 +531,6 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
     borderRadius: borderRadius.md,
     alignSelf: 'flex-start',
-    marginBottom: 50,
   },
   weightTypeText: {
     fontFamily: fonts.bold,
@@ -538,7 +539,7 @@ const styles = StyleSheet.create({
   },
   videoLinkButton: {
     marginTop: spacing.lg,
-    backgroundColor: '#FF0000',
+    backgroundColor: colors.accent,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
     borderRadius: borderRadius.md,
@@ -548,6 +549,14 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: fontSize.md,
     color: colors.white,
+  },
+  imageDisclaimer: {
+    fontFamily: fonts.italic,
+    fontSize: fontSize.xs,
+    color: colors.textLight,
+    textAlign: 'center',
+    marginTop: spacing.md,
+    marginBottom: 50,
   },
   modalCloseButton: {
     margin: spacing.lg,

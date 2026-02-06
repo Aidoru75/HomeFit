@@ -6,19 +6,19 @@ export const equipment = {
     id: 'high_pulley',
     name: { en: 'High Pulley', es: 'Polea Alta' },
     type: 'cable',
-    weightRange: { min: 3.6, max: 68, increment: 4.6 },
+    pro: true,
   },
   midPulley: {
     id: 'mid_pulley',
     name: { en: 'Mid Pulley', es: 'Polea Media' },
     type: 'cable',
-    weightRange: { min: 3.6, max: 68, increment: 4.6 },
+    pro: true,
   },
   lowPulley: {
     id: 'low_pulley',
     name: { en: 'Low Pulley', es: 'Polea Baja' },
     type: 'cable',
-    weightRange: { min: 3.6, max: 68, increment: 4.6 },
+    pro: true,
   },
   
   // Machine Stations
@@ -26,26 +26,55 @@ export const equipment = {
     id: 'leg_extension_station',
     name: { en: 'Leg Extension Station', es: 'Estación de Extensión de Piernas' },
     type: 'machine',
+    pro: true,
   },
   legCurlStation: {
     id: 'leg_curl_station',
     name: { en: 'Leg Curl Station', es: 'Estación de Curl de Piernas' },
     type: 'machine',
+    pro: true,
+  },
+  lyingLegCurlStation: {
+    id: 'lying_leg_curl_station',
+    name: { en: 'Lying Leg Curl Station', es: 'Estación de Curl de Piernas Acostado' },
+    type: 'machine',
+    pro: true,
+  },
+  standingLegCurlStation: {
+    id: 'standing_leg_curl_station',
+    name: { en: 'Standing Leg Curl Station', es: 'Estación de Curl de Piernas Parado' },
+    type: 'machine',
+    pro: true,
   },
   legPressStation: {
     id: 'leg_press_station',
     name: { en: 'Leg Press Station', es: 'Prensa de Piernas' },
     type: 'machine',
+    pro: true,
   },
   pecDeckStation: {
     id: 'pec_deck_station',
     name: { en: 'Pec Deck Station', es: 'Estación Pec Deck' },
     type: 'machine',
+    pro: true,
   },
-  preacherPad: {
-    id: 'preacher_pad',
-    name: { en: 'Preacher Pad', es: 'Banco Scott' },
+  chestPressStation: {
+    id: 'chest_press_station',
+    name: { en: 'Chest Press Station', es: 'Estación de Prensa de Pecho' },
     type: 'machine',
+    pro: true,
+  },
+  latStation: {
+    id: 'lat_station',
+    name: { en: 'Lat Machine', es: 'Máquina de Jalón' },
+    type: 'machine',
+    pro: true,
+  },
+  calfStation: {
+    id: 'calf_station',
+    name: { en: 'Calf Machine', es: 'Máquina de Pantorrillas' },
+    type: 'machine',
+    pro: true,
   },
   
   // Racks and Benches
@@ -53,14 +82,49 @@ export const equipment = {
     id: 'rack',
     name: { en: 'Squat Rack', es: 'Rack de Sentadillas' },
     type: 'rack',
-    features: ['j_hooks', 'safety_arms', 'pullup_bar'],
+    pro: false,
   },
-  bench: {
-    id: 'bench',
-    name: { en: 'Adjustable Bench', es: 'Banco Ajustable' },
-    type: 'bench',
-    positions: ['flat', 'incline', 'decline'],
-    hasLegRoller: true,
+  pullupRack: {
+    id: 'pullup_rack',
+    name: { en: 'Pull-up Rack', es: 'Rack de Dominadas' },
+    type: 'rack',
+    pro: false,
+  },
+  flatBench: {
+    id: 'flat_bench',
+    name: { en: 'Flat Bench', es: 'Banco Horizontal' },
+    type: 'flat_bench',
+    pro: false,
+  },
+  inclineBench: {
+    id: 'incline_bench',
+    name: { en: 'Incline Bench', es: 'Banco Inclinado' },
+    type: 'flat_bench',
+    pro: false,
+  },
+  declineBench: {
+    id: 'decline_bench',
+    name: { en: 'Decline Bench', es: 'Banco Declinado' },
+    type: 'flat_bench',
+    pro: false,
+  },
+  uprightBench: {
+    id: 'upright_bench',
+    name: { en: 'Upright Bench', es: 'Banco Recto' },
+    type: 'flat_bench',
+    pro: false,
+  },
+  preacherPad: {
+    id: 'preacher_pad',
+    name: { en: 'Preacher Pad', es: 'Banco Scott' },
+    type: 'flat_bench',
+    pro: true,
+  },
+  parallels: {
+    id: 'parallels',
+    name: { en: 'Parallel Bars', es: 'Barras Paralelas' },
+    type: 'flat_bench',
+    pro: true,
   },
   
   // Barbells
@@ -68,13 +132,19 @@ export const equipment = {
     id: 'straight_bar',
     name: { en: 'Straight Barbell', es: 'Barra Recta' },
     type: 'barbell',
-    weight: 10,
+    pro: false,
   },
   ezBar: {
     id: 'ez_bar',
     name: { en: 'EZ Curl Bar', es: 'Barra Z' },
     type: 'barbell',
-    weight: 10,
+    pro: false,
+  },
+  neutralBar: {
+    id: 'neutral_bar',
+    name: { en: 'Neutral Grip Bar', es: 'Barra de Agarre Neutro' },
+    type: 'barbell',
+    pro: true,
   },
   
   // Dumbbells
@@ -82,8 +152,7 @@ export const equipment = {
     id: 'dumbbells',
     name: { en: 'Dumbbells', es: 'Mancuernas' },
     type: 'dumbbell',
-    handleWeight: 5,
-    quantity: 2,
+    pro: false,
   },
 
   // Kettlebells
@@ -91,21 +160,7 @@ export const equipment = {
     id: 'kettlebells',
     name: { en: 'Kettlebells', es: 'Pesas rusas' },
     type: 'kettlebell',
-    weights: [8, 12, 16, 20, 24],
-  },
-
-  // Plates
-  plates: {
-    id: 'plates',
-    name: { en: 'Weight Plates', es: 'Discos de Peso' },
-    type: 'plates',
-    inventory: [
-      { weight: 15, quantity: 2 },
-      { weight: 10, quantity: 4 },
-      { weight: 5, quantity: 4 },
-      { weight: 2.5, quantity: 4 },
-      { weight: 1.25, quantity: 4 },
-    ],
+    pro: true,
   },
   
   // Weight Plates
@@ -113,6 +168,7 @@ export const equipment = {
     id: 'plates',
     name: { en: 'Weight Plates', es: 'Discos de Peso' },
     type: 'plates',
+    pro: false,
     inventory: [
       { weight: 15, quantity: 2 },
       { weight: 10, quantity: 4 },
@@ -122,71 +178,100 @@ export const equipment = {
     ],
   },
   
-  // Cable Attachments & Accessories
+  // Cable Attachments
   latBar: {
     id: 'lat_bar',
     name: { en: 'Lat Pulldown Bar', es: 'Barra de Jalón' },
-    type: 'accessory',
+    type: 'cableattachs',
+    pro: true,
   },
   rope: {
     id: 'rope',
     name: { en: 'Tricep Rope', es: 'Cuerda para Tríceps' },
-    type: 'accessory',
+    type: 'cableattachs',
+    pro: true,
+  },
+  singleRope: {
+    id: 'single_rope',
+    name: { en: 'Single Tricep Rope', es: 'Cuerda de Tríceps Individual' },
+    type: 'cableattachs',
+    pro: true,
   },
   singleHandle: {
     id: 'single_handle',
     name: { en: 'Single Cable Handle', es: 'Mango de Cable' },
-    type: 'accessory',
+    type: 'cableattachs',
+    pro: true,
   },
   straightBarAttachment: {
     id: 'straight_bar_attachment',
     name: { en: 'Straight Bar Attachment', es: 'Accesorio de Barra Recta' },
-    type: 'accessory',
+    type: 'cableattachs',
+    pro: true,
+  },
+  vBar: {
+    id: 'v_bar',
+    name: { en: 'V-Bar Handle', es: 'Barra V' },
+    type: 'cableattachs',
+    pro: true,
+  },
+  rowingHandle: {
+    id: 'rowing_handle',
+    name: { en: 'Rowing Handle', es: 'Mango de Remo' },
+    type: 'cableattachs',
+    pro: true,
   },
   ankleStrap: {
     id: 'ankle_strap',
     name: { en: 'Ankle Strap', es: 'Correa de Tobillo' },
+    type: 'cableattachs',
+    pro: true,
+  },
+
+  // Other Accessories
+
+  
+  absWheel: {
+    id: 'abs_wheel',
+    name: { en: 'Abs Wheel', es: 'Rueda Abdominales' },
     type: 'accessory',
+    pro: false,
   },
   dipBelt: {
     id: 'dip_belt',
     name: { en: 'Dip Belt + Chain', es: 'Cinturón de Fondos + Cadena' },
     type: 'accessory',
+    pro: false,
   },
-  liftingBelt: {
-    id: 'lifting_belt',
-    name: { en: 'Lifting Belt', es: 'Cinturón de Levantamiento' },
+  landmineHandle: {
+    id: 'landmine_handle',
+    name: { en: 'Landmine Handle', es: 'Mango de Landmine' },
     type: 'accessory',
-  },
-  vBar: {
-    id: 'v_bar',
-    name: { en: 'V-Bar Handle', es: 'Barra V' },
-    type: 'accessory',
+    pro: false,
   },
   resistanceBand: {
     id: 'resistance_band',
     name: { en: 'Resistance Band', es: 'Banda de Resistencia' },
     type: 'accessory',
+    pro: false,
   },
   towel: {
     id: 'towel',
     name: { en: 'Towel', es: 'Toalla' },
     type: 'accessory',
+    pro: false,
   },
   jumpRope: {
     id: 'jump_rope',
     name: { en: 'Jump Rope', es: 'Cuerda de Saltar' },
     type: 'accessory',
+    pro: false,
   },
   ball: {
     id: 'ball',
     name: { en: 'Exercise Ball', es: 'Balón de Ejercicio' },
     type: 'accessory',
-  },
-  absWheel: {
-    id: 'abs_wheel',
-    name: { en: 'Abs Wheel', es: 'Rueda Abdominales' },
-    type: 'accessory',
+    pro: true,
   },
 };
 
@@ -195,38 +280,32 @@ export const equipmentCategories = {
   freeWeights: {
     id: 'freeWeights',
     name: { en: 'Free Weights', es: 'Pesos Libres' },
-    icon: '🏋️',
-    equipmentIds: ['straight_bar', 'ez_bar', 'dumbbells', 'plates', 'kettlebells'],
+    equipmentIds: ['straight_bar', 'ez_bar', 'neutral_bar', 'dumbbells', 'plates', 'kettlebells'],
   },
   racksAndBenches: {
     id: 'racksAndBenches',
     name: { en: 'Racks & Benches', es: 'Racks y Bancos' },
-    icon: '🪑',
-    equipmentIds: ['rack', 'bench'],
+    equipmentIds: ['rack', 'pullup_rack', 'flat_bench', 'incline_bench', 'decline_bench', 'upright_bench', 'preacher_pad', 'parallels' ],
   },
   cableMachine: {
     id: 'cableMachine',
     name: { en: 'Cable Machine', es: 'Máquina de Poleas' },
-    icon: '🔗',
     equipmentIds: ['high_pulley', 'mid_pulley', 'low_pulley'],
   },
   machineStations: {
     id: 'machineStations',
     name: { en: 'Machine Stations', es: 'Estaciones de Máquinas' },
-    icon: '⚙️',
-    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'leg_press_station', 'pec_deck_station', 'preacher_pad'],
+    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'lying_leg_curl_station', 'standing_leg_curl_station', 'leg_press_station', 'pec_deck_station', 'chest_press_station', 'lat_station', 'calf_station' ],
   },
   cableAttachments: {
     id: 'cableAttachments',
     name: { en: 'Cable Attachments', es: 'Accesorios de Polea' },
-    icon: '🔧',
-    equipmentIds: ['lat_bar', 'rope', 'single_handle', 'straight_bar_attachment', 'v_bar', 'ankle_strap'],
+    equipmentIds: ['lat_bar', 'rope', 'single_rope', 'single_handle', 'straight_bar_attachment', 'v_bar', 'rowing_handle', 'ankle_strap'],
   },
   accessories: {
     id: 'accessories',
-    name: { en: 'Accessories', es: 'Accesorios' },
-    icon: '🎒',
-    equipmentIds: ['dip_belt', 'lifting_belt', 'resistance_band', 'towel', 'jump_rope', 'ball', 'abs_wheel'],
+    name: { en: 'Other Accessories', es: 'Otros Accesorios' },
+    equipmentIds: ['dip_belt', 'resistance_band', 'towel', 'jump_rope', 'ball', 'abs_wheel' ],
   },
 };
 

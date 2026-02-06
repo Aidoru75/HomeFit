@@ -182,7 +182,7 @@ export const exerciseToNumeric = {
   clamshells: 161,
   donkey_kicks: 162,
   fire_hydrants: 163,
-  frog_pumps: 164,
+  frog_bridge: 164,
 
   // CALVES (165-172)
   standing_calf_raise_barbell: 165,

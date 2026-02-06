@@ -1,6 +1,7 @@
 // Routine encoder/decoder for QR code sharing
 // Format: v1[restSets,restEx(exerciseId|setsData)...][day2]...
-// Example: v1[60,90(1|3x10,80)(2|8,100;6,110;4,120)]
+// Example: v1[60,90(1|3x10)(2|8;6;4)]
+// NOTE: Weights are NOT included in QR codes - each user sets their own weights.
 
 import { getNumericId, getExerciseId } from '../data/exerciseIds';
 
@@ -8,6 +9,7 @@ const FORMAT_VERSION = 'v1';
 
 /**
  * Encode a routine object into a compact string for QR code
+ * Weights are excluded - only exercise structure (sets/reps) is shared.
  * @param {Object} routine - The routine object to encode
  * @returns {string} Encoded string
  */
@@ -32,7 +34,8 @@ export const encodeRoutine = (routine) => {
         return null;
       }
 
-      const setsData = encodeSets(ex.sets, ex.reps, ex.weights);
+      // Encode sets/reps only (no weights)
+      const setsData = encodeSets(ex.sets, ex.reps);
       // Include superset group if present
       const supersetPart = ex.supersetGroup ? `|s${ex.supersetGroup}` : '';
       return `(${numericId}|${setsData}${supersetPart})`;
@@ -46,54 +49,30 @@ export const encodeRoutine = (routine) => {
 
 /**
  * Encode sets data using shorthand notation where possible
+ * Weights are NOT included - each user sets their own.
  * @param {number} setCount - Number of sets
  * @param {number[]} reps - Array of reps per set
- * @param {number[]} weights - Array of weights per set
  * @returns {string} Encoded sets string
  */
-const encodeSets = (setCount, reps, weights) => {
+const encodeSets = (setCount, reps) => {
   const repsArray = reps || Array(setCount).fill(10);
-  const weightsArray = weights || Array(setCount).fill(0);
 
-  // Check if all sets are identical
+  // Check if all reps are identical
   const firstRep = repsArray[0] || 10;
-  const firstWeight = weightsArray[0] || 0;
-  const allIdentical = repsArray.every((r, i) =>
-    (r || 10) === firstRep && (weightsArray[i] || 0) === firstWeight
-  );
+  const allIdentical = repsArray.every(r => (r || 10) === firstRep);
 
   if (allIdentical) {
-    // Use shorthand: 3x10,80 or 3x10 (if weight is 0)
-    if (firstWeight === 0) {
-      return `${setCount}x${firstRep}`;
-    }
-    return `${setCount}x${firstRep},${formatWeight(firstWeight)}`;
+    // Use shorthand: 3x10
+    return `${setCount}x${firstRep}`;
   }
 
-  // Varied sets: 10,80;8,90;6,100
-  return repsArray.map((r, i) => {
-    const rep = r || 10;
-    const weight = weightsArray[i] || 0;
-    if (weight === 0) {
-      return `${rep}`;
-    }
-    return `${rep},${formatWeight(weight)}`;
-  }).join(';');
-};
-
-/**
- * Format weight value (remove trailing zeros after decimal)
- */
-const formatWeight = (weight) => {
-  if (Number.isInteger(weight)) {
-    return String(weight);
-  }
-  // Remove trailing zeros
-  return String(parseFloat(weight.toFixed(2)));
+  // Varied reps: 10;8;6
+  return repsArray.map(r => r || 10).join(';');
 };
 
 /**
  * Decode a compact string back into a routine object
+ * Weights are set to zero - each user will set their own.
  * @param {string} code - The encoded string
  * @returns {Object|null} Decoded routine object, or null if invalid
  */
@@ -186,39 +165,31 @@ export const decodeRoutine = (code) => {
 
 /**
  * Decode sets data from string
+ * Weights are always zero - each user sets their own.
  * @param {string} setsData - Encoded sets string
  * @returns {Object} Object with sets, reps, and weights arrays
  */
 const decodeSets = (setsData) => {
-  // Check for shorthand: 3x10,80 or 3x10
-  const shorthandMatch = setsData.match(/^(\d+)x(\d+)(?:,([0-9.]+))?$/);
+  // Check for shorthand: 3x10
+  const shorthandMatch = setsData.match(/^(\d+)x(\d+)$/);
   if (shorthandMatch) {
     const setCount = parseInt(shorthandMatch[1]);
     const rep = parseInt(shorthandMatch[2]);
-    const weight = shorthandMatch[3] ? parseFloat(shorthandMatch[3]) : 0;
 
     return {
       sets: setCount,
       reps: Array(setCount).fill(rep),
-      weights: Array(setCount).fill(weight),
+      weights: Array(setCount).fill(0),
     };
   }
 
-  // Varied sets: 10,80;8,90;6,100 or 10;8;6 (bodyweight)
-  const setStrings = setsData.split(';');
-  const reps = [];
-  const weights = [];
-
-  setStrings.forEach(setStr => {
-    const parts = setStr.split(',');
-    reps.push(parseInt(parts[0]) || 10);
-    weights.push(parts[1] ? parseFloat(parts[1]) : 0);
-  });
+  // Varied reps: 10;8;6
+  const repsArray = setsData.split(';').map(r => parseInt(r) || 10);
 
   return {
-    sets: setStrings.length,
-    reps,
-    weights,
+    sets: repsArray.length,
+    reps: repsArray,
+    weights: Array(repsArray.length).fill(0),
   };
 };
 

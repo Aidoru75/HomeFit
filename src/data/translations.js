@@ -42,8 +42,9 @@ export const translations = {
     weightTypeCable: 'Cable',
     weightTypeOther: 'Other',
     searchVideo: 'Search video',
+    imageDisclaimer: 'The images have been generated in 3D and therefore do not accurately reproduce human anatomy. Please use them for reference only.',
     close: 'Close',
-    exerciseToggleHint: 'Toggle switch to include/exclude from routines',
+    exerciseToggleHint: 'Toggle switch to include/exclude from routine creation',
     
     // Routines Screen
     newRoutine: 'New',
@@ -240,8 +241,9 @@ export const translations = {
     weightTypeCable: 'Cable',
     weightTypeOther: 'Otro',
     searchVideo: 'Buscar video',
+    imageDisclaimer: 'Las imágenes han sido generadas en 3D, por lo que no reproducen con exactitud la anatomía humana. Utilícelas únicamente como referencia.',
     close: 'Cerrar',
-    exerciseToggleHint: 'Usa el interruptor para incluir/excluir de las rutinas',
+    exerciseToggleHint: 'Usa el interruptor para incluir/excluir de la creación de rutinas',
     
     // Routines Screen
     newRoutine: 'Nueva',

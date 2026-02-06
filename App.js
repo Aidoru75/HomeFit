@@ -34,8 +34,8 @@ const tabIcons = {
 };
 
 // Tab bar configuration
-const TAB_BAR_HEIGHT = 56;
-const ICON_SIZE = 28;
+const TAB_BAR_HEIGHT = 58;
+const ICON_SIZE = 34;
 
 // Tab navigator
 function MainNavigator() {
@@ -75,7 +75,9 @@ function MainNavigator() {
       <Tab.Screen
         name="Training"
         component={TrainingScreen}
-        options={{ tabBarButton: () => null }}
+        options={{ tabBarButton: () => null,
+        tabBarItemStyle: { display: 'none' },
+        }}
       />
     </Tab.Navigator>
   );

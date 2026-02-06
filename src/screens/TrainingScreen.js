@@ -12,9 +12,11 @@ import {
   ScrollView,
   ImageBackground,
   AppState,
+  Platform,
 } from 'react-native';
-import { useAudioPlayer } from 'expo-audio';
+import { useAudioPlayer, setAudioModeAsync } from 'expo-audio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 import { colors, spacing, borderRadius, fontSize, fonts } from '../theme';
 import { exercises, getExerciseName, getExerciseDescription } from '../data/exercises';
 import { loadRoutines, loadSettings, saveLastWorkout, addToHistory, updateRoutine } from '../storage/storage';
@@ -61,6 +63,10 @@ export default function TrainingScreen({ route, navigation }) {
   const countdownPlayer = useAudioPlayer(countdownSource);
   const bellPlayer = useAudioPlayer(bellSource);
 
+  // Refs to track current sound settings (updated on focus)
+  const soundEnabledRef = useRef(true);
+  const soundVolumeRef = useRef(1.0);
+
   // Track which seconds have already played their sound
   const playedSecondsRef = useRef(new Set());
 
@@ -91,6 +97,46 @@ export default function TrainingScreen({ route, navigation }) {
     setModifiedExercises({});
     setHasChanges(false);
   }, []);
+
+  // Configure audio mode on mount - allow mixing with other audio apps
+  // Note: On Android, expo-audio has a bug where interruptionMode string values don't work
+  // (https://github.com/expo/expo/issues/34025), so we only configure on iOS
+  useEffect(() => {
+    const configureAudio = async () => {
+      if (Platform.OS === 'ios') {
+        try {
+          await setAudioModeAsync({
+            playsInSilentMode: true,
+            interruptionMode: 'mixWithOthers',
+          });
+        } catch (error) {
+          console.log('Error configuring audio mode:', error);
+        }
+      }
+      // On Android, the default audio mode should allow mixing for short sounds
+    };
+    configureAudio();
+  }, []);
+
+  // Reload settings when screen gains focus (fixes sound toggle without app restart)
+  useFocusEffect(
+    useCallback(() => {
+      const reloadSettings = async () => {
+        const userSettings = await loadSettings();
+        setSettings(userSettings);
+        // Update refs immediately for sound playback
+        soundEnabledRef.current = userSettings.soundEnabled;
+        soundVolumeRef.current = userSettings.soundVolume;
+        // Update player volumes
+        if (userSettings.soundVolume !== undefined) {
+          if (beepPlayer) beepPlayer.volume = userSettings.soundVolume;
+          if (countdownPlayer) countdownPlayer.volume = userSettings.soundVolume;
+          if (bellPlayer) bellPlayer.volume = userSettings.soundVolume;
+        }
+      };
+      reloadSettings();
+    }, [beepPlayer, countdownPlayer, bellPlayer])
+  );
 
   // Update params ref when new workout params are received
   useEffect(() => {
@@ -149,25 +195,27 @@ export default function TrainingScreen({ route, navigation }) {
 
     const subscription = AppState.addEventListener('change', handleAppStateChange);
     return () => subscription?.remove();
-  }, [settings.soundEnabled]);
+  }, []); // No dependency needed - soundEnabledRef is always current
 
   // Keep ref in sync with state to avoid closure issues
   useEffect(() => {
     modifiedExercisesRef.current = modifiedExercises;
   }, [modifiedExercises]);
 
-  // Handle back button
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (workoutStarted && !workoutComplete) {
-        showExitConfirmation();
-        return true;
-      }
-      return false;
-    });
+  // Handle back button - only when this screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+        if (workoutStarted && !workoutComplete) {
+          showExitConfirmation();
+          return true;
+        }
+        return false;
+      });
 
-    return () => backHandler.remove();
-  }, [workoutStarted, workoutComplete, hasChanges]);
+      return () => backHandler.remove();
+    }, [workoutStarted, workoutComplete])
+  );
 
   // Prevent navigation when workout is active
   useEffect(() => {
@@ -277,11 +325,15 @@ export default function TrainingScreen({ route, navigation }) {
   const loadData = async () => {
     const routines = await loadRoutines();
     const userSettings = await loadSettings();
-    
+
     const found = routines.find(r => r.id === paramsRef.current.routineId);
     setRoutine(found);
     setSettings(userSettings);
-    
+
+    // Update refs for sound playback
+    soundEnabledRef.current = userSettings.soundEnabled;
+    soundVolumeRef.current = userSettings.soundVolume;
+
     if (userSettings.soundVolume !== undefined) {
       if (beepPlayer) beepPlayer.volume = userSettings.soundVolume;
       if (countdownPlayer) countdownPlayer.volume = userSettings.soundVolume;
@@ -563,30 +615,31 @@ export default function TrainingScreen({ route, navigation }) {
   };
 
   // Play the appropriate sound based on the remaining seconds
-  const playCountdownSound = (seconds) => {
-    if (!settings.soundEnabled) return;
+  const playCountdownSound = async (seconds) => {
+    // Use ref for immediate access to current setting (not stale closure)
+    if (!soundEnabledRef.current) return;
 
     // Don't play if already played for this second
     if (playedSecondsRef.current.has(seconds)) return;
     playedSecondsRef.current.add(seconds);
 
     try {
-      if (seconds >= 5 && seconds <= 10) {
-        // Beep at 10, 9, 8, 7, 6, 5, 4
+      if (seconds >= 1 && seconds <= 10) {
+        // Beep at 10, 9, 8, 7, 6, 5
         if (beepPlayer) {
-          beepPlayer.seekTo(0);
+          await beepPlayer.seekTo(0);
           beepPlayer.play();
         }
-      } else if (seconds >= 1 && seconds <= 4) {
-        // Countdown at 3, 2, 1
-        if (countdownPlayer) {
-          countdownPlayer.seekTo(0);
-          countdownPlayer.play();
-        }
+      //}  else if (seconds >= 1 && seconds <= 4) {
+        // Countdown sound at 4, 3, 2, 1
+        //if (countdownPlayer) {
+        //  await countdownPlayer.seekTo(0);
+        //  countdownPlayer.play();
+        //}
       } else if (seconds === 0) {
         // Bell at 0
         if (bellPlayer) {
-          bellPlayer.seekTo(0);
+          await bellPlayer.seekTo(0);
           bellPlayer.play();
         }
       }

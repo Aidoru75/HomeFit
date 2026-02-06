@@ -407,7 +407,7 @@ export const exercises = [
     id: 'hyperextension',
     name: { en: 'Hyperextensions (on bench)', es: 'Hiperextensiones (en banco)' },
     muscleGroup: 'back',
-    equipment: ['flat_bench'],
+    equipment: ['incline_bench'],
     weightType: 'bodyweight',
     description: {
       en: 'Lower back strengthening on a decline bench. Position yourself face down with hips at edge, lower upper body toward floor, then raise up by contracting lower back and glutes.',
@@ -1615,8 +1615,8 @@ export const exercises = [
     wf: 0.0,
   },
   {
-    id: 'frog_pumps',
-    name: { en: 'Frog Pumps', es: 'Bombeos de Rana' },
+    id: 'frog_bridge',
+    name: { en: 'Frog Bridge', es: 'Puente de Rana' },
     muscleGroup: 'glutes',
     equipment: [],
     weightType: 'bodyweight',
@@ -1741,7 +1741,7 @@ export const exercises = [
   },
   {
     id: 'crunches',
-    name: { en: 'Crunches', es: 'Abdominales' },
+    name: { en: 'Crunches', es: 'Crunches' },
     muscleGroup: 'core',
     equipment: [],
     weightType: 'bodyweight',
@@ -1754,7 +1754,7 @@ export const exercises = [
   },
   {
     id: 'reverse_crunches',
-    name: { en: 'Reverse Crunches', es: 'Abdominales Invertidos' },
+    name: { en: 'Reverse Crunches', es: 'Crunches Invertidos' },
     muscleGroup: 'core',
     equipment: [],
     weightType: 'bodyweight',
@@ -1767,7 +1767,7 @@ export const exercises = [
   },
   {
     id: 'bicycle_crunches',
-    name: { en: 'Bicycle Crunches', es: 'Abdominales Bicicleta' },
+    name: { en: 'Bicycle Crunches', es: 'Bicicleta' },
     muscleGroup: 'core',
     equipment: [],
     weightType: 'bodyweight',
@@ -1941,8 +1941,8 @@ export const exercises = [
     equipment: [],
     weightType: 'bodyweight',
     description: {
-      en: 'Anti-extension exercise for core stability. Lie on back, extend opposite arm and leg while keeping lower back pressed to floor, builds coordination and deep core stability.',
-      es: 'Ejercicio anti-extensión para estabilidad del core. Acuéstate boca arriba, extiende brazo y pierna opuestos manteniendo espalda baja pegada al suelo, construye coordinación.',
+      en: 'Anti-extension exercise for core stability. Lie on back, lift opposite arm and knee while keeping lower back pressed to floor, builds coordination and deep core stability.',
+      es: 'Ejercicio anti-extensión para estabilidad del core. Acuéstate boca arriba, levanta brazo y rodilla opuestos manteniendo espalda baja pegada al suelo, construye coordinación.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -2040,7 +2040,7 @@ export const exercises = [
   },
   {
     id: 'db_side_bend',
-    name: { en: 'Dumbbell Side Bend', es: 'Fleziones Laterales con Mancuernas' },
+    name: { en: 'Dumbbell Side Bend', es: 'Flexiones Laterales con Mancuernas' },
     muscleGroup: 'core',
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
@@ -2158,7 +2158,7 @@ export const exercises = [
     id: 'lat_pulldown_close',
     name: { en: 'Lat Pulldown (Close/Neutral)', es: 'Jalón al Pecho (Cerrado/Neutro)' },
     muscleGroup: 'back',
-    equipment: ['lat_station', 'rowing_handle'],
+    equipment: ['lat_station', 'lat_bar'],
     weightType: 'machine',
     description: {
       en: 'Close-grip variation targeting lower lats. Using a rowing handle or close-grip attachment, pull to your sternum while leaning slightly back, focusing on a strong lat contraction at the bottom.',
@@ -2318,7 +2318,7 @@ export const exercises = [
     id: 'upright_row_cable',
     name: { en: 'Upright Row (Cable)', es: 'Remo al Mentón (Polea)' },
     muscleGroup: 'shoulders',
-    equipment: ['low_pulley', 'lat_bar'],
+    equipment: ['low_pulley', 'straight_bar_attachment'],
     weightType: 'machine',
     description: {
       en: 'Cable upright row for constant tension throughout. Using low pulley with bar attachment, pull up leading with elbows, the cable maintains resistance through the entire range.',
