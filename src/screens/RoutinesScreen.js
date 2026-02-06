@@ -20,13 +20,14 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import QRCode from 'react-native-qrcode-svg';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import {
-  exercises,
+  availableExercises,
   muscleGroups,
-  getExercisesByMuscle,
+  getAvailableExercisesByMuscle,
   getExerciseName,
   getMuscleGroupName,
   getExerciseById,
 } from '../data/exercises';
+import { IS_PRO } from '../config';
 import { loadRoutines, addRoutine, updateRoutine, deleteRoutine, loadSettings, loadExcludedExercises } from '../storage/storage';
 import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
@@ -524,9 +525,9 @@ export default function RoutinesScreen({ navigation, route }) {
            (nextEx?.supersetGroup === currentEx.supersetGroup);
   };
 
-  // Get available exercises (not excluded)
+  // Get available exercises (not excluded, tier-filtered)
   const getAvailableExercises = () => {
-    return exercises.filter(ex => !excludedExercises.includes(ex.id));
+    return availableExercises.filter(ex => !excludedExercises.includes(ex.id));
   };
 
   // Filter exercises by muscle group and search text
@@ -1050,9 +1051,9 @@ export default function RoutinesScreen({ navigation, route }) {
           </TouchableOpacity>
           <Text style={styles.headerTitleSmall}>{selectedRoutine.name}</Text>
           <View style={styles.headerActions}>
-            <TouchableOpacity onPress={handleShareRoutine} style={styles.headerActionButton}>
+            {IS_PRO && <TouchableOpacity onPress={handleShareRoutine} style={styles.headerActionButton}>
               <Image source={exportAccentIcon} style={styles.headerActionIconImage} />
-            </TouchableOpacity>
+            </TouchableOpacity>}
             <TouchableOpacity onPress={openEditRoutineModal} style={styles.headerActionButton}>
               <Image source={editAccentIcon} style={styles.headerActionIconImage} />
             </TouchableOpacity>
@@ -1063,7 +1064,7 @@ export default function RoutinesScreen({ navigation, route }) {
         <View style={[styles.header, { paddingTop: insets.top + spacing.md }]}>
           <Text style={styles.headerTitle}>{t('routines', lang)}</Text>
           <View style={styles.headerButtons}>
-            <TouchableOpacity
+            {IS_PRO && <TouchableOpacity
               style={styles.importButton}
               onPress={handleOpenScanner}
             >
@@ -1071,7 +1072,7 @@ export default function RoutinesScreen({ navigation, route }) {
                 <Image source={importAccentIcon} style={styles.importButtonIcon} />
                 <Text style={styles.importButtonText}>{t('importRoutine', lang)}</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => setShowNewRoutineModal(true)}

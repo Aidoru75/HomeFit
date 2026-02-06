@@ -1,4 +1,6 @@
 // 199 Exercises - Complete Catalog - Bilingual (English/Spanish)
+import { isProExercise } from './equipment';
+import { IS_PRO } from '../config';
 
 export const muscleGroups = [
   { id: 'chest', name: { en: 'Chest', es: 'Pecho' }},
@@ -2763,4 +2765,13 @@ export const getMuscleGroupName = (muscleGroup, lang = 'en') => {
 export const getExerciseDescription = (exercise, lang = 'en') => {
   if (!exercise) return '';
   return exercise.description[lang] || exercise.description.en;
+};
+
+// Tier-filtered exercises — used by browse/selection screens
+export const availableExercises = IS_PRO
+  ? exercises
+  : exercises.filter(ex => !isProExercise(ex));
+
+export const getAvailableExercisesByMuscle = (muscleId) => {
+  return availableExercises.filter(ex => ex.muscleGroup === muscleId);
 };

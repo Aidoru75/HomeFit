@@ -15,10 +15,10 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { colors, spacing, borderRadius, fonts, fontSize, shadows } from '../theme';
-import { 
-  exercises, 
-  muscleGroups, 
-  getExercisesByMuscle,
+import {
+  availableExercises,
+  muscleGroups,
+  getAvailableExercisesByMuscle,
   getExerciseName,
   getMuscleGroupName,
   getExerciseDescription,
@@ -62,13 +62,13 @@ export default function ExercisesScreen() {
   const lang = settings.language || 'en';
 
   const filteredExercises = selectedMuscle
-    ? getExercisesByMuscle(selectedMuscle)
+    ? getAvailableExercisesByMuscle(selectedMuscle)
     : exerciseSearchText.trim()
-      ? exercises.filter(ex => {
+      ? availableExercises.filter(ex => {
           const name = ex.name?.[lang]?.toLowerCase() || '';
           return name.includes(exerciseSearchText.toLowerCase().trim());
         })
-      : exercises;
+      : availableExercises;
 
   // Helper to format equipment list with localized names
   const formatEquipmentList = (equipmentIds) => {
@@ -157,7 +157,7 @@ export default function ExercisesScreen() {
   };
 
   // Count included exercises
-  const includedCount = exercises.length - excludedExercises.length;
+  const includedCount = availableExercises.length - excludedExercises.length;
 
   return (
     <View style={styles.container}>
@@ -165,7 +165,7 @@ export default function ExercisesScreen() {
       <View style={[styles.header, { paddingTop: insets.top + 20 }]}>
         <Text style={styles.headerTitle}>{t('exerciseLibrary', lang)}</Text>
         <Text style={styles.headerSubtitle}>
-          {includedCount} / {exercises.length} {t('exercisesAvailable', lang)}
+          {includedCount} / {availableExercises.length} {t('exercisesAvailable', lang)}
         </Text>
       </View>
 

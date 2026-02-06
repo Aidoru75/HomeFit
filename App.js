@@ -17,6 +17,9 @@ import StatsScreen from './src/screens/StatsScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 
+// Config
+import { IS_PRO } from './src/config';
+
 // Theme and translations
 import { colors } from './src/theme';
 import { loadSettings } from './src/storage/storage';
@@ -69,7 +72,7 @@ function MainNavigator() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Exercises" component={ExercisesScreen} />
       <Tab.Screen name="Routines" component={RoutinesScreen} />
-      <Tab.Screen name="Stats" component={StatsScreen} />
+      {IS_PRO && <Tab.Screen name="Stats" component={StatsScreen} />}
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
       <Tab.Screen

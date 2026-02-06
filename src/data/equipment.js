@@ -1,4 +1,5 @@
 // Your Home Gym Equipment Inventory
+import { IS_PRO } from '../config';
 
 export const equipment = {
   // Cable Pulley System
@@ -124,7 +125,7 @@ export const equipment = {
     id: 'parallels',
     name: { en: 'Parallel Bars', es: 'Barras Paralelas' },
     type: 'flat_bench',
-    pro: true,
+    pro: false,
   },
   
   // Barbells
@@ -205,7 +206,7 @@ export const equipment = {
   },
   straightBarAttachment: {
     id: 'straight_bar_attachment',
-    name: { en: 'Straight Bar Attachment', es: 'Accesorio de Barra Recta' },
+    name: { en: 'Straight or Curved Bar Attachment', es: 'Agarre de polea Recto o Curvado' },
     type: 'cableattachs',
     pro: true,
   },
@@ -217,7 +218,7 @@ export const equipment = {
   },
   rowingHandle: {
     id: 'rowing_handle',
-    name: { en: 'Rowing Handle', es: 'Mango de Remo' },
+    name: { en: 'Rowing Handle', es: 'Agarre de Remo' },
     type: 'cableattachs',
     pro: true,
   },
@@ -233,7 +234,7 @@ export const equipment = {
   
   absWheel: {
     id: 'abs_wheel',
-    name: { en: 'Abs Wheel', es: 'Rueda Abdominales' },
+    name: { en: 'Abs Wheel', es: 'Rueda de Abdominales' },
     type: 'accessory',
     pro: false,
   },
@@ -247,7 +248,7 @@ export const equipment = {
     id: 'landmine_handle',
     name: { en: 'Landmine Handle', es: 'Mango de Landmine' },
     type: 'accessory',
-    pro: false,
+    pro: true,
   },
   resistanceBand: {
     id: 'resistance_band',
@@ -342,3 +343,26 @@ export const getCableWeights = () => {
 
 // Backwards compatibility alias
 export const getMultigymWeights = getCableWeights;
+
+// Tier helpers
+export const isProEquipment = (equipmentId) => {
+  const eq = getEquipmentById(equipmentId);
+  return eq?.pro === true;
+};
+
+export const isProExercise = (exercise) => {
+  if (!exercise?.equipment || exercise.equipment.length === 0) return false;
+  return exercise.equipment.some(eqId => isProEquipment(eqId));
+};
+
+export const getVisibleCategories = () => {
+  if (IS_PRO) return equipmentCategories;
+  const filtered = {};
+  for (const [key, category] of Object.entries(equipmentCategories)) {
+    const visibleIds = category.equipmentIds.filter(id => !isProEquipment(id));
+    if (visibleIds.length > 0) {
+      filtered[key] = { ...category, equipmentIds: visibleIds };
+    }
+  }
+  return filtered;
+};

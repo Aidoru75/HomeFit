@@ -32,12 +32,12 @@ import {
   loadAvailableEquipment,
   updateExcludedByEquipment,
 } from '../storage/storage';
-import { 
-  equipment, 
-  equipmentCategories, 
+import {
+  equipment,
   getEquipmentName,
   getCategoryName,
   getAllEquipmentIds,
+  getVisibleCategories,
 } from '../data/equipment';
 import { t } from '../data/translations';
 import {
@@ -57,6 +57,7 @@ export default function ProfileScreen() {
   });
   const [availableEquipment, setAvailableEquipment] = useState([]);
   const [expandedCategories, setExpandedCategories] = useState({});
+  const visibleCategories = getVisibleCategories();
   const [loaded, setLoaded] = useState(false);
   // Separate state for feet/inches when in imperial mode
   const [heightFeet, setHeightFeet] = useState('');
@@ -131,7 +132,7 @@ export default function ProfileScreen() {
   };
 
   const toggleAllInCategory = async (categoryId, enable) => {
-    const category = equipmentCategories[categoryId];
+    const category = visibleCategories[categoryId];
     if (!category) return;
 
     let newAvailable;
@@ -149,7 +150,7 @@ export default function ProfileScreen() {
   };
 
   const selectAllEquipment = async () => {
-    const allIds = getAllEquipmentIds();
+    const allIds = Object.values(visibleCategories).flatMap(cat => cat.equipmentIds);
     setAvailableEquipment(allIds);
     await updateExcludedByEquipment(allIds);
   };
@@ -160,7 +161,7 @@ export default function ProfileScreen() {
   };
 
   const getCategoryStatus = (categoryId) => {
-    const category = equipmentCategories[categoryId];
+    const category = visibleCategories[categoryId];
     if (!category) return { count: 0, total: 0 };
     
     const total = category.equipmentIds.length;
@@ -187,7 +188,7 @@ export default function ProfileScreen() {
   };
 
   const renderCategory = (categoryKey) => {
-    const category = equipmentCategories[categoryKey];
+    const category = visibleCategories[categoryKey];
     const isExpanded = expandedCategories[categoryKey];
     const { count, total } = getCategoryStatus(categoryKey);
     const allEnabled = count === total;
@@ -519,7 +520,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* Equipment Categories */}
-        {Object.keys(equipmentCategories).map(renderCategory)}
+        {Object.keys(visibleCategories).map(renderCategory)}
 
         <View style={styles.bottomPadding} />
       </ScrollView>
