@@ -186,6 +186,12 @@ export const translations = {
     last30Days: 'Last 30 Days',
     legend: 'Legend',
     caloriesThisMonth: 'Calories this month',
+    workload: 'Workload',
+    last30DaysVolume: 'Last 30 Days Volume',
+    noVolumeData: 'Complete a workout to see volume data',
+    recentWorkouts: 'Recent Workouts',
+    min: 'min',
+    toExhaustion: 'To Exhaustion',
 
     // Settings Screen
     settingsTitle: 'Settings',
@@ -385,6 +391,12 @@ export const translations = {
     last30Days: 'Últimos 30 Días',
     legend: 'Leyenda',
     caloriesThisMonth: 'Calorías este mes',
+    workload: 'Carga',
+    last30DaysVolume: 'Volumen Últimos 30 Días',
+    noVolumeData: 'Completa un entrenamiento para ver datos de volumen',
+    recentWorkouts: 'Entrenamientos Recientes',
+    min: 'min',
+    toExhaustion: 'Al Agotamiento',
 
     // Settings Screen
     settingsTitle: 'Ajustes',

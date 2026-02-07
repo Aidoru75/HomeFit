@@ -170,11 +170,12 @@ export const decodeRoutine = (code) => {
  * @returns {Object} Object with sets, reps, and weights arrays
  */
 const decodeSets = (setsData) => {
-  // Check for shorthand: 3x10
-  const shorthandMatch = setsData.match(/^(\d+)x(\d+)$/);
+  // Check for shorthand: 3x10 or 3xE (exhaustion)
+  const shorthandMatch = setsData.match(/^(\d+)x(.+)$/);
   if (shorthandMatch) {
     const setCount = parseInt(shorthandMatch[1]);
-    const rep = parseInt(shorthandMatch[2]);
+    const repVal = shorthandMatch[2];
+    const rep = repVal === 'E' ? 'E' : (parseInt(repVal) || 10);
 
     return {
       sets: setCount,
@@ -183,8 +184,8 @@ const decodeSets = (setsData) => {
     };
   }
 
-  // Varied reps: 10;8;6
-  const repsArray = setsData.split(';').map(r => parseInt(r) || 10);
+  // Varied reps: 10;8;6 or 10;E;8
+  const repsArray = setsData.split(';').map(r => r === 'E' ? 'E' : (parseInt(r) || 10));
 
   return {
     sets: repsArray.length,

@@ -288,9 +288,11 @@ export default function RoutinesScreen({ navigation, route }) {
   };
 
   const selectExerciseForAdd = (exercise) => {
+    const defaultRep = exercise.timeBased ? 1 : 10;
     setExerciseConfig(prev => ({
       ...prev,
       exerciseId: exercise.id,
+      reps: prev.reps.map(r => typeof r === 'number' ? defaultRep : r),
     }));
   };
 
@@ -767,7 +769,7 @@ export default function RoutinesScreen({ navigation, route }) {
                         {exerciseData ? getExerciseName(exerciseData, lang) : 'Unknown'}
                       </Text>
                       <Text style={styles.exerciseItemDetails}>
-                        {ex.sets} {t('sets', lang).toLowerCase()} • {ex.reps?.[0] || 10} {t('reps', lang).toLowerCase()}
+                        {ex.sets} {t('sets', lang).toLowerCase()} • {ex.reps?.[0] === 'E' ? 'E' : (ex.reps?.[0] || 10)} {exerciseData?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}
                         {totalWeight > 0 && ` • ${ex.weights[0]}${settings.measurementSystem === 'imperial' ? t('lbs', lang) : t('kg', lang)}`}
                       </Text>
                     </View>
@@ -932,18 +934,41 @@ export default function RoutinesScreen({ navigation, route }) {
                   </TouchableOpacity>
                 </View>
 
-                <Text style={styles.inputLabel}>{t('reps', lang)} & {settings.measurementSystem === 'imperial' ? t('weightLbs', lang) : t('weight', lang)}</Text>
+                {/* To Exhaustion toggle */}
+                <TouchableOpacity
+                  style={[styles.exhaustionToggle, exerciseConfig.reps[0] === 'E' && styles.exhaustionToggleActive]}
+                  onPress={() => {
+                    setExerciseConfig(prev => {
+                      const isCurrentlyE = prev.reps[0] === 'E';
+                      if (isCurrentlyE) {
+                        // Restore numeric reps
+                        const defaultRep = exerciseData?.timeBased ? 1 : 10;
+                        return { ...prev, reps: Array(prev.sets).fill(defaultRep) };
+                      } else {
+                        // Set all to exhaustion
+                        return { ...prev, reps: Array(prev.sets).fill('E') };
+                      }
+                    });
+                  }}
+                >
+                  <Text style={[styles.exhaustionToggleText, exerciseConfig.reps[0] === 'E' && styles.exhaustionToggleTextActive]}>
+                    E — {t('toExhaustion', lang)}
+                  </Text>
+                </TouchableOpacity>
+
+                <Text style={styles.inputLabel}>{exerciseData?.timeBased ? t('min', lang) : t('reps', lang)} & {settings.measurementSystem === 'imperial' ? t('weightLbs', lang) : t('weight', lang)}</Text>
                 {Array.from({ length: exerciseConfig.sets }).map((_, index) => (
                   <View key={index} style={styles.setRow}>
                     <Text style={styles.setNumber}>{index + 1}</Text>
                     <View style={styles.setInput}>
-                      <Text style={styles.setInputLabel}>{t('reps', lang)}</Text>
+                      <Text style={styles.setInputLabel}>{exerciseData?.timeBased ? t('min', lang) : t('reps', lang)}</Text>
                       <TextInput
-                        style={styles.setInputField}
-                        value={String(exerciseConfig.reps[index] || 10)}
+                        style={[styles.setInputField, exerciseConfig.reps[index] === 'E' && styles.setInputFieldDisabled]}
+                        value={exerciseConfig.reps[index] === 'E' ? 'E' : String(exerciseConfig.reps[index] || (exerciseData?.timeBased ? 1 : 10))}
                         onChangeText={(value) => updateRep(index, value, isAddMode)}
                         keyboardType="numeric"
                         selectTextOnFocus={true}
+                        editable={exerciseConfig.reps[index] !== 'E'}
                       />
                     </View>
                     <View style={styles.setInput}>
@@ -1815,6 +1840,28 @@ const styles = StyleSheet.create({
     minWidth: 40,
     textAlign: 'center',
   },
+  exhaustionToggle: {
+    marginTop: spacing.md,
+    marginBottom: spacing.sm,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: 'center',
+  },
+  exhaustionToggleActive: {
+    backgroundColor: colors.accent,
+    borderColor: colors.accent,
+  },
+  exhaustionToggleText: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.md,
+    color: colors.textSecondary,
+  },
+  exhaustionToggleTextActive: {
+    color: colors.white,
+  },
   setRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -1847,6 +1894,10 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.textPrimary,
     padding: spacing.xs,
+  },
+  setInputFieldDisabled: {
+    color: colors.textLight,
+    opacity: 0.5,
   },
   deleteButton: {
     marginTop: spacing.lg,

@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { getHistory, loadSettings, clearHistory } from '../storage/storage';
+import { muscleGroups } from '../data/exercises';
 import { t } from '../data/translations';
 
 const ITEMS_PER_PAGE = 10;
@@ -339,6 +340,111 @@ export default function StatsScreen() {
     );
   };
 
+  const formatVolume = (vol) => {
+    if (vol >= 10000) return `${(vol / 1000).toFixed(1)}k`;
+    if (vol >= 1000) return `${(vol / 1000).toFixed(1)}k`;
+    return Math.round(vol).toString();
+  };
+
+  // Muscle groups from muscleColors (10 groups, no forearms)
+  const MUSCLE_KEYS = Object.keys(colors.muscleColors);
+
+  const renderWorkloadTab = () => {
+    const volumeWorkouts = history.filter(w => w.muscleVolume && new Date(w.completedAt) >= oneMonthAgo);
+
+    if (volumeWorkouts.length === 0) {
+      return (
+        <View style={styles.emptyCard}>
+          <Text style={styles.emptyTitle}>{t('noVolumeData', lang)}</Text>
+        </View>
+      );
+    }
+
+    // Sum volume across last 30 days
+    const totalVolume = {};
+    volumeWorkouts.forEach(w => {
+      Object.entries(w.muscleVolume).forEach(([muscle, vol]) => {
+        totalVolume[muscle] = (totalVolume[muscle] || 0) + vol;
+      });
+    });
+
+    // Build sorted array for horizontal bars
+    const volumeEntries = MUSCLE_KEYS.map(id => ({
+      id,
+      name: muscleGroups.find(mg => mg.id === id)?.name[lang] || id,
+      volume: totalVolume[id] || 0,
+      color: colors.muscleColors[id],
+    })).sort((a, b) => b.volume - a.volume);
+
+    const maxVolume = Math.max(...volumeEntries.map(e => e.volume), 1);
+
+    // Recent workouts with volume data (most recent first)
+    const recentWorkouts = [...history]
+      .filter(w => w.muscleVolume)
+      .reverse()
+      .slice(0, 20);
+
+    return (
+      <>
+        {/* Last 30 Days Volume - Horizontal bars */}
+        <View style={styles.chartCard}>
+          <Text style={styles.chartTitle}>{t('last30DaysVolume', lang)}</Text>
+          {volumeEntries.map(entry => (
+            <View key={entry.id} style={styles.volumeBarRow}>
+              <Text style={styles.volumeBarLabel} numberOfLines={1}>{entry.name}</Text>
+              <View style={styles.volumeBarTrack}>
+                {entry.volume > 0 ? (
+                  <View style={[styles.volumeBarFill, {
+                    backgroundColor: entry.color,
+                    width: `${Math.max((entry.volume / maxVolume) * 100, 3)}%`,
+                  }]} />
+                ) : (
+                  <View style={styles.volumeBarEmpty} />
+                )}
+              </View>
+              <Text style={styles.volumeBarValue}>{formatVolume(entry.volume)}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Recent Workouts - Stacked bars */}
+        {recentWorkouts.length > 0 && (
+          <>
+            <Text style={styles.sectionTitle}>{t('recentWorkouts', lang)}</Text>
+            {recentWorkouts.map((workout, index) => {
+              const totalVol = Object.values(workout.muscleVolume).reduce((sum, v) => sum + v, 0);
+              if (totalVol === 0) return null;
+
+              return (
+                <View key={index} style={styles.workoutVolumeCard}>
+                  <View style={styles.workoutVolumeHeader}>
+                    <Text style={styles.workoutVolumeDate}>{formatShortDate(workout.completedAt)}</Text>
+                    <Text style={styles.workoutVolumeName} numberOfLines={1}>
+                      {workout.routineName} — {workout.dayName}
+                    </Text>
+                  </View>
+                  <View style={styles.stackedBarContainer}>
+                    {MUSCLE_KEYS.map(muscleId => {
+                      const vol = workout.muscleVolume[muscleId] || 0;
+                      if (vol === 0) return null;
+                      const pct = (vol / totalVol) * 100;
+                      return (
+                        <View key={muscleId} style={[styles.stackedBarSegment, {
+                          backgroundColor: colors.muscleColors[muscleId],
+                          width: `${pct}%`,
+                        }]} />
+                      );
+                    })}
+                  </View>
+                </View>
+              );
+            })}
+          </>
+        )}
+      </>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={[styles.header, { paddingTop: insets.top + 20 }]}>
@@ -364,10 +470,20 @@ export default function StatsScreen() {
               {t('calories', lang)}
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'workload' && styles.tabActive]}
+            onPress={() => setActiveTab('workload')}
+          >
+            <Text style={[styles.tabText, activeTab === 'workload' && styles.tabTextActive]}>
+              {t('workload', lang)}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Tab Content */}
-        {activeTab === 'overview' ? renderOverviewTab() : renderCaloriesTab()}
+        {activeTab === 'overview' && renderOverviewTab()}
+        {activeTab === 'calories' && renderCaloriesTab()}
+        {activeTab === 'workload' && renderWorkloadTab()}
 
         {/* Workout History */}
         <Text style={styles.sectionTitle}>{t('workoutHistory', lang)}</Text>
@@ -689,6 +805,76 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: fontSize.xl,
     color: colors.white,
+  },
+  // Workload Tab
+  volumeBarRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  volumeBarLabel: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.xs,
+    color: colors.textPrimary,
+    width: 80,
+  },
+  volumeBarTrack: {
+    flex: 1,
+    height: 16,
+    backgroundColor: colors.background,
+    borderRadius: borderRadius.sm,
+    overflow: 'hidden',
+    marginHorizontal: spacing.sm,
+  },
+  volumeBarFill: {
+    height: '100%',
+    borderRadius: borderRadius.sm,
+  },
+  volumeBarEmpty: {
+    height: '100%',
+    width: 2,
+    backgroundColor: colors.border,
+  },
+  volumeBarValue: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.xs,
+    color: colors.textSecondary,
+    width: 40,
+    textAlign: 'right',
+  },
+  workoutVolumeCard: {
+    backgroundColor: colors.card,
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.sm,
+    padding: spacing.md,
+    borderRadius: borderRadius.lg,
+    ...shadows.small,
+  },
+  workoutVolumeHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  workoutVolumeDate: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.sm,
+    color: colors.textSecondary,
+    marginRight: spacing.sm,
+  },
+  workoutVolumeName: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.sm,
+    color: colors.textPrimary,
+    flex: 1,
+  },
+  stackedBarContainer: {
+    flexDirection: 'row',
+    height: 20,
+    borderRadius: borderRadius.sm,
+    overflow: 'hidden',
+  },
+  stackedBarSegment: {
+    height: '100%',
   },
   emptyCard: {
     backgroundColor: colors.card,

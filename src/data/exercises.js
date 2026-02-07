@@ -1122,6 +1122,7 @@ export const exercises = [
     muscles: { biceps: 0.35, back: 0.25, shoulders: 0.20, core: 0.10, calves: 0.10 },
     equipment: ['dumbbells'],
     weightType: 'dumbbell',
+    timeBased: true,
     description: {
       en: 'Loaded carry for grip strength and overall conditioning. Hold heavy dumbbells at sides, walk with good posture, builds crushing grip strength and challenges entire body stabilization.',
       es: 'Cargada para fuerza de agarre y acondicionamiento general. Sostén mancuernas pesadas a los lados, camina con buena postura, construye fuerza de agarre y desafía estabilización corporal.',
@@ -1136,6 +1137,7 @@ export const exercises = [
     muscles: { biceps: 1.0 },
     equipment: ['plates'],
     weightType: 'plate',
+    timeBased: true,
     description: {
       en: 'Grip exercise pinching weight plates together. Pinch two plates smooth sides out, hold at side for time, this specifically targets the pinching grip strength of fingers and thumb.',
       es: 'Ejercicio de agarre presionando discos juntos. Presiona dos discos con lados lisos afuera, sostén al lado por tiempo, esto trabaja específicamente la fuerza de agarre de pellizco.',
@@ -1150,6 +1152,7 @@ export const exercises = [
     muscles: { biceps: 0.50, back: 0.30, shoulders: 0.20 },
     equipment: ['pullup_rack'],
     weightType: 'bodyweight',
+    timeBased: true,
     description: {
       en: 'Simple but effective grip endurance builder. Hang from pull-up bar with full bodyweight, work on increasing hang time, also great for shoulder health and spinal decompression.',
       es: 'Constructor simple pero efectivo de resistencia de agarre. Cuélgate de la barra con peso corporal completo, trabaja en aumentar el tiempo, también excelente para salud de hombros.',
@@ -1407,6 +1410,7 @@ export const exercises = [
     muscles: { quads: 0.80, glutes: 0.15, core: 0.05 },
     equipment: [],
     weightType: 'bodyweight',
+    timeBased: true,
     description: {
       en: 'Isometric quad exercise against a wall. Slide down wall until thighs are parallel to floor, hold position, builds quad endurance and mental toughness through static contraction.',
       es: 'Ejercicio isométrico de cuádriceps contra una pared. Deslízate hasta que los muslos estén paralelos al suelo, mantén la posición, construye resistencia de cuádriceps y fortaleza mental.',
@@ -1842,6 +1846,7 @@ export const exercises = [
     muscles: { calves: 0.70, quads: 0.15, core: 0.15 },
     equipment: ['jump_rope'],
     weightType: 'bodyweight',
+    timeBased: true,
     description: {
       en: 'Cardio exercise that builds calf endurance. Jump continuously on balls of feet, excellent for calf conditioning, footwork, coordination, and cardiovascular fitness simultaneously.',
       es: 'Ejercicio cardiovascular que construye resistencia de gemelos. Salta continuamente en las puntas de los pies, excelente para acondicionamiento de gemelos, coordinación y cardio.',
@@ -2042,6 +2047,7 @@ export const exercises = [
     muscles: { core: 0.80, shoulders: 0.15, quads: 0.05 },
     equipment: [],
     weightType: 'bodyweight',
+    timeBased: true,
     description: {
       en: 'Foundational core stability exercise. Hold push-up position on forearms, keep body straight from head to heels, brace core tightly, builds isometric strength and endurance.',
       es: 'Ejercicio fundamental de estabilidad del core. Mantén posición de flexión sobre antebrazos, cuerpo recto de cabeza a talones, aprieta el core fuertemente, construye fuerza isométrica.',
@@ -2056,6 +2062,7 @@ export const exercises = [
     muscles: { core: 0.85, shoulders: 0.15 },
     equipment: [],
     weightType: 'bodyweight',
+    timeBased: true,
     description: {
       en: 'Lateral core stability exercise targeting obliques. Support body on one forearm and side of foot, keep body straight, hold position, builds lateral core strength and hip stability.',
       es: 'Ejercicio de estabilidad lateral del core trabajando oblicuos. Apoya el cuerpo en un antebrazo y lado del pie, mantén cuerpo recto, sostén la posición, construye fuerza lateral.',
@@ -2070,6 +2077,7 @@ export const exercises = [
     muscles: { core: 0.80, shoulders: 0.15, quads: 0.05 },
     equipment: ['plates'],
     weightType: 'plate',
+    timeBased: true,
     description: {
       en: 'Plank with added weight for increased difficulty. Place plate on upper back, hold plank position, the added load increases the demand on core muscles for greater strength gains.',
       es: 'Plancha con peso añadido para mayor dificultad. Coloca disco en espalda alta, mantén posición de plancha, la carga adicional aumenta la demanda en músculos del core.',

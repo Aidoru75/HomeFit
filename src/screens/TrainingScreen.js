@@ -301,7 +301,9 @@ export default function TrainingScreen({ route, navigation }) {
         if (mods) {
           return {
             ...exercise,
-            reps: mods.reps ? [...mods.reps] : exercise.reps,
+            reps: mods.reps ? mods.reps.map((r, i) => {
+              return exercise.reps?.[i] === 'E' ? 'E' : r;
+            }) : exercise.reps,
             weights: mods.weights ? [...mods.weights] : exercise.weights,
           };
         }
@@ -490,29 +492,34 @@ export default function TrainingScreen({ route, navigation }) {
       const wf = exerciseData.wf || 0.0;
       const sets = ex.sets || 3;
       const isBodyweight = wf === 0.0; // Bodyweight exercises have wf = 0
+      const isTimeBased = exerciseData.timeBased || false;
       // Dumbbell exercises: weight entered is per hand, so total = 2x unless singleWeight
       const isDumbbell = exerciseData.weightType === 'dumbbell';
       const weightMultiplier = (isDumbbell && !exerciseData.singleWeight) ? 2 : 1;
 
       // Get reps and weights (modified or original)
       const mods = currentModifiedExercises[exIndex];
-      const repsArray = mods?.reps || ex.reps || Array(sets).fill(10);
+      const defaultRep = isTimeBased ? 1 : 10;
+      const repsArray = mods?.reps || ex.reps || Array(sets).fill(defaultRep);
       const weightsArray = mods?.weights || ex.weights || Array(sets).fill(0);
 
       // Calculate calories for each set
       for (let setIdx = 0; setIdx < sets; setIdx++) {
-        const reps = repsArray[setIdx] || 10;
+        const rawReps = repsArray[setIdx];
+        const reps = typeof rawReps === 'number' ? rawReps : defaultRep;
+        // Time-based: use minutes directly; rep-based: use reps/10
+        const repsScaling = isTimeBased ? reps : (reps / 10);
         const weight = (weightsArray[setIdx] || 0) * weightMultiplier;
 
         let setCalories;
         if (isBodyweight) {
-          // Bodyweight exercise: calories = (BMC × effective_weight/75) × (reps/10)
+          // Bodyweight exercise: calories = (BMC × effective_weight/75) × repsScaling
           // If user added extra weight (e.g., weighted pull-ups), include it
           const effectiveWeight = userWeight + weight;
-          setCalories = (bmc * effectiveWeight / 75) * (reps / 10);
+          setCalories = (bmc * effectiveWeight / 75) * repsScaling;
         } else {
-          // Weighted exercise: calories = (BMC + (WF × weight_lifted)) × (reps/10) × mass_factor
-          setCalories = (bmc + (wf * weight)) * (reps / 10) * massFactor;
+          // Weighted exercise: calories = (BMC + (WF × weight_lifted)) × repsScaling × mass_factor
+          setCalories = (bmc + (wf * weight)) * repsScaling * massFactor;
         }
         totalExerciseCalories += setCalories;
       }
@@ -568,16 +575,21 @@ export default function TrainingScreen({ route, navigation }) {
     const currentEx = day?.exercises?.[currentExerciseIndex];
     if (!currentEx) return;
 
+    const exData = getExerciseData(currentEx.exerciseId);
+    const baseFallback = exData?.timeBased ? 1 : 10;
+
     setModifiedExercises(prev => {
       const existing = prev[currentExerciseIndex] || {
-        reps: [...(currentEx.reps || Array(currentEx.sets).fill(10))],
+        reps: [...(currentEx.reps || Array(currentEx.sets).fill(baseFallback))],
         weights: [...(currentEx.weights || Array(currentEx.sets).fill(0))]
       };
 
       // Get current value from the existing state (most up-to-date)
-      const currentReps = existing.reps[currentSetIndex] !== undefined
+      const rawReps = existing.reps[currentSetIndex] !== undefined
         ? existing.reps[currentSetIndex]
-        : (currentEx.reps?.[currentSetIndex] || 10);
+        : (currentEx.reps?.[currentSetIndex] || baseFallback);
+      // If 'E' (exhaustion), convert to base value first
+      const currentReps = typeof rawReps === 'number' ? rawReps : baseFallback;
       const newReps = Math.max(1, currentReps + delta);
 
       const newRepsArray = [...existing.reps];
@@ -775,6 +787,44 @@ export default function TrainingScreen({ route, navigation }) {
     const currentDay = routine?.days?.[paramsRef.current.dayIndex];
     const dayDisplayName = currentDay?.customName || currentDay?.name;
 
+    // Compute per-muscle-group volume for workload tracking
+    const muscleVolume = {};
+    if (currentDay?.exercises) {
+      const currentMods = modifiedExercisesRef.current;
+      const isImperial = settings.measurementSystem === 'imperial';
+      let userWeight = parseFloat(settings.userWeight) || (isImperial ? 165 : 75);
+      if (isImperial) userWeight = lbToKg(userWeight);
+
+      currentDay.exercises.forEach((ex, exIndex) => {
+        const exData = exercises.find(e => e.id === ex.exerciseId);
+        if (!exData?.muscles) return;
+
+        const sets = ex.sets || 3;
+        const isBodyweight = (exData.wf || 0) === 0;
+        const isDumbbell = exData.weightType === 'dumbbell';
+        const weightMultiplier = (isDumbbell && !exData.singleWeight) ? 2 : 1;
+
+        const isTimeBased = exData.timeBased || false;
+        const defaultRep = isTimeBased ? 1 : 10;
+        const mods = currentMods[exIndex];
+        const repsArray = mods?.reps || ex.reps || Array(sets).fill(defaultRep);
+        const weightsArray = mods?.weights || ex.weights || Array(sets).fill(0);
+
+        for (let s = 0; s < sets; s++) {
+          const rawReps = repsArray[s];
+          const reps = typeof rawReps === 'number' ? rawReps : defaultRep;
+          const effectiveReps = isTimeBased ? reps * 10 : reps;
+          const rawWeight = (weightsArray[s] || 0) * weightMultiplier;
+          const weight = isBodyweight ? (userWeight + rawWeight) : rawWeight;
+          const setVolume = effectiveReps * weight;
+
+          for (const [muscle, pct] of Object.entries(exData.muscles)) {
+            muscleVolume[muscle] = (muscleVolume[muscle] || 0) + Math.round(setVolume * pct);
+          }
+        }
+      });
+    }
+
     await saveLastWorkout({
       routineId: paramsRef.current.routineId,
       dayIndex: paramsRef.current.dayIndex,
@@ -792,6 +842,7 @@ export default function TrainingScreen({ route, navigation }) {
       exerciseCount: currentDay?.exercises?.length || 0,
       caloriesBurned: calories,
       duration: durationSeconds,
+      muscleVolume,
     });
 
     setWorkoutComplete(true);
@@ -1115,7 +1166,7 @@ export default function TrainingScreen({ route, navigation }) {
                   </View>
                 ))}
                 <Text style={styles.nextDetails}>
-                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {t('reps', lang).toLowerCase()}
+                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}
                 </Text>
               </View>
             ) : (
@@ -1131,7 +1182,7 @@ export default function TrainingScreen({ route, navigation }) {
                 </View>
                 <Text style={styles.nextExercise}>{nextInfo.name}</Text>
                 <Text style={styles.nextDetails}>
-                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {t('reps', lang).toLowerCase()}
+                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}
                 </Text>
                 <Text style={[styles.nextWeight, nextInfo.weightChanged && styles.nextWeightChanged]}>
                   {nextInfo.weight > 0 && ` ${formatWeight(nextInfo.weight)} ${weightUnit}`}
@@ -1203,7 +1254,7 @@ export default function TrainingScreen({ route, navigation }) {
         {/* Reps control */}
         <View style={styles.controlsRow}>
           <View style={styles.controlGroup}>
-            <Text style={styles.controlLabel}>{t('reps', lang)}</Text>
+            <Text style={styles.controlLabel}>{exerciseData?.timeBased ? t('min', lang) : t('reps', lang)}</Text>
             <View style={styles.controlButtons}>
               <TouchableOpacity
                 style={styles.controlButton}
