@@ -1270,7 +1270,7 @@ export default function TrainingScreen({ route, navigation }) {
                   </View>
                 ))}
                 <Text style={styles.nextDetails}>
-                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}
+                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps === 'E' ? t('toExhaustion', lang) : `${nextInfo.reps} ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}
                 </Text>
               </View>
             ) : (
@@ -1286,7 +1286,7 @@ export default function TrainingScreen({ route, navigation }) {
                 </View>
                 <Text style={styles.nextExercise}>{nextInfo.name}</Text>
                 <Text style={styles.nextDetails}>
-                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps} {getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}
+                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps === 'E' ? t('toExhaustion', lang) : `${nextInfo.reps} ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}
                 </Text>
                 <Text style={[styles.nextWeight, nextInfo.weightChanged && styles.nextWeightChanged]}>
                   {nextInfo.weight > 0 && ` ${formatWeight(nextInfo.weight)} ${weightUnit}`}
@@ -1303,7 +1303,7 @@ export default function TrainingScreen({ route, navigation }) {
     </View>
   ) : (
     /* Exercise mode */
-    <View style={styles.exerciseScreen}>
+    <View style={[styles.exerciseScreen, { paddingTop: insets.top }]}>
       {/* Thumbnail strip */}
       {renderThumbnailStrip()}
 

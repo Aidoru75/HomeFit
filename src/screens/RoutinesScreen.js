@@ -769,7 +769,7 @@ export default function RoutinesScreen({ navigation, route }) {
                         {exerciseData ? getExerciseName(exerciseData, lang) : 'Unknown'}
                       </Text>
                       <Text style={styles.exerciseItemDetails}>
-                        {ex.sets} {t('sets', lang).toLowerCase()} • {ex.reps?.[0] === 'E' ? 'E' : (ex.reps?.[0] || 10)} {exerciseData?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}
+                        {ex.sets} {t('sets', lang).toLowerCase()} • {ex.reps?.[0] === 'E' ? t('toExhaustion', lang) : `${ex.reps?.[0] || 10} ${exerciseData?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}
                         {totalWeight > 0 && ` • ${ex.weights[0]}${settings.measurementSystem === 'imperial' ? t('lbs', lang) : t('kg', lang)}`}
                       </Text>
                     </View>
@@ -952,7 +952,7 @@ export default function RoutinesScreen({ navigation, route }) {
                   }}
                 >
                   <Text style={[styles.exhaustionToggleText, exerciseConfig.reps[0] === 'E' && styles.exhaustionToggleTextActive]}>
-                    E — {t('toExhaustion', lang)}
+                    {t('toExhaustion', lang)}
                   </Text>
                 </TouchableOpacity>
 
@@ -964,7 +964,7 @@ export default function RoutinesScreen({ navigation, route }) {
                       <Text style={styles.setInputLabel}>{exerciseData?.timeBased ? t('min', lang) : t('reps', lang)}</Text>
                       <TextInput
                         style={[styles.setInputField, exerciseConfig.reps[index] === 'E' && styles.setInputFieldDisabled]}
-                        value={exerciseConfig.reps[index] === 'E' ? 'E' : String(exerciseConfig.reps[index] || (exerciseData?.timeBased ? 1 : 10))}
+                        value={exerciseConfig.reps[index] === 'E' ? '—' : String(exerciseConfig.reps[index] || (exerciseData?.timeBased ? 1 : 10))}
                         onChangeText={(value) => updateRep(index, value, isAddMode)}
                         keyboardType="numeric"
                         selectTextOnFocus={true}
