@@ -1361,21 +1361,25 @@ export default function TrainingScreen({ route, navigation }) {
         <View style={styles.controlsRow}>
           <View style={styles.controlGroup}>
             <Text style={styles.controlLabel}>{exerciseData?.timeBased ? t('min', lang) : t('reps', lang)}</Text>
-            <View style={styles.controlButtons}>
-              <TouchableOpacity
-                style={styles.controlButton}
-                onPress={() => updateReps(-1)}
-              >
-                <Text style={styles.controlButtonText}>−</Text>
-              </TouchableOpacity>
-              <Text style={styles.controlValue}>{currentReps}</Text>
-              <TouchableOpacity
-                style={styles.controlButton}
-                onPress={() => updateReps(1)}
-              >
-                <Text style={styles.controlButtonText}>+</Text>
-              </TouchableOpacity>
-            </View>
+            {currentReps === 'E' ? (
+              <Text style={styles.controlValue}>{t('toExhaustion', lang)}</Text>
+            ) : (
+              <View style={styles.controlButtons}>
+                <TouchableOpacity
+                  style={styles.controlButton}
+                  onPress={() => updateReps(-1)}
+                >
+                  <Text style={styles.controlButtonText}>−</Text>
+                </TouchableOpacity>
+                <Text style={styles.controlValue}>{currentReps}</Text>
+                <TouchableOpacity
+                  style={styles.controlButton}
+                  onPress={() => updateReps(1)}
+                >
+                  <Text style={styles.controlButtonText}>+</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </View>
 
@@ -1428,6 +1432,7 @@ export default function TrainingScreen({ route, navigation }) {
           visible={isExerciseTimerActive}
           animationType="fade"
           transparent
+          statusBarTranslucent
           onRequestClose={stopExerciseTimer}
         >
           <View style={styles.timerModalOverlay}>
@@ -1436,8 +1441,7 @@ export default function TrainingScreen({ route, navigation }) {
                 {exerciseData ? getExerciseName(exerciseData, lang) : ''}
               </Text>
               <Text style={styles.timerModalCountdown}>
-                {Math.floor(exerciseTimerLeft / 60).toString().padStart(2, '0')}
-                :{(exerciseTimerLeft % 60).toString().padStart(2, '0')}
+                {Math.floor(exerciseTimerLeft / 60)}:{(exerciseTimerLeft % 60).toString().padStart(2, '0')}
               </Text>
               <TouchableOpacity
                 style={styles.timerModalStopButton}
