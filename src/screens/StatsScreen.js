@@ -405,7 +405,15 @@ export default function StatsScreen() {
       <>
         {/* Last 30 Days Volume - Horizontal bars */}
         <View style={styles.chartCard}>
-          <Text style={styles.chartTitle}>{t('last30DaysVolume', lang)}</Text>
+          <View style={styles.chartTitleRow}>
+            <Text style={styles.chartTitle}>{t('last30DaysVolume', lang)}</Text>
+            <TouchableOpacity
+              onPress={() => Alert.alert(t('workloadHelp', lang), t('workloadHelpBody', lang))}
+              style={styles.helpButton}
+            >
+              <Text style={styles.helpButtonText}>?</Text>
+            </TouchableOpacity>
+          </View>
           {volumeEntries.map(entry => {
             const targetVolume = grandTotal * (BALANCED_PROPORTIONS[entry.id] || 0);
             const targetPct = Math.min((targetVolume / maxVolume) * 100, 100);
@@ -721,11 +729,31 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.lg,
     ...shadows.small,
   },
+  chartTitleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
   chartTitle: {
     fontFamily: fonts.bold,
     fontSize: fontSize.md,
     color: colors.textPrimary,
-    marginBottom: spacing.md,
+  },
+  helpButton: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    borderWidth: 1.5,
+    borderColor: colors.textSecondary,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  helpButtonText: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.sm,
+    color: colors.textSecondary,
+    lineHeight: fontSize.sm + 1,
   },
   chartContainer: {
     flexDirection: 'row',

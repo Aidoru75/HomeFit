@@ -192,7 +192,9 @@ export const translations = {
     noVolumeData: 'Complete a workout to see volume data',
     recentWorkouts: 'Recent Workouts',
     min: 'min',
-    toExhaustion: 'To Exhaustion',
+    toExhaustion: 'To exhaustion',
+    workloadHelp: 'How to Read This Chart',
+    workloadHelpBody: 'Colored bars show your total training volume (weight x reps) for each muscle group over the last 30 days.\n\nThe vertical markers show the ideal balanced proportion for each muscle. If a bar falls short of its marker, that muscle may need more attention.\n\nVolume values are in kg·reps (or lbs·reps).',
 
     // Settings Screen
     settingsTitle: 'Settings',
@@ -398,7 +400,9 @@ export const translations = {
     noVolumeData: 'Completa un entrenamiento para ver datos de volumen',
     recentWorkouts: 'Entrenamientos Recientes',
     min: 'min',
-    toExhaustion: 'Al Agotamiento',
+    toExhaustion: 'Al agotamiento',
+    workloadHelp: 'Cómo Leer Este Gráfico',
+    workloadHelpBody: 'Las barras de colores muestran el volumen total de entrenamiento (peso x repeticiones) para cada grupo muscular en los últimos 30 días.\n\nLos marcadores verticales muestran la proporción ideal equilibrada para cada músculo. Si una barra no llega a su marcador, ese músculo puede necesitar más atención.\n\nLos valores de volumen están en kg·reps (o lbs·reps).',
 
     // Settings Screen
     settingsTitle: 'Ajustes',
