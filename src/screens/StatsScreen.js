@@ -349,6 +349,20 @@ export default function StatsScreen() {
   // Muscle groups from muscleColors (10 groups, no forearms)
   const MUSCLE_KEYS = Object.keys(colors.muscleColors);
 
+  // Ideal balanced volume proportions (accounts for kg·reps bias: heavy compounds produce more)
+  const BALANCED_PROPORTIONS = {
+    back: 0.20,
+    quads: 0.18,
+    chest: 0.15,
+    glutes: 0.12,
+    shoulders: 0.10,
+    hamstrings: 0.08,
+    triceps: 0.06,
+    biceps: 0.05,
+    calves: 0.03,
+    core: 0.03,
+  };
+
   const renderWorkloadTab = () => {
     const volumeWorkouts = history.filter(w => w.muscleVolume && new Date(w.completedAt) >= oneMonthAgo);
 
@@ -378,6 +392,9 @@ export default function StatsScreen() {
 
     const maxVolume = Math.max(...volumeEntries.map(e => e.volume), 1);
 
+    // Calculate balanced target for each muscle group
+    const grandTotal = volumeEntries.reduce((sum, e) => sum + e.volume, 0);
+
     // Recent workouts with volume data (most recent first)
     const recentWorkouts = [...history]
       .filter(w => w.muscleVolume)
@@ -389,22 +406,29 @@ export default function StatsScreen() {
         {/* Last 30 Days Volume - Horizontal bars */}
         <View style={styles.chartCard}>
           <Text style={styles.chartTitle}>{t('last30DaysVolume', lang)}</Text>
-          {volumeEntries.map(entry => (
-            <View key={entry.id} style={styles.volumeBarRow}>
-              <Text style={styles.volumeBarLabel} numberOfLines={1}>{entry.name}</Text>
-              <View style={styles.volumeBarTrack}>
-                {entry.volume > 0 ? (
-                  <View style={[styles.volumeBarFill, {
-                    backgroundColor: entry.color,
-                    width: `${Math.max((entry.volume / maxVolume) * 100, 3)}%`,
-                  }]} />
-                ) : (
-                  <View style={styles.volumeBarEmpty} />
-                )}
+          {volumeEntries.map(entry => {
+            const targetVolume = grandTotal * (BALANCED_PROPORTIONS[entry.id] || 0);
+            const targetPct = Math.min((targetVolume / maxVolume) * 100, 100);
+            return (
+              <View key={entry.id} style={styles.volumeBarRow}>
+                <Text style={styles.volumeBarLabel} numberOfLines={1}>{entry.name}</Text>
+                <View style={styles.volumeBarTrack}>
+                  {entry.volume > 0 ? (
+                    <View style={[styles.volumeBarFill, {
+                      backgroundColor: entry.color,
+                      width: `${Math.max((entry.volume / maxVolume) * 100, 3)}%`,
+                    }]} />
+                  ) : (
+                    <View style={styles.volumeBarEmpty} />
+                  )}
+                  {targetPct > 0 && (
+                    <View style={[styles.balanceMarker, { left: `${targetPct}%` }]} />
+                  )}
+                </View>
+                <Text style={styles.volumeBarValue}>{formatVolume(entry.volume)}</Text>
               </View>
-              <Text style={styles.volumeBarValue}>{formatVolume(entry.volume)}</Text>
-            </View>
-          ))}
+            );
+          })}
         </View>
 
         {/* Recent Workouts - Stacked bars */}
@@ -834,6 +858,14 @@ const styles = StyleSheet.create({
     height: '100%',
     width: 2,
     backgroundColor: colors.border,
+  },
+  balanceMarker: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: 2,
+    backgroundColor: colors.textPrimary,
+    opacity: 0.5,
   },
   volumeBarValue: {
     fontFamily: fonts.bold,
