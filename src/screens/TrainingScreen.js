@@ -13,6 +13,7 @@ import {
   ImageBackground,
   AppState,
   Platform,
+  Modal,
 } from 'react-native';
 import { useAudioPlayer, setAudioModeAsync } from 'expo-audio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -57,7 +58,13 @@ export default function TrainingScreen({ route, navigation }) {
   const thumbnailScrollRef = useRef(null);
   const modifiedExercisesRef = useRef({});
   const restEndTimeRef = useRef(null); // Stores timestamp when rest should end
-  
+
+  // Exercise countdown timer (for timeBased exercises)
+  const [isExerciseTimerActive, setIsExerciseTimerActive] = useState(false);
+  const [exerciseTimerLeft, setExerciseTimerLeft] = useState(0);
+  const exerciseTimerRef = useRef(null);
+  const exerciseTimerEndRef = useRef(null);
+
   // Audio players for countdown sounds
   const beepPlayer = useAudioPlayer(beepSource);
   const countdownPlayer = useAudioPlayer(countdownSource);
@@ -83,7 +90,14 @@ export default function TrainingScreen({ route, navigation }) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
+    if (exerciseTimerRef.current) {
+      clearInterval(exerciseTimerRef.current);
+      exerciseTimerRef.current = null;
+    }
     restEndTimeRef.current = null;
+    exerciseTimerEndRef.current = null;
+    setIsExerciseTimerActive(false);
+    setExerciseTimerLeft(0);
     setCurrentExerciseIndex(0);
     setCurrentSetIndex(0);
     setIsResting(false);
@@ -160,6 +174,7 @@ export default function TrainingScreen({ route, navigation }) {
   useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      if (exerciseTimerRef.current) clearInterval(exerciseTimerRef.current);
     };
   }, []);
 
@@ -186,6 +201,29 @@ export default function TrainingScreen({ route, navigation }) {
           // Update display with actual remaining time
           setRestTimeLeft(remaining);
           // Play appropriate sound if we're in the countdown zone
+          if (remaining <= 10) {
+            playCountdownSound(remaining);
+          }
+        }
+      }
+
+      // Handle exercise timer returning from background
+      if (nextAppState === 'active' && exerciseTimerEndRef.current) {
+        const remaining = Math.ceil((exerciseTimerEndRef.current - Date.now()) / 1000);
+
+        if (remaining <= 0) {
+          if (exerciseTimerRef.current) {
+            clearInterval(exerciseTimerRef.current);
+            exerciseTimerRef.current = null;
+          }
+          exerciseTimerEndRef.current = null;
+          playCountdownSound(0);
+          Vibration.vibrate(500);
+          setIsExerciseTimerActive(false);
+          setExerciseTimerLeft(0);
+          completeSet();
+        } else {
+          setExerciseTimerLeft(remaining);
           if (remaining <= 10) {
             playCountdownSound(remaining);
           }
@@ -262,6 +300,11 @@ export default function TrainingScreen({ route, navigation }) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
+    if (exerciseTimerRef.current) {
+      clearInterval(exerciseTimerRef.current);
+      exerciseTimerRef.current = null;
+    }
+    exerciseTimerEndRef.current = null;
     allowNavigation.current = true;
     navigation.goBack();
   };
@@ -271,6 +314,11 @@ export default function TrainingScreen({ route, navigation }) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
+    if (exerciseTimerRef.current) {
+      clearInterval(exerciseTimerRef.current);
+      exerciseTimerRef.current = null;
+    }
+    exerciseTimerEndRef.current = null;
     try {
       await saveModifiedExercises();
       allowNavigation.current = true;
@@ -715,6 +763,48 @@ export default function TrainingScreen({ route, navigation }) {
     setIsExerciseRest(false);
   };
 
+  const startExerciseTimer = () => {
+    const minutes = getCurrentReps();
+    const totalSeconds = (typeof minutes === 'number' ? minutes : 1) * 60;
+
+    playedSecondsRef.current = new Set();
+    exerciseTimerEndRef.current = Date.now() + (totalSeconds * 1000);
+    setExerciseTimerLeft(totalSeconds);
+    setIsExerciseTimerActive(true);
+
+    exerciseTimerRef.current = setInterval(() => {
+      const remaining = Math.ceil((exerciseTimerEndRef.current - Date.now()) / 1000);
+
+      if (remaining >= 0 && remaining <= 10) {
+        playCountdownSound(remaining);
+      }
+
+      if (remaining <= 0) {
+        clearInterval(exerciseTimerRef.current);
+        exerciseTimerRef.current = null;
+        exerciseTimerEndRef.current = null;
+        Vibration.vibrate(500);
+        setIsExerciseTimerActive(false);
+        setExerciseTimerLeft(0);
+        completeSet();
+        return;
+      }
+      setExerciseTimerLeft(remaining);
+    }, 1000);
+  };
+
+  const stopExerciseTimer = () => {
+    if (exerciseTimerRef.current) {
+      clearInterval(exerciseTimerRef.current);
+      exerciseTimerRef.current = null;
+    }
+    exerciseTimerEndRef.current = null;
+    playedSecondsRef.current = new Set();
+    setIsExerciseTimerActive(false);
+    setExerciseTimerLeft(0);
+    completeSet();
+  };
+
   const completeSet = () => {
     const day = routine?.days?.[paramsRef.current.dayIndex];
     const currentEx = day?.exercises?.[currentExerciseIndex];
@@ -770,6 +860,11 @@ export default function TrainingScreen({ route, navigation }) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
+    if (exerciseTimerRef.current) {
+      clearInterval(exerciseTimerRef.current);
+      exerciseTimerRef.current = null;
+    }
+    exerciseTimerEndRef.current = null;
 
     if (hasChanges) {
       await saveModifiedExercises();
@@ -978,6 +1073,15 @@ export default function TrainingScreen({ route, navigation }) {
             }
             restEndTimeRef.current = null;
             playedSecondsRef.current = new Set();
+
+            // Stop any active exercise timer
+            if (exerciseTimerRef.current) {
+              clearInterval(exerciseTimerRef.current);
+              exerciseTimerRef.current = null;
+            }
+            exerciseTimerEndRef.current = null;
+            setIsExerciseTimerActive(false);
+            setExerciseTimerLeft(0);
 
             // Switch to the selected exercise at set 1
             setIsResting(false);
@@ -1241,13 +1345,15 @@ export default function TrainingScreen({ route, navigation }) {
           />
         </View>
 
-        {/* Done button */}
+        {/* Done / Start button */}
         <TouchableOpacity
           style={styles.doneButton}
-          onPress={completeSet}
+          onPress={exerciseData?.timeBased ? startExerciseTimer : completeSet}
         >
           <Text style={styles.doneButtonText}>
-            {t('done', lang) || 'DONE'}
+            {exerciseData?.timeBased
+              ? (t('start', lang) || 'START').toUpperCase()
+              : (t('done', lang) || 'DONE')}
           </Text>
         </TouchableOpacity>
 
@@ -1316,6 +1422,34 @@ export default function TrainingScreen({ route, navigation }) {
             {t('changesDetected', lang) || '* Changes will be saved when you finish'}
           </Text>
         )}
+
+        {/* Exercise Countdown Timer Modal */}
+        <Modal
+          visible={isExerciseTimerActive}
+          animationType="fade"
+          transparent
+          onRequestClose={stopExerciseTimer}
+        >
+          <View style={styles.timerModalOverlay}>
+            <View style={styles.timerModalContent}>
+              <Text style={styles.timerModalLabel}>
+                {exerciseData ? getExerciseName(exerciseData, lang) : ''}
+              </Text>
+              <Text style={styles.timerModalCountdown}>
+                {Math.floor(exerciseTimerLeft / 60).toString().padStart(2, '0')}
+                :{(exerciseTimerLeft % 60).toString().padStart(2, '0')}
+              </Text>
+              <TouchableOpacity
+                style={styles.timerModalStopButton}
+                onPress={stopExerciseTimer}
+              >
+                <Text style={styles.timerModalStopButtonText}>
+                  {(t('stop', lang) || 'STOP').toUpperCase()}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     </View>
   );
@@ -1719,5 +1853,43 @@ const styles = StyleSheet.create({
     color: colors.accent,
     fontSize: fontSize.xs,
     marginTop: spacing.md,
+  },
+
+  // Exercise Timer Modal
+  timerModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  timerModalContent: {
+    alignItems: 'center',
+    padding: spacing.xl,
+  },
+  timerModalLabel: {
+    fontFamily: fonts.regular,
+    color: '#AAAAAA',
+    fontSize: fontSize.lg,
+    letterSpacing: 2,
+    marginBottom: spacing.lg,
+  },
+  timerModalCountdown: {
+    fontFamily: fonts.regular,
+    color: '#FFFFFF',
+    fontSize: 120,
+    letterSpacing: 4,
+  },
+  timerModalStopButton: {
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: spacing.xl * 2,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.round,
+    marginTop: spacing.xl * 2,
+  },
+  timerModalStopButtonText: {
+    fontFamily: fonts.bold,
+    color: '#000000',
+    fontSize: fontSize.lg,
+    letterSpacing: 1,
   },
 });
