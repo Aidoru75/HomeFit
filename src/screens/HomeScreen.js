@@ -13,8 +13,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { getLastWorkout, loadRoutines, loadSettings } from '../storage/storage';
 import { t } from '../data/translations';
+import { IS_PRO } from '../config';
 
-const faviconIcon = require('../../assets/icons/homeicon.png');
+const faviconIcon = IS_PRO
+  ? require('../../assets/icons/homeicon.png')
+  : require('../../assets/icons/homeicon_f.png');
 
 export default function HomeScreen({ navigation }) {
   const insets = useSafeAreaInsets();

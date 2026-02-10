@@ -144,6 +144,7 @@ export const exerciseToNumeric = {
   lunges_reverse: 127,
   lunges_walking: 128,
   barbell_lunges: 129,
+  barbell_static_lunges: 202,
   bulgarian_split_squat_db: 130,
   bulgarian_split_squat_bb: 131,
   step_ups: 132,
@@ -162,7 +163,7 @@ export const exerciseToNumeric = {
   leg_curl: 143,
   seated_leg_curl: 144,
   cable_pull_through: 145,
-  nordic_curl: 146,
+  hamstring_bridge: 146,
   glute_ham_raise: 147,
   band_leg_curl: 148,
 
@@ -224,6 +225,22 @@ export const exerciseToNumeric = {
   hyperextension_core: 199,
   superman: 200,
   suitcase_carry: 201,
+
+  // CARDIO / RUNNING (203-204)
+  running: 203,
+  treadmill_running: 204,
+
+  // KETTLEBELL (205-214)
+  kb_swing: 205,
+  kb_goblet_squat: 206,
+  kb_deadlift: 207,
+  kb_press: 208,
+  kb_row: 209,
+  kb_clean: 210,
+  kb_snatch: 211,
+  turkish_getup: 212,
+  kb_lunge: 213,
+  kb_windmill: 214,
 };
 
 // Reverse mapping: numeric ID to exercise string ID

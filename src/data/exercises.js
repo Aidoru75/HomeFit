@@ -1,4 +1,4 @@
-// 199 Exercises - Complete Catalog - Bilingual (English/Spanish)
+// 225 Exercises - Complete Catalog - Bilingual (English/Spanish)
 import { isProExercise } from './equipment';
 import { IS_PRO } from '../config';
 
@@ -14,6 +14,7 @@ export const muscleGroups = [
   { id: 'glutes', name: { en: 'Glutes', es: 'Glúteos' }},
   { id: 'calves', name: { en: 'Calves', es: 'Gemelos' }},
   { id: 'core', name: { en: 'Core', es: 'Core' }},
+  { id: 'cardio', name: { en: 'Cardio', es: 'Cardio' }},
 ];
 
 export const exercises = [
@@ -372,7 +373,7 @@ export const exercises = [
     name: { en: 'T-Bar Row (Landmine)', es: 'Remo en T (Landmine)' },
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.20, shoulders: 0.10, core: 0.05 },
-    equipment: ['straight_bar', 'landmine_handle', 'plates'],
+    equipment: ['straight_bar', 'rowing_handle', 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Powerful mid-back builder using landmine setup. Straddle the bar, grip the handle attachment, row toward your chest while keeping your torso stable, squeezing hard at the top.',
@@ -1239,7 +1240,7 @@ export const exercises = [
     name: { en: 'Barbell Box Squat', es: 'Sentadilla en Caja con Barra' },
     muscleGroup: 'quads',
     muscles: { quads: 0.40, glutes: 0.35, hamstrings: 0.15, core: 0.10 },
-    equipment: ['straight_bar', 'rack', 'flat_bench', 'plates'],
+    equipment: ['straight_bar', 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Squat to a box for consistent depth and power development. Sit back onto box, pause briefly, explode up, excellent for teaching proper squat mechanics and building starting strength.',
@@ -1345,6 +1346,20 @@ export const exercises = [
       es: 'Zancadas con barra para mayor carga. Barra en espalda alta como posición de sentadilla, realiza zancadas frontales o inversas, permite pesos más pesados que mancuernas.',
     },
     bmc: 4.0,
+    wf: 0.03,
+  },
+  {
+    id: 'barbell_static_lunges',
+    name: { en: 'Barbell Static Lunges', es: 'Zancadas Estáticas con Barra' },
+    muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.35, hamstrings: 0.15, core: 0.05 },
+    equipment: ['straight_bar', 'rack', 'plates'],
+    weightType: 'barbell',
+    description: {
+      en: 'Static lunges with barbell for heavier loading. Bar on upper back like squat position, perform static lunges, allows heavier weights than dumbbells for strength development.',
+      es: 'Zancadas estáticas con barra para mayor carga. Barra en espalda alta como posición de sentadilla, realiza zancadas estáticas, permite pesos más pesados que mancuernas.',
+    },
+    bmc: 3.0,
     wf: 0.03,
   },
   {
@@ -1507,25 +1522,26 @@ export const exercises = [
     wf: 0.03,
   },
   {
-    id: 'nordic_curl',
-    name: { en: 'Nordic Curl (Assisted)', es: 'Curl Nórdico (Asistido)' },
+    id: 'hamstring_bridge',
+    name: { en: 'Hamstring Bridge', es: 'Puente de Isquiotibiales' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.80, glutes: 0.15, calves: 0.05 },
     equipment: ['flat_bench'],
     weightType: 'bodyweight',
+    timeBased: true,
     description: {
-      en: 'Advanced eccentric hamstring exercise. Kneel with ankles secured, lower body forward under control, use hands to assist back up, builds incredible hamstring strength and injury resistance.',
-      es: 'Ejercicio excéntrico avanzado de isquiotibiales. Arrodíllate con tobillos asegurados, baja el cuerpo hacia adelante con control, usa manos para asistir al subir, construye fuerza increíble.',
+      en: 'Targeted strength exercise designed to isolate the hamstring muscles .Raise your hips toward the ceiling while maintaining a neutral spine. Maintain a slight posterior pelvic tilt and hold the contraction',
+      es: 'Ejercicio de fuerza específico diseñado para aislar los músculos isquiotibiales. Levanta las caderas hacia el techo mientras mantienes la columna en posición neutra. Mantén la contracción.',
     },
-    bmc: 3.0,
-    wf: 0.04,
+    bmc: 1.5,
+    wf: 0.0,
   },
   {
     id: 'glute_ham_raise',
     name: { en: 'Glute-Ham Raise (on bench)', es: 'Elevación Glúteo-Isquio (en banco)' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.55, glutes: 0.35, back: 0.10 },
-    equipment: ['flat_bench'],
+    equipment: ['ghd_machine'],
     weightType: 'bodyweight',
     description: {
       en: 'Challenging hamstring and glute exercise. Position on decline bench face down, lower upper body then curl back up using hamstrings and glutes, extremely demanding posterior chain movement.',
@@ -1838,21 +1854,6 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.02,
-  },
-  {
-    id: 'jump_rope',
-    name: { en: 'Jump Rope', es: 'Saltar la Cuerda' },
-    muscleGroup: 'calves',
-    muscles: { calves: 0.70, quads: 0.15, core: 0.15 },
-    equipment: ['jump_rope'],
-    weightType: 'bodyweight',
-    timeBased: true,
-    description: {
-      en: 'Cardio exercise that builds calf endurance. Jump continuously on balls of feet, excellent for calf conditioning, footwork, coordination, and cardiovascular fitness simultaneously.',
-      es: 'Ejercicio cardiovascular que construye resistencia de gemelos. Salta continuamente en las puntas de los pies, excelente para acondicionamiento de gemelos, coordinación y cardio.',
-    },
-    bmc: 1.5,
-    wf: 0.0,
   },
   {
     id: 'calf_raise_bodyweight',
@@ -2226,6 +2227,40 @@ export const exercises = [
     wf: 0.03,
   },
 
+  // ============================================
+  // CARDIO
+  // ============================================
+  {
+    id: 'jump_rope',
+    name: { en: 'Jump Rope', es: 'Saltar la Cuerda' },
+    muscleGroup: 'cardio',
+    muscles: { calves: 0.70, quads: 0.15, core: 0.15 },
+    equipment: ['jump_rope'],
+    weightType: 'bodyweight',
+    timeBased: true,
+    description: {
+      en: 'Cardio exercise that builds calf endurance. Jump continuously on balls of feet, excellent for calf conditioning, footwork, coordination, and cardiovascular fitness simultaneously.',
+      es: 'Ejercicio cardiovascular que construye resistencia de gemelos. Salta continuamente en las puntas de los pies, excelente para acondicionamiento de gemelos, coordinación y cardio.',
+    },
+    bmc: 1.5,
+    wf: 0.0,
+  },
+  {
+    id: 'running',
+    name: { en: 'Running', es: 'Correr' },
+    muscleGroup: 'cardio',
+    muscles: { calves: 0.30, quads: 0.30, hamstrings: 0.15, glutes: 0.15, core: 0.10 },
+    equipment: [],
+    weightType: 'bodyweight',
+    timeBased: true,
+    description: {
+      en: 'Full-body cardio exercise. Run at a steady pace outdoors or in any open space. Engages legs, glutes, and core while building cardiovascular endurance and burning calories.',
+      es: 'Ejercicio cardiovascular de cuerpo completo. Corre a un ritmo constante al aire libre o en cualquier espacio abierto. Trabaja piernas, glúteos y core mientras mejora la resistencia cardiovascular.',
+    },
+    bmc: 2.5,
+    wf: 0.0,
+  },
+
   // ############################################
   // PRO EXERCISES (Gym/Cable/Machine Equipment)
   // ############################################
@@ -2447,6 +2482,21 @@ export const exercises = [
     bmc: 1.5,
     wf: 0.02,
   },
+  {
+    id: 'kb_row',
+    name: { en: 'Kettlebell Row', es: 'Remo con Pesa Rusa' },
+    muscleGroup: 'back',
+    muscles: { back: 0.60, biceps: 0.25, core: 0.15 },
+    equipment: ['kettlebells'],
+    weightType: 'kettlebell',
+    singleWeight: true,
+    description: {
+      en: 'Hinge forward with one hand on a bench or knee for support, row the kettlebell to your hip squeezing the shoulder blade at the top. The offset handle challenges grip and forearm stability.',
+      es: 'Inclínate hacia adelante con una mano apoyada en banco o rodilla, rema la pesa rusa hacia la cadera apretando la escápula arriba. El agarre descentrado desafía el agarre y la estabilidad del antebrazo.',
+    },
+    bmc: 1.8,
+    wf: 0.03,
+  },
 
   // ============================================
   // SHOULDERS
@@ -2517,6 +2567,51 @@ export const exercises = [
     description: {
       en: 'Cable upright row for constant tension throughout. Using low pulley with bar attachment, pull up leading with elbows, the cable maintains resistance through the entire range.',
       es: 'Remo al mentón con cable para tensión constante. Usando polea baja con barra, tira hacia arriba liderando con codos, el cable mantiene resistencia durante todo el rango.',
+    },
+    bmc: 2.0,
+    wf: 0.03,
+  },
+  {
+    id: 'kb_press',
+    name: { en: 'Kettlebell Press', es: 'Press con Pesa Rusa' },
+    muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.60, triceps: 0.25, core: 0.15 },
+    equipment: ['kettlebells'],
+    weightType: 'kettlebell',
+    singleWeight: true,
+    description: {
+      en: 'Clean the kettlebell to rack position at your shoulder, then press it overhead to full lockout. Keep your core tight and avoid leaning. Lower with control back to the rack position.',
+      es: 'Lleva la pesa rusa a posición de rack en el hombro, luego presiónala sobre la cabeza hasta extensión completa. Mantén el core firme y evita inclinarte. Baja con control a la posición de rack.',
+    },
+    bmc: 1.8,
+    wf: 0.03,
+  },
+  {
+    id: 'kb_clean',
+    name: { en: 'Kettlebell Clean & Press', es: 'Cargada y Press con Pesa Rusa' },
+    muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.25, back: 0.20, glutes: 0.20, hamstrings: 0.20, core: 0.15 },
+    equipment: ['kettlebells'],
+    weightType: 'kettlebell',
+    singleWeight: true,
+    description: {
+      en: 'Swing the kettlebell back between your legs, then explosively clean it to the rack position by pulling your elbow tight to your body, and press overhead. A full-body compound movement combining power and strength.',
+      es: 'Balancea la pesa rusa entre las piernas, luego limpia explosivamente a posición de rack tirando el codo pegado al cuerpo, y presiona sobre la cabeza. Movimiento compuesto de cuerpo completo que combina potencia y fuerza.',
+    },
+    bmc: 2.0,
+    wf: 0.03,
+  },
+  {
+    id: 'kb_snatch',
+    name: { en: 'Kettlebell Snatch', es: 'Arrancada con Pesa Rusa' },
+    muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.30, glutes: 0.20, back: 0.15, hamstrings: 0.15, triceps: 0.10, core: 0.10 },
+    equipment: ['kettlebells'],
+    weightType: 'kettlebell',
+    singleWeight: true,
+    description: {
+      en: 'The king of kettlebell lifts. Swing the bell back, then in one explosive motion drive it overhead to lockout. The bell rotates smoothly around your hand at the top. Combines power, endurance and coordination.',
+      es: 'El rey de los levantamientos con pesa rusa. Balancea la pesa atrás, luego en un movimiento explosivo llévala sobre la cabeza a extensión completa. La pesa rota suavemente alrededor de la mano arriba. Combina potencia, resistencia y coordinación.',
     },
     bmc: 2.0,
     wf: 0.03,
@@ -2713,7 +2808,7 @@ export const exercises = [
   },
   {
     id: 'cable_kickback',
-    name: { en: 'Cable Kickback', es: 'Patada Trasera en Polea' },
+    name: { en: 'Triceps Cable Kickback', es: 'Patada de Triceps en Polea' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['low_pulley', 'single_handle'],
@@ -2789,6 +2884,35 @@ export const exercises = [
     bmc: 4.0,
     wf: 0.04,
   },
+  {
+    id: 'kb_goblet_squat',
+    name: { en: 'Kettlebell Goblet Squat', es: 'Sentadilla Goblet con Pesa Rusa' },
+    muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.30, core: 0.15, hamstrings: 0.10 },
+    equipment: ['kettlebells'],
+    weightType: 'kettlebell',
+    singleWeight: true,
+    description: {
+      en: 'Hold a kettlebell by the horns at chest height, squat deep keeping your torso upright and elbows inside the knees. The front-loaded position encourages proper squat mechanics and deep range of motion.',
+      es: 'Sostén la pesa rusa por los cuernos a la altura del pecho, haz sentadilla profunda manteniendo el torso erguido y codos dentro de las rodillas. La carga frontal favorece la mecánica correcta y rango de movimiento profundo.',
+    },
+    bmc: 1.8,
+    wf: 0.03,
+  },
+  {
+    id: 'kb_lunge',
+    name: { en: 'Kettlebell Lunge', es: 'Zancada con Pesa Rusa' },
+    muscleGroup: 'quads',
+    muscles: { quads: 0.40, glutes: 0.30, hamstrings: 0.20, core: 0.10 },
+    equipment: ['kettlebells'],
+    weightType: 'kettlebell',
+    description: {
+      en: 'Hold kettlebells in rack position or by your sides, step forward or backward into a deep lunge. Keep your torso upright and front knee tracking over your toes. The offset weight challenges balance and core stability.',
+      es: 'Sostén las pesas rusas en posición de rack o a los lados, da un paso adelante o atrás en una zancada profunda. Mantén el torso erguido y la rodilla delantera alineada con los pies. El peso descentrado desafía el equilibrio y la estabilidad del core.',
+    },
+    bmc: 1.8,
+    wf: 0.03,
+  },
 
   // ============================================
   // HAMSTRINGS
@@ -2835,6 +2959,20 @@ export const exercises = [
     bmc: 3.0,
     wf: 0.03,
   },
+  {
+    id: 'kb_deadlift',
+    name: { en: 'Kettlebell Deadlift', es: 'Peso Muerto con Pesa Rusa' },
+    muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.35, glutes: 0.30, back: 0.25, core: 0.10 },
+    equipment: ['kettlebells'],
+    weightType: 'kettlebell',
+    description: {
+      en: 'Stand over the kettlebell with feet hip-width apart, hinge at the hips to grip it, drive through your heels to stand tall. Keep your back flat and chest up throughout the movement.',
+      es: 'De pie sobre la pesa rusa con pies al ancho de caderas, flexiona en las caderas para agarrarla, empuja con los talones para ponerte de pie. Mantén la espalda plana y el pecho arriba durante todo el movimiento.',
+    },
+    bmc: 1.8,
+    wf: 0.03,
+  },
 
   // ============================================
   // GLUTES
@@ -2865,6 +3003,20 @@ export const exercises = [
       es: 'Bisagra de cadera para glúteos con resistencia de cable. De espaldas a polea baja, cuerda entre piernas, inclínate y empuja caderas adelante, excelente activación con tensión constante.',
     },
     bmc: 3.0,
+    wf: 0.03,
+  },
+  {
+    id: 'kb_swing',
+    name: { en: 'Kettlebell Swing', es: 'Swing con Pesa Rusa' },
+    muscleGroup: 'glutes',
+    muscles: { glutes: 0.35, hamstrings: 0.30, back: 0.15, shoulders: 0.10, core: 0.10 },
+    equipment: ['kettlebells'],
+    weightType: 'kettlebell',
+    description: {
+      en: 'Explosive hip-hinge movement. Grip the kettlebell with both hands, hinge at the hips driving it back between your legs, then snap your hips forward to swing it to chest height. Keep arms relaxed, power comes from the hips.',
+      es: 'Movimiento explosivo de bisagra de cadera. Agarra la pesa rusa con ambas manos, flexiona las caderas llevándola entre las piernas, luego extiende las caderas con fuerza para elevarla al pecho. Brazos relajados, la potencia viene de las caderas.',
+    },
+    bmc: 2.0,
     wf: 0.03,
   },
 
@@ -2944,6 +3096,55 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.02,
+  },
+  {
+    id: 'turkish_getup',
+    name: { en: 'Turkish Get-Up', es: 'Levantamiento Turco' },
+    muscleGroup: 'core',
+    muscles: { core: 0.30, shoulders: 0.30, glutes: 0.20, quads: 0.10, hamstrings: 0.10 },
+    equipment: ['kettlebells'],
+    weightType: 'kettlebell',
+    singleWeight: true,
+    description: {
+      en: 'Start lying down holding a kettlebell overhead with one arm locked out. Rise to standing through a sequence of movements while keeping the bell stable overhead, then reverse back down. Builds total-body stability and mobility.',
+      es: 'Comienza acostado sosteniendo una pesa rusa sobre la cabeza con un brazo extendido. Levántate a través de una secuencia de movimientos manteniendo la pesa estable, luego vuelve a bajar. Desarrolla estabilidad y movilidad de todo el cuerpo.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+  {
+    id: 'kb_windmill',
+    name: { en: 'Kettlebell Windmill', es: 'Molino con Pesa Rusa' },
+    muscleGroup: 'core',
+    muscles: { core: 0.35, shoulders: 0.25, hamstrings: 0.25, glutes: 0.15 },
+    equipment: ['kettlebells'],
+    weightType: 'kettlebell',
+    singleWeight: true,
+    description: {
+      en: 'Press a kettlebell overhead, angle your feet 45 degrees, then slowly hinge and rotate your torso to touch your opposite foot while keeping the bell locked out overhead. Excellent for shoulder stability, core strength and hamstring flexibility.',
+      es: 'Presiona una pesa rusa sobre la cabeza, angula los pies 45 grados, luego lentamente flexiona y rota el torso para tocar el pie opuesto manteniendo la pesa extendida arriba. Excelente para estabilidad de hombro, fuerza de core y flexibilidad de isquiotibiales.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+
+  // ============================================
+  // CARDIO
+  // ============================================
+  {
+    id: 'treadmill_running',
+    name: { en: 'Treadmill Running', es: 'Correr en Cinta' },
+    muscleGroup: 'cardio',
+    muscles: { calves: 0.30, quads: 0.30, hamstrings: 0.15, glutes: 0.15, core: 0.10 },
+    equipment: ['treadmill'],
+    weightType: 'machine',
+    timeBased: true,
+    description: {
+      en: 'Cardio exercise on treadmill machine. Run at a steady pace with adjustable speed and incline. Great for controlled cardiovascular training, leg endurance, and calorie burning regardless of weather.',
+      es: 'Ejercicio cardiovascular en cinta de correr. Corre a un ritmo constante con velocidad e inclinación ajustables. Ideal para entrenamiento cardiovascular controlado, resistencia de piernas y quema de calorías.',
+    },
+    bmc: 2.5,
+    wf: 0.0,
   },
 
 ];

@@ -296,31 +296,15 @@ export default function TrainingScreen({ route, navigation }) {
   };
 
   const exitWithoutSaving = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-    if (exerciseTimerRef.current) {
-      clearInterval(exerciseTimerRef.current);
-      exerciseTimerRef.current = null;
-    }
-    exerciseTimerEndRef.current = null;
+    resetWorkoutState();
     allowNavigation.current = true;
     navigation.goBack();
   };
 
   const saveAndExit = async () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-    if (exerciseTimerRef.current) {
-      clearInterval(exerciseTimerRef.current);
-      exerciseTimerRef.current = null;
-    }
-    exerciseTimerEndRef.current = null;
     try {
       await saveModifiedExercises();
+      resetWorkoutState();
       allowNavigation.current = true;
       navigation.goBack();
     } catch (error) {
@@ -689,18 +673,18 @@ export default function TrainingScreen({ route, navigation }) {
     playedSecondsRef.current.add(seconds);
 
     try {
-      if (seconds >= 1 && seconds <= 10) {
+      if (seconds >= 5 && seconds <= 10) {
         // Beep at 10, 9, 8, 7, 6, 5
         if (beepPlayer) {
           await beepPlayer.seekTo(0);
           beepPlayer.play();
         }
-      //}  else if (seconds >= 1 && seconds <= 4) {
+      }  else if (seconds >= 1 && seconds <= 4) {
         // Countdown sound at 4, 3, 2, 1
-        //if (countdownPlayer) {
-        //  await countdownPlayer.seekTo(0);
-        //  countdownPlayer.play();
-        //}
+        if (countdownPlayer) {
+          await countdownPlayer.seekTo(0);
+          countdownPlayer.play();
+        }
       } else if (seconds === 0) {
         // Bell at 0
         if (bellPlayer) {
@@ -944,6 +928,7 @@ export default function TrainingScreen({ route, navigation }) {
   };
 
   const handleFinishAndGoHome = () => {
+    resetWorkoutState();
     allowNavigation.current = true;
     navigation.navigate('Home');
   };

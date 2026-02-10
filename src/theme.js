@@ -8,8 +8,8 @@ export const colors = {
   primaryDark: IS_PRO ? '#4c1e04' : '#0d3318',
 
   // Accent colors
-  accent: IS_PRO ? '#d65a03' : '#27AE60',
-  accentLight: IS_PRO ? '#ff9b0e' : '#52D889',
+  accent: IS_PRO ? '#d65a03' : '#009e6f',
+  accentLight: IS_PRO ? '#ff9b0e' : '#09bf9f',
   
   // Semantic colors
   success: '#27AE60',

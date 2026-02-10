@@ -36,8 +36,12 @@ import { encodeRoutine, decodeRoutine, isValidRoutineCode, MAX_QR_SIZE } from '.
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // Icons
-const editIcon = require('../../assets/icons/edit.png');
-const editAccentIcon = require('../../assets/icons/edit_accent.png');
+const editIcon = IS_PRO
+  ? require('../../assets/icons/edit.png')
+  : require('../../assets/icons/edit_f.png');
+const editAccentIcon = IS_PRO
+  ? require('../../assets/icons/edit_accent.png')
+  : require('../../assets/icons/edit_accent_f.png');
 const importIcon = require('../../assets/icons/import.png');
 const importAccentIcon = require('../../assets/icons/import_accent.png');
 const exportIcon = require('../../assets/icons/export.png');
@@ -1585,8 +1589,9 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   exerciseItemSuperset: {
-    backgroundColor: 'rgba(255, 107, 107, 0.08)',
+    backgroundColor: colors.accent + '14',
     marginLeft: spacing.sm,
+    paddingLeft: spacing.sm,
     borderRadius: borderRadius.sm,
   },
   supersetBar: {
@@ -1641,7 +1646,7 @@ const styles = StyleSheet.create({
     borderStyle: 'dashed',
   },
   supersetLinkButtonActive: {
-    backgroundColor: 'rgba(255, 107, 107, 0.15)',
+    backgroundColor: colors.accent + '26',
     borderColor: colors.accent,
     borderStyle: 'solid',
   },

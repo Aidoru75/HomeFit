@@ -77,6 +77,18 @@ export const equipment = {
     type: 'machine',
     pro: true,
   },
+  ghdMachine: {
+    id: 'ghd_machine',
+    name: { en: 'GHD Machine', es: 'Máquina GHD' },
+    type: 'machine',
+    pro: true,
+  },
+  treadmill: {
+    id: 'treadmill',
+    name: { en: 'Treadmill', es: 'Cinta de Correr' },
+    type: 'machine',
+    pro: true,
+  },
   
   // Racks and Benches
   rack: {
@@ -170,13 +182,6 @@ export const equipment = {
     name: { en: 'Weight Plates', es: 'Discos de Peso' },
     type: 'plates',
     pro: false,
-    inventory: [
-      { weight: 15, quantity: 2 },
-      { weight: 10, quantity: 4 },
-      { weight: 5, quantity: 4 },
-      { weight: 2.5, quantity: 4 },
-      { weight: 1.25, quantity: 4 },
-    ],
   },
   
   // Cable Attachments
@@ -296,7 +301,7 @@ export const equipmentCategories = {
   machineStations: {
     id: 'machineStations',
     name: { en: 'Machine Stations', es: 'Estaciones de Máquinas' },
-    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'lying_leg_curl_station', 'standing_leg_curl_station', 'leg_press_station', 'pec_deck_station', 'chest_press_station', 'lat_station', 'calf_station' ],
+    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'lying_leg_curl_station', 'standing_leg_curl_station', 'leg_press_station', 'pec_deck_station', 'chest_press_station', 'lat_station', 'calf_station', 'ghd_machine', 'treadmill'],
   },
   cableAttachments: {
     id: 'cableAttachments',
