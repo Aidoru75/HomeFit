@@ -24,15 +24,18 @@ import { loadRoutines, loadSettings, saveLastWorkout, addToHistory, updateRoutin
 import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
 import { lbToKg, inchesToCm, getWeightIncrement, getSmallWeightIncrement } from '../utils/unitConversions';
+import { IS_PRO } from '../config';
 
-// Audio sources for countdown sounds
-const beepSource = require('../../assets/audio/beep.mp3');
-const countdownSource = require('../../assets/audio/countdown.mp3');
-const bellSource = require('../../assets/audio/bell.mp3');
+// Audio source for countdown timer (single 10-second sequence)
+const timerSource = require('../../assets/audio/timer.mp3');
 
 // Background images
-const startBackground = require('../../assets/start.png');
-const successBackground = require('../../assets/success.png');
+const startBackground = IS_PRO
+  ? require('../../assets/start.jpg')
+  : require('../../assets/start_free.jpg');
+const successBackground = IS_PRO
+  ? require('../../assets/success.jpg')
+  : require('../../assets/success_free.jpg');
 
 export default function TrainingScreen({ route, navigation }) {
   const insets = useSafeAreaInsets();
@@ -65,17 +68,15 @@ export default function TrainingScreen({ route, navigation }) {
   const exerciseTimerRef = useRef(null);
   const exerciseTimerEndRef = useRef(null);
 
-  // Audio players for countdown sounds
-  const beepPlayer = useAudioPlayer(beepSource);
-  const countdownPlayer = useAudioPlayer(countdownSource);
-  const bellPlayer = useAudioPlayer(bellSource);
+  // Audio player for countdown timer
+  const timerPlayer = useAudioPlayer(timerSource);
 
   // Refs to track current sound settings (updated on focus)
   const soundEnabledRef = useRef(true);
   const soundVolumeRef = useRef(1.0);
 
-  // Track which seconds have already played their sound
-  const playedSecondsRef = useRef(new Set());
+  // Track whether timer sound has been triggered for current countdown
+  const timerPlayedRef = useRef(false);
 
   const lang = settings.language || 'en';
   const isImperial = settings.measurementSystem === 'imperial';
@@ -107,7 +108,7 @@ export default function TrainingScreen({ route, navigation }) {
     setWorkoutComplete(false);
     setWorkoutStartTime(null);
     setCaloriesBurned(0);
-    playedSecondsRef.current = new Set();
+    timerPlayedRef.current = false;
     setModifiedExercises({});
     setHasChanges(false);
   }, []);
@@ -132,7 +133,7 @@ export default function TrainingScreen({ route, navigation }) {
     configureAudio();
   }, []);
 
-  // Reload settings when screen gains focus (fixes sound toggle without app restart)
+  // Reload settings and routine data when screen gains focus
   useFocusEffect(
     useCallback(() => {
       const reloadSettings = async () => {
@@ -143,13 +144,15 @@ export default function TrainingScreen({ route, navigation }) {
         soundVolumeRef.current = userSettings.soundVolume;
         // Update player volumes
         if (userSettings.soundVolume !== undefined) {
-          if (beepPlayer) beepPlayer.volume = userSettings.soundVolume;
-          if (countdownPlayer) countdownPlayer.volume = userSettings.soundVolume;
-          if (bellPlayer) bellPlayer.volume = userSettings.soundVolume;
+          if (timerPlayer) timerPlayer.volume = userSettings.soundVolume;
         }
       };
       reloadSettings();
-    }, [beepPlayer, countdownPlayer, bellPlayer])
+      // Reload routine data before workout starts (picks up superset edits, weight changes, etc.)
+      if (!workoutStarted && !workoutComplete) {
+        loadData();
+      }
+    }, [timerPlayer, workoutStarted, workoutComplete])
   );
 
   // Update params ref when new workout params are received
@@ -181,18 +184,22 @@ export default function TrainingScreen({ route, navigation }) {
   // Handle app returning from background - recalculate rest timer
   useEffect(() => {
     const handleAppStateChange = (nextAppState) => {
+      // Stop timer sound on return - it can't stay synced after background
+      if (nextAppState === 'active' && timerPlayedRef.current) {
+        if (timerPlayer) { try { timerPlayer.pause(); } catch(e) {} }
+      }
+
       if (nextAppState === 'active' && restEndTimeRef.current) {
         // App came back to foreground while resting - recalculate remaining time
         const remaining = Math.ceil((restEndTimeRef.current - Date.now()) / 1000);
 
         if (remaining <= 0) {
-          // Rest period ended while in background - play bell and finish
+          // Rest period ended while in background
           if (timerRef.current) {
             clearInterval(timerRef.current);
             timerRef.current = null;
           }
           restEndTimeRef.current = null;
-          playCountdownSound(0); // Play bell
           Vibration.vibrate(500);
           setIsResting(false);
           setIsExerciseRest(false);
@@ -200,10 +207,8 @@ export default function TrainingScreen({ route, navigation }) {
         } else {
           // Update display with actual remaining time
           setRestTimeLeft(remaining);
-          // Play appropriate sound if we're in the countdown zone
-          if (remaining <= 10) {
-            playCountdownSound(remaining);
-          }
+          // Don't play timer sound here - it can't be synced after background
+          // The interval will trigger it at exactly 10s if user returned in time
         }
       }
 
@@ -217,16 +222,12 @@ export default function TrainingScreen({ route, navigation }) {
             exerciseTimerRef.current = null;
           }
           exerciseTimerEndRef.current = null;
-          playCountdownSound(0);
           Vibration.vibrate(500);
           setIsExerciseTimerActive(false);
           setExerciseTimerLeft(0);
           completeSet();
         } else {
           setExerciseTimerLeft(remaining);
-          if (remaining <= 10) {
-            playCountdownSound(remaining);
-          }
         }
       }
     };
@@ -369,9 +370,7 @@ export default function TrainingScreen({ route, navigation }) {
     soundVolumeRef.current = userSettings.soundVolume;
 
     if (userSettings.soundVolume !== undefined) {
-      if (beepPlayer) beepPlayer.volume = userSettings.soundVolume;
-      if (countdownPlayer) countdownPlayer.volume = userSettings.soundVolume;
-      if (bellPlayer) bellPlayer.volume = userSettings.soundVolume;
+      if (timerPlayer) timerPlayer.volume = userSettings.soundVolume;
     }
   };
 
@@ -664,50 +663,33 @@ export default function TrainingScreen({ route, navigation }) {
   };
 
   // Play the appropriate sound based on the remaining seconds
-  const playCountdownSound = async (seconds) => {
-    // Use ref for immediate access to current setting (not stale closure)
+  const playTimerSound = async () => {
     if (!soundEnabledRef.current) return;
-
-    // Don't play if already played for this second
-    if (playedSecondsRef.current.has(seconds)) return;
-    playedSecondsRef.current.add(seconds);
+    if (timerPlayedRef.current) return;
+    timerPlayedRef.current = true;
 
     try {
-      if (seconds >= 5 && seconds <= 10) {
-        // Beep at 10, 9, 8, 7, 6, 5
-        if (beepPlayer) {
-          await beepPlayer.seekTo(0);
-          beepPlayer.play();
-        }
-      }  else if (seconds >= 1 && seconds <= 4) {
-        // Countdown sound at 4, 3, 2, 1
-        if (countdownPlayer) {
-          await countdownPlayer.seekTo(0);
-          countdownPlayer.play();
-        }
-      } else if (seconds === 0) {
-        // Bell at 0
-        if (bellPlayer) {
-          await bellPlayer.seekTo(0);
-          bellPlayer.play();
-        }
+      if (timerPlayer) {
+        await timerPlayer.seekTo(0);
+        timerPlayer.play();
       }
     } catch (error) {
       console.log('Error playing sound:', error);
     }
   };
 
-  const startRest = (isExRest = false) => {
-    const restTime = isExRest
+  const startRest = (isExRest = false, isSupersetRound = false) => {
+    const baseRest = isExRest
       ? (routine?.restBetweenExercises || 90)
       : (routine?.restBetweenSets || 60);
+    const restTime = isSupersetRound ? Math.round(baseRest * 1.5) : baseRest;
 
     setIsResting(true);
     setIsExerciseRest(isExRest);
     setRestTimeLeft(restTime);
 
-    // Reset played sounds tracking for new rest period
-    playedSecondsRef.current = new Set();
+    // Reset timer sound tracking for new rest period
+    timerPlayedRef.current = false;
 
     // Store the end time for background-aware countdown
     restEndTimeRef.current = Date.now() + (restTime * 1000);
@@ -716,9 +698,9 @@ export default function TrainingScreen({ route, navigation }) {
       // Calculate remaining time based on actual end time (works even after background)
       const remaining = Math.ceil((restEndTimeRef.current - Date.now()) / 1000);
 
-      // Play countdown sounds at appropriate seconds
-      if (remaining >= 0 && remaining <= 10) {
-        playCountdownSound(remaining);
+      // Play timer sound at 10 seconds remaining
+      if (remaining === 10) {
+        playTimerSound();
       }
 
       if (remaining <= 0) {
@@ -741,8 +723,9 @@ export default function TrainingScreen({ route, navigation }) {
       timerRef.current = null;
     }
     restEndTimeRef.current = null;
-    // Clear played sounds to prevent any pending sounds
-    playedSecondsRef.current = new Set();
+    timerPlayedRef.current = false;
+    // Stop timer sound if playing
+    if (timerPlayer) { try { timerPlayer.pause(); } catch(e) {} }
     setIsResting(false);
     setIsExerciseRest(false);
   };
@@ -751,7 +734,7 @@ export default function TrainingScreen({ route, navigation }) {
     const minutes = getCurrentReps();
     const totalSeconds = (typeof minutes === 'number' ? minutes : 1) * 60;
 
-    playedSecondsRef.current = new Set();
+    timerPlayedRef.current = false;
     exerciseTimerEndRef.current = Date.now() + (totalSeconds * 1000);
     setExerciseTimerLeft(totalSeconds);
     setIsExerciseTimerActive(true);
@@ -759,8 +742,8 @@ export default function TrainingScreen({ route, navigation }) {
     exerciseTimerRef.current = setInterval(() => {
       const remaining = Math.ceil((exerciseTimerEndRef.current - Date.now()) / 1000);
 
-      if (remaining >= 0 && remaining <= 10) {
-        playCountdownSound(remaining);
+      if (remaining === 10) {
+        playTimerSound();
       }
 
       if (remaining <= 0) {
@@ -783,7 +766,9 @@ export default function TrainingScreen({ route, navigation }) {
       exerciseTimerRef.current = null;
     }
     exerciseTimerEndRef.current = null;
-    playedSecondsRef.current = new Set();
+    timerPlayedRef.current = false;
+    // Stop timer sound if playing
+    if (timerPlayer) { try { timerPlayer.pause(); } catch(e) {} }
     setIsExerciseTimerActive(false);
     setExerciseTimerLeft(0);
     completeSet();
@@ -811,7 +796,7 @@ export default function TrainingScreen({ route, navigation }) {
           const firstInSuperset = getFirstInSuperset();
           setCurrentExerciseIndex(firstInSuperset);
           setCurrentSetIndex(prev => prev + 1);
-          startRest(false); // Rest between superset rounds
+          startRest(false, true); // Rest between superset rounds (1.5x)
         } else {
           // Superset complete - move to next exercise/superset or finish
           const nextAfterSuperset = getExerciseAfterSuperset();
@@ -1057,7 +1042,8 @@ export default function TrainingScreen({ route, navigation }) {
               timerRef.current = null;
             }
             restEndTimeRef.current = null;
-            playedSecondsRef.current = new Set();
+            timerPlayedRef.current = false;
+            if (timerPlayer) { try { timerPlayer.pause(); } catch(e) {} }
 
             // Stop any active exercise timer
             if (exerciseTimerRef.current) {
@@ -1333,10 +1319,10 @@ export default function TrainingScreen({ route, navigation }) {
         {/* Done / Start button */}
         <TouchableOpacity
           style={styles.doneButton}
-          onPress={exerciseData?.timeBased ? startExerciseTimer : completeSet}
+          onPress={exerciseData?.timeBased && currentReps !== 'E' ? startExerciseTimer : completeSet}
         >
           <Text style={styles.doneButtonText}>
-            {exerciseData?.timeBased
+            {exerciseData?.timeBased && currentReps !== 'E'
               ? (t('start', lang) || 'START').toUpperCase()
               : (t('done', lang) || 'DONE')}
           </Text>
