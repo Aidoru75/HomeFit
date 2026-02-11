@@ -1,4 +1,4 @@
-// 225 Exercises - Complete Catalog - Bilingual (English/Spanish)
+// 226 Exercises - Complete Catalog - Bilingual (English/Spanish)
 import { isProExercise } from './equipment';
 import { IS_PRO } from '../config';
 
@@ -3144,6 +3144,21 @@ export const exercises = [
       es: 'Ejercicio cardiovascular en cinta de correr. Corre a un ritmo constante con velocidad e inclinación ajustables. Ideal para entrenamiento cardiovascular controlado, resistencia de piernas y quema de calorías.',
     },
     bmc: 2.5,
+    wf: 0.0,
+  },
+  {
+    id: 'stationary_bike',
+    name: { en: 'Stationary Bike', es: 'Bicicleta Estática' },
+    muscleGroup: 'cardio',
+    muscles: { quads: 0.35, hamstrings: 0.20, glutes: 0.20, calves: 0.15, core: 0.10 },
+    equipment: ['stationary_bike'],
+    weightType: 'machine',
+    timeBased: true,
+    description: {
+      en: 'Cardio exercise on a stationary bike. Pedal at a steady pace with adjustable resistance. Low-impact cardiovascular training that builds leg endurance and burns calories while being easy on the joints.',
+      es: 'Ejercicio cardiovascular en bicicleta estática. Pedalea a un ritmo constante con resistencia ajustable. Entrenamiento cardiovascular de bajo impacto que desarrolla la resistencia de piernas y quema calorías siendo suave con las articulaciones.',
+    },
+    bmc: 2.0,
     wf: 0.0,
   },
 

@@ -226,9 +226,10 @@ export const exerciseToNumeric = {
   superman: 200,
   suitcase_carry: 201,
 
-  // CARDIO / RUNNING (203-204)
+  // CARDIO
   running: 203,
   treadmill_running: 204,
+  stationary_bike: 215,
 
   // KETTLEBELL (205-214)
   kb_swing: 205,
@@ -241,6 +242,7 @@ export const exerciseToNumeric = {
   turkish_getup: 212,
   kb_lunge: 213,
   kb_windmill: 214,
+
 };
 
 // Reverse mapping: numeric ID to exercise string ID

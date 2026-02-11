@@ -5,6 +5,7 @@ export default ({ config }) => {
     ...config,
     name: isFree ? 'HomeFit Free' : 'HomeFit',
     slug: 'HomeFit',
+    scheme: isFree ? 'homefitfree' : 'homefit',
     version: '1.0.1',
     orientation: 'portrait',
     icon: './assets/icon.png',

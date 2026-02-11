@@ -14,6 +14,7 @@ import {
   Animated,
   Dimensions,
   Image,
+  Linking,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions } from 'expo-camera';
@@ -115,6 +116,36 @@ export default function RoutinesScreen({ navigation, route }) {
       }
     }
   }, [route.params, routines]);
+
+  // Handle deep link import (homefit://import?importData=...)
+  useEffect(() => {
+    const data = route.params?.importData;
+    if (!data || !IS_PRO) return;
+
+    // Clear the param so it doesn't re-trigger
+    navigation.setParams({ importData: undefined });
+
+    if (!isValidRoutineCode(data)) {
+      Alert.alert(t('invalidQRCode', lang), t('invalidQRCodeMessage', lang));
+      return;
+    }
+
+    const decoded = decodeRoutine(data);
+    if (!decoded) {
+      Alert.alert(t('invalidQRCode', lang), t('invalidQRCodeMessage', lang));
+      return;
+    }
+
+    let totalExercises = 0;
+    decoded.days?.forEach(day => {
+      totalExercises += day.exercises?.length || 0;
+    });
+    decoded.totalExercises = totalExercises;
+
+    setPendingImport(decoded);
+    setImportRoutineName(decoded.name || 'Imported Routine');
+    setShowImportPreviewModal(true);
+  }, [route.params?.importData]);
 
   const loadData = async () => {
     const data = await loadRoutines();
@@ -653,9 +684,14 @@ export default function RoutinesScreen({ navigation, route }) {
     <ScrollView style={styles.content}>
       {routines.length === 0 ? (
         <View style={styles.emptyState}>
-          <Text style={styles.emptyIcon}>📋</Text>
+          <Image source={require('../../assets/icons/notepad.png')} style={styles.emptyIconImage} />
           <Text style={styles.emptyTitle}>{t('noRoutinesYet', lang)}</Text>
-          <Text style={styles.emptyText}>{t('createYourFirst', lang)}</Text>
+          <TouchableOpacity
+            style={styles.accentButton}
+            onPress={() => setShowNewRoutineModal(true)}
+          >
+            <Text style={styles.accentButtonText}>{t('createYourFirst', lang)}</Text>
+          </TouchableOpacity>
         </View>
       ) : (
         <>
@@ -677,6 +713,14 @@ export default function RoutinesScreen({ navigation, route }) {
           ))}
           <Text style={styles.hintText}>{t('longPressDelete', lang)}</Text>
         </>
+      )}
+      {IS_PRO && (
+        <TouchableOpacity
+          style={styles.discoverButton}
+          onPress={() => Linking.openURL(`https://www.aidoru.com/homefit/?lang=${lang}`)}
+        >
+          <Text style={styles.discoverButtonText}>{t('discoverRoutines', lang)}</Text>
+        </TouchableOpacity>
       )}
       <View style={styles.bottomPadding} />
     </ScrollView>
@@ -1443,9 +1487,11 @@ const styles = StyleSheet.create({
     padding: spacing.xl,
     marginTop: spacing.xl,
   },
-  emptyIcon: {
-    fontSize: 64,
+  emptyIconImage: {
+    width: 200,
+    height: 200,
     marginBottom: spacing.md,
+    resizeMode: 'contain',
   },
   emptyTitle: {
     fontFamily: fonts.bold,
@@ -1457,6 +1503,19 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: fontSize.md,
     color: colors.textSecondary,
+    textAlign: 'center',
+  },
+  accentButton: {
+    backgroundColor: colors.accent,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    borderRadius: borderRadius.md,
+    marginTop: spacing.md,
+  },
+  accentButtonText: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.sm,
+    color: '#FFFFFF',
     textAlign: 'center',
   },
   routineCard: {
@@ -1493,6 +1552,20 @@ const styles = StyleSheet.create({
     color: colors.textLight,
     textAlign: 'center',
     marginTop: spacing.md,
+  },
+  discoverButton: {
+    marginTop: spacing.lg,
+    marginHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.accent,
+    borderRadius: borderRadius.md,
+    alignItems: 'center',
+  },
+  discoverButtonText: {
+    fontFamily: fonts.regular,
+    fontSize: fontSize.sm,
+    color: colors.accent,
   },
   dayCard: {
     backgroundColor: colors.card,

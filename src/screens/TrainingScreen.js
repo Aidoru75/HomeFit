@@ -113,9 +113,10 @@ export default function TrainingScreen({ route, navigation }) {
     setHasChanges(false);
   }, []);
 
-  // Configure audio mode on mount - allow mixing with other audio apps
-  // Note: On Android, expo-audio has a bug where interruptionMode string values don't work
-  // (https://github.com/expo/expo/issues/34025), so we only configure on iOS
+  // Configure audio mode on mount - mix with other audio (PiP videos, music, etc.)
+  // Android: handled via native patch (patches/expo-audio+1.1.1.patch) that defaults
+  // interruptionMode to MIX_WITH_OTHERS, since setAudioModeAsync has an enum casting bug
+  // iOS: configured here via setAudioModeAsync
   useEffect(() => {
     const configureAudio = async () => {
       if (Platform.OS === 'ios') {
@@ -128,7 +129,6 @@ export default function TrainingScreen({ route, navigation }) {
           console.log('Error configuring audio mode:', error);
         }
       }
-      // On Android, the default audio mode should allow mixing for short sounds
     };
     configureAudio();
   }, []);

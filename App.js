@@ -1,6 +1,6 @@
 // HomeFit - Main App Entry Point
 import React, { useState, useEffect, useCallback } from 'react';
-import { Image, StyleSheet, View, ActivityIndicator, Text, Platform } from 'react-native';
+import { Image, StyleSheet, View, ActivityIndicator, Text, Platform, Linking } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -150,9 +150,21 @@ export default function App() {
     );
   }
 
+  // Deep link configuration for routine import
+  const linking = {
+    prefixes: ['homefit://', 'homefitfree://'],
+    config: {
+      screens: {
+        Routines: {
+          path: 'import',
+        },
+      },
+    },
+  };
+
   return (
     <SafeAreaProvider>
-      <NavigationContainer onStateChange={loadLanguage}>
+      <NavigationContainer linking={linking} onStateChange={loadLanguage}>
         <StatusBar style="light" backgroundColor={colors.primary} />
         <MainNavigator />
       </NavigationContainer>

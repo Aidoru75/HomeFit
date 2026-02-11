@@ -129,13 +129,18 @@ export default function HomeScreen({ navigation }) {
         </TouchableOpacity>
       ) : (
         <View style={styles.emptyCard}>
-          <Text style={styles.emptyIcon}>🏋️</Text>
+          <Image source={require('../../assets/icons/starter.png')} style={styles.emptyIconImage} />
           <Text style={styles.emptyTitle}>{t('readyToTrain', lang)}</Text>
-          <Text style={styles.emptySubtitle}>
-            {routines.length === 0 
-              ? t('createFirstRoutine', lang)
-              : t('selectRoutine', lang)}
-          </Text>
+          {routines.length === 0 ? (
+            <TouchableOpacity
+              style={styles.accentButton}
+              onPress={() => navigation.navigate('Routines')}
+            >
+              <Text style={styles.accentButtonText}>{t('createFirstRoutine', lang)}</Text>
+            </TouchableOpacity>
+          ) : (
+            <Text style={styles.emptySubtitle}>{t('selectRoutine', lang)}</Text>
+          )}
         </View>
       )}
 
@@ -296,9 +301,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     ...shadows.small,
   },
-  emptyIcon: {
-    fontSize: 48,
+  emptyIconImage: {
+    width: 250,
+    height: 250,
     marginBottom: spacing.md,
+    resizeMode: 'contain',
   },
   emptyTitle: {
     fontFamily: fonts.bold,
@@ -310,6 +317,19 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     textAlign: 'center',
     marginTop: spacing.sm,
+  },
+  accentButton: {
+    backgroundColor: colors.accent,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    borderRadius: borderRadius.md,
+    marginTop: spacing.md,
+  },
+  accentButtonText: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.sm,
+    color: '#FFFFFF',
+    textAlign: 'center',
   },
   sectionTitle: {
     fontFamily: fonts.regular,

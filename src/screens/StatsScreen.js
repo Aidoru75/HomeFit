@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
+  Image,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -522,7 +523,7 @@ export default function StatsScreen() {
 
         {history.length === 0 ? (
           <View style={styles.emptyCard}>
-            <Text style={styles.emptyIcon}>📊</Text>
+            <Image source={require('../../assets/icons/stats.png')} style={styles.emptyIconImage} />
             <Text style={styles.emptyTitle}>{t('noWorkoutsYet', lang)}</Text>
             <Text style={styles.emptySubtitle}>{t('completeFirstWorkout', lang)}</Text>
           </View>
@@ -944,9 +945,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     ...shadows.small,
   },
-  emptyIcon: {
-    fontSize: 48,
+  emptyIconImage: {
+    width: 48,
+    height: 48,
     marginBottom: spacing.md,
+    resizeMode: 'contain',
   },
   emptyTitle: {
     fontFamily: fonts.bold,

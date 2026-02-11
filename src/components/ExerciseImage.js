@@ -518,8 +518,6 @@ const exerciseImages = {
   // ============================================
   leg_press_calf_raise_start: require('../../assets/exercises/leg_press_calf_raise_start.jpg'),
   leg_press_calf_raise_end: require('../../assets/exercises/leg_press_calf_raise_end.jpg'),
-  treadmill_running_start: require('../../assets/exercises/treadmill_running_start.jpg'),
-  treadmill_running_end: require('../../assets/exercises/treadmill_running_end.jpg'),
 
   // ============================================
   // CORE
@@ -532,6 +530,14 @@ const exerciseImages = {
   cable_woodchop_low_end: require('../../assets/exercises/cable_woodchop_low_end.jpg'),
   pallof_press_start: require('../../assets/exercises/pallof_press_start.jpg'),
   pallof_press_end: require('../../assets/exercises/pallof_press_end.jpg'),
+
+  // ============================================
+  // CARDIO
+  // ============================================
+  treadmill_running_start: require('../../assets/exercises/treadmill_running_start.jpg'),
+  treadmill_running_end: require('../../assets/exercises/treadmill_running_end.jpg'),
+  stationary_bike_start: require('../../assets/exercises/stationary_bike_start.jpg'),
+  stationary_bike_end: require('../../assets/exercises/stationary_bike_end.jpg'),
 
   // ============================================
   // KETTLEBELL
