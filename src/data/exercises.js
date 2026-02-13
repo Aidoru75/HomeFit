@@ -164,6 +164,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.65,
   },
   {
     id: 'incline_push_ups',
@@ -178,6 +179,7 @@ export const exercises = [
     },
     bmc: 1.2,
     wf: 0.0,
+    bwFraction: 0.55,
   },
   {
     id: 'decline_push_ups',
@@ -192,6 +194,7 @@ export const exercises = [
     },
     bmc: 1.8,
     wf: 0.0,
+    bwFraction: 0.70,
   },
   {
     id: 'svend_press',
@@ -255,6 +258,20 @@ export const exercises = [
     wf: 0.04,
   },
   {
+    id: 'weighted_pullups',
+    name: { en: 'Weighted Pull-Ups', es: 'Dominadas con Peso Adicional' },
+    muscleGroup: 'back',
+    muscles: { back: 0.60, biceps: 0.30, shoulders: 0.10 },
+    equipment: ['pullup_rack', 'weight_belt', 'plates'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Back builder with wide overhand grip and extra weight. Hang with arms fully extended, pull yourself up until chin clears the bar, focusing on driving elbows down and squeezing your lats.',
+      es: 'Constructor de espalda con agarre ancho pronado y peso extra. Cuélgate con brazos extendidos, sube hasta que la barbilla pase la barra, enfocándote en llevar los codos abajo y apretar dorsales.',
+    },
+    bmc: 3.0,
+    wf: 0.04,
+  },
+  {
     id: 'chinups',
     name: { en: 'Chin-Ups (Supinated)', es: 'Dominadas Supinas' },
     muscleGroup: 'back',
@@ -281,6 +298,7 @@ export const exercises = [
     },
     bmc: 2.5,
     wf: 0.0,
+    bwFraction: 0.15,
   },
   {
     id: 'barbell_row',
@@ -451,6 +469,7 @@ export const exercises = [
     },
     bmc: 2.0,
     wf: 0.0,
+    bwFraction: 0.45,
   },
   {
     id: 'shrugs_barbell',
@@ -707,6 +726,7 @@ export const exercises = [
     },
     bmc: 0.8,
     wf: 0.0,
+    bwFraction: 0.15,
   },
   {
     id: 'barbell_high_pull',
@@ -922,6 +942,7 @@ export const exercises = [
     },
     bmc: 0.8,
     wf: 0.0,
+    bwFraction: 0.15,
   },
 
   // ============================================
@@ -1027,6 +1048,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.50,
   },
   {
     id: 'diamond_push_ups',
@@ -1041,6 +1063,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.65,
   },
   {
     id: 'band_pushdown',
@@ -1055,6 +1078,7 @@ export const exercises = [
     },
     bmc: 0.8,
     wf: 0.0,
+    bwFraction: 0.15,
   },
 
   // ============================================
@@ -1160,6 +1184,7 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.0,
+    bwFraction: 0.90,
   },
   {
     id: 'towel_pullups',
@@ -1417,6 +1442,7 @@ export const exercises = [
     },
     bmc: 2.0,
     wf: 0.0,
+    bwFraction: 0.75,
   },
   {
     id: 'wall_sit',
@@ -1432,6 +1458,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.75,
   },
   {
     id: 'band_squat',
@@ -1446,6 +1473,7 @@ export const exercises = [
     },
     bmc: 2.0,
     wf: 0.0,
+    bwFraction: 0.15,
   },
 
   // ============================================
@@ -1535,6 +1563,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.40,
   },
   {
     id: 'glute_ham_raise',
@@ -1563,6 +1592,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.15,
   },
 
   // ============================================
@@ -1610,6 +1640,7 @@ export const exercises = [
     },
     bmc: 2.5,
     wf: 0.0,
+    bwFraction: 0.40,
   },
   {
     id: 'glute_bridge_barbell',
@@ -1670,7 +1701,7 @@ export const exercises = [
   },
   {
     id: 'db_sumo_squat',
-    name: { en: 'Sumo Squat (Dumbbells)', es: 'Sentadilla Sumo con Mancuernas' },
+    name: { en: 'Sumo Squat (Dumbbells)', es: 'Sentadilla Sumo con Mancuerna' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.40, quads: 0.35, hamstrings: 0.15, core: 0.10 },
     equipment: ['dumbbells'],
@@ -1724,6 +1755,7 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.0,
+    bwFraction: 0.15,
   },
   {
     id: 'clamshells',
@@ -1738,6 +1770,7 @@ export const exercises = [
     },
     bmc: 0.8,
     wf: 0.0,
+    bwFraction: 0.15,
   },
   {
     id: 'donkey_kicks',
@@ -1752,6 +1785,7 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.0,
+    bwFraction: 0.15,
   },
   {
     id: 'fire_hydrants',
@@ -1766,6 +1800,7 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.0,
+    bwFraction: 0.15,
   },
   {
     id: 'frog_bridge',
@@ -1780,6 +1815,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.40,
   },
 
   // ============================================
@@ -1868,6 +1904,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.90,
   },
 
   // ============================================
@@ -1900,6 +1937,7 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.0,
+    bwFraction: 0.20,
   },
   {
     id: 'reverse_crunches',
@@ -1914,6 +1952,7 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.0,
+    bwFraction: 0.20,
   },
   {
     id: 'bicycle_crunches',
@@ -1928,6 +1967,7 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.0,
+    bwFraction: 0.20,
   },
   {
     id: 'sit_ups',
@@ -1942,6 +1982,7 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.0,
+    bwFraction: 0.20,
   },
   {
     id: 'decline_sit_ups',
@@ -1956,6 +1997,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.30,
   },
   {
     id: 'weighted_decline_sit_ups',
@@ -1984,6 +2026,7 @@ export const exercises = [
     },
     bmc: 2.0,
     wf: 0.0,
+    bwFraction: 0.40,
   },
   {
     id: 'hanging_knee_raise',
@@ -1998,6 +2041,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.40,
   },
   {
     id: 'hanging_oblique_knee_raise',
@@ -2012,6 +2056,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.40,
   },
   {
     id: 'toes_to_bar',
@@ -2026,6 +2071,7 @@ export const exercises = [
     },
     bmc: 2.5,
     wf: 0.0,
+    bwFraction: 0.40,
   },
   {
     id: 'windshield_wipers',
@@ -2040,6 +2086,7 @@ export const exercises = [
     },
     bmc: 2.5,
     wf: 0.0,
+    bwFraction: 0.40,
   },
   {
     id: 'plank',
@@ -2055,6 +2102,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.40,
   },
   {
     id: 'side_plank',
@@ -2070,6 +2118,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.40,
   },
   {
     id: 'weighted_plank',
@@ -2099,6 +2148,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.30,
   },
   {
     id: 'dead_bug',
@@ -2113,6 +2163,7 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.0,
+    bwFraction: 0.20,
   },
   {
     id: 'bird_dog',
@@ -2127,6 +2178,7 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.0,
+    bwFraction: 0.20,
   },
   {
     id: 'ab_rollout',
@@ -2141,6 +2193,7 @@ export const exercises = [
     },
     bmc: 2.0,
     wf: 0.0,
+    bwFraction: 0.30,
   },
   {
     id: 'russian_twist',
@@ -2155,6 +2208,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.02,
+    bwFraction: 0.20,
   },
   {
     id: 'v_ups',
@@ -2169,6 +2223,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.20,
   },
   {
     id: 'l_sit_hold',
@@ -2183,6 +2238,7 @@ export const exercises = [
     },
     bmc: 2.0,
     wf: 0.0,
+    bwFraction: 0.40,
   },
   {
     id: 'hyperextension_core',
@@ -2197,6 +2253,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.45,
   },
   {
     id: 'superman',
@@ -2211,6 +2268,7 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.0,
+    bwFraction: 0.20,
   },
   {
     id: 'db_side_bend',
@@ -2244,6 +2302,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
+    bwFraction: 0.85,
   },
   {
     id: 'running',
@@ -2259,6 +2318,7 @@ export const exercises = [
     },
     bmc: 2.5,
     wf: 0.0,
+    bwFraction: 0.85,
   },
 
   // ############################################
@@ -3145,6 +3205,7 @@ export const exercises = [
     },
     bmc: 2.5,
     wf: 0.0,
+    bwFraction: 0.50,
   },
   {
     id: 'stationary_bike',
@@ -3160,6 +3221,7 @@ export const exercises = [
     },
     bmc: 2.0,
     wf: 0.0,
+    bwFraction: 0.50,
   },
 
 ];

@@ -6,13 +6,13 @@ export default ({ config }) => {
     name: isFree ? 'HomeFit Free' : 'HomeFit',
     slug: 'HomeFit',
     scheme: isFree ? 'homefitfree' : 'homefit',
-    version: '1.0.1',
+    version: '1.0.2',
     orientation: 'portrait',
-    icon: './assets/icon.png',
+    icon: isFree ? './assets/icon-free.png' : './assets/icon.png',
     userInterfaceStyle: 'light',
     newArchEnabled: true,
     splash: {
-      image: './assets/splash-icon.png',
+      image: isFree ? './assets/splash-icon-free.png' : './assets/splash-icon.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
@@ -21,10 +21,10 @@ export default ({ config }) => {
       bundleIdentifier: isFree ? 'com.aidoru.HomeFitFree' : 'com.aidoru.HomeFit',
     },
     android: {
-      versionCode: 1,
+      versionCode: 2,
       adaptiveIcon: {
-        foregroundImage: './assets/adaptive-icon.png',
-        backgroundColor: '#ffffff',
+        foregroundImage: isFree ? './assets/adaptive-icon-free.png' : './assets/adaptive-icon.png',
+        backgroundImage: isFree ? './assets/adaptive-icon-free-bg.png' : './assets/adaptive-icon-bg.png',
       },
       edgeToEdgeEnabled: true,
       permissions: [
@@ -34,7 +34,7 @@ export default ({ config }) => {
       package: isFree ? 'com.aidoru.HomeFitFree' : 'com.aidoru.HomeFit',
     },
     web: {
-      favicon: './assets/favicon.png',
+      favicon: isFree ? './assets/favicon-free.png' : './assets/favicon.png',
     },
     plugins: ['expo-audio'],
     extra: {

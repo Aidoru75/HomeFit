@@ -224,7 +224,7 @@ export const exerciseToNumeric = {
   l_sit_hold: 198,
   hyperextension_core: 199,
   superman: 200,
-  suitcase_carry: 201,
+  db_sumo_squat: 201,
 
   // CARDIO
   running: 203,

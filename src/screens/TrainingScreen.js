@@ -879,7 +879,8 @@ export default function TrainingScreen({ route, navigation }) {
           const reps = typeof rawReps === 'number' ? rawReps : defaultRep;
           const effectiveReps = isTimeBased ? reps * 10 : reps;
           const rawWeight = (weightsArray[s] || 0) * weightMultiplier;
-          const weight = isBodyweight ? (userWeight + rawWeight) : rawWeight;
+          const bwFraction = exData.bwFraction ?? 1.0;
+          const weight = isBodyweight ? (userWeight * bwFraction + rawWeight) : rawWeight;
           const setVolume = effectiveReps * weight;
 
           for (const [muscle, pct] of Object.entries(exData.muscles)) {
