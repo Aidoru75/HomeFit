@@ -68,6 +68,10 @@ export default function TrainingScreen({ route, navigation }) {
   const exerciseTimerRef = useRef(null);
   const exerciseTimerEndRef = useRef(null);
 
+  // Track which exercises had at least one set completed (for accurate calorie/volume)
+  const [completedExerciseIndices, setCompletedExerciseIndices] = useState(new Set());
+  const completedExerciseIndicesRef = useRef(new Set());
+
   // Audio player for countdown timer
   const timerPlayer = useAudioPlayer(timerSource);
 
@@ -513,20 +517,22 @@ export default function TrainingScreen({ route, navigation }) {
     }
 
     let totalExerciseCalories = 0;
+    const completed = completedExerciseIndicesRef.current;
 
     // Calculate calories for each exercise
     day.exercises.forEach((ex, exIndex) => {
+      if (!completed.has(exIndex)) return; // Skip exercises user didn't perform
       const exerciseData = getExerciseData(ex.exerciseId);
       if (!exerciseData) return;
 
       const bmc = exerciseData.bmc || 1.0;
       const wf = exerciseData.wf || 0.0;
       const sets = ex.sets || 3;
-      const isBodyweight = wf === 0.0; // Bodyweight exercises have wf = 0
       const isTimeBased = exerciseData.timeBased || false;
       // Dumbbell exercises: weight entered is per hand, so total = 2x unless singleWeight
       const isDumbbell = exerciseData.weightType === 'dumbbell';
       const weightMultiplier = (isDumbbell && !exerciseData.singleWeight) ? 2 : 1;
+      const bwFraction = exerciseData.bwFraction ?? 0;
 
       // Get reps and weights (modified or original)
       const mods = currentModifiedExercises[exIndex];
@@ -540,17 +546,16 @@ export default function TrainingScreen({ route, navigation }) {
         const reps = typeof rawReps === 'number' ? rawReps : defaultRep;
         // Time-based: use minutes directly; rep-based: use reps/10
         const repsScaling = isTimeBased ? reps : (reps / 10);
-        const weight = (weightsArray[setIdx] || 0) * weightMultiplier;
+        const rawWeight = (weightsArray[setIdx] || 0) * weightMultiplier * (isImperial ? 0.453592 : 1);
 
         let setCalories;
-        if (isBodyweight) {
-          // Bodyweight exercise: calories = (BMC × effective_weight/75) × repsScaling
-          // If user added extra weight (e.g., weighted pull-ups), include it
-          const effectiveWeight = userWeight + weight;
-          setCalories = (bmc * effectiveWeight / 75) * repsScaling;
+        if (bwFraction > 0) {
+          // Bodyweight or hybrid: scale by total effective weight relative to 75kg reference
+          const totalWeight = userWeight * bwFraction + rawWeight;
+          setCalories = (bmc * totalWeight / 75) * repsScaling;
         } else {
-          // Weighted exercise: calories = (BMC + (WF × weight_lifted)) × repsScaling × mass_factor
-          setCalories = (bmc + (wf * weight)) * repsScaling * massFactor;
+          // Pure loaded exercise: calories = (BMC + (WF × weight_kg)) × repsScaling × mass_factor
+          setCalories = (bmc + (wf * rawWeight)) * repsScaling * massFactor;
         }
         totalExerciseCalories += setCalories;
       }
@@ -775,6 +780,13 @@ export default function TrainingScreen({ route, navigation }) {
   };
 
   const completeSet = () => {
+    // Track this exercise as completed for accurate calorie/volume calculation
+    setCompletedExerciseIndices(prev => {
+      const next = new Set(prev).add(currentExerciseIndex);
+      completedExerciseIndicesRef.current = next;
+      return next;
+    });
+
     const day = routine?.days?.[paramsRef.current.dayIndex];
     const currentEx = day?.exercises?.[currentExerciseIndex];
     const supersetIndices = getSupersetExercises(currentExerciseIndex);
@@ -859,12 +871,13 @@ export default function TrainingScreen({ route, navigation }) {
       let userWeight = parseFloat(settings.userWeight) || (isImperial ? 165 : 75);
       if (isImperial) userWeight = lbToKg(userWeight);
 
+      const completed = completedExerciseIndicesRef.current;
       currentDay.exercises.forEach((ex, exIndex) => {
+        if (!completed.has(exIndex)) return; // Skip exercises user didn't perform
         const exData = exercises.find(e => e.id === ex.exerciseId);
         if (!exData?.muscles) return;
 
         const sets = ex.sets || 3;
-        const isBodyweight = (exData.wf || 0) === 0;
         const isDumbbell = exData.weightType === 'dumbbell';
         const weightMultiplier = (isDumbbell && !exData.singleWeight) ? 2 : 1;
 
@@ -878,9 +891,9 @@ export default function TrainingScreen({ route, navigation }) {
           const rawReps = repsArray[s];
           const reps = typeof rawReps === 'number' ? rawReps : defaultRep;
           const effectiveReps = isTimeBased ? reps * 10 : reps;
-          const rawWeight = (weightsArray[s] || 0) * weightMultiplier;
-          const bwFraction = exData.bwFraction ?? 1.0;
-          const weight = isBodyweight ? (userWeight * bwFraction + rawWeight) : rawWeight;
+          const rawWeight = (weightsArray[s] || 0) * weightMultiplier * (isImperial ? 0.453592 : 1);
+          const bwFraction = exData.bwFraction ?? 0;
+          const weight = userWeight * bwFraction + rawWeight;
           const setVolume = effectiveReps * weight;
 
           for (const [muscle, pct] of Object.entries(exData.muscles)) {
@@ -904,7 +917,7 @@ export default function TrainingScreen({ route, navigation }) {
       dayIndex: paramsRef.current.dayIndex,
       routineName: routine?.name,
       dayName: dayDisplayName,
-      exerciseCount: currentDay?.exercises?.length || 0,
+      exerciseCount: completedExerciseIndicesRef.current.size || 0,
       caloriesBurned: calories,
       duration: durationSeconds,
       muscleVolume,

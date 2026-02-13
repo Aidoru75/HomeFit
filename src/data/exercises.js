@@ -242,6 +242,7 @@ export const exercises = [
     },
     bmc: 3.0,
     wf: 0.04,
+    bwFraction: 0.95,
   },
   {
     id: 'pullups_close',
@@ -256,6 +257,7 @@ export const exercises = [
     },
     bmc: 3.0,
     wf: 0.04,
+    bwFraction: 0.95,
   },
   {
     id: 'weighted_pullups',
@@ -270,6 +272,7 @@ export const exercises = [
     },
     bmc: 3.0,
     wf: 0.04,
+    bwFraction: 0.95,
   },
   {
     id: 'chinups',
@@ -284,6 +287,7 @@ export const exercises = [
     },
     bmc: 3.0,
     wf: 0.04,
+    bwFraction: 0.95,
   },
   {
     id: 'band_assisted_pullups',
@@ -928,6 +932,7 @@ export const exercises = [
     },
     bmc: 2.5,
     wf: 0.04,
+    bwFraction: 0.95,
   },
   {
     id: 'band_curl',
@@ -1199,6 +1204,7 @@ export const exercises = [
     },
     bmc: 3.0,
     wf: 0.04,
+    bwFraction: 0.95,
   },
   {
     id: 'reverse_curl_barbell',
@@ -1578,6 +1584,7 @@ export const exercises = [
     },
     bmc: 3.0,
     wf: 0.04,
+    bwFraction: 0.70,
   },
   {
     id: 'band_leg_curl',
@@ -1923,6 +1930,7 @@ export const exercises = [
     },
     bmc: 2.0,
     wf: 0.0,
+    bwFraction: 0.30,
   },
   {
     id: 'crunches',
@@ -2012,6 +2020,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.02,
+    bwFraction: 0.30,
   },
   {
     id: 'hanging_leg_raise',
@@ -2134,6 +2143,7 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.02,
+    bwFraction: 0.40,
   },
   {
     id: 'mountain_climbers',
@@ -2411,6 +2421,7 @@ export const exercises = [
     },
     bmc: 2.5,
     wf: 0.04,
+    bwFraction: 0.95,
   },
 
   // ============================================
@@ -2893,6 +2904,7 @@ export const exercises = [
     },
     bmc: 2.5,
     wf: 0.04,
+    bwFraction: 0.95,
   },
 
   // ============================================
