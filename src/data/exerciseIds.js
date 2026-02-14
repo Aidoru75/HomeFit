@@ -234,6 +234,8 @@ export const exerciseToNumeric = {
   rowing: 217,
   reverse_fly: 218,
   weighted_dips: 219,
+  burpees: 220,
+  jumping_jacks: 221,
 
   // KETTLEBELL (205-214)
   kb_swing: 205,

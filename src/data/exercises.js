@@ -1,4 +1,4 @@
-// 230 Exercises - Complete Catalog - Bilingual (English/Spanish)
+// 232 Exercises - Complete Catalog - Bilingual (English/Spanish)
 import { isProExercise } from './equipment';
 import { IS_PRO } from '../config';
 
@@ -2329,6 +2329,36 @@ export const exercises = [
     bmc: 2.5,
     wf: 0.0,
     bwFraction: 0.85,
+  },
+  {
+    id: 'burpees',
+    name: { en: 'Burpees', es: 'Burpees' },
+    muscleGroup: 'cardio',
+    muscles: { quads: 0.25, chest: 0.20, shoulders: 0.15, core: 0.20, glutes: 0.10, triceps: 0.10 },
+    equipment: [],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Full-body explosive exercise. From standing, squat down, kick feet back into a push-up position, perform a push-up, jump feet forward, then explode upward into a jump. High calorie burn and conditioning.',
+      es: 'Ejercicio explosivo de cuerpo completo. Desde parado, agáchate, lanza los pies atrás a posición de flexión, haz una flexión, salta los pies adelante, luego explota hacia arriba en un salto. Alta quema calórica y acondicionamiento.',
+    },
+    bmc: 2.5,
+    wf: 0.0,
+    bwFraction: 0.65,
+  },
+  {
+    id: 'jumping_jacks',
+    name: { en: 'Jumping Jacks', es: 'Saltos de Tijera' },
+    muscleGroup: 'cardio',
+    muscles: { calves: 0.25, quads: 0.20, shoulders: 0.25, glutes: 0.15, core: 0.15 },
+    equipment: [],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Classic full-body cardio exercise. Start standing with arms at sides, jump while spreading legs and raising arms overhead, then jump back to starting position. Great for warm-ups and conditioning.',
+      es: 'Ejercicio cardiovascular clásico de cuerpo completo. Comienza de pie con brazos a los lados, salta abriendo piernas y subiendo brazos sobre la cabeza, luego salta de vuelta a la posición inicial. Ideal para calentamiento y acondicionamiento.',
+    },
+    bmc: 1.5,
+    wf: 0.0,
+    bwFraction: 0.30,
   },
 
   // ############################################

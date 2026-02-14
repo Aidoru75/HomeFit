@@ -548,6 +548,10 @@ const exerciseImages = {
   stepper_end: require('../../assets/exercises/stepper_end.jpg'),
   rowing_start: require('../../assets/exercises/rowing_start.jpg'),
   rowing_end: require('../../assets/exercises/rowing_end.jpg'),
+  // burpees_start: require('../../assets/exercises/burpees_start.jpg'),
+  // burpees_end: require('../../assets/exercises/burpees_end.jpg'),
+  // jumping_jacks_start: require('../../assets/exercises/jumping_jacks_start.jpg'),
+  // jumping_jacks_end: require('../../assets/exercises/jumping_jacks_end.jpg'),
 
   // ============================================
   // KETTLEBELL
