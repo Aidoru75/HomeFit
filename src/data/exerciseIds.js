@@ -230,6 +230,10 @@ export const exerciseToNumeric = {
   running: 203,
   treadmill_running: 204,
   stationary_bike: 215,
+  stepper: 216,
+  rowing: 217,
+  reverse_fly: 218,
+  weighted_dips: 219,
 
   // KETTLEBELL (205-214)
   kb_swing: 205,

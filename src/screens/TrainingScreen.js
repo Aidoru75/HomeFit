@@ -929,7 +929,7 @@ export default function TrainingScreen({ route, navigation }) {
   const handleFinishAndGoHome = () => {
     resetWorkoutState();
     allowNavigation.current = true;
-    navigation.navigate('Home');
+    navigation.navigate(IS_PRO ? 'Stats' : 'Home', IS_PRO ? { tab: 'workload' } : undefined);
   };
 
   const exitWorkout = () => {

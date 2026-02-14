@@ -72,6 +72,8 @@ const exerciseImages = {
   pullups_wide_end: require('../../assets/exercises/pullups_wide_end.jpg'),
   pullups_close_start: require('../../assets/exercises/pullups_close_start.jpg'),
   pullups_close_end: require('../../assets/exercises/pullups_close_end.jpg'),
+  weighted_pullups_start: require('../../assets/exercises/weighted_pullups_start.jpg'),
+  weighted_pullups_end: require('../../assets/exercises/weighted_pullups_end.jpg'),
   chinups_start: require('../../assets/exercises/chinups_start.jpg'),
   chinups_end: require('../../assets/exercises/chinups_end.jpg'),
   band_assisted_pullups_start: require('../../assets/exercises/band_assisted_pullups_start.jpg'),
@@ -406,6 +408,8 @@ const exerciseImages = {
   chest_press_end: require('../../assets/exercises/chest_press_end.jpg'),
   dips_chest_start: require('../../assets/exercises/dips_chest_start.jpg'),
   dips_chest_end: require('../../assets/exercises/dips_chest_end.jpg'),
+  weighted_dips_start: require('../../assets/exercises/weighted_dips_start.jpg'),
+  weighted_dips_end: require('../../assets/exercises/weighted_dips_end.jpg'),
 
   // ============================================
   // BACK
@@ -442,6 +446,8 @@ const exerciseImages = {
   face_pulls_shoulders_end: require('../../assets/exercises/face_pulls_end.jpg'),
   upright_row_cable_start: require('../../assets/exercises/upright_row_cable_start.jpg'),
   upright_row_cable_end: require('../../assets/exercises/upright_row_cable_end.jpg'),
+  reverse_fly_start: require('../../assets/exercises/reverse_fly_start.jpg'),
+  reverse_fly_end: require('../../assets/exercises/reverse_fly_end.jpg'),
 
   // ============================================
   // BICEPS
@@ -538,6 +544,10 @@ const exerciseImages = {
   treadmill_running_end: require('../../assets/exercises/treadmill_running_end.jpg'),
   stationary_bike_start: require('../../assets/exercises/stationary_bike_start.jpg'),
   stationary_bike_end: require('../../assets/exercises/stationary_bike_end.jpg'),
+  stepper_start: require('../../assets/exercises/stepper_start.jpg'),
+  stepper_end: require('../../assets/exercises/stepper_end.jpg'),
+  rowing_start: require('../../assets/exercises/rowing_start.jpg'),
+  rowing_end: require('../../assets/exercises/rowing_end.jpg'),
 
   // ============================================
   // KETTLEBELL

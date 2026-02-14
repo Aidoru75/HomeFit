@@ -1,4 +1,4 @@
-// 226 Exercises - Complete Catalog - Bilingual (English/Spanish)
+// 230 Exercises - Complete Catalog - Bilingual (English/Spanish)
 import { isProExercise } from './equipment';
 import { IS_PRO } from '../config';
 
@@ -264,7 +264,7 @@ export const exercises = [
     name: { en: 'Weighted Pull-Ups', es: 'Dominadas con Peso Adicional' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.30, shoulders: 0.10 },
-    equipment: ['pullup_rack', 'weight_belt', 'plates'],
+    equipment: ['pullup_rack', 'dip_belt', 'plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Back builder with wide overhand grip and extra weight. Hang with arms fully extended, pull yourself up until chin clears the bar, focusing on driving elbows down and squeezing your lats.',
@@ -2423,6 +2423,21 @@ export const exercises = [
     wf: 0.04,
     bwFraction: 0.95,
   },
+  {
+    id: 'weighted_dips',
+    name: { en: 'Weighted Dips', es: 'Fondos con Peso Adicional' },
+    muscleGroup: 'chest',
+    muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
+    equipment: ['parallels', 'dip_belt', 'plates'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Dips with added weight for progressive overload. Attach weight to a dip belt, lean forward to emphasize chest, lower until shoulders are below elbows, then push up powerfully.',
+      es: 'Fondos con peso adicional para sobrecarga progresiva. Sujeta peso a un cinturón de fondos, inclínate hacia adelante para enfatizar pecho, baja hasta que los hombros estén bajo los codos, luego empuja con fuerza.',
+    },
+    bmc: 3.0,
+    wf: 0.04,
+    bwFraction: 0.95,
+  },
 
   // ============================================
   // BACK
@@ -2686,6 +2701,20 @@ export const exercises = [
     },
     bmc: 2.0,
     wf: 0.03,
+  },
+  {
+    id: 'reverse_fly',
+    name: { en: 'Reverse Fly Machine', es: 'Aperturas Inversas en Máquina' },
+    muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.70, back: 0.30 },
+    equipment: ['reverse_fly_machine'],
+    weightType: 'machine',
+    description: {
+      en: 'Machine isolation for rear delts. Sit facing the pad, grip the handles and open your arms in a wide arc, squeezing your rear delts and upper back at the end of the movement.',
+      es: 'Aislamiento en máquina para deltoides posteriores. Siéntate de frente al pad, agarra los mangos y abre los brazos en un arco amplio, apretando deltoides traseros y espalda alta al final del movimiento.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
   },
 
   // ============================================
@@ -3232,6 +3261,38 @@ export const exercises = [
       es: 'Ejercicio cardiovascular en bicicleta estática. Pedalea a un ritmo constante con resistencia ajustable. Entrenamiento cardiovascular de bajo impacto que desarrolla la resistencia de piernas y quema calorías siendo suave con las articulaciones.',
     },
     bmc: 2.0,
+    wf: 0.0,
+    bwFraction: 0.50,
+  },
+  {
+    id: 'stepper',
+    name: { en: 'Stepper / Elliptical', es: 'Stepper / Elíptica' },
+    muscleGroup: 'cardio',
+    muscles: { quads: 0.30, glutes: 0.25, hamstrings: 0.20, calves: 0.15, core: 0.10 },
+    equipment: ['stepper'],
+    weightType: 'machine',
+    timeBased: true,
+    description: {
+      en: 'Low-impact cardio on stepper or elliptical machine. Step at a steady pace with adjustable resistance and incline. Engages the entire lower body while being gentle on the joints.',
+      es: 'Cardio de bajo impacto en stepper o elíptica. Pedalea a un ritmo constante con resistencia e inclinación ajustables. Trabaja todo el tren inferior siendo suave con las articulaciones.',
+    },
+    bmc: 2.0,
+    wf: 0.0,
+    bwFraction: 0.50,
+  },
+  {
+    id: 'rowing',
+    name: { en: 'Rowing Machine', es: 'Máquina de Remo' },
+    muscleGroup: 'cardio',
+    muscles: { back: 0.30, quads: 0.20, hamstrings: 0.15, shoulders: 0.15, biceps: 0.10, core: 0.10 },
+    equipment: ['rowing_machine'],
+    weightType: 'machine',
+    timeBased: true,
+    description: {
+      en: 'Full-body cardio on rowing machine. Drive with your legs, lean back slightly, then pull the handle to your lower chest. Reverse the motion smoothly. Builds cardiovascular endurance and full-body strength.',
+      es: 'Cardio de cuerpo completo en máquina de remo. Empuja con las piernas, inclínate ligeramente atrás, luego tira del mango al pecho bajo. Invierte el movimiento suavemente. Desarrolla resistencia cardiovascular y fuerza corporal completa.',
+    },
+    bmc: 2.5,
     wf: 0.0,
     bwFraction: 0.50,
   },

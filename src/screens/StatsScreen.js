@@ -33,19 +33,23 @@ const DAY_COLORS = [
   '#F7DC6F', // Gold
 ];
 
-export default function StatsScreen() {
+export default function StatsScreen({ route }) {
   const insets = useSafeAreaInsets();
   const [history, setHistory] = useState([]);
   const [settings, setSettings] = useState({ language: 'en' });
   const [loaded, setLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview' or 'calories'
+  const [activeTab, setActiveTab] = useState(route.params?.tab || 'overview');
   const histogramScrollRef = useRef(null);
 
   useFocusEffect(
     React.useCallback(() => {
       loadData();
-    }, [])
+      // If navigated with a tab param (e.g., from workout completion), switch to it
+      if (route.params?.tab) {
+        setActiveTab(route.params.tab);
+      }
+    }, [route.params?.tab])
   );
 
   const loadData = async () => {

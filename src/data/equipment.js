@@ -95,7 +95,25 @@ export const equipment = {
     type: 'machine',
     pro: true,
   },
-  
+  stepper: {
+    id: 'stepper',
+    name: { en: 'Stepper / Elliptical', es: 'Stepper / Elíptica' },
+    type: 'machine',
+    pro: true,
+  },
+  rowingMachine: {
+    id: 'rowing_machine',
+    name: { en: 'Rowing Machine', es: 'Máquina de Remo' },
+    type: 'machine',
+    pro: true,
+  },
+  reverseFlyMachine: {
+    id: 'reverse_fly_machine',
+    name: { en: 'Reverse Fly Machine', es: 'Máquina de Aperturas Inversas' },
+    type: 'machine',
+    pro: true,
+  },
+
   // Racks and Benches
   rack: {
     id: 'rack',
@@ -307,7 +325,7 @@ export const equipmentCategories = {
   machineStations: {
     id: 'machineStations',
     name: { en: 'Machine Stations', es: 'Estaciones de Máquinas' },
-    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'lying_leg_curl_station', 'standing_leg_curl_station', 'leg_press_station', 'pec_deck_station', 'chest_press_station', 'lat_station', 'calf_station', 'ghd_machine', 'treadmill', 'stationary_bike'],
+    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'lying_leg_curl_station', 'standing_leg_curl_station', 'leg_press_station', 'pec_deck_station', 'chest_press_station', 'lat_station', 'calf_station', 'ghd_machine', 'treadmill', 'stationary_bike', 'stepper', 'rowing_machine', 'reverse_fly_machine'],
   },
   cableAttachments: {
     id: 'cableAttachments',
