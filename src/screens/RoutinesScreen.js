@@ -562,6 +562,66 @@ export default function RoutinesScreen({ navigation, route }) {
            (nextEx?.supersetGroup === currentEx.supersetGroup);
   };
 
+  // Estimate total workout duration for a day (in seconds)
+  const estimateDayDuration = (dayIndex) => {
+    const day = selectedRoutine?.days?.[dayIndex];
+    if (!day?.exercises || day.exercises.length === 0) return 0;
+
+    const restSets = selectedRoutine?.restBetweenSets || 60;
+    const restExercises = selectedRoutine?.restBetweenExercises || 90;
+    const SEC_PER_REP = 3.5;
+    const SEC_EXHAUSTION = 40;
+
+    let totalSeconds = 0;
+    const exercises = day.exercises;
+
+    for (let i = 0; i < exercises.length; i++) {
+      const ex = exercises[i];
+      const exData = getExerciseById(ex.exerciseId);
+      const sets = ex.sets || 3;
+      const repsArray = ex.reps || [];
+      const isTimeBased = exData?.timeBased || false;
+
+      // Working time for all sets
+      for (let s = 0; s < sets; s++) {
+        const rep = repsArray[s] ?? (isTimeBased ? 1 : 10);
+        if (rep === 'E') {
+          totalSeconds += SEC_EXHAUSTION;
+        } else if (isTimeBased) {
+          totalSeconds += rep * 60;
+        } else {
+          totalSeconds += rep * SEC_PER_REP;
+        }
+      }
+
+      // Rest between sets (sets - 1 rest periods within this exercise)
+      if (sets > 1) {
+        totalSeconds += (sets - 1) * restSets;
+      }
+
+      // Rest between exercises
+      if (i < exercises.length - 1) {
+        // If linked to next via superset, no rest between them
+        if (isLinkedWithNext(dayIndex, i)) {
+          // No rest — superset continues
+        } else {
+          totalSeconds += restExercises;
+        }
+      }
+    }
+
+    return totalSeconds;
+  };
+
+  // Format seconds into "~Xh Ym" or "~Ym" string
+  const formatEstimatedTime = (seconds) => {
+    const minutes = Math.round(seconds / 60);
+    if (minutes < 60) return `~${minutes} ${t('min', lang)}`;
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return m > 0 ? `~${h}h ${m} ${t('min', lang)}` : `~${h}h`;
+  };
+
   // Get available exercises (not excluded, tier-filtered)
   const getAvailableExercises = () => {
     return availableExercises.filter(ex => !excludedExercises.includes(ex.id));
@@ -781,6 +841,12 @@ export default function RoutinesScreen({ navigation, route }) {
               </TouchableOpacity>
             </View>
           </View>
+
+          {day.exercises && day.exercises.length > 0 && (
+            <Text style={styles.dayTimeEstimate}>
+              {formatEstimatedTime(estimateDayDuration(dayIndex))} • {day.exercises.length} {t('exercisesCount', lang)}
+            </Text>
+          )}
 
           {!day.exercises || day.exercises.length === 0 ? (
             <Text style={styles.noExercises}>{t('noExercisesAdded', lang)}</Text>
@@ -1646,6 +1712,12 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     color: colors.white,
     fontSize: fontSize.sm,
+  },
+  dayTimeEstimate: {
+    fontFamily: fonts.regular,
+    fontSize: fontSize.sm,
+    color: colors.textLight,
+    marginBottom: spacing.sm,
   },
   noExercises: {
     fontFamily: fonts.italic,
