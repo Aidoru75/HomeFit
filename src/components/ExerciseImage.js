@@ -576,6 +576,26 @@ const exerciseImages = {
   kb_lunge_end: require('../../assets/exercises/kb_lunge_end.jpg'),
   kb_windmill_start: require('../../assets/exercises/kb_windmill_start.jpg'),
   kb_windmill_end: require('../../assets/exercises/kb_windmill_end.jpg'),
+
+  // ============================================
+  // EXERCISE BALL
+  // ============================================
+  // ball_wall_squat_start: require('../../assets/exercises/ball_wall_squat_start.jpg'),
+  // ball_wall_squat_end: require('../../assets/exercises/ball_wall_squat_end.jpg'),
+  // ball_hamstring_curl_start: require('../../assets/exercises/ball_hamstring_curl_start.jpg'),
+  // ball_hamstring_curl_end: require('../../assets/exercises/ball_hamstring_curl_end.jpg'),
+  // ball_crunch_start: require('../../assets/exercises/ball_crunch_start.jpg'),
+  // ball_crunch_end: require('../../assets/exercises/ball_crunch_end.jpg'),
+  // ball_pike_start: require('../../assets/exercises/ball_pike_start.jpg'),
+  // ball_pike_end: require('../../assets/exercises/ball_pike_end.jpg'),
+  // ball_back_extension_start: require('../../assets/exercises/ball_back_extension_start.jpg'),
+  // ball_back_extension_end: require('../../assets/exercises/ball_back_extension_end.jpg'),
+  // ball_plank_start: require('../../assets/exercises/ball_plank_start.jpg'),
+  // ball_plank_end: require('../../assets/exercises/ball_plank_end.jpg'),
+  // ball_russian_twist_start: require('../../assets/exercises/ball_russian_twist_start.jpg'),
+  // ball_russian_twist_end: require('../../assets/exercises/ball_russian_twist_end.jpg'),
+  // ball_pass_start: require('../../assets/exercises/ball_pass_start.jpg'),
+  // ball_pass_end: require('../../assets/exercises/ball_pass_end.jpg'),
 };
 
 // Placeholder image (create this file or it will show a colored box)

@@ -1,4 +1,4 @@
-// 232 Exercises - Complete Catalog - Bilingual (English/Spanish)
+// 240 Exercises - Complete Catalog - Bilingual (English/Spanish)
 import { isProExercise } from './equipment';
 import { IS_PRO } from '../config';
 
@@ -3044,6 +3044,21 @@ export const exercises = [
     bmc: 1.8,
     wf: 0.03,
   },
+  {
+    id: 'ball_wall_squat',
+    name: { en: 'Ball Wall Squat', es: 'Sentadilla en Pared con Pelota' },
+    muscleGroup: 'quads',
+    muscles: { quads: 0.55, glutes: 0.30, hamstrings: 0.10, core: 0.05 },
+    equipment: ['ball'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Place an exercise ball between your lower back and the wall. Stand with feet shoulder-width apart, slightly forward of the ball. Squat down until thighs are parallel to the floor, the ball rolls along your back. Press through heels to stand. Add dumbbells for extra resistance.',
+      es: 'Coloca un balón de ejercicio entre la espalda baja y la pared. De pie con pies al ancho de hombros, ligeramente adelantados. Baja en sentadilla hasta que los muslos estén paralelos al suelo, el balón rueda por la espalda. Empuja con talones para levantarte. Agrega mancuernas para mayor resistencia.',
+    },
+    bmc: 2.0,
+    wf: 0.0,
+    bwFraction: 0.65,
+  },
 
   // ============================================
   // HAMSTRINGS
@@ -3103,6 +3118,21 @@ export const exercises = [
     },
     bmc: 1.8,
     wf: 0.03,
+  },
+  {
+    id: 'ball_hamstring_curl',
+    name: { en: 'Ball Hamstring Curl', es: 'Curl de Isquiotibiales con Pelota' },
+    muscleGroup: 'hamstrings',
+    muscles: { hamstrings: 0.55, glutes: 0.30, calves: 0.10, core: 0.05 },
+    equipment: ['ball'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Lie on your back with heels on the exercise ball, arms at your sides. Lift hips into a bridge, then curl the ball toward your glutes by bending your knees. Extend legs back out with control. Keep hips elevated throughout.',
+      es: 'Acuéstate boca arriba con los talones sobre el balón, brazos a los lados. Levanta las caderas en puente, luego curva el balón hacia los glúteos flexionando las rodillas. Extiende las piernas con control. Mantén las caderas elevadas todo el tiempo.',
+    },
+    bmc: 1.8,
+    wf: 0.0,
+    bwFraction: 0.40,
   },
 
   // ============================================
@@ -3257,6 +3287,97 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.02,
+  },
+  {
+    id: 'ball_crunch',
+    name: { en: 'Ball Crunch', es: 'Crunch en Pelota' },
+    muscleGroup: 'core',
+    muscles: { core: 0.90, quads: 0.10 },
+    equipment: ['ball'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Sit on the exercise ball and walk your feet forward until your lower back rests on the ball. Place hands behind your head or across your chest. Crunch upward, contracting your abs. The ball increases range of motion compared to floor crunches.',
+      es: 'Siéntate en el balón y camina los pies hacia adelante hasta que la espalda baja descanse sobre el balón. Coloca las manos detrás de la cabeza o sobre el pecho. Realiza un crunch contrayendo los abdominales. El balón aumenta el rango de movimiento comparado con crunches en el suelo.',
+    },
+    bmc: 1.2,
+    wf: 0.0,
+    bwFraction: 0.30,
+  },
+  {
+    id: 'ball_pike',
+    name: { en: 'Ball Pike', es: 'Pike en Pelota' },
+    muscleGroup: 'core',
+    muscles: { core: 0.60, shoulders: 0.25, quads: 0.15 },
+    equipment: ['ball'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Start in a push-up position with your shins on the exercise ball. Keeping legs straight, pike your hips up toward the ceiling by rolling the ball toward your hands. Your body forms an inverted V. Lower with control back to plank.',
+      es: 'Comienza en posición de flexión con las espinillas sobre el balón. Manteniendo las piernas rectas, eleva las caderas hacia el techo rodando el balón hacia las manos. Tu cuerpo forma una V invertida. Baja con control a la posición de plancha.',
+    },
+    bmc: 1.5,
+    wf: 0.0,
+    bwFraction: 0.50,
+  },
+  {
+    id: 'ball_back_extension',
+    name: { en: 'Ball Back Extension', es: 'Extensión de Espalda en Pelota' },
+    muscleGroup: 'core',
+    muscles: { back: 0.45, core: 0.30, glutes: 0.25 },
+    equipment: ['ball'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Lie face down with your hips on the exercise ball and feet anchored against a wall or heavy object. Cross arms over your chest or behind your head. Lower your upper body toward the floor, then extend back up by squeezing your lower back and glutes.',
+      es: 'Acuéstate boca abajo con las caderas sobre el balón y los pies anclados contra una pared u objeto pesado. Cruza los brazos sobre el pecho o detrás de la cabeza. Baja el torso hacia el suelo, luego extiende subiendo apretando la espalda baja y glúteos.',
+    },
+    bmc: 1.2,
+    wf: 0.0,
+    bwFraction: 0.40,
+  },
+  {
+    id: 'ball_plank',
+    name: { en: 'Ball Plank', es: 'Plancha en Pelota' },
+    muscleGroup: 'core',
+    muscles: { core: 0.70, shoulders: 0.20, glutes: 0.10 },
+    equipment: ['ball'],
+    weightType: 'bodyweight',
+    timeBased: true,
+    description: {
+      en: 'Place your forearms on the exercise ball and extend your legs behind you in a plank position. Brace your core and hold. The instability of the ball forces deeper core activation than a regular plank. Can also be done with feet on the ball.',
+      es: 'Coloca los antebrazos sobre el balón y extiende las piernas detrás en posición de plancha. Activa el core y mantén la posición. La inestabilidad del balón fuerza una activación más profunda del core que una plancha regular. También se puede hacer con los pies en el balón.',
+    },
+    bmc: 1.0,
+    wf: 0.0,
+    bwFraction: 0.45,
+  },
+  {
+    id: 'ball_russian_twist',
+    name: { en: 'Ball Russian Twist', es: 'Giro Ruso en Pelota' },
+    muscleGroup: 'core',
+    muscles: { core: 0.85, shoulders: 0.15 },
+    equipment: ['ball'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Sit on the exercise ball, walk feet forward until upper back and shoulders rest on the ball with hips lifted. Extend arms straight above your chest with hands together. Rotate your torso to one side, then the other, keeping hips level.',
+      es: 'Siéntate en el balón, camina los pies hacia adelante hasta que la espalda alta y hombros descansen sobre el balón con las caderas elevadas. Extiende los brazos sobre el pecho con las manos juntas. Rota el torso a un lado, luego al otro, manteniendo las caderas niveladas.',
+    },
+    bmc: 1.3,
+    wf: 0.0,
+    bwFraction: 0.30,
+  },
+  {
+    id: 'ball_pass',
+    name: { en: 'Ball Pass (V-Up Transfer)', es: 'Pase de Pelota (V-Up)' },
+    muscleGroup: 'core',
+    muscles: { core: 0.75, quads: 0.15, shoulders: 0.10 },
+    equipment: ['ball'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Lie on your back holding the exercise ball overhead. V-up by lifting legs and torso simultaneously, transfer the ball from hands to feet (or vice versa) at the top. Lower back down with control and repeat, passing the ball back each rep.',
+      es: 'Acuéstate boca arriba sosteniendo el balón sobre la cabeza. Realiza un V-up levantando piernas y torso simultáneamente, transfiere el balón de manos a pies (o viceversa) en la parte superior. Baja con control y repite, pasando el balón en cada repetición.',
+    },
+    bmc: 1.5,
+    wf: 0.0,
+    bwFraction: 0.35,
   },
 
   // ============================================

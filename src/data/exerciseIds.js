@@ -237,6 +237,16 @@ export const exerciseToNumeric = {
   burpees: 220,
   jumping_jacks: 221,
 
+  // EXERCISE BALL (222-229)
+  ball_wall_squat: 222,
+  ball_hamstring_curl: 223,
+  ball_crunch: 224,
+  ball_pike: 225,
+  ball_back_extension: 226,
+  ball_plank: 227,
+  ball_russian_twist: 228,
+  ball_pass: 229,
+
   // KETTLEBELL (205-214)
   kb_swing: 205,
   kb_goblet_squat: 206,
