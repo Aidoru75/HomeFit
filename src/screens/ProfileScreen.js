@@ -23,6 +23,74 @@ const categoryIcons = {
   cableAttachments: require('../../assets/icons/cat_cable_accessories.png'),
   accessories: require('../../assets/icons/cat_accessories.png'),
 };
+
+// Equipment images - uncomment as images are created
+// Place images in: assets/equipment/{equipment_id}.png
+const equipmentImages = {
+  // Cable Pulley System
+  // high_pulley: require('../../assets/equipment/high_pulley.png'),
+  // mid_pulley: require('../../assets/equipment/mid_pulley.png'),
+  // low_pulley: require('../../assets/equipment/low_pulley.png'),
+
+  // Machine Stations
+  // leg_extension_station: require('../../assets/equipment/leg_extension_station.png'),
+  // leg_curl_station: require('../../assets/equipment/leg_curl_station.png'),
+  // lying_leg_curl_station: require('../../assets/equipment/lying_leg_curl_station.png'),
+  // standing_leg_curl_station: require('../../assets/equipment/standing_leg_curl_station.png'),
+  // leg_press_station: require('../../assets/equipment/leg_press_station.png'),
+  // pec_deck_station: require('../../assets/equipment/pec_deck_station.png'),
+  // chest_press_station: require('../../assets/equipment/chest_press_station.png'),
+  // lat_station: require('../../assets/equipment/lat_station.png'),
+  // calf_station: require('../../assets/equipment/calf_station.png'),
+  // ghd_machine: require('../../assets/equipment/ghd_machine.png'),
+  // treadmill: require('../../assets/equipment/treadmill.png'),
+  // stationary_bike: require('../../assets/equipment/stationary_bike.png'),
+  // stepper: require('../../assets/equipment/stepper.png'),
+  // rowing_machine: require('../../assets/equipment/rowing_machine.png'),
+  // reverse_fly_machine: require('../../assets/equipment/reverse_fly_machine.png'),
+
+  // Racks and Benches
+  // rack: require('../../assets/equipment/rack.png'),
+  // pullup_rack: require('../../assets/equipment/pullup_rack.png'),
+  // flat_bench: require('../../assets/equipment/flat_bench.png'),
+  // incline_bench: require('../../assets/equipment/incline_bench.png'),
+  // decline_bench: require('../../assets/equipment/decline_bench.png'),
+  // upright_bench: require('../../assets/equipment/upright_bench.png'),
+  // preacher_pad: require('../../assets/equipment/preacher_pad.png'),
+  // parallels: require('../../assets/equipment/parallels.png'),
+
+  // Barbells
+  // straight_bar: require('../../assets/equipment/straight_bar.png'),
+  // ez_bar: require('../../assets/equipment/ez_bar.png'),
+  // neutral_bar: require('../../assets/equipment/neutral_bar.png'),
+
+  // Dumbbells
+  // dumbbells: require('../../assets/equipment/dumbbells.png'),
+
+  // Kettlebells
+  // kettlebells: require('../../assets/equipment/kettlebells.png'),
+
+  // Weight Plates
+  // plates: require('../../assets/equipment/plates.png'),
+
+  // Cable Attachments
+  // lat_bar: require('../../assets/equipment/lat_bar.png'),
+  // rope: require('../../assets/equipment/rope.png'),
+  // single_rope: require('../../assets/equipment/single_rope.png'),
+  // single_handle: require('../../assets/equipment/single_handle.png'),
+  // straight_bar_attachment: require('../../assets/equipment/straight_bar_attachment.png'),
+  // v_bar: require('../../assets/equipment/v_bar.png'),
+  // rowing_handle: require('../../assets/equipment/rowing_handle.png'),
+  // ankle_strap: require('../../assets/equipment/ankle_strap.png'),
+
+  // Other Accessories
+  // dip_belt: require('../../assets/equipment/dip_belt.png'),
+  // resistance_band: require('../../assets/equipment/resistance_band.png'),
+  // towel: require('../../assets/equipment/towel.png'),
+  // jump_rope: require('../../assets/equipment/jump_rope.png'),
+  // ball: require('../../assets/equipment/ball.png'),
+  // abs_wheel: require('../../assets/equipment/abs_wheel.png'),
+};
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
@@ -171,9 +239,17 @@ export default function ProfileScreen() {
 
   const renderEquipmentItem = (equipmentId) => {
     const isAvailable = availableEquipment.includes(equipmentId);
-    
+    const image = equipmentImages[equipmentId];
+
     return (
       <View key={equipmentId} style={styles.equipmentItem}>
+        <View style={styles.equipmentImageContainer}>
+          {image ? (
+            <Image source={image} style={styles.equipmentImage} />
+          ) : (
+            <View style={styles.equipmentImagePlaceholder} />
+          )}
+        </View>
         <Text style={styles.equipmentName}>
           {getEquipmentName(equipmentId, lang)}
         </Text>
@@ -778,6 +854,22 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
+  },
+  equipmentImageContainer: {
+    width: 40,
+    height: 40,
+    marginRight: spacing.sm,
+  },
+  equipmentImage: {
+    width: 40,
+    height: 40,
+    borderRadius: borderRadius.sm,
+  },
+  equipmentImagePlaceholder: {
+    width: 40,
+    height: 40,
+    borderRadius: borderRadius.sm,
+    backgroundColor: colors.border,
   },
   equipmentName: {
     fontFamily: fonts.regular,
