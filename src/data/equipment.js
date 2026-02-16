@@ -31,13 +31,7 @@ export const equipment = {
   },
   legCurlStation: {
     id: 'leg_curl_station',
-    name: { en: 'Leg Curl Station', es: 'Estación de Curl de Piernas' },
-    type: 'machine',
-    pro: true,
-  },
-  lyingLegCurlStation: {
-    id: 'lying_leg_curl_station',
-    name: { en: 'Lying Leg Curl Station', es: 'Estación de Curl de Piernas Acostado' },
+    name: { en: 'Leg Curl Station (seated or lying)', es: 'Estación de Curl de Piernas (sentado o tumbado)' },
     type: 'machine',
     pro: true,
   },
@@ -50,6 +44,12 @@ export const equipment = {
   legPressStation: {
     id: 'leg_press_station',
     name: { en: 'Leg Press Station', es: 'Prensa de Piernas' },
+    type: 'machine',
+    pro: true,
+  },
+  squatStation: {
+    id: 'squat_station',
+    name: { en: 'Hack Squat Station', es: 'Estación de Sentadillas' },
     type: 'machine',
     pro: true,
   },
@@ -233,6 +233,12 @@ export const equipment = {
     type: 'cableattachs',
     pro: true,
   },
+  neutralBarAttachment: {
+    id: 'neutral_bar_attachment',
+    name: { en: 'Neutral Grip Bar Attachment', es: 'Agarre de Barra Neutro' },
+    type: 'cableattachs',
+    pro: true,
+  },
   straightBarAttachment: {
     id: 'straight_bar_attachment',
     name: { en: 'Straight or Curved Bar Attachment', es: 'Agarre de polea Recto o Curvado' },
@@ -273,15 +279,9 @@ export const equipment = {
     type: 'accessory',
     pro: false,
   },
-  landmineHandle: {
-    id: 'landmine_handle',
-    name: { en: 'Landmine Handle', es: 'Mango de Landmine' },
-    type: 'accessory',
-    pro: true,
-  },
   resistanceBand: {
     id: 'resistance_band',
-    name: { en: 'Resistance Band', es: 'Banda de Resistencia' },
+    name: { en: 'Resistance Bands', es: 'Bandas de Resistencia' },
     type: 'accessory',
     pro: false,
   },
@@ -299,7 +299,7 @@ export const equipment = {
   },
   ball: {
     id: 'ball',
-    name: { en: 'Exercise Ball', es: 'Balón de Ejercicio' },
+    name: { en: 'Exercise Ball', es: 'Pelota de Pilates' },
     type: 'accessory',
     pro: true,
   },
@@ -325,12 +325,12 @@ export const equipmentCategories = {
   machineStations: {
     id: 'machineStations',
     name: { en: 'Machine Stations', es: 'Estaciones de Máquinas' },
-    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'lying_leg_curl_station', 'standing_leg_curl_station', 'leg_press_station', 'pec_deck_station', 'chest_press_station', 'lat_station', 'calf_station', 'ghd_machine', 'treadmill', 'stationary_bike', 'stepper', 'rowing_machine', 'reverse_fly_machine'],
+    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'lying_leg_curl_station', 'standing_leg_curl_station', 'leg_press_station', 'squat_station', 'pec_deck_station', 'chest_press_station', 'lat_station', 'calf_station', 'ghd_machine', 'treadmill', 'stationary_bike', 'stepper', 'rowing_machine', 'reverse_fly_machine'],
   },
   cableAttachments: {
     id: 'cableAttachments',
     name: { en: 'Cable Attachments', es: 'Accesorios de Polea' },
-    equipmentIds: ['lat_bar', 'rope', 'single_rope', 'single_handle', 'straight_bar_attachment', 'v_bar', 'rowing_handle', 'ankle_strap'],
+    equipmentIds: ['lat_bar', 'rope', 'single_rope', 'single_handle', 'straight_bar_attachment', 'neutral_bar_attachment' , 'v_bar', 'rowing_handle', 'ankle_strap'],
   },
   accessories: {
     id: 'accessories',

@@ -1,4 +1,4 @@
-// 240 Exercises - Complete Catalog - Bilingual (English/Spanish)
+// 242 Exercises - Complete Catalog - Bilingual (English/Spanish)
 import { isProExercise } from './equipment';
 import { IS_PRO } from '../config';
 
@@ -3001,16 +3001,30 @@ export const exercises = [
     bmc: 2.0,
     wf: 0.03,
   },
+  // {
+  //  id: 'leg_press',
+  //  name: { en: 'Leg Press', es: 'Prensa de Piernas' },
+  //  muscleGroup: 'quads',
+  //  muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.20, calves: 0.05 },
+  //  equipment: ['leg_press_station'],
+  //  weightType: 'machine',
+  //  description: {
+  //    en: 'Machine compound movement for heavy quad loading. Press platform away by extending legs, lower with control, foot placement affects muscle emphasis, allows very heavy weights safely.',
+  //    es: 'Movimiento compuesto en máquina para carga pesada de cuádriceps. Empuja la plataforma extendiendo piernas, baja con control, la posición de pies afecta el énfasis muscular.',
+  //  },
+  //  bmc: 4.0,
+  //  wf: 0.04,
+  //},
   {
-    id: 'leg_press',
-    name: { en: 'Leg Press', es: 'Prensa de Piernas' },
+    id: 'squat',
+    name: { en: 'Hack Squat', es: 'Sentadilla Hack' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.20, calves: 0.05 },
-    equipment: ['leg_press_station'],
+    equipment: ['squat_station'],
     weightType: 'machine',
     description: {
-      en: 'Machine compound movement for heavy quad loading. Press platform away by extending legs, lower with control, foot placement affects muscle emphasis, allows very heavy weights safely.',
-      es: 'Movimiento compuesto en máquina para carga pesada de cuádriceps. Empuja la plataforma extendiendo piernas, baja con control, la posición de pies afecta el énfasis muscular.',
+      en: 'Machine squat with back supported on angled pad. Place shoulders under the pads, feet on the platform, and squat down by bending knees. Press through heels to stand. Allows heavy quad loading with reduced lower back stress.',
+      es: 'Sentadilla en máquina con espalda apoyada en almohadilla inclinada. Coloca los hombros bajo las almohadillas, pies en la plataforma, y baja flexionando rodillas. Empuja con talones para subir. Permite carga pesada de cuádriceps con menor estrés lumbar.',
     },
     bmc: 4.0,
     wf: 0.04,
@@ -3068,7 +3082,7 @@ export const exercises = [
     name: { en: 'Leg Curl', es: 'Curl de Piernas' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.85, calves: 0.15 },
-    equipment: ['lying_leg_curl_station'],
+    equipment: ['standing_leg_curl_station'],
     weightType: 'machine',
     description: {
       en: 'Machine isolation for hamstring knee flexion. Curl heels toward glutes, squeeze hamstrings at top, lower with control, keeps hips stable for strict isolation.',
@@ -3079,14 +3093,14 @@ export const exercises = [
   },
   {
     id: 'seated_leg_curl',
-    name: { en: 'Seated Leg Curl', es: 'Curl de Piernas Sentado' },
+    name: { en: 'Leg Curl', es: 'Curl de Piernas' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.85, calves: 0.15 },
     equipment: ['leg_curl_station'],
     weightType: 'machine',
     description: {
-      en: 'Seated version of leg curl machine. Sit with pad above ankles, curl legs down and back, the seated position provides different hamstring stretch than lying version.',
-      es: 'Versión sentada de la máquina de curl de piernas. Siéntate con pad sobre los tobillos, curl de piernas hacia abajo y atrás, la posición sentada proporciona diferente estiramiento.',
+      en: 'Hamstring isolation on a leg curl machine, seated or lying. Adjust the pad above your ankles and curl your heels toward your glutes. Squeeze at full contraction, then return with control. Both positions effectively isolate the hamstrings with minimal lower back involvement.',
+      es: 'Aislamiento de isquiotibiales en máquina de curl de piernas, sentado o tumbado. Ajusta la almohadilla sobre los tobillos y curva los talones hacia los glúteos. Aprieta en la contracción completa, luego vuelve con control. Ambas posiciones aíslan eficazmente los isquiotibiales con mínima participación lumbar.',
     },
     bmc: 2.0,
     wf: 0.03,
@@ -3184,16 +3198,30 @@ export const exercises = [
   // ============================================
   // CALVES
   // ============================================
+//  {
+//    id: 'leg_press_calf_raise',
+//    name: { en: 'Leg Press Calf Raise', es: 'Elevación de Talones en Prensa' },
+//    muscleGroup: 'calves',
+//    muscles: { calves: 1.0 },
+//    equipment: ['leg_press_station'],
+//    weightType: 'machine',
+//    description: {
+//      en: 'Calf raise using leg press machine. Position toes on bottom of platform, press through toes to extend calves, allows heavy loading with machine support for safe calf training.',
+//      es: 'Elevación de talones usando la prensa de piernas. Posiciona puntas en la parte baja de la plataforma, empuja con puntas para extender gemelos, permite carga pesada con soporte.',
+//    },
+//    bmc: 1.5,
+//    wf: 0.02,
+//  },
   {
-    id: 'leg_press_calf_raise',
-    name: { en: 'Leg Press Calf Raise', es: 'Elevación de Talones en Prensa' },
+    id: 'squat_calf_raise',
+    name: { en: 'Hack Squat Calf Raise', es: 'Elevación de Talones en Hack Squat' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
-    equipment: ['leg_press_station'],
+    equipment: ['squat_station'],
     weightType: 'machine',
     description: {
-      en: 'Calf raise using leg press machine. Position toes on bottom of platform, press through toes to extend calves, allows heavy loading with machine support for safe calf training.',
-      es: 'Elevación de talones usando la prensa de piernas. Posiciona puntas en la parte baja de la plataforma, empuja con puntas para extender gemelos, permite carga pesada con soporte.',
+      en: 'Calf raise using the hack squat machine. Position toes on the lower edge of the platform with legs nearly straight. Press through toes to raise heels, squeeze calves at top, lower with control.',
+      es: 'Elevación de talones usando la máquina hack squat. Posiciona las puntas en el borde inferior de la plataforma con piernas casi extendidas. Empuja con las puntas para elevar talones, aprieta gemelos arriba, baja con control.',
     },
     bmc: 1.5,
     wf: 0.02,
@@ -3326,8 +3354,8 @@ export const exercises = [
     equipment: ['ball'],
     weightType: 'bodyweight',
     description: {
-      en: 'Lie face down with your hips on the exercise ball and feet anchored against a wall or heavy object. Cross arms over your chest or behind your head. Lower your upper body toward the floor, then extend back up by squeezing your lower back and glutes.',
-      es: 'Acuéstate boca abajo con las caderas sobre el balón y los pies anclados contra una pared u objeto pesado. Cruza los brazos sobre el pecho o detrás de la cabeza. Baja el torso hacia el suelo, luego extiende subiendo apretando la espalda baja y glúteos.',
+      en: 'Lie face down with your hips on the exercise ball and feet on the ground. Cross arms over your chest or behind your head. Lower your upper body toward the floor, then extend back up by squeezing your lower back and glutes.',
+      es: 'Acuéstate boca abajo con las caderas sobre el balón y los pies en el suelo. Cruza los brazos sobre el pecho o detrás de la cabeza. Baja el torso hacia el suelo, luego extiende subiendo apretando la espalda baja y glúteos.',
     },
     bmc: 1.2,
     wf: 0.0,

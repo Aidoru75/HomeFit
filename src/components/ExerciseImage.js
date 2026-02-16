@@ -9,20 +9,26 @@ import { colors } from '../theme';
   Place exercise images in: assets/exercises/
   
   Naming format: {exercise_id}_{position}.jpg
-  
+
   Where:
   - exercise_id: The ID from exercises.js (e.g., "bench_press", "deadlift")
-  - position: Either "start" or "end"
-  
+  - position: "start", "end", or optionally "mid"
+
   Examples:
   - bench_press_start.jpg
   - bench_press_end.jpg
   - deadlift_start.jpg
+  - deadlift_mid.jpg    (optional — adds a mid-point to the animation)
   - deadlift_end.jpg
-  
+
   All images should be 700x700 pixels.
-  
+
   If images don't exist for an exercise, a placeholder will be shown.
+
+  Mid-frame support:
+  When a _mid image is registered, the animation becomes a 4-step cycle:
+  start → mid → end → mid → start (instead of the default start ↔ end).
+  Only add _mid for exercises where two frames aren't enough to show the movement.
 */
 
 // Map of available exercise images
@@ -498,8 +504,10 @@ const exerciseImages = {
   // ============================================
   leg_extension_start: require('../../assets/exercises/leg_extension_start.jpg'),
   leg_extension_end: require('../../assets/exercises/leg_extension_end.jpg'),
-  leg_press_start: require('../../assets/exercises/leg_press_start.jpg'),
-  leg_press_end: require('../../assets/exercises/leg_press_end.jpg'),
+  //leg_press_start: require('../../assets/exercises/leg_press_start.jpg'),
+  //leg_press_end: require('../../assets/exercises/leg_press_end.jpg'),
+  squat_start: require('../../assets/exercises/squat_start.jpg'),
+  squat_end: require('../../assets/exercises/squat_end.jpg'),
 
   // ============================================
   // HAMSTRINGS
@@ -522,8 +530,10 @@ const exerciseImages = {
   // ============================================
   // CALVES
   // ============================================
-  leg_press_calf_raise_start: require('../../assets/exercises/leg_press_calf_raise_start.jpg'),
-  leg_press_calf_raise_end: require('../../assets/exercises/leg_press_calf_raise_end.jpg'),
+  //leg_press_calf_raise_start: require('../../assets/exercises/leg_press_calf_raise_start.jpg'),
+  //leg_press_calf_raise_end: require('../../assets/exercises/leg_press_calf_raise_end.jpg'),
+  squat_calf_raise_start: require('../../assets/exercises/squat_calf_raise_start.jpg'),
+  squat_calf_raise_end: require('../../assets/exercises/squat_calf_raise_end.jpg'),
 
   // ============================================
   // CORE
@@ -548,10 +558,10 @@ const exerciseImages = {
   stepper_end: require('../../assets/exercises/stepper_end.jpg'),
   rowing_start: require('../../assets/exercises/rowing_start.jpg'),
   rowing_end: require('../../assets/exercises/rowing_end.jpg'),
-  // burpees_start: require('../../assets/exercises/burpees_start.jpg'),
-  // burpees_end: require('../../assets/exercises/burpees_end.jpg'),
-  // jumping_jacks_start: require('../../assets/exercises/jumping_jacks_start.jpg'),
-  // jumping_jacks_end: require('../../assets/exercises/jumping_jacks_end.jpg'),
+  burpees_start: require('../../assets/exercises/burpees_start.jpg'),
+  burpees_end: require('../../assets/exercises/burpees_end.jpg'),
+  jumping_jacks_start: require('../../assets/exercises/jumping_jacks_start.jpg'),
+  jumping_jacks_end: require('../../assets/exercises/jumping_jacks_end.jpg'),
 
   // ============================================
   // KETTLEBELL
@@ -580,22 +590,24 @@ const exerciseImages = {
   // ============================================
   // EXERCISE BALL
   // ============================================
-  // ball_wall_squat_start: require('../../assets/exercises/ball_wall_squat_start.jpg'),
-  // ball_wall_squat_end: require('../../assets/exercises/ball_wall_squat_end.jpg'),
-  // ball_hamstring_curl_start: require('../../assets/exercises/ball_hamstring_curl_start.jpg'),
-  // ball_hamstring_curl_end: require('../../assets/exercises/ball_hamstring_curl_end.jpg'),
-  // ball_crunch_start: require('../../assets/exercises/ball_crunch_start.jpg'),
-  // ball_crunch_end: require('../../assets/exercises/ball_crunch_end.jpg'),
-  // ball_pike_start: require('../../assets/exercises/ball_pike_start.jpg'),
-  // ball_pike_end: require('../../assets/exercises/ball_pike_end.jpg'),
-  // ball_back_extension_start: require('../../assets/exercises/ball_back_extension_start.jpg'),
-  // ball_back_extension_end: require('../../assets/exercises/ball_back_extension_end.jpg'),
-  // ball_plank_start: require('../../assets/exercises/ball_plank_start.jpg'),
-  // ball_plank_end: require('../../assets/exercises/ball_plank_end.jpg'),
-  // ball_russian_twist_start: require('../../assets/exercises/ball_russian_twist_start.jpg'),
-  // ball_russian_twist_end: require('../../assets/exercises/ball_russian_twist_end.jpg'),
-  // ball_pass_start: require('../../assets/exercises/ball_pass_start.jpg'),
-  // ball_pass_end: require('../../assets/exercises/ball_pass_end.jpg'),
+  ball_wall_squat_start: require('../../assets/exercises/ball_wall_squat_start.jpg'),
+  ball_wall_squat_end: require('../../assets/exercises/ball_wall_squat_end.jpg'),
+  ball_hamstring_curl_start: require('../../assets/exercises/ball_hamstring_curl_start.jpg'),
+  ball_hamstring_curl_end: require('../../assets/exercises/ball_hamstring_curl_end.jpg'),
+  ball_crunch_start: require('../../assets/exercises/ball_crunch_start.jpg'),
+  ball_crunch_end: require('../../assets/exercises/ball_crunch_end.jpg'),
+  ball_pike_start: require('../../assets/exercises/ball_pike_start.jpg'),
+  ball_pike_end: require('../../assets/exercises/ball_pike_end.jpg'),
+  ball_back_extension_start: require('../../assets/exercises/ball_back_extension_start.jpg'),
+  ball_back_extension_end: require('../../assets/exercises/ball_back_extension_end.jpg'),
+  ball_plank_start: require('../../assets/exercises/ball_plank_start.jpg'),
+  ball_plank_end: require('../../assets/exercises/ball_plank_start.jpg'),
+  ball_russian_twist_start: require('../../assets/exercises/ball_russian_twist_start.jpg'),
+  ball_russian_twist_mid: require('../../assets/exercises/ball_russian_twist_mid.jpg'),
+  ball_russian_twist_end: require('../../assets/exercises/ball_russian_twist_end.jpg'),
+  ball_pass_start: require('../../assets/exercises/ball_pass_start.jpg'),
+  ball_pass_mid: require('../../assets/exercises/ball_pass_mid.jpg'),
+  ball_pass_end: require('../../assets/exercises/ball_pass_end.jpg'),
 };
 
 // Placeholder image (create this file or it will show a colored box)
@@ -606,43 +618,67 @@ try {
   // Placeholder doesn't exist, will use colored box
 }
 
-const ExerciseImage = ({ 
-  exerciseId, 
-  size = 200, 
+const ExerciseImage = ({
+  exerciseId,
+  size = 200,
   animate = true,
-  showEndImage = false, // NEW: Show only the end position (for thumbnails)
+  showEndImage = false, // Show only the end position (for thumbnails)
   animationDuration = 2000, // Duration of each image display in ms
   crossFadeDuration = 500,   // Duration of cross-fade in ms
-  style 
+  style
 }) => {
-  // Opacity for top image only (bottom stays at full opacity)
-  const topOpacity = useRef(new Animated.Value(0)).current;
-  const showingStart = useRef(true);
-
   // Get images for this exercise
   const startImage = exerciseImages[`${exerciseId}_start`];
   const endImage = exerciseImages[`${exerciseId}_end`];
+  const midImage = exerciseImages[`${exerciseId}_mid`];
   const hasImages = startImage && endImage && startImage !== endImage;
+  const hasMid = hasImages && !!midImage;
   const hasEndImage = !!endImage;
   const hasStartImage = !!startImage;
+
+  // Opacity refs for layered animation (start is always visible at bottom)
+  const midOpacity = useRef(new Animated.Value(0)).current;
+  const endOpacity = useRef(new Animated.Value(0)).current;
+  const stepRef = useRef(0);
 
   useEffect(() => {
     if (!animate || !hasImages || showEndImage) return;
 
-    const crossFade = () => {
-      // Toggle top (end) image: fade in to reveal, fade out to show bottom (start)
-      Animated.timing(topOpacity, {
-        toValue: showingStart.current ? 1 : 0,
-        duration: crossFadeDuration,
-        useNativeDriver: true,
-      }).start();
-      showingStart.current = !showingStart.current;
-    };
+    if (hasMid) {
+      // 3-frame cycle: start → mid → end → mid → start
+      // Step 0: fade mid in, Step 1: fade end in, Step 2: fade end out, Step 3: fade mid out
+      const cycle = () => {
+        const step = stepRef.current;
+        if (step === 0) {
+          Animated.timing(midOpacity, { toValue: 1, duration: crossFadeDuration, useNativeDriver: true }).start();
+        } else if (step === 1) {
+          Animated.timing(endOpacity, { toValue: 1, duration: crossFadeDuration, useNativeDriver: true }).start();
+        } else if (step === 2) {
+          Animated.timing(endOpacity, { toValue: 0, duration: crossFadeDuration, useNativeDriver: true }).start();
+        } else {
+          Animated.timing(midOpacity, { toValue: 0, duration: crossFadeDuration, useNativeDriver: true }).start();
+        }
+        stepRef.current = (step + 1) % 4;
+      };
 
-    const interval = setInterval(crossFade, animationDuration);
+      const interval = setInterval(cycle, animationDuration);
+      return () => clearInterval(interval);
+    } else {
+      // 2-frame cycle: start ↔ end (original behavior)
+      const toggle = () => {
+        const showing = stepRef.current === 0;
+        Animated.timing(endOpacity, {
+          toValue: showing ? 1 : 0,
+          duration: crossFadeDuration,
+          useNativeDriver: true,
+        }).start();
+        stepRef.current = showing ? 1 : 0;
+      };
 
-    return () => clearInterval(interval);
-  }, [animate, hasImages, showEndImage, animationDuration, crossFadeDuration]);
+      const interval = setInterval(toggle, animationDuration);
+      return () => clearInterval(interval);
+    }
+  }, [animate, hasImages, hasMid, showEndImage, animationDuration, crossFadeDuration]);
 
   // If showEndImage is true, just show the end image statically
   if (showEndImage) {
@@ -715,7 +751,7 @@ const ExerciseImage = ({
     );
   }
 
-  // Cross-fade: start image always visible at bottom, end image fades in/out on top
+  // Layered cross-fade: start (bottom) → mid (middle, optional) → end (top)
   return (
     <View style={[styles.container, { width: size, height: size }, style]}>
       <Image
@@ -727,12 +763,23 @@ const ExerciseImage = ({
         ]}
         resizeMode="contain"
       />
+      {hasMid && (
+        <Animated.Image
+          source={midImage}
+          style={[
+            styles.image,
+            styles.stackedImage,
+            { width: size, height: size, opacity: midOpacity }
+          ]}
+          resizeMode="contain"
+        />
+      )}
       <Animated.Image
         source={endImage}
         style={[
           styles.image,
           styles.stackedImage,
-          { width: size, height: size, opacity: topOpacity }
+          { width: size, height: size, opacity: endOpacity }
         ]}
         resizeMode="contain"
       />

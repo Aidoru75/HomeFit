@@ -12,7 +12,9 @@ import {
   Switch,
   Alert,
   Image,
+  Modal,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // Category icons
 const categoryIcons = {
@@ -38,6 +40,7 @@ const equipmentImages = {
   // lying_leg_curl_station: require('../../assets/equipment/lying_leg_curl_station.png'),
   // standing_leg_curl_station: require('../../assets/equipment/standing_leg_curl_station.png'),
   // leg_press_station: require('../../assets/equipment/leg_press_station.png'),
+  // squat_station: require('../../assets/equipment/squat_station.png'),
   // pec_deck_station: require('../../assets/equipment/pec_deck_station.png'),
   // chest_press_station: require('../../assets/equipment/chest_press_station.png'),
   // lat_station: require('../../assets/equipment/lat_station.png'),
@@ -50,46 +53,47 @@ const equipmentImages = {
   // reverse_fly_machine: require('../../assets/equipment/reverse_fly_machine.png'),
 
   // Racks and Benches
-  // rack: require('../../assets/equipment/rack.png'),
-  // pullup_rack: require('../../assets/equipment/pullup_rack.png'),
-  // flat_bench: require('../../assets/equipment/flat_bench.png'),
-  // incline_bench: require('../../assets/equipment/incline_bench.png'),
-  // decline_bench: require('../../assets/equipment/decline_bench.png'),
-  // upright_bench: require('../../assets/equipment/upright_bench.png'),
-  // preacher_pad: require('../../assets/equipment/preacher_pad.png'),
-  // parallels: require('../../assets/equipment/parallels.png'),
+  rack: require('../../assets/equipment/rack.png'),
+  pullup_rack: require('../../assets/equipment/pullup_rack.png'),
+  flat_bench: require('../../assets/equipment/flat_bench.png'),
+  incline_bench: require('../../assets/equipment/incline_bench.png'),
+  decline_bench: require('../../assets/equipment/decline_bench.png'),
+  upright_bench: require('../../assets/equipment/upright_bench.png'),
+  preacher_pad: require('../../assets/equipment/preacher_pad.png'),
+  parallels: require('../../assets/equipment/parallels.png'),
 
   // Barbells
-  // straight_bar: require('../../assets/equipment/straight_bar.png'),
-  // ez_bar: require('../../assets/equipment/ez_bar.png'),
-  // neutral_bar: require('../../assets/equipment/neutral_bar.png'),
+  straight_bar: require('../../assets/equipment/straight_bar.png'),
+  ez_bar: require('../../assets/equipment/ez_bar.png'),
+  neutral_bar: require('../../assets/equipment/neutral_bar.png'),
 
   // Dumbbells
-  // dumbbells: require('../../assets/equipment/dumbbells.png'),
+  dumbbells: require('../../assets/equipment/dumbbells.png'),
 
   // Kettlebells
-  // kettlebells: require('../../assets/equipment/kettlebells.png'),
+  kettlebells: require('../../assets/equipment/kettlebells.png'),
 
   // Weight Plates
-  // plates: require('../../assets/equipment/plates.png'),
+  plates: require('../../assets/equipment/plates.png'),
 
   // Cable Attachments
-  // lat_bar: require('../../assets/equipment/lat_bar.png'),
-  // rope: require('../../assets/equipment/rope.png'),
-  // single_rope: require('../../assets/equipment/single_rope.png'),
-  // single_handle: require('../../assets/equipment/single_handle.png'),
-  // straight_bar_attachment: require('../../assets/equipment/straight_bar_attachment.png'),
-  // v_bar: require('../../assets/equipment/v_bar.png'),
-  // rowing_handle: require('../../assets/equipment/rowing_handle.png'),
-  // ankle_strap: require('../../assets/equipment/ankle_strap.png'),
+  lat_bar: require('../../assets/equipment/lat_bar.png'),
+  rope: require('../../assets/equipment/rope.png'),
+  single_rope: require('../../assets/equipment/single_rope.png'),
+  single_handle: require('../../assets/equipment/single_handle.png'),
+  straight_bar_attachment: require('../../assets/equipment/straight_bar_attachment.png'),
+  neutral_bar_attachment: require('../../assets/equipment/neutral_bar_attachment.png'),
+  v_bar: require('../../assets/equipment/v_bar.png'),
+  rowing_handle: require('../../assets/equipment/rowing_handle.png'),
+  ankle_strap: require('../../assets/equipment/ankle_strap.png'),
 
   // Other Accessories
-  // dip_belt: require('../../assets/equipment/dip_belt.png'),
-  // resistance_band: require('../../assets/equipment/resistance_band.png'),
-  // towel: require('../../assets/equipment/towel.png'),
-  // jump_rope: require('../../assets/equipment/jump_rope.png'),
-  // ball: require('../../assets/equipment/ball.png'),
-  // abs_wheel: require('../../assets/equipment/abs_wheel.png'),
+  dip_belt: require('../../assets/equipment/dip_belt.png'),
+  resistance_band: require('../../assets/equipment/resistance_band.png'),
+  towel: require('../../assets/equipment/towel.png'),
+  jump_rope: require('../../assets/equipment/jump_rope.png'),
+  ball: require('../../assets/equipment/ball.png'),
+  abs_wheel: require('../../assets/equipment/abs_wheel.png'),
 };
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -130,6 +134,9 @@ export default function ProfileScreen() {
   // Separate state for feet/inches when in imperial mode
   const [heightFeet, setHeightFeet] = useState('');
   const [heightInches, setHeightInches] = useState('');
+  // Equipment image preview modal
+  const [previewImage, setPreviewImage] = useState(null);
+  const [previewName, setPreviewName] = useState('');
 
   useFocusEffect(
     React.useCallback(() => {
@@ -243,13 +250,17 @@ export default function ProfileScreen() {
 
     return (
       <View key={equipmentId} style={styles.equipmentItem}>
-        <View style={styles.equipmentImageContainer}>
-          {image ? (
+        {image && (
+          <TouchableOpacity
+            style={styles.equipmentImageContainer}
+            onPress={() => {
+              setPreviewImage(image);
+              setPreviewName(getEquipmentName(equipmentId, lang));
+            }}
+          >
             <Image source={image} style={styles.equipmentImage} />
-          ) : (
-            <View style={styles.equipmentImagePlaceholder} />
-          )}
-        </View>
+          </TouchableOpacity>
+        )}
         <Text style={styles.equipmentName}>
           {getEquipmentName(equipmentId, lang)}
         </Text>
@@ -600,6 +611,32 @@ export default function ProfileScreen() {
 
         <View style={styles.bottomPadding} />
       </ScrollView>
+
+      {/* Equipment Image Preview Modal */}
+      <Modal
+        visible={!!previewImage}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setPreviewImage(null)}
+      >
+        <TouchableOpacity
+          style={styles.previewOverlay}
+          activeOpacity={1}
+          onPress={() => setPreviewImage(null)}
+        >
+          <View style={styles.previewContainer}>
+            <LinearGradient
+              colors={['#ffffff', '#b8b8b8']}
+              style={styles.previewGradient}
+            >
+              {previewImage && (
+                <Image source={previewImage} style={styles.previewImage} />
+              )}
+            </LinearGradient>
+            <Text style={styles.previewName}>{previewName}</Text>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </KeyboardAvoidingView>
   );
 }
@@ -865,17 +902,39 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: borderRadius.sm,
   },
-  equipmentImagePlaceholder: {
-    width: 40,
-    height: 40,
-    borderRadius: borderRadius.sm,
-    backgroundColor: colors.border,
-  },
   equipmentName: {
     fontFamily: fonts.regular,
     fontSize: fontSize.md,
     color: colors.textPrimary,
     flex: 1,
+  },
+  previewOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  previewContainer: {
+    alignItems: 'center',
+  },
+  previewGradient: {
+    width: 250,
+    height: 250,
+    borderRadius: borderRadius.md,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  previewImage: {
+    width: 250,
+    height: 250,
+  },
+  previewName: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.lg,
+    color: colors.white,
+    marginTop: spacing.md,
+    textAlign: 'center',
   },
   bottomPadding: {
     height: 120,
