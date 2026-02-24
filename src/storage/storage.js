@@ -2,6 +2,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { exercises } from '../data/exercises';
 import { getAllEquipmentIds } from '../data/equipment';
+import { IS_PRO } from '../config';
 
 const KEYS = {
   ROUTINES: 'homefit_routines',
@@ -10,6 +11,7 @@ const KEYS = {
   SETTINGS: 'homefit_settings',
   EXCLUDED_EXERCISES: 'homefit_excluded_exercises',
   AVAILABLE_EQUIPMENT: 'homefit_available_equipment',
+  DEFAULTS_SEEDED: 'homefit_defaults_seeded',
 };
 
 // Default settings
@@ -93,8 +95,11 @@ export const calculateExcludedByEquipment = (availableEquipment) => {
     }
     
     // Check if user has ALL required equipment for this exercise
-    const hasAllEquipment = exercise.equipment.every(
-      eqId => availableEquipment.includes(eqId)
+    // Items can be strings (required) or arrays of strings (any one satisfies)
+    const hasAllEquipment = exercise.equipment.every(item =>
+      Array.isArray(item)
+        ? item.some(alt => availableEquipment.includes(alt))
+        : availableEquipment.includes(item)
     );
     
     if (!hasAllEquipment) {
@@ -151,6 +156,23 @@ export const addRoutine = async (routine) => {
   routines.push(newRoutine);
   await saveRoutines(routines);
   return newRoutine;
+};
+
+// Seed default routines on first launch (runs once, flag prevents re-seeding)
+export const seedDefaultRoutines = async () => {
+  try {
+    const seeded = await AsyncStorage.getItem(KEYS.DEFAULTS_SEEDED);
+    if (seeded) return;
+
+    const { defaultRoutinesFree, defaultRoutinesPro } = require('../data/defaultRoutines');
+    const defaults = IS_PRO ? defaultRoutinesPro : defaultRoutinesFree;
+
+    const existing = await loadRoutines();
+    await saveRoutines([...defaults, ...existing]);
+    await AsyncStorage.setItem(KEYS.DEFAULTS_SEEDED, 'true');
+  } catch (error) {
+    console.error('Error seeding default routines:', error);
+  }
 };
 
 export const updateRoutine = async (routineId, updates) => {
@@ -282,7 +304,8 @@ export const clearAllData = async () => {
       KEYS.LAST_WORKOUT, 
       KEYS.WORKOUT_HISTORY,
       KEYS.EXCLUDED_EXERCISES,
-      KEYS.AVAILABLE_EQUIPMENT
+      KEYS.AVAILABLE_EQUIPMENT,
+      KEYS.DEFAULTS_SEEDED
     ]);
     return true;
   } catch (error) {

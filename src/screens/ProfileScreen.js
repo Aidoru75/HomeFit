@@ -35,9 +35,8 @@ const equipmentImages = {
   // low_pulley: require('../../assets/equipment/low_pulley.png'),
 
   // Machine Stations
-  // leg_extension_station: require('../../assets/equipment/leg_extension_station.png'),
-  // leg_curl_station: require('../../assets/equipment/leg_curl_station.png'),
-  // lying_leg_curl_station: require('../../assets/equipment/lying_leg_curl_station.png'),
+  leg_extension_station: require('../../assets/equipment/leg_extension_station.png'),
+  leg_curl_station: require('../../assets/equipment/leg_curl_station.png'),
   // standing_leg_curl_station: require('../../assets/equipment/standing_leg_curl_station.png'),
   // leg_press_station: require('../../assets/equipment/leg_press_station.png'),
   // squat_station: require('../../assets/equipment/squat_station.png'),
@@ -81,13 +80,15 @@ const equipmentImages = {
   rope: require('../../assets/equipment/rope.png'),
   single_rope: require('../../assets/equipment/single_rope.png'),
   single_handle: require('../../assets/equipment/single_handle.png'),
-  straight_bar_attachment: require('../../assets/equipment/straight_bar_attachment.png'),
+  // straight_bar_attachment: require('../../assets/equipment/straight_bar_attachment.png'),
+  curved_bar_attachment: require('../../assets/equipment/curved_bar_attachment.png'),
   neutral_bar_attachment: require('../../assets/equipment/neutral_bar_attachment.png'),
   v_bar: require('../../assets/equipment/v_bar.png'),
   rowing_handle: require('../../assets/equipment/rowing_handle.png'),
   ankle_strap: require('../../assets/equipment/ankle_strap.png'),
 
   // Other Accessories
+  // step_platform: require('../../assets/equipment/step_platform.png'),
   dip_belt: require('../../assets/equipment/dip_belt.png'),
   resistance_band: require('../../assets/equipment/resistance_band.png'),
   towel: require('../../assets/equipment/towel.png'),

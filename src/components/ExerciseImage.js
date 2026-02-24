@@ -5,30 +5,26 @@ import { colors } from '../theme';
 
 /*
   IMAGE NAMING CONVENTION:
-  
+
   Place exercise images in: assets/exercises/
-  
+
   Naming format: {exercise_id}_{position}.jpg
 
   Where:
   - exercise_id: The ID from exercises.js (e.g., "bench_press", "deadlift")
-  - position: "start", "end", or optionally "mid"
-
-  Examples:
-  - bench_press_start.jpg
-  - bench_press_end.jpg
-  - deadlift_start.jpg
-  - deadlift_mid.jpg    (optional — adds a mid-point to the animation)
-  - deadlift_end.jpg
+  - position: "start", "end", or optionally "mid" / "mid1", "mid2", ...
 
   All images should be 700x700 pixels.
-
   If images don't exist for an exercise, a placeholder will be shown.
 
-  Mid-frame support:
-  When a _mid image is registered, the animation becomes a 4-step cycle:
-  start → mid → end → mid → start (instead of the default start ↔ end).
-  Only add _mid for exercises where two frames aren't enough to show the movement.
+  Animation modes:
+  1. 2-frame (default): start ↔ end
+  2. Symmetric (_mid): start → mid → end → mid → start
+     Use for exercises where the movement reverses (e.g., twists).
+  3. Sequential (_mid1, _mid2, ...): start → mid1 → mid2 → ... → end → start
+     Use for non-symmetrical exercises (e.g., Zottman curl) where the
+     return path differs from the forward path. Add as many _midN as needed.
+     _mid1 takes priority over _mid (they cannot coexist for the same exercise).
 */
 
 // Map of available exercise images
@@ -175,6 +171,8 @@ const exerciseImages = {
   concentration_curl_start: require('../../assets/exercises/concentration_curl_start.jpg'),
   concentration_curl_end: require('../../assets/exercises/concentration_curl_end.jpg'),
   zottman_curl_start: require('../../assets/exercises/zottman_curl_start.jpg'),
+  zottman_curl_mid1: require('../../assets/exercises/zottman_curl_mid1.jpg'),
+  zottman_curl_mid2: require('../../assets/exercises/zottman_curl_mid2.jpg'),
   zottman_curl_end: require('../../assets/exercises/zottman_curl_end.jpg'),
   drag_curl_start: require('../../assets/exercises/drag_curl_start.jpg'),
   drag_curl_end: require('../../assets/exercises/drag_curl_end.jpg'),
@@ -632,53 +630,94 @@ const ExerciseImage = ({
   const endImage = exerciseImages[`${exerciseId}_end`];
   const midImage = exerciseImages[`${exerciseId}_mid`];
   const hasImages = startImage && endImage && startImage !== endImage;
-  const hasMid = hasImages && !!midImage;
   const hasEndImage = !!endImage;
   const hasStartImage = !!startImage;
 
-  // Opacity refs for layered animation (start is always visible at bottom)
-  const midOpacity = useRef(new Animated.Value(0)).current;
-  const endOpacity = useRef(new Animated.Value(0)).current;
+  // Check for sequential frames (_mid1, _mid2, ...)
+  const seqMids = [];
+  if (hasImages) {
+    let i = 1;
+    while (exerciseImages[`${exerciseId}_mid${i}`]) {
+      seqMids.push(exerciseImages[`${exerciseId}_mid${i}`]);
+      i++;
+    }
+  }
+  const isSequential = seqMids.length > 0;
+  const hasMid = !isSequential && hasImages && !!midImage;
+
+  // Unified opacity array for overlay layers:
+  //   sequential: mids + end + start_copy = seqMids.length + 2
+  //   symmetric:  mid + end = 2
+  //   2-frame:    end = 1
+  const overlayCount = isSequential ? seqMids.length + 2 : hasMid ? 2 : 1;
+  const opacitiesRef = useRef(Array.from({ length: overlayCount }, () => new Animated.Value(0)));
+  if (opacitiesRef.current.length !== overlayCount) {
+    opacitiesRef.current = Array.from({ length: overlayCount }, () => new Animated.Value(0));
+  }
+  const opacities = opacitiesRef.current;
   const stepRef = useRef(0);
+
+  // Reset when exercise changes
+  useEffect(() => {
+    opacities.forEach(o => { o.stopAnimation(); o.setValue(0); });
+    stepRef.current = 0;
+  }, [exerciseId]);
 
   useEffect(() => {
     if (!animate || !hasImages || showEndImage) return;
 
-    if (hasMid) {
-      // 3-frame cycle: start → mid → end → mid → start
+    if (isSequential) {
+      // Sequential N-frame: start → mid1 → mid2 → ... → end → (back to start)
+      // Layers bottom→top: start(1) | mid1(0) | mid2(0) | ... | end(0) | start_copy(0)
+      // Fade in overlays one by one. When start_copy reaches 1,
+      // instant-reset all to 0 — invisible because bottom start = top start_copy.
+      const cycle = () => {
+        const idx = stepRef.current;
+        if (idx === 0) {
+          // Reset all overlays before starting a new cycle.
+          // Visually invisible: bottom start layer always shows through.
+          opacities.forEach(o => o.setValue(0));
+        }
+        Animated.timing(opacities[idx], {
+          toValue: 1, duration: crossFadeDuration, useNativeDriver: true,
+        }).start();
+        stepRef.current = (idx + 1) % opacities.length;
+      };
+      const interval = setInterval(cycle, animationDuration);
+      return () => clearInterval(interval);
+    } else if (hasMid) {
+      // Symmetric 3-frame cycle: start → mid → end → mid → start
       // Step 0: fade mid in, Step 1: fade end in, Step 2: fade end out, Step 3: fade mid out
       const cycle = () => {
         const step = stepRef.current;
         if (step === 0) {
-          Animated.timing(midOpacity, { toValue: 1, duration: crossFadeDuration, useNativeDriver: true }).start();
+          Animated.timing(opacities[0], { toValue: 1, duration: crossFadeDuration, useNativeDriver: true }).start();
         } else if (step === 1) {
-          Animated.timing(endOpacity, { toValue: 1, duration: crossFadeDuration, useNativeDriver: true }).start();
+          Animated.timing(opacities[1], { toValue: 1, duration: crossFadeDuration, useNativeDriver: true }).start();
         } else if (step === 2) {
-          Animated.timing(endOpacity, { toValue: 0, duration: crossFadeDuration, useNativeDriver: true }).start();
+          Animated.timing(opacities[1], { toValue: 0, duration: crossFadeDuration, useNativeDriver: true }).start();
         } else {
-          Animated.timing(midOpacity, { toValue: 0, duration: crossFadeDuration, useNativeDriver: true }).start();
+          Animated.timing(opacities[0], { toValue: 0, duration: crossFadeDuration, useNativeDriver: true }).start();
         }
         stepRef.current = (step + 1) % 4;
       };
-
       const interval = setInterval(cycle, animationDuration);
       return () => clearInterval(interval);
     } else {
-      // 2-frame cycle: start ↔ end (original behavior)
+      // 2-frame cycle: start ↔ end
       const toggle = () => {
         const showing = stepRef.current === 0;
-        Animated.timing(endOpacity, {
+        Animated.timing(opacities[0], {
           toValue: showing ? 1 : 0,
           duration: crossFadeDuration,
           useNativeDriver: true,
         }).start();
         stepRef.current = showing ? 1 : 0;
       };
-
       const interval = setInterval(toggle, animationDuration);
       return () => clearInterval(interval);
     }
-  }, [animate, hasImages, hasMid, showEndImage, animationDuration, crossFadeDuration]);
+  }, [animate, hasImages, isSequential, hasMid, showEndImage, animationDuration, crossFadeDuration]);
 
   // If showEndImage is true, just show the end image statically
   if (showEndImage) {
@@ -751,26 +790,26 @@ const ExerciseImage = ({
     );
   }
 
-  // Layered cross-fade: start (bottom) → mid (middle, optional) → end (top)
+  // Layered cross-fade: start (bottom) → overlays (mid/end on top)
   return (
     <View style={[styles.container, { width: size, height: size }, style]}>
       <Image
         source={startImage}
-        style={[
-          styles.image,
-          styles.stackedImage,
-          { width: size, height: size }
-        ]}
+        style={[styles.image, styles.stackedImage, { width: size, height: size }]}
         resizeMode="contain"
       />
+      {isSequential && seqMids.map((src, i) => (
+        <Animated.Image
+          key={i}
+          source={src}
+          style={[styles.image, styles.stackedImage, { width: size, height: size, opacity: opacities[i] }]}
+          resizeMode="contain"
+        />
+      ))}
       {hasMid && (
         <Animated.Image
           source={midImage}
-          style={[
-            styles.image,
-            styles.stackedImage,
-            { width: size, height: size, opacity: midOpacity }
-          ]}
+          style={[styles.image, styles.stackedImage, { width: size, height: size, opacity: opacities[0] }]}
           resizeMode="contain"
         />
       )}
@@ -779,10 +818,17 @@ const ExerciseImage = ({
         style={[
           styles.image,
           styles.stackedImage,
-          { width: size, height: size, opacity: endOpacity }
+          { width: size, height: size, opacity: opacities[isSequential ? seqMids.length : hasMid ? 1 : 0] }
         ]}
         resizeMode="contain"
       />
+      {isSequential && (
+        <Animated.Image
+          source={startImage}
+          style={[styles.image, styles.stackedImage, { width: size, height: size, opacity: opacities[seqMids.length + 1] }]}
+          resizeMode="contain"
+        />
+      )}
     </View>
   );
 };

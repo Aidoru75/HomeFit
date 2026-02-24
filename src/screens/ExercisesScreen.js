@@ -71,9 +71,14 @@ export default function ExercisesScreen() {
       : availableExercises;
 
   // Helper to format equipment list with localized names
+  // Supports nested arrays for OR alternatives: ['a', ['b', 'c']] → "A • B or C"
   const formatEquipmentList = (equipmentIds) => {
     if (!equipmentIds || equipmentIds.length === 0) return t('bodyweightOnly', lang);
-    return equipmentIds.map(eq => getEquipmentName(eq, lang)).join(' • ');
+    return equipmentIds.map(item =>
+      Array.isArray(item)
+        ? item.map(alt => getEquipmentName(alt, lang)).join(` ${t('or', lang)} `)
+        : getEquipmentName(item, lang)
+    ).join(' • ');
   };
 
   const scrollToTop = () => {
@@ -277,11 +282,13 @@ export default function ExercisesScreen() {
                         <Text style={styles.equipmentText}>{t('bodyweightOnly', lang)}</Text>
                       </View>
                     ) : (
-                      selectedExercise.equipment.map((eq, index) => (
+                      selectedExercise.equipment.map((item, index) => (
                         <View key={index} style={styles.equipmentItem}>
                           <Text style={styles.equipmentIcon}>•</Text>
                           <Text style={styles.equipmentText}>
-                            {getEquipmentName(eq, lang)}
+                            {Array.isArray(item)
+                              ? item.map(alt => getEquipmentName(alt, lang)).join(` ${t('or', lang)} `)
+                              : getEquipmentName(item, lang)}
                           </Text>
                         </View>
                       ))

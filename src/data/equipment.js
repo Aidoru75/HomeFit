@@ -241,7 +241,13 @@ export const equipment = {
   },
   straightBarAttachment: {
     id: 'straight_bar_attachment',
-    name: { en: 'Straight or Curved Bar Attachment', es: 'Agarre de polea Recto o Curvado' },
+    name: { en: 'Straight Bar Attachment', es: 'Agarre de Polea Recto' },
+    type: 'cableattachs',
+    pro: true,
+  },
+  curvedBarAttachment: {
+    id: 'curved_bar_attachment',
+    name: { en: 'Curved Bar Attachment', es: 'Agarre de Polea Curvado' },
     type: 'cableattachs',
     pro: true,
   },
@@ -270,6 +276,12 @@ export const equipment = {
   absWheel: {
     id: 'abs_wheel',
     name: { en: 'Abs Wheel', es: 'Rueda de Abdominales' },
+    type: 'accessory',
+    pro: false,
+  },
+  StepPlatform: {
+    id: 'step_platform',
+    name: { en: 'Step Platform', es: 'Plataforma de Step' },
     type: 'accessory',
     pro: false,
   },
@@ -325,17 +337,17 @@ export const equipmentCategories = {
   machineStations: {
     id: 'machineStations',
     name: { en: 'Machine Stations', es: 'Estaciones de Máquinas' },
-    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'lying_leg_curl_station', 'standing_leg_curl_station', 'leg_press_station', 'squat_station', 'pec_deck_station', 'chest_press_station', 'lat_station', 'calf_station', 'ghd_machine', 'treadmill', 'stationary_bike', 'stepper', 'rowing_machine', 'reverse_fly_machine'],
+    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'standing_leg_curl_station', 'leg_press_station', 'squat_station', 'pec_deck_station', 'chest_press_station', 'lat_station', 'calf_station', 'ghd_machine', 'treadmill', 'stationary_bike', 'stepper', 'rowing_machine', 'reverse_fly_machine'],
   },
   cableAttachments: {
     id: 'cableAttachments',
     name: { en: 'Cable Attachments', es: 'Accesorios de Polea' },
-    equipmentIds: ['lat_bar', 'rope', 'single_rope', 'single_handle', 'straight_bar_attachment', 'neutral_bar_attachment' , 'v_bar', 'rowing_handle', 'ankle_strap'],
+    equipmentIds: ['lat_bar', 'rope', 'single_rope', 'single_handle', 'straight_bar_attachment', 'curved_bar_attachment', 'neutral_bar_attachment' , 'v_bar', 'rowing_handle', 'ankle_strap'],
   },
   accessories: {
     id: 'accessories',
     name: { en: 'Other Accessories', es: 'Otros Accesorios' },
-    equipmentIds: ['dip_belt', 'resistance_band', 'towel', 'jump_rope', 'ball', 'abs_wheel' ],
+    equipmentIds: ['dip_belt', 'step_platform', 'resistance_band', 'towel', 'jump_rope', 'ball', 'abs_wheel' ],
   },
 };
 
@@ -381,7 +393,11 @@ export const isProEquipment = (equipmentId) => {
 
 export const isProExercise = (exercise) => {
   if (!exercise?.equipment || exercise.equipment.length === 0) return false;
-  return exercise.equipment.some(eqId => isProEquipment(eqId));
+  return exercise.equipment.some(item =>
+    Array.isArray(item)
+      ? item.some(alt => isProEquipment(alt))
+      : isProEquipment(item)
+  );
 };
 
 export const getVisibleCategories = () => {

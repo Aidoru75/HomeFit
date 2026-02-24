@@ -114,6 +114,8 @@ export default function RoutinesScreen({ navigation, route }) {
       if (routine) {
         setSelectedRoutine(routine);
       }
+      // Clear params so they don't re-trigger on every routines state change
+      navigation.setParams({ routineId: undefined, selectedRoutineId: undefined });
     }
   }, [route.params, routines]);
 

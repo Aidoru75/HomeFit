@@ -2561,7 +2561,7 @@ export const exercises = [
     name: { en: 'Face Pulls', es: 'Tirón a la Cara' },
     muscleGroup: 'back',
     muscles: { back: 0.50, shoulders: 0.40, biceps: 0.10 },
-    equipment: ['high_pulley', 'straight_bar_attachment'],
+    equipment: ['high_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
     weightType: 'machine',
     description: {
       en: 'Essential for rear delts and upper back health. Pull the bar to your face with elbows high, externally rotate at the end position, squeezing rear delts and upper back muscles.',
@@ -2589,7 +2589,7 @@ export const exercises = [
     name: { en: 'Cable Shrugs', es: 'Encogimientos en Polea' },
     muscleGroup: 'back',
     muscles: { back: 0.85, shoulders: 0.15 },
-    equipment: ['low_pulley', 'straight_bar_attachment'],
+    equipment: ['low_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
     weightType: 'machine',
     description: {
       en: 'Constant tension shrug variation using cables. Stand between low pulleys or facing one, shrug shoulders up while keeping arms straight, focus on peak contraction, then lower with resistance.',
@@ -2678,7 +2678,7 @@ export const exercises = [
     name: { en: 'Upright Row (Cable)', es: 'Remo al Mentón (Polea)' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.55, back: 0.30, biceps: 0.15 },
-    equipment: ['low_pulley', 'straight_bar_attachment'],
+    equipment: ['low_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
     weightType: 'machine',
     description: {
       en: 'Cable upright row for constant tension throughout. Using low pulley with bar attachment, pull up leading with elbows, the cable maintains resistance through the entire range.',
@@ -2783,7 +2783,7 @@ export const exercises = [
     name: { en: 'Cable Curl (Straight Bar)', es: 'Curl en Polea (Barra Recta)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
-    equipment: ['low_pulley', 'straight_bar_attachment'],
+    equipment: ['low_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
     weightType: 'machine',
     description: {
       en: 'Constant tension bicep curl using cable. Using low pulley with bar, curl up while keeping elbows stationary, the cable provides resistance throughout entire range including bottom.',
@@ -2871,7 +2871,7 @@ export const exercises = [
     name: { en: 'Cable Pushdown (Straight Bar)', es: 'Empuje en Polea (Barra Recta)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.85, shoulders: 0.10, core: 0.05 },
-    equipment: ['high_pulley', 'straight_bar_attachment'],
+    equipment: ['high_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
     weightType: 'machine',
     description: {
       en: 'Straight bar pushdown for heavy tricep work. Using bar attachment, push down until arms are fully extended, keep elbows pinned to sides, allows heavier loads than rope.',
@@ -2899,7 +2899,7 @@ export const exercises = [
     name: { en: 'Cable Pushdown (Reverse Grip)', es: 'Empuje en Polea (Agarre Inverso)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.80, shoulders: 0.10, biceps: 0.10 },
-    equipment: ['high_pulley', 'straight_bar_attachment'],
+    equipment: ['high_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
     weightType: 'machine',
     description: {
       en: 'Underhand grip pushdown for medial head emphasis. Grip bar with palms up, push down focusing on tricep contraction, this variation shifts emphasis to the medial tricep head.',

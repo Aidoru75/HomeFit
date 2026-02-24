@@ -22,7 +22,7 @@ import { IS_PRO } from './src/config';
 
 // Theme and translations
 import { colors } from './src/theme';
-import { loadSettings } from './src/storage/storage';
+import { loadSettings, seedDefaultRoutines } from './src/storage/storage';
 
 const Tab = createBottomTabNavigator();
 
@@ -138,6 +138,7 @@ export default function App() {
 
   useEffect(() => {
     loadLanguage();
+    seedDefaultRoutines();
   }, [loadLanguage]);
 
   // Show loading screen while fonts are loading
