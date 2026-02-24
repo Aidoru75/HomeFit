@@ -295,12 +295,23 @@ export default function ExercisesScreen() {
                     )}
                   </View>
 
-                  <Text style={styles.modalSectionTitle}>{t('weightType', lang)}</Text>
-                  <View style={styles.weightTypeBadge}>
-                    <Text style={styles.weightTypeText}>
-                      {t(`weightType${selectedExercise.weightType.charAt(0).toUpperCase()}${selectedExercise.weightType.slice(1)}`, lang)}
-                    </Text>
-                  </View>
+                  {selectedExercise.optionalEquipment?.length > 0 && (
+                    <>
+                      <Text style={styles.modalSectionTitle}>{t('optional', lang)}</Text>
+                      <View style={styles.equipmentList}>
+                        {selectedExercise.optionalEquipment.map((item, index) => (
+                          <View key={index} style={styles.equipmentItem}>
+                            <Text style={styles.equipmentIcon}>◦</Text>
+                            <Text style={styles.equipmentText}>
+                              {Array.isArray(item)
+                                ? item.map(alt => getEquipmentName(alt, lang)).join(` ${t('or', lang)} `)
+                                : getEquipmentName(item, lang)}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    </>
+                  )}
 
                   <TouchableOpacity
                     style={styles.videoLinkButton}

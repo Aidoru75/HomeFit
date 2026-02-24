@@ -12,6 +12,7 @@ import {
 import Slider from '@react-native-community/slider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Updates from 'expo-updates';
+import Constants from 'expo-constants';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { loadSettings, saveSettings } from '../storage/storage';
 import { t } from '../data/translations';
@@ -266,7 +267,7 @@ export default function SettingsScreen() {
         <View style={styles.card}>
           <View style={styles.aboutRow}>
             <Text style={styles.aboutLabel}>HomeFit</Text>
-            <Text style={styles.aboutValue}>{t('version', lang)} 1.0.0</Text>
+            <Text style={styles.aboutValue}>{t('version', lang)} {Constants.expoConfig?.version || '1.0.0'}</Text>
           </View>
         </View>
 

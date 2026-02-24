@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
-import { getLastWorkout, loadRoutines, loadSettings } from '../storage/storage';
+import { getLastWorkout, getHistory, loadRoutines, loadSettings } from '../storage/storage';
 import { t } from '../data/translations';
 import { IS_PRO } from '../config';
 
@@ -19,12 +19,72 @@ const faviconIcon = IS_PRO
   ? require('../../assets/icons/homeicon.png')
   : require('../../assets/icons/homeicon_f.png');
 
+const dayKeys = ['dayMon', 'dayTue', 'dayWed', 'dayThu', 'dayFri', 'daySat', 'daySun'];
+
+const quotes = [
+  { en: 'The only bad workout is the one that didn\'t happen.', es: 'El único mal entrenamiento es el que no se hizo.' },
+  { en: 'Your body can stand almost anything. It\'s your mind you have to convince.', es: 'Tu cuerpo aguanta casi todo. Es tu mente la que debes convencer.' },
+  { en: 'Discipline is choosing between what you want now and what you want most.', es: 'Disciplina es elegir entre lo que quieres ahora y lo que más deseas.' },
+  { en: 'Strength does not come from the body. It comes from the will.', es: 'La fuerza no viene del cuerpo. Viene de la voluntad.' },
+  { en: 'The pain you feel today will be the strength you feel tomorrow.', es: 'El dolor que sientes hoy será la fuerza que sentirás mañana.' },
+  { en: 'Success starts with self-discipline.', es: 'El éxito empieza con la autodisciplina.' },
+  { en: 'Don\'t wish for it. Work for it.', es: 'No lo desees. Trabaja por ello.' },
+  { en: 'Small daily improvements lead to stunning results.', es: 'Pequeñas mejoras diarias llevan a resultados asombrosos.' },
+  { en: 'The difference between try and triumph is a little umph.', es: 'La diferencia entre intentar y triunfar es un poco de esfuerzo extra.' },
+  { en: 'Fall in love with the process and the results will come.', es: 'Enamórate del proceso y los resultados llegarán.' },
+  { en: 'You don\'t have to be extreme, just consistent.', es: 'No tienes que ser extremo, solo constante.' },
+  { en: 'What seems impossible today will one day be your warm-up.', es: 'Lo que hoy parece imposible, un día será tu calentamiento.' },
+  { en: 'Motivation gets you started. Habit keeps you going.', es: 'La motivación te pone en marcha. El hábito te mantiene.' },
+  { en: 'Train insane or remain the same.', es: 'Entrena con locura o quédate igual.' },
+  { en: 'Every rep counts. Every set matters.', es: 'Cada repetición cuenta. Cada serie importa.' },
+  { en: 'Champions are made when nobody is watching.', es: 'Los campeones se forjan cuando nadie los mira.' },
+  { en: 'Be stronger than your excuses.', es: 'Sé más fuerte que tus excusas.' },
+  { en: 'Progress, not perfection.', es: 'Progreso, no perfección.' },
+  { en: 'Push yourself, because no one else is going to do it for you.', es: 'Supérate, porque nadie más lo hará por ti.' },
+  { en: 'Sweat is just fat crying.', es: 'El sudor es solo grasa llorando.' },
+];
+
+const getDayOfYear = () => {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  return Math.floor((now - start) / (1000 * 60 * 60 * 24));
+};
+
+const getWeekDays = (history) => {
+  const now = new Date();
+  const todayDow = now.getDay(); // 0=Sun, 1=Mon, ...
+  const mondayOffset = todayDow === 0 ? 6 : todayDow - 1; // days since Monday
+  const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - mondayOffset);
+
+  // Build set of local date strings that have workouts this week
+  const workoutDates = new Set();
+  if (history) {
+    history.forEach(w => {
+      const d = new Date(w.completedAt);
+      if (d >= monday) {
+        workoutDates.add(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
+      }
+    });
+  }
+
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
+    const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+    const isToday = i === mondayOffset;
+    const isFuture = d > now;
+    days.push({ trained: workoutDates.has(key), isToday, isFuture });
+  }
+  return days;
+};
+
 export default function HomeScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const [lastWorkout, setLastWorkout] = useState(null);
   const [routines, setRoutines] = useState([]);
   const [suggestedNext, setSuggestedNext] = useState(null);
   const [settings, setSettings] = useState({ language: 'en' });
+  const [weekDays, setWeekDays] = useState([]);
 
   useEffect(() => {
     loadData();
@@ -36,10 +96,12 @@ export default function HomeScreen({ navigation }) {
     const last = await getLastWorkout();
     const allRoutines = await loadRoutines();
     const userSettings = await loadSettings();
-    
+    const history = await getHistory();
+
     setLastWorkout(last);
     setRoutines(allRoutines);
     setSettings(userSettings);
+    setWeekDays(getWeekDays(history));
     
     // Calculate suggested next workout
     if (last && allRoutines.length > 0) {
@@ -179,27 +241,33 @@ export default function HomeScreen({ navigation }) {
         </View>
       )}
 
-      {/* My Routines Quick List */}
-      {routines.length > 0 && (
-        <>
-          <Text style={styles.sectionTitle}>{t('myRoutines', lang)}</Text>
-          {routines.slice(0, 3).map((routine) => (
-            <TouchableOpacity
-              key={routine.id}
-              style={styles.routineItem}
-              onPress={() => navigation.navigate('Routines', { routineId: routine.id })}
-            >
-              <View style={styles.routineInfo}>
-                <Text style={styles.routineName}>{routine.name}</Text>
-                <Text style={styles.routineDays}>
-                  {routine.days?.length || 0} {t('days', lang).toLowerCase()} • {routine.restBetweenSets || 60}s {t('rest', lang).toLowerCase()}
-                </Text>
-              </View>
-              <Text style={styles.routineArrow}>→</Text>
-            </TouchableOpacity>
+      {/* Weekly Consistency */}
+      <View style={styles.weekCard}>
+        <Text style={styles.weekTitle}>{t('weeklyActivity', lang)}</Text>
+        <View style={styles.weekRow}>
+          {weekDays.map((day, i) => (
+            <View key={i} style={styles.weekDayCol}>
+              <View style={[
+                styles.weekDot,
+                day.trained && styles.weekDotFilled,
+                day.isToday && styles.weekDotToday,
+                day.isFuture && styles.weekDotFuture,
+              ]} />
+              <Text style={[
+                styles.weekDayLabel,
+                day.isToday && styles.weekDayLabelToday,
+              ]}>
+                {t(dayKeys[i], lang)}
+              </Text>
+            </View>
           ))}
-        </>
-      )}
+        </View>
+      </View>
+
+      {/* Motivational Quote */}
+      <Text style={styles.quoteText}>
+        &ldquo;{quotes[getDayOfYear() % quotes.length][lang]}&rdquo;
+      </Text>
 
       <View style={styles.bottomPadding} />
     </ScrollView>
@@ -399,33 +467,65 @@ const styles = StyleSheet.create({
     color: colors.accent,
     marginTop: spacing.sm,
   },
-  routineItem: {
+  weekCard: {
     backgroundColor: colors.card,
-    marginHorizontal: spacing.md,
-    marginBottom: spacing.sm,
+    margin: spacing.md,
     padding: spacing.md,
-    borderRadius: borderRadius.md,
-    flexDirection: 'row',
-    alignItems: 'center',
+    borderRadius: borderRadius.lg,
     ...shadows.small,
   },
-  routineInfo: {
-    flex: 1,
+  weekTitle: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.sm,
+    color: colors.textSecondary,
+    textTransform: 'uppercase',
+    marginBottom: spacing.md,
   },
-  routineName: {
-    fontSize: fontSize.md,
+  weekRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  weekDayCol: {
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  weekDot: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    borderWidth: 2,
+    borderColor: colors.border,
+    backgroundColor: 'transparent',
+  },
+  weekDotFilled: {
+    backgroundColor: colors.accent,
+    borderColor: colors.accent,
+  },
+  weekDotToday: {
+    borderColor: colors.textPrimary,
+    borderWidth: 3,
+  },
+  weekDotFuture: {
+    opacity: 0.3,
+  },
+  weekDayLabel: {
+    fontFamily: fonts.regular,
+    fontSize: fontSize.xs,
+    color: colors.textSecondary,
+  },
+  weekDayLabelToday: {
     fontFamily: fonts.bold,
     color: colors.textPrimary,
   },
-  routineDays: {
+  quoteText: {
     fontFamily: fonts.regular,
-    fontSize: fontSize.sm,
+    fontStyle: 'italic',
+    fontSize: fontSize.md,
     color: colors.textSecondary,
-    marginTop: spacing.xs,
-  },
-  routineArrow: {
-    fontSize: fontSize.lg,
-    color: colors.accent,
+    textAlign: 'center',
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.md,
+    lineHeight: 24,
   },
   bottomPadding: {
     height: 100,

@@ -557,7 +557,11 @@ const exerciseImages = {
   rowing_start: require('../../assets/exercises/rowing_start.jpg'),
   rowing_end: require('../../assets/exercises/rowing_end.jpg'),
   burpees_start: require('../../assets/exercises/burpees_start.jpg'),
-  burpees_end: require('../../assets/exercises/burpees_end.jpg'),
+  burpees_mid1: require('../../assets/exercises/burpees_flex.jpg'),
+  burpees_mid2: require('../../assets/exercises/burpees_start.jpg'),
+  burpees_mid3: require('../../assets/exercises/burpees_mid.jpg'),
+  burpees_mid4: require('../../assets/exercises/burpees_end.jpg'),
+  burpees_end: require('../../assets/exercises/burpees_mid.jpg'),
   jumping_jacks_start: require('../../assets/exercises/jumping_jacks_start.jpg'),
   jumping_jacks_end: require('../../assets/exercises/jumping_jacks_end.jpg'),
 

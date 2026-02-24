@@ -1834,6 +1834,7 @@ export const exercises = [
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: ['straight_bar', 'rack', 'plates'],
+    optionalEquipment: ['step_platform'],
     weightType: 'barbell',
     description: {
       en: 'Heavy loaded calf raise with barbell. Bar on back, stand on elevated surface for range of motion, rise onto toes, squeeze calves at top, lower heels below platform for stretch.',
@@ -1848,6 +1849,7 @@ export const exercises = [
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: ['dumbbells'],
+    optionalEquipment: ['step_platform'],
     weightType: 'dumbbell',
     description: {
       en: 'Calf raise holding dumbbells for added resistance. Stand on elevated edge, hold dumbbells at sides, rise up on toes, lower heels below platform, works the gastrocnemius muscle.',
@@ -1862,6 +1864,7 @@ export const exercises = [
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: ['dumbbells'],
+    optionalEquipment: ['step_platform'],
     weightType: 'dumbbell',
     description: {
       en: 'Unilateral calf raise for balanced development. Stand on one foot on elevated surface, hold dumbbell for resistance, allows full focus on each calf independently for even growth.',
@@ -1889,7 +1892,8 @@ export const exercises = [
     name: { en: 'Donkey Calf Raise', es: 'Elevación de Talones Burro' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
-    equipment: ['dip_belt', 'rack', 'plates'],
+    equipment: ['dip_belt', 'plates'],
+    optionalEquipment: [['rack', 'pullup_rack'], 'step_platform'],
     weightType: 'plate',
     description: {
       en: 'Classic calf exercise with torso bent forward. Hinge forward, weight on hips via belt, perform calf raises, the angled position provides excellent stretch and contraction for calves.',
@@ -1904,6 +1908,7 @@ export const exercises = [
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: [],
+    optionalEquipment: ['step_platform'],
     weightType: 'bodyweight',
     description: {
       en: 'Simple bodyweight calf raise for beginners. Stand on elevated edge, rise onto toes, lower heels below platform for full stretch, can do high reps for calf endurance and burn.',
