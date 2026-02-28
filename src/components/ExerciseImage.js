@@ -74,8 +74,6 @@ const exerciseImages = {
   pullups_wide_end: require('../../assets/exercises/pullups_wide_end.jpg'),
   pullups_close_start: require('../../assets/exercises/pullups_close_start.jpg'),
   pullups_close_end: require('../../assets/exercises/pullups_close_end.jpg'),
-  weighted_pullups_start: require('../../assets/exercises/weighted_pullups_start.jpg'),
-  weighted_pullups_end: require('../../assets/exercises/weighted_pullups_end.jpg'),
   chinups_start: require('../../assets/exercises/chinups_start.jpg'),
   chinups_end: require('../../assets/exercises/chinups_end.jpg'),
   band_assisted_pullups_start: require('../../assets/exercises/band_assisted_pullups_start.jpg'),
@@ -354,8 +352,6 @@ const exerciseImages = {
   sit_ups_end: require('../../assets/exercises/sit_ups_end.jpg'),
   decline_sit_ups_start: require('../../assets/exercises/decline_sit_ups_start.jpg'),
   decline_sit_ups_end: require('../../assets/exercises/decline_sit_ups_end.jpg'),
-  weighted_decline_sit_ups_start: require('../../assets/exercises/weighted_decline_sit_ups_start.jpg'),
-  weighted_decline_sit_ups_end: require('../../assets/exercises/weighted_decline_sit_ups_end.jpg'),
   hanging_leg_raise_start: require('../../assets/exercises/hanging_leg_raise_start.jpg'),
   hanging_leg_raise_end: require('../../assets/exercises/hanging_leg_raise_end.jpg'),
   hanging_knee_raise_start: require('../../assets/exercises/hanging_knee_raise_start.jpg'),
@@ -370,8 +366,6 @@ const exerciseImages = {
   plank_end: require('../../assets/exercises/plank_start.jpg'),
   side_plank_start: require('../../assets/exercises/side_plank_start.jpg'),
   side_plank_end: require('../../assets/exercises/side_plank_start.jpg'),
-  weighted_plank_start: require('../../assets/exercises/weighted_plank_start.jpg'),
-  weighted_plank_end: require('../../assets/exercises/weighted_plank_start.jpg'),
   mountain_climbers_start: require('../../assets/exercises/mountain_climbers_start.jpg'),
   mountain_climbers_end: require('../../assets/exercises/mountain_climbers_end.jpg'),
   dead_bug_start: require('../../assets/exercises/dead_bug_start.jpg'),
@@ -412,8 +406,8 @@ const exerciseImages = {
   chest_press_end: require('../../assets/exercises/chest_press_end.jpg'),
   dips_chest_start: require('../../assets/exercises/dips_chest_start.jpg'),
   dips_chest_end: require('../../assets/exercises/dips_chest_end.jpg'),
-  weighted_dips_start: require('../../assets/exercises/weighted_dips_start.jpg'),
-  weighted_dips_end: require('../../assets/exercises/weighted_dips_end.jpg'),
+  // neutral_bench_press_start: require('../../assets/exercises/neutral_bench_press_start.jpg'),
+  // neutral_bench_press_end: require('../../assets/exercises/neutral_bench_press_end.jpg'),
 
   // ============================================
   // BACK
@@ -436,6 +430,8 @@ const exerciseImages = {
   single_arm_cable_row_end: require('../../assets/exercises/single_arm_cable_row_end.jpg'),
   cable_shrugs_start: require('../../assets/exercises/cable_shrugs_start.jpg'),
   cable_shrugs_end: require('../../assets/exercises/cable_shrugs_end.jpg'),
+  // neutral_cable_row_start: require('../../assets/exercises/neutral_cable_row_start.jpg'),
+  // neutral_cable_row_end: require('../../assets/exercises/neutral_cable_row_end.jpg'),
 
   // ============================================
   // SHOULDERS
@@ -452,6 +448,8 @@ const exerciseImages = {
   upright_row_cable_end: require('../../assets/exercises/upright_row_cable_end.jpg'),
   reverse_fly_start: require('../../assets/exercises/reverse_fly_start.jpg'),
   reverse_fly_end: require('../../assets/exercises/reverse_fly_end.jpg'),
+  // neutral_overhead_press_start: require('../../assets/exercises/neutral_overhead_press_start.jpg'),
+  // neutral_overhead_press_end: require('../../assets/exercises/neutral_overhead_press_end.jpg'),
 
   // ============================================
   // BICEPS
@@ -470,6 +468,8 @@ const exerciseImages = {
   cable_high_curl_end: require('../../assets/exercises/cable_high_curl_end.jpg'),
   cable_preacher_curl_start: require('../../assets/exercises/cable_preacher_curl_start.jpg'),
   cable_preacher_curl_end: require('../../assets/exercises/cable_preacher_curl_end.jpg'),
+  // neutral_curl_start: require('../../assets/exercises/neutral_curl_start.jpg'),
+  // neutral_curl_end: require('../../assets/exercises/neutral_curl_end.jpg'),
 
   // ============================================
   // TRICEPS
@@ -490,6 +490,8 @@ const exerciseImages = {
   cable_kickback_end: require('../../assets/exercises/cable_kickback_end.jpg'),
   dips_triceps_start: require('../../assets/exercises/dips_triceps_start.jpg'),
   dips_triceps_end: require('../../assets/exercises/dips_triceps_end.jpg'),
+  // neutral_skull_crushers_start: require('../../assets/exercises/neutral_skull_crushers_start.jpg'),
+  // neutral_skull_crushers_end: require('../../assets/exercises/neutral_skull_crushers_end.jpg'),
 
   // ============================================
   // FOREARMS
@@ -502,8 +504,8 @@ const exerciseImages = {
   // ============================================
   leg_extension_start: require('../../assets/exercises/leg_extension_start.jpg'),
   leg_extension_end: require('../../assets/exercises/leg_extension_end.jpg'),
-  //leg_press_start: require('../../assets/exercises/leg_press_start.jpg'),
-  //leg_press_end: require('../../assets/exercises/leg_press_end.jpg'),
+  leg_press_start: require('../../assets/exercises/leg_press_start.jpg'),
+  leg_press_end: require('../../assets/exercises/leg_press_end.jpg'),
   squat_start: require('../../assets/exercises/squat_start.jpg'),
   squat_end: require('../../assets/exercises/squat_end.jpg'),
 
@@ -528,8 +530,8 @@ const exerciseImages = {
   // ============================================
   // CALVES
   // ============================================
-  //leg_press_calf_raise_start: require('../../assets/exercises/leg_press_calf_raise_start.jpg'),
-  //leg_press_calf_raise_end: require('../../assets/exercises/leg_press_calf_raise_end.jpg'),
+  leg_press_calf_raise_start: require('../../assets/exercises/leg_press_calf_raise_start.jpg'),
+  leg_press_calf_raise_end: require('../../assets/exercises/leg_press_calf_raise_end.jpg'),
   squat_calf_raise_start: require('../../assets/exercises/squat_calf_raise_start.jpg'),
   squat_calf_raise_end: require('../../assets/exercises/squat_calf_raise_end.jpg'),
 

@@ -486,7 +486,7 @@ export const defaultRoutinesPro = [
           ex('bench_press', 5, 5),
           ex('barbell_row', 5, 5),
           ex('overhead_press_standing', 4, 5),
-          ex('weighted_pullups', 4, 5),
+          ex('pullups_wide', 4, 5),
           ex('cable_curl_bar', 3, 6),
           ex('cable_pushdown_bar', 3, 6),
         ],

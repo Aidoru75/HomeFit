@@ -28,7 +28,7 @@ export const exerciseToNumeric = {
   pullups_wide: 21,
   pullups_close: 22,
   chinups: 23,
-  weighted_pullups: 24,
+  neutral_bench_press: 24,
   band_assisted_pullups: 25,
   lat_pulldown_wide: 26,
   lat_pulldown_close: 27,
@@ -202,7 +202,7 @@ export const exerciseToNumeric = {
   bicycle_crunches: 176,
   sit_ups: 177,
   decline_sit_ups: 178,
-  weighted_decline_sit_ups: 179,
+  neutral_cable_row: 179,
   hanging_leg_raise: 180,
   hanging_knee_raise: 181,
   hanging_oblique_knee_raise: 182,
@@ -214,7 +214,7 @@ export const exerciseToNumeric = {
   pallof_press: 188,
   plank: 189,
   side_plank: 190,
-  weighted_plank: 191,
+  neutral_overhead_press: 191,
   mountain_climbers: 192,
   dead_bug: 193,
   bird_dog: 194,
@@ -233,7 +233,7 @@ export const exerciseToNumeric = {
   stepper: 216,
   rowing: 217,
   reverse_fly: 218,
-  weighted_dips: 219,
+  neutral_curl: 219,
   burpees: 220,
   jumping_jacks: 221,
 
@@ -258,6 +258,9 @@ export const exerciseToNumeric = {
   turkish_getup: 212,
   kb_lunge: 213,
   kb_windmill: 214,
+
+  // NEUTRAL GRIP (230+)
+  neutral_skull_crushers: 230,
 
 };
 

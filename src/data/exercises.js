@@ -1,4 +1,4 @@
-// 242 Exercises - Complete Catalog - Bilingual (English/Spanish)
+// 243 Exercises - Complete Catalog - Bilingual (English/Spanish)
 import { isProExercise } from './equipment';
 import { IS_PRO } from '../config';
 
@@ -235,6 +235,7 @@ export const exercises = [
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.25, shoulders: 0.10 },
     equipment: ['pullup_rack'],
+    optionalEquipment: ['dip_belt', 'plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Classic back builder with wide overhand grip. Hang with arms fully extended, pull yourself up until chin clears the bar, focusing on driving elbows down and squeezing your lats.',
@@ -250,25 +251,11 @@ export const exercises = [
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.30, shoulders: 0.10 },
     equipment: ['pullup_rack'],
+    optionalEquipment: ['dip_belt', 'plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Variation emphasizing the lower lats and biceps. With hands close together, pull up while keeping elbows close to your body, squeezing your back muscles hard at the top.',
       es: 'Variación que enfatiza dorsales inferiores y bíceps. Con manos juntas, sube manteniendo los codos cerca del cuerpo, apretando fuerte los músculos de la espalda en la parte superior.',
-    },
-    bmc: 3.0,
-    wf: 0.04,
-    bwFraction: 0.95,
-  },
-  {
-    id: 'weighted_pullups',
-    name: { en: 'Weighted Pull-Ups', es: 'Dominadas con Peso Adicional' },
-    muscleGroup: 'back',
-    muscles: { back: 0.60, biceps: 0.30, shoulders: 0.10 },
-    equipment: ['pullup_rack', 'dip_belt', 'plates'],
-    weightType: 'bodyweight',
-    description: {
-      en: 'Back builder with wide overhand grip and extra weight. Hang with arms fully extended, pull yourself up until chin clears the bar, focusing on driving elbows down and squeezing your lats.',
-      es: 'Constructor de espalda con agarre ancho pronado y peso extra. Cuélgate con brazos extendidos, sube hasta que la barbilla pase la barra, enfocándote en llevar los codos abajo y apretar dorsales.',
     },
     bmc: 3.0,
     wf: 0.04,
@@ -280,6 +267,7 @@ export const exercises = [
     muscleGroup: 'back',
     muscles: { back: 0.50, biceps: 0.40, shoulders: 0.10 },
     equipment: ['pullup_rack'],
+    optionalEquipment: ['dip_belt', 'plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Underhand grip pull-up that heavily involves biceps. Grip the bar with palms facing you, pull up leading with your chest, lower with control to get a full stretch in lats and biceps.',
@@ -925,6 +913,7 @@ export const exercises = [
     muscleGroup: 'biceps',
     muscles: { biceps: 0.55, back: 0.35, shoulders: 0.10 },
     equipment: ['pullup_rack'],
+    optionalEquipment: ['dip_belt', 'plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Underhand pull-up emphasizing bicep engagement. Grip bar with palms facing you, pull up focusing on bicep contraction rather than back, excellent compound movement for arm size.',
@@ -2003,6 +1992,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.85, quads: 0.15 },
     equipment: ['decline_bench'],
+    optionalEquipment: ['plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Sit-ups on decline bench for increased difficulty. Hook feet under pads, lower back down bench, sit up contracting abs, the decline increases resistance and range of motion.',
@@ -2010,21 +2000,6 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
-    bwFraction: 0.30,
-  },
-  {
-    id: 'weighted_decline_sit_ups',
-    name: { en: 'Weighted Decline Sit-Ups', es: 'Sit-Ups Declinados con Peso' },
-    muscleGroup: 'core',
-    muscles: { core: 0.85, quads: 0.15 },
-    equipment: ['decline_bench', 'plates'],
-    weightType: 'plate',
-    description: {
-      en: 'Decline sit-up with added weight for strength building. Hold plate against chest, perform decline sit-up, the added resistance builds abdominal strength beyond bodyweight.',
-      es: 'Sit-up declinado con peso adicional para construir fuerza. Sostén disco contra el pecho, realiza sit-up declinado, la resistencia adicional construye fuerza abdominal.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
     bwFraction: 0.30,
   },
   {
@@ -2108,6 +2083,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.80, shoulders: 0.15, quads: 0.05 },
     equipment: [],
+    optionalEquipment: ['plates'],
     weightType: 'bodyweight',
     timeBased: true,
     description: {
@@ -2132,22 +2108,6 @@ export const exercises = [
     },
     bmc: 1.5,
     wf: 0.0,
-    bwFraction: 0.40,
-  },
-  {
-    id: 'weighted_plank',
-    name: { en: 'Weighted Plank', es: 'Plancha con Peso' },
-    muscleGroup: 'core',
-    muscles: { core: 0.80, shoulders: 0.15, quads: 0.05 },
-    equipment: ['plates'],
-    weightType: 'plate',
-    timeBased: true,
-    description: {
-      en: 'Plank with added weight for increased difficulty. Place plate on upper back, hold plank position, the added load increases the demand on core muscles for greater strength gains.',
-      es: 'Plancha con peso añadido para mayor dificultad. Coloca disco en espalda alta, mantén posición de plancha, la carga adicional aumenta la demanda en músculos del core.',
-    },
-    bmc: 1.5,
-    wf: 0.02,
     bwFraction: 0.40,
   },
   {
@@ -2449,6 +2409,7 @@ export const exercises = [
     muscleGroup: 'chest',
     muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
     equipment: ['parallels'],
+    optionalEquipment: ['dip_belt', 'plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Compound movement for lower chest when performed with forward lean. Keep torso tilted forward, lower until shoulders are below elbows, then push up maintaining the chest-focused position.',
@@ -2459,19 +2420,18 @@ export const exercises = [
     bwFraction: 0.95,
   },
   {
-    id: 'weighted_dips',
-    name: { en: 'Weighted Dips', es: 'Fondos con Peso Adicional' },
+    id: 'neutral_bench_press',
+    name: { en: 'Neutral Grip Bench Press', es: 'Press de Banca Agarre Neutro' },
     muscleGroup: 'chest',
     muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
-    equipment: ['parallels', 'dip_belt', 'plates'],
-    weightType: 'bodyweight',
+    equipment: ['neutral_bar', 'flat_bench', 'plates'],
+    weightType: 'barbell',
     description: {
-      en: 'Dips with added weight for progressive overload. Attach weight to a dip belt, lean forward to emphasize chest, lower until shoulders are below elbows, then push up powerfully.',
-      es: 'Fondos con peso adicional para sobrecarga progresiva. Sujeta peso a un cinturón de fondos, inclínate hacia adelante para enfatizar pecho, baja hasta que los hombros estén bajo los codos, luego empuja con fuerza.',
+      en: 'Bench press with a neutral (palms facing each other) grip bar. Reduces shoulder strain while shifting emphasis to triceps. Lower the bar to mid-chest and press up, keeping wrists in a natural position.',
+      es: 'Press de banca con barra de agarre neutro (palmas enfrentadas). Reduce tensión en hombros y traslada énfasis a tríceps. Baja la barra al pecho medio y empuja, manteniendo muñecas en posición natural.',
     },
-    bmc: 3.0,
-    wf: 0.04,
-    bwFraction: 0.95,
+    bmc: 2.0,
+    wf: 0.03,
   },
 
   // ============================================
@@ -2482,7 +2442,7 @@ export const exercises = [
     name: { en: 'Lat Pulldown (Wide)', es: 'Jalón al Pecho (Ancho)' },
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.25, shoulders: 0.10 },
-    equipment: ['lat_station', 'lat_bar'],
+    equipment: ['lat_station', ['lat_bar', 'neutral_bar_attachment']],
     weightType: 'machine',
     description: {
       en: 'Machine alternative to wide-grip pull-ups. Sit with thighs secured, grip the bar wide, pull down to upper chest while squeezing shoulder blades together, then return with controlled tempo.',
@@ -2496,7 +2456,7 @@ export const exercises = [
     name: { en: 'Lat Pulldown (Close/Neutral)', es: 'Jalón al Pecho (Cerrado/Neutro)' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.30, shoulders: 0.10 },
-    equipment: ['lat_station', 'lat_bar'],
+    equipment: ['lat_station', ['lat_bar', 'rowing_handle', 'straight_bar_attachment']],
     weightType: 'machine',
     description: {
       en: 'Close-grip variation targeting lower lats. Using a rowing handle or close-grip attachment, pull to your sternum while leaning slightly back, focusing on a strong lat contraction at the bottom.',
@@ -2616,6 +2576,20 @@ export const exercises = [
       es: 'Inclínate hacia adelante con una mano apoyada en banco o rodilla, rema la pesa rusa hacia la cadera apretando la escápula arriba. El agarre descentrado desafía el agarre y la estabilidad del antebrazo.',
     },
     bmc: 1.8,
+    wf: 0.03,
+  },
+  {
+    id: 'neutral_cable_row',
+    name: { en: 'Neutral Grip Cable Row', es: 'Remo en Polea Agarre Neutro' },
+    muscleGroup: 'back',
+    muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
+    equipment: ['low_pulley', 'neutral_bar_attachment'],
+    weightType: 'machine',
+    description: {
+      en: 'Seated cable row using a neutral grip attachment. The palms-facing grip allows a strong lat contraction while reducing bicep dominance. Pull to the lower chest, squeeze shoulder blades, and extend fully.',
+      es: 'Remo sentado en polea con agarre neutro. El agarre con palmas enfrentadas permite una fuerte contracción de dorsales reduciendo dominancia de bíceps. Tira al pecho bajo, aprieta escápulas y extiende completamente.',
+    },
+    bmc: 3.0,
     wf: 0.03,
   },
 
@@ -2751,6 +2725,20 @@ export const exercises = [
     bmc: 1.5,
     wf: 0.02,
   },
+  {
+    id: 'neutral_overhead_press',
+    name: { en: 'Neutral Grip Overhead Press', es: 'Press Militar Agarre Neutro' },
+    muscleGroup: 'shoulders',
+    muscles: { shoulders: 0.55, triceps: 0.35, chest: 0.10 },
+    equipment: ['neutral_bar', 'rack', 'plates'],
+    weightType: 'barbell',
+    description: {
+      en: 'Overhead press with a neutral grip bar for a more shoulder-friendly pressing angle. Press from shoulder height to lockout with palms facing each other, reducing external rotation stress on the shoulders.',
+      es: 'Press militar con barra de agarre neutro para un ángulo más amigable con los hombros. Empuja desde la altura de los hombros hasta extensión completa con palmas enfrentadas, reduciendo estrés de rotación externa.',
+    },
+    bmc: 2.0,
+    wf: 0.03,
+  },
 
   // ============================================
   // BICEPS
@@ -2849,6 +2837,20 @@ export const exercises = [
     description: {
       en: 'Preacher curl with constant cable tension. Position preacher pad facing low pulley, curl keeping upper arms on pad, the cable ensures tension throughout the entire movement.',
       es: 'Curl en banco scott con tensión constante de cable. Posiciona el pad frente a polea baja, curl manteniendo brazos en el pad, el cable asegura tensión durante todo el movimiento.',
+    },
+    bmc: 1.0,
+    wf: 0.02,
+  },
+  {
+    id: 'neutral_curl',
+    name: { en: 'Neutral Grip Curl', es: 'Curl con Barra de Agarre Neutro' },
+    muscleGroup: 'biceps',
+    muscles: { biceps: 0.65, forearms: 0.35 },
+    equipment: ['neutral_bar', 'plates'],
+    weightType: 'barbell',
+    description: {
+      en: 'Curl with a neutral grip bar targeting the brachialis and brachioradialis along with the biceps. The palms-facing grip recruits more forearm musculature and builds thicker arms from the side.',
+      es: 'Curl con barra de agarre neutro que trabaja el braquial y braquiorradial junto con los bíceps. El agarre con palmas enfrentadas recluta más musculatura del antebrazo y construye brazos más gruesos.',
     },
     bmc: 1.0,
     wf: 0.02,
@@ -2961,6 +2963,7 @@ export const exercises = [
     muscleGroup: 'triceps',
     muscles: { triceps: 0.55, chest: 0.30, shoulders: 0.15 },
     equipment: ['parallels'],
+    optionalEquipment: ['dip_belt', 'plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Compound tricep builder with upright torso. Keep body vertical, lower until upper arms are parallel to floor, push up focusing on tricep contraction, elbows close to body.',
@@ -2969,6 +2972,20 @@ export const exercises = [
     bmc: 2.5,
     wf: 0.04,
     bwFraction: 0.95,
+  },
+  {
+    id: 'neutral_skull_crushers',
+    name: { en: 'Neutral Grip Skull Crushers', es: 'Rompecráneos Agarre Neutro' },
+    muscleGroup: 'triceps',
+    muscles: { triceps: 0.85, shoulders: 0.10, chest: 0.05 },
+    equipment: ['neutral_bar', 'flat_bench', 'plates'],
+    weightType: 'barbell',
+    description: {
+      en: 'Lying tricep extension with a neutral grip bar. The palms-facing position reduces wrist and elbow strain. Lower the bar beside your head and extend fully, keeping upper arms stationary throughout.',
+      es: 'Extensión de tríceps acostado con barra de agarre neutro. La posición con palmas enfrentadas reduce tensión en muñecas y codos. Baja la barra junto a la cabeza y extiende completamente, manteniendo brazos fijos.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
   },
 
   // ============================================
@@ -3006,20 +3023,20 @@ export const exercises = [
     bmc: 2.0,
     wf: 0.03,
   },
-  // {
-  //  id: 'leg_press',
-  //  name: { en: 'Leg Press', es: 'Prensa de Piernas' },
-  //  muscleGroup: 'quads',
-  //  muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.20, calves: 0.05 },
-  //  equipment: ['leg_press_station'],
-  //  weightType: 'machine',
-  //  description: {
-  //    en: 'Machine compound movement for heavy quad loading. Press platform away by extending legs, lower with control, foot placement affects muscle emphasis, allows very heavy weights safely.',
-  //    es: 'Movimiento compuesto en máquina para carga pesada de cuádriceps. Empuja la plataforma extendiendo piernas, baja con control, la posición de pies afecta el énfasis muscular.',
-  //  },
-  //  bmc: 4.0,
-  //  wf: 0.04,
-  //},
+  {
+    id: 'leg_press',
+    name: { en: 'Leg Press', es: 'Prensa de Piernas' },
+    muscleGroup: 'quads',
+    muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.20, calves: 0.05 },
+    equipment: ['leg_press_station'],
+    weightType: 'machine',
+    description: {
+      en: 'Machine compound movement for heavy quad loading. Press platform away by extending legs, lower with control, foot placement affects muscle emphasis, allows very heavy weights safely.',
+      es: 'Movimiento compuesto en máquina para carga pesada de cuádriceps. Empuja la plataforma extendiendo piernas, baja con control, la posición de pies afecta el énfasis muscular.',
+    },
+    bmc: 4.0,
+    wf: 0.04,
+  },
   {
     id: 'squat',
     name: { en: 'Hack Squat', es: 'Sentadilla Hack' },
@@ -3203,20 +3220,20 @@ export const exercises = [
   // ============================================
   // CALVES
   // ============================================
-//  {
-//    id: 'leg_press_calf_raise',
-//    name: { en: 'Leg Press Calf Raise', es: 'Elevación de Talones en Prensa' },
-//    muscleGroup: 'calves',
-//    muscles: { calves: 1.0 },
-//    equipment: ['leg_press_station'],
-//    weightType: 'machine',
-//    description: {
-//      en: 'Calf raise using leg press machine. Position toes on bottom of platform, press through toes to extend calves, allows heavy loading with machine support for safe calf training.',
-//      es: 'Elevación de talones usando la prensa de piernas. Posiciona puntas en la parte baja de la plataforma, empuja con puntas para extender gemelos, permite carga pesada con soporte.',
-//    },
-//    bmc: 1.5,
-//    wf: 0.02,
-//  },
+  {
+    id: 'leg_press_calf_raise',
+    name: { en: 'Leg Press Calf Raise', es: 'Elevación de Talones en Prensa' },
+    muscleGroup: 'calves',
+    muscles: { calves: 1.0 },
+    equipment: ['leg_press_station'],
+    weightType: 'machine',
+    description: {
+      en: 'Calf raise using leg press machine. Position toes on bottom of platform, press through toes to extend calves, allows heavy loading with machine support for safe calf training.',
+      es: 'Elevación de talones usando la prensa de piernas. Posiciona puntas en la parte baja de la plataforma, empuja con puntas para extender gemelos, permite carga pesada con soporte.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
   {
     id: 'squat_calf_raise',
     name: { en: 'Hack Squat Calf Raise', es: 'Elevación de Talones en Hack Squat' },
