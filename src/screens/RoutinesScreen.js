@@ -96,6 +96,14 @@ export default function RoutinesScreen({ navigation, route }) {
 
   // Raw string inputs for weights (to preserve decimal point while typing)
   const [weightInputs, setWeightInputs] = useState(['0', '0', '0']);
+  const [isSubstituting, setIsSubstituting] = useState(false);
+
+  // Number input mini-modal state
+  const [numberInputVisible, setNumberInputVisible] = useState(false);
+  const [numberInputValue, setNumberInputValue] = useState('');
+  const [numberInputType, setNumberInputType] = useState('weight'); // 'weight' or 'reps'
+  const [numberInputSetIndex, setNumberInputSetIndex] = useState(0);
+  const numberInputRef = useRef(null);
 
   // Drag state
   const [draggingIndex, setDraggingIndex] = useState(null);
@@ -325,12 +333,44 @@ export default function RoutinesScreen({ navigation, route }) {
   };
 
   const selectExerciseForAdd = (exercise) => {
-    const defaultRep = exercise.timeBased ? 1 : 10;
-    setExerciseConfig(prev => ({
-      ...prev,
-      exerciseId: exercise.id,
-      reps: prev.reps.map(r => typeof r === 'number' ? defaultRep : r),
-    }));
+    if (isSubstituting) {
+      // Substitute mode: keep existing sets/reps/weights, only swap exerciseId
+      const oldExercise = getExerciseById(exerciseConfig._prevExerciseId);
+      const wasTimeBased = oldExercise?.timeBased;
+      const isTimeBased = exercise.timeBased;
+      setExerciseConfig(prev => {
+        const config = { ...prev, exerciseId: exercise.id };
+        delete config._prevExerciseId;
+        // Reset reps if switching between timeBased and rep-based
+        if (wasTimeBased !== isTimeBased) {
+          const defaultRep = isTimeBased ? 1 : 10;
+          config.reps = prev.reps.map(r => r === 'E' ? 'E' : defaultRep);
+        }
+        return config;
+      });
+      setIsSubstituting(false);
+    } else {
+      // Add mode: reset reps to defaults
+      const defaultRep = exercise.timeBased ? 1 : 10;
+      setExerciseConfig(prev => ({
+        ...prev,
+        exerciseId: exercise.id,
+        reps: prev.reps.map(r => typeof r === 'number' ? defaultRep : r),
+      }));
+    }
+  };
+
+  const handleSubstitute = () => {
+    // Find current exercise's muscle group to pre-filter
+    const currentExercise = getExerciseById(exerciseConfig.exerciseId);
+    if (currentExercise) {
+      const muscleIndex = muscleGroups.findIndex(mg => mg.id === currentExercise.muscleGroup);
+      setCurrentMuscleFilter(muscleIndex >= 0 ? muscleIndex + 1 : 0);
+    }
+    setExerciseSearchText('');
+    // Store current exerciseId so we can check timeBased change
+    setExerciseConfig(prev => ({ ...prev, exerciseId: null, _prevExerciseId: prev.exerciseId }));
+    setIsSubstituting(true);
   };
 
   const updateSetsCount = (newCount) => {
@@ -419,6 +459,28 @@ export default function RoutinesScreen({ navigation, route }) {
     });
   };
 
+  // Number input mini-modal handlers
+  const openNumberInput = (type, index, isAddMode) => {
+    setNumberInputType(type);
+    setNumberInputSetIndex(index);
+    if (type === 'reps') {
+      const val = exerciseConfig.reps[index];
+      setNumberInputValue(val === 'E' ? '' : String(val || (getExerciseById(exerciseConfig.exerciseId)?.timeBased ? 1 : 10)));
+    } else {
+      setNumberInputValue(weightInputs[index] || '0');
+    }
+    setNumberInputVisible(true);
+  };
+
+  const saveNumberInput = (isAddMode) => {
+    if (numberInputType === 'reps') {
+      updateRep(numberInputSetIndex, numberInputValue, isAddMode);
+    } else {
+      updateWeight(numberInputSetIndex, numberInputValue, isAddMode);
+    }
+    setNumberInputVisible(false);
+  };
+
   const handleAddExercise = async () => {
     if (!exerciseConfig.exerciseId) return;
     
@@ -457,7 +519,9 @@ export default function RoutinesScreen({ navigation, route }) {
   const handleSaveExercise = async () => {
     if (selectedRoutine && editingDayIndex !== null && editingExerciseIndex !== null) {
       const updatedDays = [...selectedRoutine.days];
+      const existing = updatedDays[editingDayIndex].exercises[editingExerciseIndex];
       updatedDays[editingDayIndex].exercises[editingExerciseIndex] = {
+        ...existing,
         exerciseId: exerciseConfig.exerciseId,
         sets: exerciseConfig.sets,
         reps: exerciseConfig.reps,
@@ -471,15 +535,31 @@ export default function RoutinesScreen({ navigation, route }) {
     }
   };
 
-  const handleRemoveExercise = async () => {
+  const handleRemoveExercise = () => {
     if (selectedRoutine && editingDayIndex !== null && editingExerciseIndex !== null) {
-      const updatedDays = [...selectedRoutine.days];
-      updatedDays[editingDayIndex].exercises.splice(editingExerciseIndex, 1);
+      const exerciseName = exerciseConfig.exerciseId
+        ? getExerciseName(exerciseConfig.exerciseId, lang)
+        : '';
+      Alert.alert(
+        t('delete', lang),
+        `${t('confirmDelete', lang)} "${exerciseName}"?`,
+        [
+          { text: t('cancel', lang), style: 'cancel' },
+          {
+            text: t('delete', lang),
+            style: 'destructive',
+            onPress: async () => {
+              const updatedDays = [...selectedRoutine.days];
+              updatedDays[editingDayIndex].exercises.splice(editingExerciseIndex, 1);
 
-      const updated = await updateRoutine(selectedRoutine.id, { days: updatedDays });
-      setSelectedRoutine(updated);
-      setRoutines(routines.map(r => r.id === updated.id ? updated : r));
-      setShowEditExerciseModal(false);
+              const updated = await updateRoutine(selectedRoutine.id, { days: updatedDays });
+              setSelectedRoutine(updated);
+              setRoutines(routines.map(r => r.id === updated.id ? updated : r));
+              setShowEditExerciseModal(false);
+            },
+          },
+        ]
+      );
     }
   };
 
@@ -948,20 +1028,21 @@ export default function RoutinesScreen({ navigation, route }) {
     const isAddMode = !isEdit; // For propagating first set values
     
     return (
+    <>
       <Modal
         visible={isEdit ? showEditExerciseModal : showAddExerciseModal}
         animationType="slide"
         transparent={true}
-        onRequestClose={() => isEdit ? setShowEditExerciseModal(false) : setShowAddExerciseModal(false)}
+        onRequestClose={() => { setIsSubstituting(false); isEdit ? setShowEditExerciseModal(false) : setShowAddExerciseModal(false); }}
       >
         <View style={styles.modalOverlay}>
           <View style={[styles.modalContent, { maxHeight: '90%' }]}>
             <Text style={styles.modalTitle}>
-              {isEdit ? t('editExercise', lang) : t('addExercise', lang)}
+              {isSubstituting ? t('substitute', lang) : isEdit ? t('editExercise', lang) : t('addExercise', lang)}
             </Text>
 
-            {!isEdit && !exerciseConfig.exerciseId ? (
-              // Exercise selection (Add mode only)
+            {!exerciseConfig.exerciseId ? (
+              // Exercise selection (Add mode or Substitute mode)
               <>
                 <View style={styles.muscleFilter}>
                   <TouchableOpacity
@@ -1076,47 +1157,66 @@ export default function RoutinesScreen({ navigation, route }) {
                 {Array.from({ length: exerciseConfig.sets }).map((_, index) => (
                   <View key={index} style={styles.setRow}>
                     <Text style={styles.setNumber}>{index + 1}</Text>
-                    <View style={styles.setInput}>
+                    <TouchableOpacity
+                      style={styles.setInput}
+                      onPress={() => exerciseConfig.reps[index] !== 'E' && openNumberInput('reps', index, isAddMode)}
+                      activeOpacity={exerciseConfig.reps[index] === 'E' ? 1 : 0.6}
+                    >
                       <Text style={styles.setInputLabel}>{exerciseData?.timeBased ? t('min', lang) : t('reps', lang)}</Text>
-                      <TextInput
-                        style={[styles.setInputField, exerciseConfig.reps[index] === 'E' && styles.setInputFieldDisabled]}
-                        value={exerciseConfig.reps[index] === 'E' ? '—' : String(exerciseConfig.reps[index] || (exerciseData?.timeBased ? 1 : 10))}
-                        onChangeText={(value) => updateRep(index, value, isAddMode)}
-                        keyboardType="numeric"
-                        selectTextOnFocus={true}
-                        editable={exerciseConfig.reps[index] !== 'E'}
-                      />
-                    </View>
-                    <View style={styles.setInput}>
+                      <Text style={[styles.setInputValue, exerciseConfig.reps[index] === 'E' && styles.setInputFieldDisabled]}>
+                        {exerciseConfig.reps[index] === 'E' ? '—' : String(exerciseConfig.reps[index] || (exerciseData?.timeBased ? 1 : 10))}
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.setInput}
+                      onPress={() => openNumberInput('weight', index, isAddMode)}
+                      activeOpacity={0.6}
+                    >
                       <Text style={styles.setInputLabel}>{settings.measurementSystem === 'imperial' ? t('lbs', lang) : t('kg', lang)}</Text>
-                      <TextInput
-                        style={styles.setInputField}
-                        value={weightInputs[index] || '0'}
-                        onChangeText={(value) => updateWeight(index, value, isAddMode)}
-                        keyboardType="decimal-pad"
-                        selectTextOnFocus={true}
-                      />
-                    </View>
+                      <Text style={styles.setInputValue}>
+                        {weightInputs[index] || '0'}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 ))}
 
-                {isEdit && (
+              </ScrollView>
+            )}
+
+            <View style={styles.modalButtonsColumn}>
+              {isEdit && exerciseConfig.exerciseId && (
+                <View style={styles.editActionRow}>
                   <TouchableOpacity
-                    style={styles.deleteButton}
+                    style={styles.substituteButton}
+                    onPress={handleSubstitute}
+                  >
+                    <Text style={styles.substituteButtonText}>{t('substitute', lang)}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.deleteButton, { flex: 1, marginTop: 0 }]}
                     onPress={handleRemoveExercise}
                   >
                     <Text style={styles.deleteButtonText}>{t('delete', lang)}</Text>
                   </TouchableOpacity>
-                )}
-              </ScrollView>
-            )}
-
-            <View style={styles.modalButtons}>
+                </View>
+              )}
+              <View style={styles.modalButtonsRow}>
               <TouchableOpacity
                 style={styles.modalCancelButton}
-                onPress={() => isEdit ? setShowEditExerciseModal(false) : setShowAddExerciseModal(false)}
+                onPress={() => {
+                  if (isSubstituting) {
+                    setExerciseConfig(prev => {
+                      const config = { ...prev, exerciseId: prev._prevExerciseId };
+                      delete config._prevExerciseId;
+                      return config;
+                    });
+                    setIsSubstituting(false);
+                  } else {
+                    isEdit ? setShowEditExerciseModal(false) : setShowAddExerciseModal(false);
+                  }
+                }}
               >
-                <Text style={styles.modalCancelText}>{t('cancel', lang)}</Text>
+                <Text style={styles.modalCancelText}>{isSubstituting ? t('back', lang) : t('cancel', lang)}</Text>
               </TouchableOpacity>
               {exerciseConfig.exerciseId && (
                 <TouchableOpacity
@@ -1126,10 +1226,40 @@ export default function RoutinesScreen({ navigation, route }) {
                   <Text style={styles.modalCreateText}>{isEdit ? t('save', lang) : t('add', lang)}</Text>
                 </TouchableOpacity>
               )}
+              </View>
             </View>
           </View>
         </View>
       </Modal>
+
+      {/* Number input mini-modal */}
+      <Modal
+        visible={numberInputVisible}
+        animationType="fade"
+        transparent
+        statusBarTranslucent
+        onRequestClose={() => setNumberInputVisible(false)}
+        onShow={() => setTimeout(() => numberInputRef.current?.focus(), 100)}
+      >
+        <TouchableOpacity
+          style={styles.numberInputOverlay}
+          activeOpacity={1}
+          onPress={() => setNumberInputVisible(false)}
+        >
+          <View style={styles.numberInputBox}>
+            <TextInput
+              ref={numberInputRef}
+              style={styles.numberInputField}
+              value={numberInputValue}
+              onChangeText={setNumberInputValue}
+              keyboardType={numberInputType === 'reps' ? 'numeric' : 'decimal-pad'}
+              selectTextOnFocus
+              onSubmitEditing={() => saveNumberInput(isAddMode)}
+            />
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    </>
     );
   };
 
@@ -1880,6 +2010,13 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     marginTop: spacing.lg,
   },
+  modalButtonsColumn: {
+    gap: spacing.sm,
+  },
+  modalButtonsRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
   modalCancelButton: {
     flex: 1,
     padding: spacing.md,
@@ -2047,9 +2184,35 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
     padding: spacing.xs,
   },
+  setInputValue: {
+    fontFamily: fonts.regular,
+    flex: 1,
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
+    padding: spacing.xs,
+  },
   setInputFieldDisabled: {
     color: colors.textLight,
     opacity: 0.5,
+  },
+  editActionRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginTop: spacing.lg,
+  },
+  substituteButton: {
+    flex: 1,
+    padding: spacing.md,
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.md,
+    borderWidth: 1.5,
+    borderColor: colors.accent,
+    alignItems: 'center',
+  },
+  substituteButtonText: {
+    fontFamily: fonts.bold,
+    color: colors.accent,
+    fontSize: fontSize.md,
   },
   deleteButton: {
     marginTop: spacing.lg,
@@ -2219,5 +2382,30 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: fontSize.md,
     color: colors.textPrimary,
+  },
+
+  // Number input mini-modal
+  numberInputOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  numberInputBox: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    minWidth: 160,
+    alignItems: 'center',
+  },
+  numberInputField: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.xxl,
+    color: '#000000',
+    textAlign: 'center',
+    minWidth: 120,
+    borderBottomWidth: 2,
+    borderBottomColor: '#000000',
+    paddingVertical: spacing.sm,
   },
 });
