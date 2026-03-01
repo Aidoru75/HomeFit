@@ -259,6 +259,13 @@ export const exerciseToNumeric = {
   kb_lunge: 213,
   kb_windmill: 214,
 
+  // MACHINE CALVES
+  standing_calf_raise_machine: 231,
+
+  // HIP ABDUCTOR/ADDUCTOR
+  hip_abduction: 232,
+  hip_adduction: 233,
+
   // NEUTRAL GRIP (230+)
   neutral_skull_crushers: 230,
 

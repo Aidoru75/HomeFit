@@ -238,7 +238,17 @@ export default function SettingsScreen() {
             />
           </View>
 
-          {settings.soundEnabled && (
+          <View style={styles.switchRow}>
+            <Text style={styles.label}>{t('voiceAnnouncements', lang)}</Text>
+            <Switch
+              value={settings.voiceEnabled}
+              onValueChange={(value) => updateSetting('voiceEnabled', value)}
+              trackColor={{ false: colors.border, true: colors.accentLight }}
+              thumbColor={settings.voiceEnabled ? colors.accent : colors.textLight}
+            />
+          </View>
+
+          {(settings.soundEnabled || settings.voiceEnabled) && (
             <View style={styles.volumeContainer}>
               <Text style={styles.label}>{t('volume', lang)}</Text>
               <View style={styles.sliderRow}>

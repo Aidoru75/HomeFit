@@ -5,9 +5,21 @@
   "build": {
     "preview": {
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
       }
     },
-    "production": {}
+    "preview-free": {
+      "extends": "preview",
+      "env": {
+        "EXPO_PUBLIC_APP_TIER": "free"
+      }
+    },
+    "preview-pro": {
+      "extends": "preview",
+      "env": {
+        "EXPO_PUBLIC_APP_TIER": "pro"
+      }
+    }
   }
 }

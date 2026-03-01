@@ -14,8 +14,10 @@ import {
   AppState,
   Platform,
   Modal,
+  TextInput,
 } from 'react-native';
 import { useAudioPlayer, setAudioModeAsync } from 'expo-audio';
+import * as Speech from 'expo-speech';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { colors, spacing, borderRadius, fontSize, fonts } from '../theme';
@@ -52,6 +54,7 @@ export default function TrainingScreen({ route, navigation }) {
   const [workoutComplete, setWorkoutComplete] = useState(false);
   const [workoutStartTime, setWorkoutStartTime] = useState(null);
   const [caloriesBurned, setCaloriesBurned] = useState(0);
+  const [workoutDuration, setWorkoutDuration] = useState(0);
 
   // Track modifications to reps/weights during workout
   const [modifiedExercises, setModifiedExercises] = useState({});
@@ -61,6 +64,11 @@ export default function TrainingScreen({ route, navigation }) {
   const thumbnailScrollRef = useRef(null);
   const modifiedExercisesRef = useRef({});
   const restEndTimeRef = useRef(null); // Stores timestamp when rest should end
+
+  // Direct weight input modal
+  const [weightInputVisible, setWeightInputVisible] = useState(false);
+  const [weightInputValue, setWeightInputValue] = useState('');
+  const weightInputRef = useRef(null);
 
   // Exercise countdown timer (for timeBased exercises)
   const [isExerciseTimerActive, setIsExerciseTimerActive] = useState(false);
@@ -78,9 +86,11 @@ export default function TrainingScreen({ route, navigation }) {
   // Refs to track current sound settings (updated on focus)
   const soundEnabledRef = useRef(true);
   const soundVolumeRef = useRef(1.0);
+  const voiceEnabledRef = useRef(false);
 
-  // Track whether timer sound has been triggered for current countdown
+  // Track whether timer sound / rep announcement has been triggered for current countdown
   const timerPlayedRef = useRef(false);
+  const repAnnouncedRef = useRef(false);
 
   const lang = settings.language || 'en';
   const isImperial = settings.measurementSystem === 'imperial';
@@ -101,6 +111,7 @@ export default function TrainingScreen({ route, navigation }) {
     }
     restEndTimeRef.current = null;
     exerciseTimerEndRef.current = null;
+    Speech.stop();
     setIsExerciseTimerActive(false);
     setExerciseTimerLeft(0);
     setCurrentExerciseIndex(0);
@@ -112,7 +123,9 @@ export default function TrainingScreen({ route, navigation }) {
     setWorkoutComplete(false);
     setWorkoutStartTime(null);
     setCaloriesBurned(0);
+    setWorkoutDuration(0);
     timerPlayedRef.current = false;
+    initialAnnouncedRef.current = false;
     setModifiedExercises({});
     setHasChanges(false);
   }, []);
@@ -146,6 +159,7 @@ export default function TrainingScreen({ route, navigation }) {
         // Update refs immediately for sound playback
         soundEnabledRef.current = userSettings.soundEnabled;
         soundVolumeRef.current = userSettings.soundVolume;
+        voiceEnabledRef.current = userSettings.voiceEnabled;
         // Update player volumes
         if (userSettings.soundVolume !== undefined) {
           if (timerPlayer) timerPlayer.volume = userSettings.soundVolume;
@@ -667,6 +681,31 @@ export default function TrainingScreen({ route, navigation }) {
     setHasChanges(true);
   };
 
+  // Set weight directly (from numeric input modal)
+  const setWeightDirectly = (value) => {
+    const day = routine?.days?.[paramsRef.current.dayIndex];
+    const currentEx = day?.exercises?.[currentExerciseIndex];
+    if (!currentEx) return;
+
+    const parsed = parseFloat(value);
+    if (isNaN(parsed) || parsed < 0) return;
+    const newWeight = Math.round(parsed * 100) / 100;
+
+    setModifiedExercises(prev => {
+      const existing = prev[currentExerciseIndex] || {
+        reps: [...(currentEx.reps || Array(currentEx.sets).fill(10))],
+        weights: [...(currentEx.weights || Array(currentEx.sets).fill(0))]
+      };
+      const newWeightsArray = [...existing.weights];
+      newWeightsArray[currentSetIndex] = newWeight;
+      return {
+        ...prev,
+        [currentExerciseIndex]: { ...existing, weights: newWeightsArray }
+      };
+    });
+    setHasChanges(true);
+  };
+
   // Play the appropriate sound based on the remaining seconds
   const playTimerSound = async () => {
     if (!soundEnabledRef.current) return;
@@ -683,6 +722,155 @@ export default function TrainingScreen({ route, navigation }) {
     }
   };
 
+  // Voice announcement refs
+  const initialAnnouncedRef = useRef(false);
+  const thumbnailSwitchRef = useRef(null);
+  const voiceIdRef = useRef({ en: undefined, es: undefined });
+
+  // Resolve best male voice per language on mount
+  useEffect(() => {
+    const maleNames = [
+      'daniel', 'james', 'tom', 'aaron', 'alex', 'fred', 'oliver', 'thomas',
+      'george', 'arthur', 'david', 'male', 'jorge', 'diego', 'carlos', 'andrés',
+      'juan', 'pablo',
+    ];
+    Speech.getAvailableVoicesAsync().then(voices => {
+      for (const locale of ['en', 'es']) {
+        const candidates = voices.filter(v => v.language?.startsWith(locale));
+        const male = candidates.find(v =>
+          maleNames.some(n => v.name?.toLowerCase().includes(n))
+        );
+        if (male) voiceIdRef.current[locale] = male.identifier;
+      }
+    }).catch(() => {});
+  }, []);
+
+  const buildAnnouncement = (info, isNext = true) => {
+    const prefix = isNext ? (lang === 'es' ? 'Siguiente' : 'Next') : '';
+    const setWord = lang === 'es' ? 'Serie' : 'Set';
+    const ofWord = lang === 'es' ? 'de' : 'of';
+
+    // Only include exercise name for new exercises
+    let nameText = '';
+    if (!info.sameExercise) {
+      let name = info.name;
+      if (info.isSuperset && info.supersetExercises) {
+        const names = info.supersetExercises.map(e => e.name);
+        const label = lang === 'es' ? 'Superserie' : 'Superset';
+        name = `${label}: ${names.join(', ')}`;
+      }
+      nameText = name + '. ';
+    }
+
+    const totalText = info.totalSets ? ` ${ofWord} ${info.totalSets}` : '';
+
+    let repsText;
+    if (info.reps === 'E') {
+      repsText = lang === 'es' ? 'al fallo' : 'to exhaustion';
+    } else {
+      const exData = getExerciseData(info.exerciseId);
+      const unit = exData?.timeBased
+        ? (lang === 'es' ? 'minutos' : 'minutes')
+        : (lang === 'es' ? 'repeticiones' : 'reps');
+      repsText = `${info.reps} ${unit}`;
+    }
+
+    let weightText = '';
+    if (info.weight > 0) {
+      if (info.sameExercise && !info.weightChanged) {
+        weightText = lang === 'es' ? ', mismo peso' : ', same weight';
+      } else {
+        const unitName = isImperial
+          ? (lang === 'es' ? 'libras' : 'pounds')
+          : (lang === 'es' ? 'kilos' : 'kilograms');
+        weightText = `, ${formatWeight(info.weight)} ${unitName}`;
+      }
+    }
+
+    const separator = prefix ? (nameText ? ': ' : ', ') : '';
+    return `${prefix}${separator}${nameText}${setWord} ${info.set}${totalText}, ${repsText}${weightText}`;
+  };
+
+  const getSpeechOpts = () => {
+    const locale = lang === 'es' ? 'es-ES' : 'en-US';
+    const voice = voiceIdRef.current[lang];
+    const opts = { language: locale, volume: soundVolumeRef.current };
+    if (voice) opts.voice = voice;
+    return opts;
+  };
+
+  const speakExerciseAt = (exerciseIndex, setIndex, isNext = false) => {
+    if (!voiceEnabledRef.current) return;
+    const day = routine?.days?.[paramsRef.current.dayIndex];
+    const ex = day?.exercises?.[exerciseIndex];
+    if (!ex) return;
+    const exData = getExerciseData(ex.exerciseId);
+    const text = buildAnnouncement({
+      name: exData ? getExerciseName(exData, lang) : 'Exercise',
+      set: setIndex + 1,
+      totalSets: ex.sets || 3,
+      reps: modifiedExercises[exerciseIndex]?.reps[setIndex] || ex.reps?.[setIndex] || 10,
+      weight: modifiedExercises[exerciseIndex]?.weights[setIndex] || ex.weights?.[setIndex] || 0,
+      exerciseId: ex.exerciseId,
+      isSuperset: false,
+      sameExercise: false,
+      weightChanged: false,
+    }, isNext);
+    Speech.speak(text, getSpeechOpts());
+  };
+
+  // Voice: announce when rest starts (state is settled in useEffect)
+  useEffect(() => {
+    if (!isResting || !voiceEnabledRef.current) return;
+    const info = getNextInfo();
+    if (info) {
+      // Exercise rest means we switched exercises — always announce the name
+      if (isExerciseRest) info.sameExercise = false;
+      const text = buildAnnouncement(info, true);
+      Speech.speak(text, getSpeechOpts());
+    }
+  }, [isResting]);
+
+  // Voice: announce first exercise when workout starts
+  useEffect(() => {
+    if (!workoutStarted || initialAnnouncedRef.current || workoutComplete) return;
+    initialAnnouncedRef.current = true;
+    speakExerciseAt(0, 0, false);
+  }, [workoutStarted]);
+
+  // Voice: announce after thumbnail switch (ref set in handleThumbnailPress)
+  useEffect(() => {
+    if (thumbnailSwitchRef.current === null || isResting) return;
+    const idx = thumbnailSwitchRef.current;
+    thumbnailSwitchRef.current = null;
+    Speech.stop();
+    speakExerciseAt(idx, 0, false);
+  }, [currentExerciseIndex]);
+
+  // Voice: announce workout completion with duration, calories, and motivational message
+  useEffect(() => {
+    if (!workoutComplete || !voiceEnabledRef.current) return;
+    const motivational = {
+      en: [
+        'Great job!', 'Well done!', 'Keep it up!', 'Nicely done!',
+        'You crushed it!', 'Strong work!', 'Excellent job!', 'Impressive!',
+      ],
+      es: [
+        '¡Buen trabajo!', '¡Bien hecho!', '¡Sigue así!', '¡Muy bien!',
+        '¡Lo lograste!', '¡Gran esfuerzo!', '¡Excelente trabajo!', '¡Impresionante!',
+      ],
+    };
+    const msgs = motivational[lang] || motivational.en;
+    const motto = msgs[Math.floor(Math.random() * msgs.length)];
+    const mins = Math.floor(workoutDuration / 60);
+    const calWord = lang === 'es' ? 'calorías' : 'calories';
+    const minWord = lang === 'es' ? 'minutos' : 'minutes';
+    const complete = lang === 'es' ? 'Entrenamiento completado' : 'Workout complete';
+    const text = `${complete}. ${mins} ${minWord}, ${caloriesBurned} ${calWord}. ${motto}`;
+    Speech.stop();
+    Speech.speak(text, getSpeechOpts());
+  }, [workoutComplete]);
+
   const startRest = (isExRest = false, isSupersetRound = false) => {
     const baseRest = isExRest
       ? (routine?.restBetweenExercises || 90)
@@ -693,8 +881,9 @@ export default function TrainingScreen({ route, navigation }) {
     setIsExerciseRest(isExRest);
     setRestTimeLeft(restTime);
 
-    // Reset timer sound tracking for new rest period
+    // Reset timer sound / rep announcement tracking for new rest period
     timerPlayedRef.current = false;
+    repAnnouncedRef.current = false;
 
     // Store the end time for background-aware countdown
     restEndTimeRef.current = Date.now() + (restTime * 1000);
@@ -702,6 +891,32 @@ export default function TrainingScreen({ route, navigation }) {
     timerRef.current = setInterval(() => {
       // Calculate remaining time based on actual end time (works even after background)
       const remaining = Math.ceil((restEndTimeRef.current - Date.now()) / 1000);
+
+      // Voice: announce upcoming reps + encouragement at 13 seconds remaining
+      if (remaining === 13 && !repAnnouncedRef.current && voiceEnabledRef.current) {
+        repAnnouncedRef.current = true;
+        const info = getNextInfo();
+        if (info) {
+          const encouragements = {
+            en: ['Come on!', 'You got this!', "Let's go!", 'Push it!', 'Stay strong!', 'Keep going!', "Let's do it!", 'Give it your all!'],
+            es: ['¡Vamos!', '¡Tú puedes!', '¡Dale!', '¡Con todo!', '¡Fuerza!', '¡Sigue así!', '¡A por ello!', '¡No pares!'],
+          };
+          const msgs = encouragements[lang] || encouragements.en;
+          const motto = msgs[Math.floor(Math.random() * msgs.length)];
+          let repsText;
+          if (info.reps === 'E') {
+            repsText = lang === 'es' ? 'Al fallo' : 'To exhaustion';
+          } else {
+            const exData = getExerciseData(info.exerciseId);
+            const unit = exData?.timeBased
+              ? (lang === 'es' ? 'minutos' : 'minutes')
+              : (lang === 'es' ? 'repeticiones' : 'reps');
+            repsText = `${info.reps} ${unit}`;
+          }
+          Speech.stop();
+          Speech.speak(`${repsText}. ${motto}`, getSpeechOpts());
+        }
+      }
 
       // Play timer sound at 10 seconds remaining
       if (remaining === 10) {
@@ -729,8 +944,10 @@ export default function TrainingScreen({ route, navigation }) {
     }
     restEndTimeRef.current = null;
     timerPlayedRef.current = false;
-    // Stop timer sound if playing
+    repAnnouncedRef.current = false;
+    // Stop timer sound and speech if playing
     if (timerPlayer) { try { timerPlayer.pause(); } catch(e) {} }
+    Speech.stop();
     setIsResting(false);
     setIsExerciseRest(false);
   };
@@ -859,6 +1076,7 @@ export default function TrainingScreen({ route, navigation }) {
     const durationSeconds = workoutStartTime
       ? Math.round((new Date() - workoutStartTime) / 1000)
       : 0;
+    setWorkoutDuration(durationSeconds);
 
     const currentDay = routine?.days?.[paramsRef.current.dayIndex];
     const dayDisplayName = currentDay?.customName || currentDay?.name;
@@ -976,9 +1194,11 @@ export default function TrainingScreen({ route, navigation }) {
         exerciseId: firstEx?.exerciseId,
         name: supersetNames[0],
         set: currentSetIndex + 1,
+        totalSets: firstEx?.sets || 3,
         reps: nextReps,
         weight: nextWeight,
         weightChanged,
+        sameExercise: true,
         isSuperset: true,
         supersetExercises: supersetIndices.map(idx => ({
           exerciseId: day?.exercises?.[idx]?.exerciseId,
@@ -1005,9 +1225,11 @@ export default function TrainingScreen({ route, navigation }) {
         exerciseId: currentEx?.exerciseId,
         name: exerciseData ? getExerciseName(exerciseData, lang) : 'Next Set',
         set: currentSetIndex + 1,
+        totalSets: currentEx?.sets || 3,
         reps: nextReps,
         weight: nextWeight,
         weightChanged,
+        sameExercise: true,
         isSuperset: false,
       };
     }
@@ -1023,9 +1245,11 @@ export default function TrainingScreen({ route, navigation }) {
         exerciseId: nextEx.exerciseId,
         name: exerciseData ? getExerciseName(exerciseData, lang) : 'Next Exercise',
         set: 1,
+        totalSets: nextEx.sets || 3,
         reps: nextReps,
         weight: nextWeight,
         weightChanged: false,
+        sameExercise: false,
         isSuperset: false,
       };
     }
@@ -1058,6 +1282,7 @@ export default function TrainingScreen({ route, navigation }) {
             restEndTimeRef.current = null;
             timerPlayedRef.current = false;
             if (timerPlayer) { try { timerPlayer.pause(); } catch(e) {} }
+            Speech.stop();
 
             // Stop any active exercise timer
             if (exerciseTimerRef.current) {
@@ -1069,6 +1294,7 @@ export default function TrainingScreen({ route, navigation }) {
             setExerciseTimerLeft(0);
 
             // Switch to the selected exercise at set 1
+            thumbnailSwitchRef.current = index;
             setIsResting(false);
             setIsExerciseRest(false);
             setCurrentExerciseIndex(index);
@@ -1155,10 +1381,16 @@ export default function TrainingScreen({ route, navigation }) {
             <Text style={styles.completeRoutine}>{routine.name}</Text>
             <Text style={styles.completeDay}>{getDayName(day)}</Text>
 
-            {/* Calories burned display */}
-            <View style={styles.caloriesContainer}>
-              <Text style={styles.caloriesValue}>{caloriesBurned}</Text>
-              <Text style={styles.caloriesLabel}>{t('estimatedCalories', lang) || 'estimated calories'}</Text>
+            {/* Duration and calories display */}
+            <View style={styles.completionStatsRow}>
+              <View style={styles.completionStat}>
+                <Text style={styles.caloriesValue}>{Math.floor(workoutDuration / 60)}</Text>
+                <Text style={styles.caloriesLabel}>{t('minutes', lang) || 'minutes'}</Text>
+              </View>
+              <View style={styles.completionStat}>
+                <Text style={styles.caloriesValue}>{caloriesBurned}</Text>
+                <Text style={styles.caloriesLabel}>{t('calories', lang) || 'calories'}</Text>
+              </View>
             </View>
 
             {hasChanges && (
@@ -1387,7 +1619,12 @@ export default function TrainingScreen({ route, navigation }) {
                 <Text style={styles.controlButtonTextS}>−{getSmallWeightIncrement(settings.measurementSystem)}</Text>
               </TouchableOpacity>
 
-              <Text style={styles.controlValue}>{formatWeight(currentWeight)}</Text>
+              <TouchableOpacity onPress={() => {
+                setWeightInputValue(formatWeight(currentWeight));
+                setWeightInputVisible(true);
+              }}>
+                <Text style={styles.controlValue}>{formatWeight(currentWeight)}</Text>
+              </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.controlButton}
@@ -1438,6 +1675,37 @@ export default function TrainingScreen({ route, navigation }) {
               </TouchableOpacity>
             </View>
           </View>
+        </Modal>
+
+        {/* Direct weight input modal */}
+        <Modal
+          visible={weightInputVisible}
+          animationType="fade"
+          transparent
+          statusBarTranslucent
+          onRequestClose={() => setWeightInputVisible(false)}
+          onShow={() => setTimeout(() => weightInputRef.current?.focus(), 100)}
+        >
+          <TouchableOpacity
+            style={styles.weightInputOverlay}
+            activeOpacity={1}
+            onPress={() => setWeightInputVisible(false)}
+          >
+            <View style={styles.weightInputBox}>
+              <TextInput
+                ref={weightInputRef}
+                style={styles.weightInputField}
+                value={weightInputValue}
+                onChangeText={setWeightInputValue}
+                keyboardType="decimal-pad"
+                selectTextOnFocus
+                onSubmitEditing={() => {
+                  setWeightDirectly(weightInputValue);
+                  setWeightInputVisible(false);
+                }}
+              />
+            </View>
+          </TouchableOpacity>
         </Modal>
       </View>
     </View>
@@ -1504,12 +1772,17 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     marginTop: spacing.md,
   },
-  caloriesContainer: {
-    alignItems: 'center',
+  completionStatsRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: spacing.lg,
     marginTop: spacing.lg,
     marginBottom: spacing.sm,
+  },
+  completionStat: {
+    flex: 1,
+    alignItems: 'center',
     paddingVertical: spacing.md,
-    paddingHorizontal: spacing.xl,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: borderRadius.lg,
   },
@@ -1880,5 +2153,28 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontSize: fontSize.lg,
     letterSpacing: 1,
+  },
+  weightInputOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  weightInputBox: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    minWidth: 160,
+    alignItems: 'center',
+  },
+  weightInputField: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.xxl,
+    color: '#000000',
+    textAlign: 'center',
+    minWidth: 120,
+    borderBottomWidth: 2,
+    borderBottomColor: '#000000',
+    paddingVertical: spacing.sm,
   },
 });

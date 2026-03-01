@@ -1,11 +1,38 @@
 // Routine encoder/decoder for QR code sharing
-// Format: v1[restSets,restEx(exerciseId|setsData)...][day2]...
-// Example: v1[60,90(1|3x10)(2|8;6;4)]
+// v1 format (legacy): v1[restSets,restEx(exerciseId|setsData)...][day2]...
+// v2 format: obfuscated structural symbols + hex exercise IDs
 // NOTE: Weights are NOT included in QR codes - each user sets their own weights.
 
 import { getNumericId, getExerciseId } from '../data/exerciseIds';
 
-const FORMAT_VERSION = 'v1';
+// --- v2 obfuscation tables ---
+// Structural symbols → random letter choices (disjoint from hex a-f and reserved v/s/E)
+const SYMBOL_TO_LETTERS = {
+  '[': ['g', 'h'],
+  ']': ['i', 'j'],
+  '(': ['k', 'l'],
+  ')': ['m', 'n'],
+  '|': ['o', 'p'],
+  ',': ['q', 'r'],
+  ';': ['t', 'u'],
+  'x': ['w', 'y', 'z'],
+};
+
+// Reverse lookup: letter → symbol
+const LETTER_TO_SYMBOL = {};
+for (const [symbol, letters] of Object.entries(SYMBOL_TO_LETTERS)) {
+  for (const letter of letters) {
+    LETTER_TO_SYMBOL[letter] = symbol;
+  }
+}
+
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+const obfuscate = (str) =>
+  str.replace(/[\[\]()|,;x]/g, ch => pick(SYMBOL_TO_LETTERS[ch]));
+
+const deobfuscate = (str) =>
+  str.replace(/[ghijklmnopqrtuwyz]/g, ch => LETTER_TO_SYMBOL[ch] || ch);
 
 /**
  * Encode a routine object into a compact string for QR code
@@ -23,7 +50,6 @@ export const encodeRoutine = (routine) => {
 
   const encodedDays = routine.days.map(day => {
     if (!day.exercises || day.exercises.length === 0) {
-      // Empty day: just rest times, no exercises
       return `${restSets},${restEx}`;
     }
 
@@ -34,17 +60,18 @@ export const encodeRoutine = (routine) => {
         return null;
       }
 
-      // Encode sets/reps only (no weights)
       const setsData = encodeSets(ex.sets, ex.reps);
-      // Include superset group if present
       const supersetPart = ex.supersetGroup ? `|s${ex.supersetGroup}` : '';
-      return `(${numericId}|${setsData}${supersetPart})`;
+      // Hex ID
+      return `(${numericId.toString(16)}|${setsData}${supersetPart})`;
     }).filter(Boolean).join('');
 
     return `${restSets},${restEx}${encodedExercises}`;
   });
 
-  return `${FORMAT_VERSION}[${encodedDays.join('][')}]`;
+  // Build structural string, then obfuscate symbols
+  const raw = `[${encodedDays.join('][')}]`;
+  return `v2${obfuscate(raw)}`;
 };
 
 /**
@@ -57,22 +84,19 @@ export const encodeRoutine = (routine) => {
 const encodeSets = (setCount, reps) => {
   const repsArray = reps || Array(setCount).fill(10);
 
-  // Check if all reps are identical
   const firstRep = repsArray[0] || 10;
   const allIdentical = repsArray.every(r => (r || 10) === firstRep);
 
   if (allIdentical) {
-    // Use shorthand: 3x10
     return `${setCount}x${firstRep}`;
   }
 
-  // Varied reps: 10;8;6
   return repsArray.map(r => r || 10).join(';');
 };
 
 /**
  * Decode a compact string back into a routine object
- * Weights are set to zero - each user will set their own.
+ * Supports both v1 (legacy) and v2 (obfuscated) formats.
  * @param {string} code - The encoded string
  * @returns {Object|null} Decoded routine object, or null if invalid
  */
@@ -81,17 +105,23 @@ export const decodeRoutine = (code) => {
     return null;
   }
 
-  // Check version
-  if (!code.startsWith(FORMAT_VERSION)) {
+  let content;
+  let idRadix;
+
+  if (code.startsWith('v2')) {
+    // v2: deobfuscate letters → symbols, hex IDs
+    content = deobfuscate(code.slice(2));
+    idRadix = 16;
+  } else if (code.startsWith('v1')) {
+    // v1 legacy: plain symbols, decimal IDs
+    content = code.slice(2);
+    idRadix = 10;
+  } else {
     console.warn('Unknown format version');
     return null;
   }
 
   try {
-    // Remove version prefix
-    const content = code.slice(FORMAT_VERSION.length);
-
-    // Parse days: [day1][day2]...
     const dayMatches = content.match(/\[([^\]]*)\]/g);
     if (!dayMatches || dayMatches.length === 0) {
       return null;
@@ -100,49 +130,42 @@ export const decodeRoutine = (code) => {
     let restBetweenSets = 60;
     let restBetweenExercises = 90;
 
+    // Exercise ID regex: hex chars for v2, digits for v1
+    const idPattern = idRadix === 16 ? '[0-9a-fA-F]+' : '\\d+';
+
     const days = dayMatches.map((dayStr, index) => {
-      // Remove brackets
       const dayContent = dayStr.slice(1, -1);
 
-      // Parse rest times at the beginning: 60,90
       const restMatch = dayContent.match(/^(\d+),(\d+)/);
       if (restMatch) {
         restBetweenSets = parseInt(restMatch[1]);
         restBetweenExercises = parseInt(restMatch[2]);
       }
 
-      // Parse exercises: (id|setsData) or (id|setsData|sN) for supersets
-      const exerciseMatches = dayContent.match(/\((\d+)\|([^)]+)\)/g);
-      const exercises = exerciseMatches ? exerciseMatches.map(exStr => {
-        // Remove parentheses and parse
-        const inner = exStr.slice(1, -1);
-        const parts = inner.split('|');
-        const numericIdStr = parts[0];
-        const setsData = parts[1];
-        const numericId = parseInt(numericIdStr);
+      const exRegex = new RegExp(`\\((${idPattern})\\|([^)]+)\\)`, 'g');
+      const exercises = [];
+      let exMatch;
+      while ((exMatch = exRegex.exec(dayContent)) !== null) {
+        const numericId = parseInt(exMatch[1], idRadix);
+        const innerAfterId = exMatch[2];
+        const parts = innerAfterId.split('|');
+        const setsData = parts[0];
         const exerciseId = getExerciseId(numericId);
 
         if (!exerciseId) {
           console.warn(`Unknown numeric exercise ID: ${numericId}`);
-          return null;
+          continue;
         }
 
         const { sets, reps, weights } = decodeSets(setsData);
 
-        // Parse superset group if present (format: sN where N is group number)
         let supersetGroup = null;
-        if (parts[2] && parts[2].startsWith('s')) {
-          supersetGroup = parseInt(parts[2].slice(1)) || null;
+        if (parts[1] && parts[1].startsWith('s')) {
+          supersetGroup = parseInt(parts[1].slice(1)) || null;
         }
 
-        return {
-          exerciseId,
-          sets,
-          reps,
-          weights,
-          supersetGroup,
-        };
-      }).filter(Boolean) : [];
+        exercises.push({ exerciseId, sets, reps, weights, supersetGroup });
+      }
 
       return {
         name: `Day ${index + 1}`,
@@ -204,18 +227,19 @@ export const isValidRoutineCode = (code) => {
     return false;
   }
 
-  // Must start with version
-  if (!code.startsWith(FORMAT_VERSION)) {
-    return false;
+  if (code.startsWith('v2')) {
+    // Deobfuscate and check structure
+    const content = deobfuscate(code.slice(2));
+    const dayMatches = content.match(/\[([^\]]*)\]/g);
+    return !!(dayMatches && dayMatches.length > 0);
   }
 
-  // Must have at least one day
-  const dayMatches = code.match(/\[([^\]]*)\]/g);
-  if (!dayMatches || dayMatches.length === 0) {
-    return false;
+  if (code.startsWith('v1')) {
+    const dayMatches = code.slice(2).match(/\[([^\]]*)\]/g);
+    return !!(dayMatches && dayMatches.length > 0);
   }
 
-  return true;
+  return false;
 };
 
 /**

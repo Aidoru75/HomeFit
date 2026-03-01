@@ -113,6 +113,12 @@ export const equipment = {
     type: 'machine',
     pro: true,
   },
+  hipAbductorAdductor: {
+    id: 'hip_abductor_adductor',
+    name: { en: 'Hip Abductor/Adductor Machine', es: 'Máquina de Abductores/Aductores' },
+    type: 'machine',
+    pro: true,
+  },
 
   // Racks and Benches
   rack: {
@@ -337,7 +343,7 @@ export const equipmentCategories = {
   machineStations: {
     id: 'machineStations',
     name: { en: 'Machine Stations', es: 'Estaciones de Máquinas' },
-    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'standing_leg_curl_station', 'leg_press_station', 'squat_station', 'pec_deck_station', 'chest_press_station', 'lat_station', 'calf_station', 'ghd_machine', 'treadmill', 'stationary_bike', 'stepper', 'rowing_machine', 'reverse_fly_machine'],
+    equipmentIds: ['leg_extension_station', 'leg_curl_station', 'standing_leg_curl_station', 'leg_press_station', 'squat_station', 'pec_deck_station', 'chest_press_station', 'lat_station', 'calf_station', 'ghd_machine', 'hip_abductor_adductor', 'treadmill', 'stationary_bike', 'stepper', 'rowing_machine', 'reverse_fly_machine'],
   },
   cableAttachments: {
     id: 'cableAttachments',

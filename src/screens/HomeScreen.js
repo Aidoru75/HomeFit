@@ -142,7 +142,9 @@ export default function HomeScreen({ navigation }) {
     if (!dateString) return '';
     const date = new Date(dateString);
     const now = new Date();
-    const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+    // Compare calendar dates, not elapsed hours
+    const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+    const diffDays = Math.round((startOfDay(now) - startOfDay(date)) / (1000 * 60 * 60 * 24));
     
     if (diffDays === 0) return t('today', lang);
     if (diffDays === 1) return t('yesterday', lang);

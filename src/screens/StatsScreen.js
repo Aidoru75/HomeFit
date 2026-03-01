@@ -354,18 +354,20 @@ export default function StatsScreen({ route }) {
   // Muscle groups from muscleColors (10 groups, no forearms)
   const MUSCLE_KEYS = Object.keys(colors.muscleColors);
 
-  // Ideal balanced volume proportions (accounts for kg·reps bias: heavy compounds produce more)
+  // Empirically derived from simulating 10 well-known routines (PPL, Upper/Lower,
+  // Full Body, 5/3/1, Bro Split, PHUL, PHAT, Arnold, GZCLP) with the app's own
+  // kg·reps volume formula. Weights for a median 75 kg male in decent shape.
   const BALANCED_PROPORTIONS = {
-    back: 0.20,
-    quads: 0.18,
-    chest: 0.15,
-    glutes: 0.12,
-    shoulders: 0.10,
-    hamstrings: 0.08,
-    triceps: 0.06,
-    biceps: 0.05,
-    calves: 0.03,
-    core: 0.03,
+    back: 0.17,
+    quads: 0.10,
+    chest: 0.10,
+    glutes: 0.07,
+    shoulders: 0.13,
+    hamstrings: 0.09,
+    triceps: 0.09,
+    biceps: 0.08,
+    calves: 0.12,
+    core: 0.05,
   };
 
   const renderWorkloadTab = () => {
@@ -387,13 +389,13 @@ export default function StatsScreen({ route }) {
       });
     });
 
-    // Build sorted array for horizontal bars
+    // Build array for horizontal bars (fixed order matching muscleGroups)
     const volumeEntries = MUSCLE_KEYS.map(id => ({
       id,
       name: muscleGroups.find(mg => mg.id === id)?.name[lang] || id,
       volume: totalVolume[id] || 0,
       color: colors.muscleColors[id],
-    })).sort((a, b) => b.volume - a.volume);
+    }));
 
     const maxVolume = Math.max(...volumeEntries.map(e => e.volume), 1);
 

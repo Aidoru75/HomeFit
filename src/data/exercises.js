@@ -1,4 +1,4 @@
-// 243 Exercises - Complete Catalog - Bilingual (English/Spanish)
+// 246 Exercises - Complete Catalog - Bilingual (English/Spanish)
 import { isProExercise } from './equipment';
 import { IS_PRO } from '../config';
 
@@ -157,6 +157,7 @@ export const exercises = [
     muscleGroup: 'chest',
     muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
     equipment: [],
+    optionalEquipment: ['plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Fundamental bodyweight chest exercise. Hands shoulder-width apart, lower your body until chest nearly touches the ground, then push up while keeping core tight and body in a straight line.',
@@ -215,7 +216,7 @@ export const exercises = [
     name: { en: 'Pullover (Chest Focus)', es: 'Pullover (Enfoque Pecho)' },
     muscleGroup: 'chest',
     muscles: { chest: 0.55, back: 0.30, triceps: 0.10, core: 0.05 },
-    equipment: ['dumbbells', 'flat_bench'],
+    equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
     weightType: 'dumbbell',
     singleWeight: true,
     description: {
@@ -298,6 +299,7 @@ export const exercises = [
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
+    optionalEquipment: ['ez_bar', 'neutral_bar'],
     weightType: 'barbell',
     description: {
       en: 'Fundamental mass builder for the entire back. Hinge forward with flat back, pull bar to lower chest or upper abdomen, squeeze shoulder blades together, then lower with control.',
@@ -312,6 +314,7 @@ export const exercises = [
     muscleGroup: 'back',
     muscles: { back: 0.55, biceps: 0.30, shoulders: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
+    optionalEquipment: ['ez_bar'],
     weightType: 'barbell',
     description: {
       en: 'Supinated grip row emphasizing lower lats and biceps. Same hip-hinge position as standard rows, but with palms facing up, pull to your lower chest for maximum lat engagement.',
@@ -326,6 +329,7 @@ export const exercises = [
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.20, shoulders: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
+    optionalEquipment: ['ez_bar', 'neutral_bar'],
     weightType: 'barbell',
     description: {
       en: 'Explosive rowing variation with bar starting from the floor. Keep torso parallel to ground, explosively row the bar to your chest, then lower it completely to the floor between each rep.',
@@ -368,7 +372,7 @@ export const exercises = [
     name: { en: 'Dumbbell Pullover (Back Focus)', es: 'Pullover con Mancuerna (Enfoque Espalda)' },
     muscleGroup: 'back',
     muscles: { back: 0.65, chest: 0.20, triceps: 0.10, core: 0.05 },
-    equipment: ['dumbbells', 'flat_bench'],
+    equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
     weightType: 'dumbbell',
     singleWeight: true,
     description: {
@@ -450,10 +454,11 @@ export const exercises = [
   },
   {
     id: 'hyperextension',
-    name: { en: 'Hyperextensions (on bench)', es: 'Hiperextensiones (en banco)' },
+    name: { en: 'Hyperextensions (On Bench)', es: 'Hiperextensiones (en banco)' },
     muscleGroup: 'back',
     muscles: { back: 0.45, glutes: 0.30, hamstrings: 0.25 },
     equipment: ['incline_bench'],
+    optionalEquipment: ['plates', 'dumbbells'],
     weightType: 'bodyweight',
     description: {
       en: 'Lower back strengthening on a decline bench. Position yourself face down with hips at edge, lower upper body toward floor, then raise up by contracting lower back and glutes.',
@@ -469,9 +474,10 @@ export const exercises = [
     muscleGroup: 'back',
     muscles: { back: 0.85, shoulders: 0.15 },
     equipment: ['straight_bar', 'plates'],
+    optionalEquipment: ['ez_bar'],
     weightType: 'barbell',
     description: {
-      en: 'Trap builder using heavy barbell loads. Hold bar at arms length, elevate shoulders straight up toward ears, squeeze traps hard at the top, then lower with control without rolling shoulders.',
+      en: 'Trap builder using heavy barbell loads. Hold bar at arm\'s length, elevate shoulders straight up toward ears, squeeze traps hard at the top, then lower with control without rolling shoulders.',
       es: 'Constructor de trapecios usando cargas pesadas de barra. Sostén la barra con brazos extendidos, eleva hombros hacia las orejas, aprieta trapecios arriba, luego baja con control.',
     },
     bmc: 1.5,
@@ -482,7 +488,7 @@ export const exercises = [
     name: { en: 'Shrugs (Dumbbell)', es: 'Encogimientos (Mancuernas)' },
     muscleGroup: 'back',
     muscles: { back: 0.85, shoulders: 0.15 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     weightType: 'dumbbell',
     description: {
       en: 'Trap isolation with dumbbells at your sides. Stand holding dumbbells, shrug shoulders up as high as possible, hold the contraction briefly, then lower slowly to maximize time under tension.',
@@ -598,7 +604,7 @@ export const exercises = [
     name: { en: 'Dumbbell Lateral Raise', es: 'Elevaciones Laterales con Mancuernas' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.90, back: 0.10 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     weightType: 'dumbbell',
     description: {
       en: 'Primary side delt isolation exercise. Raise dumbbells out to sides with slight elbow bend, lift until arms are parallel to floor, lower with control, avoid swinging or using momentum.',
@@ -612,7 +618,7 @@ export const exercises = [
     name: { en: 'Dumbbell Front Raise', es: 'Elevaciones Frontales con Mancuernas' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.85, chest: 0.15 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     weightType: 'dumbbell',
     description: {
       en: 'Isolation for anterior deltoids. Raise dumbbells in front of body to shoulder height, keep arms straight with slight elbow bend, lower under control, alternate arms or lift both.',
@@ -655,6 +661,7 @@ export const exercises = [
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.55, back: 0.30, biceps: 0.15 },
     equipment: ['ez_bar', 'plates'],
+    optionalEquipment: ['straight_bar'],
     weightType: 'barbell',
     description: {
       en: 'Compound movement for traps and lateral delts. Pull bar up close to body leading with elbows, raise until elbows are at shoulder height, lower with control, use moderate grip width.',
@@ -668,7 +675,7 @@ export const exercises = [
     name: { en: 'Upright Row (Dumbbells)', es: 'Remo al Mentón (Mancuernas)' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.55, back: 0.30, biceps: 0.15 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     weightType: 'dumbbell',
     description: {
       en: 'Dumbbell version allowing more natural arm path. Pull dumbbells up along body with elbows leading, this variation is often more comfortable for those with shoulder mobility limitations.',
@@ -713,7 +720,7 @@ export const exercises = [
     equipment: ['resistance_band'],
     weightType: 'bodyweight',
     description: {
-      en: 'Great warm-up and rear delt exercise with band. Hold band at arms length in front, pull apart until band touches chest, squeeze rear delts, excellent for shoulder health and posture.',
+      en: 'Great warm-up and rear delt exercise with band. Hold band at arm\'s length in front, pull apart until band touches chest, squeeze rear delts, excellent for shoulder health and posture.',
       es: 'Excelente calentamiento y ejercicio de deltoides posterior con banda. Sostén la banda con brazos extendidos, separa hasta que toque el pecho, aprieta deltoides posteriores, ideal para postura.',
     },
     bmc: 0.8,
@@ -726,6 +733,7 @@ export const exercises = [
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.40, back: 0.30, biceps: 0.15, quads: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
+    optionalEquipment: ['ez_bar'],
     weightType: 'barbell',
     description: {
       en: 'Explosive movement for traps and shoulders. Similar to upright row but with more hip drive and explosive pulling, raise bar to upper chest level with elbows high, builds power and size.',
@@ -813,7 +821,7 @@ export const exercises = [
     name: { en: 'Dumbbell Curl (Standing)', es: 'Curl con Mancuernas (De Pie)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     weightType: 'dumbbell',
     description: {
       en: 'Versatile bicep curl allowing supination. Curl dumbbells while rotating wrists from neutral to supinated position, this engages the bicep fully and allows natural arm movement.',
@@ -827,7 +835,7 @@ export const exercises = [
     name: { en: 'Dumbbell Curl (Seated)', es: 'Curl con Mancuernas (Sentado)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.90, shoulders: 0.10 },
-    equipment: ['dumbbells', 'upright_bench'],
+    equipment: [['dumbbells', 'kettlebells'], 'upright_bench'],
     weightType: 'dumbbell',
     description: {
       en: 'Seated curl reducing momentum and cheating. Sit on bench with back straight, curl dumbbells with strict form, being seated prevents body swing and forces biceps to work harder.',
@@ -841,7 +849,7 @@ export const exercises = [
     name: { en: 'Dumbbell Curl (Incline)', es: 'Curl con Mancuernas (Inclinado)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.90, shoulders: 0.10 },
-    equipment: ['dumbbells', 'incline_bench'],
+    equipment: [['dumbbells', 'kettlebells'], 'incline_bench'],
     weightType: 'dumbbell',
     description: {
       en: 'Incline curl for maximum bicep stretch. Lie back on incline bench, let arms hang straight down, curl up while keeping upper arms stationary, the stretch at the bottom is intense.',
@@ -869,7 +877,7 @@ export const exercises = [
     name: { en: 'Dumbbell Concentration Curl', es: 'Curl Concentrado con Mancuerna' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.95, shoulders: 0.05 },
-    equipment: ['dumbbells', 'flat_bench'],
+    equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
     weightType: 'dumbbell',
     singleWeight: true,
     description: {
@@ -899,6 +907,7 @@ export const exercises = [
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['straight_bar', 'plates'],
+    optionalEquipment: ['ez_bar'],
     weightType: 'barbell',
     description: {
       en: 'Unique curl dragging bar up the body. Keep bar in contact with body as you curl, pull elbows back as bar rises, this emphasizes the bicep peak and long head significantly.',
@@ -962,6 +971,7 @@ export const exercises = [
     muscleGroup: 'triceps',
     muscles: { triceps: 0.85, shoulders: 0.10, chest: 0.05 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
+    optionalEquipment: ['ez_bar'],
     weightType: 'barbell',
     description: {
       en: 'Lying tricep extension targeting all three heads. Lower bar to forehead or just behind head, extend arms fully, keep upper arms stationary throughout for maximum isolation.',
@@ -989,7 +999,7 @@ export const exercises = [
     name: { en: 'Dumbbell Overhead Extension (Two Hands)', es: 'Extensión sobre Cabeza (Dos Manos)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
-    equipment: ['dumbbells', 'upright_bench'],
+    equipment: [['dumbbells', 'kettlebells'], 'upright_bench'],
     weightType: 'dumbbell',
     singleWeight: true,
     description: {
@@ -1004,7 +1014,7 @@ export const exercises = [
     name: { en: 'Dumbbell Overhead Extension (Single Arm)', es: 'Extensión sobre Cabeza (Un Brazo)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
-    equipment: ['dumbbells', 'upright_bench'],
+    equipment: [['dumbbells', 'kettlebells'], 'upright_bench'],
     weightType: 'dumbbell',
     singleWeight: true,
     description: {
@@ -1035,6 +1045,7 @@ export const exercises = [
     muscleGroup: 'triceps',
     muscles: { triceps: 0.60, chest: 0.25, shoulders: 0.15 },
     equipment: ['flat_bench'],
+    optionalEquipment: ['plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Bodyweight tricep exercise using a bench. Hands on bench behind you, lower body by bending elbows, push back up, feet can be elevated on another bench to increase difficulty.',
@@ -1084,6 +1095,7 @@ export const exercises = [
     muscleGroup: 'forearms',
     muscles: { biceps: 1.0 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
+    optionalEquipment: ['ez_bar'],
     weightType: 'barbell',
     description: {
       en: 'Primary forearm flexor builder. Rest forearms on bench with wrists hanging over edge, curl bar up using only wrist movement, lower fully to stretch forearm flexors completely.',
@@ -1098,6 +1110,7 @@ export const exercises = [
     muscleGroup: 'forearms',
     muscles: { biceps: 1.0 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
+    optionalEquipment: ['ez_bar'],
     weightType: 'barbell',
     description: {
       en: 'Targets forearm extensors. Forearms on bench with palms facing down, extend wrists upward against resistance, this builds the top of the forearm for balanced development.',
@@ -1139,7 +1152,7 @@ export const exercises = [
     name: { en: "Farmer's Walk", es: 'Paseo del Granjero' },
     muscleGroup: 'forearms',
     muscles: { biceps: 0.35, back: 0.25, shoulders: 0.20, core: 0.10, calves: 0.10 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     weightType: 'dumbbell',
     timeBased: true,
     description: {
@@ -1170,6 +1183,7 @@ export const exercises = [
     muscleGroup: 'forearms',
     muscles: { biceps: 0.50, back: 0.30, shoulders: 0.20 },
     equipment: ['pullup_rack'],
+    optionalEquipment: ['dip_belt', 'plates'],
     weightType: 'bodyweight',
     timeBased: true,
     description: {
@@ -1186,6 +1200,7 @@ export const exercises = [
     muscleGroup: 'forearms',
     muscles: { biceps: 0.40, back: 0.45, shoulders: 0.15 },
     equipment: ['rack', 'towel'],
+    optionalEquipment: ['dip_belt', 'plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Pull-ups gripping towels for extreme grip work. Drape towels over bar, grip towels and perform pull-ups, the unstable grip dramatically increases forearm and grip strength demands.',
@@ -1303,10 +1318,10 @@ export const exercises = [
     name: { en: 'Dumbbell Squat', es: 'Sentadilla con Mancuernas' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.15, core: 0.10 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     weightType: 'dumbbell',
     description: {
-      en: 'Squat holding dumbbells at sides. Hold dumbbells at arms length by sides, squat down with good form, useful when barbell is unavailable or for higher rep leg work.',
+      en: 'Squat holding dumbbells at sides. Hold dumbbells at arm\'s length by sides, squat down with good form, useful when barbell is unavailable or for higher rep leg work.',
       es: 'Sentadilla sosteniendo mancuernas a los lados. Sostén mancuernas con brazos extendidos a los lados, sentadilla con buena forma, útil cuando no hay barra o para trabajo de más reps.',
     },
     bmc: 4.0,
@@ -1387,7 +1402,7 @@ export const exercises = [
     name: { en: 'Dumbbell Bulgarian Split Squat', es: 'Sentadilla Búlgara con Mancuernas' },
     muscleGroup: 'quads',
     muscles: { quads: 0.50, glutes: 0.35, hamstrings: 0.10, core: 0.05 },
-    equipment: ['dumbbells', 'flat_bench'],
+    equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
     weightType: 'dumbbell',
     description: {
       en: 'Single-leg squat with rear foot elevated on bench. Holding dumbbells, lower until front thigh is parallel, excellent for quad development and addressing leg strength imbalances.',
@@ -1415,7 +1430,7 @@ export const exercises = [
     name: { en: 'Dumbbell Step-Ups', es: 'Step-Ups con Mancuernas' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.35, hamstrings: 0.15, core: 0.05 },
-    equipment: ['dumbbells', 'flat_bench'],
+    equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
     weightType: 'dumbbell',
     description: {
       en: 'Functional unilateral leg exercise stepping onto a platform. Drive through heel of elevated foot to step up, lower with control, builds single-leg strength and balance.',
@@ -1445,6 +1460,7 @@ export const exercises = [
     muscleGroup: 'quads',
     muscles: { quads: 0.80, glutes: 0.15, core: 0.05 },
     equipment: [],
+    optionalEquipment: ['plates', 'dumbbells'],
     weightType: 'bodyweight',
     timeBased: true,
     description: {
@@ -1521,7 +1537,7 @@ export const exercises = [
     name: { en: 'Single-Leg Romanian Deadlift', es: 'Peso Muerto Rumano a Una Pierna' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.45, glutes: 0.30, back: 0.15, core: 0.10 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     weightType: 'dumbbell',
     description: {
       en: 'Unilateral RDL for balance and hamstring development. Stand on one leg, hinge forward while extending other leg back, lower until torso is parallel, return maintaining balance.',
@@ -1550,10 +1566,11 @@ export const exercises = [
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.80, glutes: 0.15, calves: 0.05 },
     equipment: ['flat_bench'],
+    optionalEquipment: ['plates', 'dumbbells'],
     weightType: 'bodyweight',
     timeBased: true,
     description: {
-      en: 'Targeted strength exercise designed to isolate the hamstring muscles .Raise your hips toward the ceiling while maintaining a neutral spine. Maintain a slight posterior pelvic tilt and hold the contraction',
+      en: 'Targeted strength exercise designed to isolate the hamstring muscles. Raise your hips toward the ceiling while maintaining a neutral spine. Maintain a slight posterior pelvic tilt and hold the contraction.',
       es: 'Ejercicio de fuerza específico diseñado para aislar los músculos isquiotibiales. Levanta las caderas hacia el techo mientras mantienes la columna en posición neutra. Mantén la contracción.',
     },
     bmc: 1.5,
@@ -1562,7 +1579,7 @@ export const exercises = [
   },
   {
     id: 'glute_ham_raise',
-    name: { en: 'Glute-Ham Raise (on bench)', es: 'Elevación Glúteo-Isquio (en banco)' },
+    name: { en: 'Glute-Ham Raise (On Bench)', es: 'Elevación Glúteo-Isquio (en banco)' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.55, glutes: 0.35, back: 0.10 },
     equipment: ['ghd_machine'],
@@ -1613,7 +1630,7 @@ export const exercises = [
     name: { en: 'Dumbbell Hip Thrust', es: 'Empuje de Cadera con Mancuerna' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.65, hamstrings: 0.25, core: 0.10 },
-    equipment: ['dumbbells', 'flat_bench'],
+    equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
     weightType: 'dumbbell',
     singleWeight: true,
     description: {
@@ -1629,6 +1646,7 @@ export const exercises = [
     muscleGroup: 'glutes',
     muscles: { glutes: 0.70, hamstrings: 0.20, core: 0.10 },
     equipment: ['flat_bench'],
+    optionalEquipment: ['plates', 'dumbbells'],
     weightType: 'bodyweight',
     description: {
       en: 'Unilateral hip thrust for balanced glute development. One foot planted, other leg extended or bent, thrust hips up using single leg, excellent for addressing glute imbalances.',
@@ -1657,7 +1675,7 @@ export const exercises = [
     name: { en: 'Dumbbell Glute Bridge', es: 'Puente de Glúteos con Mancuerna' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.70, hamstrings: 0.20, core: 0.10 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     weightType: 'dumbbell',
     singleWeight: true,
     description: {
@@ -1700,7 +1718,7 @@ export const exercises = [
     name: { en: 'Sumo Squat (Dumbbells)', es: 'Sentadilla Sumo con Mancuerna' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.40, quads: 0.35, hamstrings: 0.15, core: 0.10 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     weightType: 'dumbbell',
     singleWeight: true,
     description: {
@@ -1729,7 +1747,7 @@ export const exercises = [
     name: { en: 'Step-Ups (Glute Focus)', es: 'Step-Ups (Enfoque Glúteos)' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.50, quads: 0.30, hamstrings: 0.15, core: 0.05 },
-    equipment: ['dumbbells', 'flat_bench'],
+    equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
     weightType: 'dumbbell',
     description: {
       en: 'Step-up emphasizing glute drive. Use higher box, drive through heel of elevated foot, focus on squeezing glute at top, lean slightly forward to increase glute activation.',
@@ -1837,7 +1855,7 @@ export const exercises = [
     name: { en: 'Standing Calf Raise (Dumbbell)', es: 'Elevación de Talones de Pie (Mancuernas)' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     optionalEquipment: ['step_platform'],
     weightType: 'dumbbell',
     description: {
@@ -1852,7 +1870,7 @@ export const exercises = [
     name: { en: 'Standing Calf Raise (Single Leg)', es: 'Elevación de Talones a Una Pierna' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     optionalEquipment: ['step_platform'],
     weightType: 'dumbbell',
     description: {
@@ -1932,6 +1950,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 1.0 },
     equipment: [],
+    optionalEquipment: ['plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Basic abdominal exercise for upper abs. Lie on back with knees bent, curl shoulders toward hips contracting abs, lower with control, focus on abdominal contraction not neck pulling.',
@@ -1977,6 +1996,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.80, quads: 0.20 },
     equipment: [],
+    optionalEquipment: ['plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Full range abdominal movement. Lie on back, sit all the way up touching toes or knees, lower with control, involves hip flexors more than crunches but builds overall core strength.',
@@ -2008,6 +2028,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.75, quads: 0.15, biceps: 0.10 },
     equipment: ['pullup_rack'],
+    optionalEquipment: ['dumbbells'],
     weightType: 'bodyweight',
     description: {
       en: 'Advanced lower ab exercise hanging from bar. Hang from pull-up bar, raise straight legs to horizontal or higher, lower with control, demands significant core strength and control.',
@@ -2023,6 +2044,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.80, quads: 0.10, biceps: 0.10 },
     equipment: ['pullup_rack'],
+    optionalEquipment: ['dumbbells'],
     weightType: 'bodyweight',
     description: {
       en: 'Easier regression of hanging leg raise. Hang from bar, bring knees up toward chest, lower with control, builds toward full leg raises while still effectively targeting lower abs.',
@@ -2100,6 +2122,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.85, shoulders: 0.15 },
     equipment: [],
+    optionalEquipment: ['plates'],
     weightType: 'bodyweight',
     timeBased: true,
     description: {
@@ -2221,6 +2244,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.50, back: 0.30, glutes: 0.20 },
     equipment: ['decline_bench'],
+    optionalEquipment: ['plates', 'dumbbells'],
     weightType: 'bodyweight',
     description: {
       en: 'Lower back strengthening on decline bench. Position face down, lower upper body toward floor, raise up by contracting lower back muscles, builds erector spinae strength for back health.',
@@ -2250,7 +2274,7 @@ export const exercises = [
     name: { en: 'Dumbbell Side Bend', es: 'Flexiones Laterales con Mancuernas' },
     muscleGroup: 'core',
     muscles: { core: 0.90, back: 0.10 },
-    equipment: ['dumbbells'],
+    equipment: [['dumbbells', 'kettlebells']],
     weightType: 'dumbbell',
     description: {
       en: 'Standing with a dumbbell, lean your torso to that side without swaying, then return. Keep your back straight, knees slightly bent, and perform controlled movements.',
@@ -2339,6 +2363,7 @@ export const exercises = [
     muscleGroup: 'chest',
     muscles: { chest: 0.80, shoulders: 0.15, core: 0.05 },
     equipment: ['high_pulley', 'single_handle'],
+    optionalEquipment: ['single_rope'],
     weightType: 'machine',
     description: {
       en: 'Constant tension chest isolation from high pulleys. Step forward, pull handles down and across your body in an arc, crossing at the bottom while squeezing your lower chest intensely.',
@@ -2353,6 +2378,7 @@ export const exercises = [
     muscleGroup: 'chest',
     muscles: { chest: 0.75, shoulders: 0.20, core: 0.05 },
     equipment: ['low_pulley', 'single_handle'],
+    optionalEquipment: ['single_rope'],
     weightType: 'machine',
     description: {
       en: 'Targets upper chest with upward cable motion. From low pulleys, bring handles up and together in front of your face, focusing on contracting the upper chest fibers throughout.',
@@ -2367,6 +2393,7 @@ export const exercises = [
     muscleGroup: 'chest',
     muscles: { chest: 0.80, shoulders: 0.15, core: 0.05 },
     equipment: ['mid_pulley', 'single_handle'],
+    optionalEquipment: ['single_rope'],
     weightType: 'machine',
     description: {
       en: 'Mid-level cable fly for overall chest development. With pulleys at chest height, bring handles together in front maintaining slight elbow bend, squeezing hard at the center.',
@@ -2481,13 +2508,13 @@ export const exercises = [
   },
   {
     id: 'behind_neck_pulldown',
-    name: { en: 'Behind-the-neck lat Pulldown', es: 'Jalón trasnuca' },
+    name: { en: 'Behind-the-Neck Lat Pulldown', es: 'Jalón trasnuca' },
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.20, shoulders: 0.15 },
     equipment: ['lat_station', 'lat_bar'],
     weightType: 'machine',
     description: {
-      en: 'Sit with thighs secured, grip the bar wide, pull down to beehind the neck, then return with controlled tempo.',
+      en: 'Sit with thighs secured, grip the bar wide, pull down to behind the neck, then return with controlled tempo.',
       es: 'Siéntate con los muslos sujetos, agarra la barra con las manos separadas, tira hacia abajo hasta detrás del cuello y luego regresa con un tempo controlado.',
     },
     bmc: 3.0,
@@ -2499,6 +2526,7 @@ export const exercises = [
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
     equipment: ['low_pulley', 'rowing_handle'],
+    optionalEquipment: ['upright_bench'],
     weightType: 'machine',
     description: {
       en: 'Builds mid-back thickness with constant tension. Sit with feet braced, pull handle to lower chest while squeezing shoulder blades together, extend arms fully to stretch lats between reps.',
@@ -2513,6 +2541,7 @@ export const exercises = [
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.20, shoulders: 0.10, core: 0.05 },
     equipment: ['low_pulley', 'lat_bar'],
+    optionalEquipment: ['upright_bench'],
     weightType: 'machine',
     description: {
       en: 'Wide grip variation targeting rear delts and upper back. Pull the wide bar to your upper abdomen with elbows flared out, focusing on squeezing your shoulder blades together.',
@@ -2541,6 +2570,7 @@ export const exercises = [
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, core: 0.10, shoulders: 0.05 },
     equipment: ['low_pulley', 'single_handle'],
+    optionalEquipment: ['single_rope'],
     weightType: 'machine',
     description: {
       en: 'Unilateral rowing for balanced back development. Stand or kneel, pull the handle to your hip while rotating your torso slightly, focusing on a full stretch and strong contraction.',
@@ -2584,6 +2614,7 @@ export const exercises = [
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
     equipment: ['low_pulley', 'neutral_bar_attachment'],
+    optionalEquipment: ['upright_bench'],
     weightType: 'machine',
     description: {
       en: 'Seated cable row using a neutral grip attachment. The palms-facing grip allows a strong lat contraction while reducing bicep dominance. Pull to the lower chest, squeeze shoulder blades, and extend fully.',
@@ -2602,6 +2633,7 @@ export const exercises = [
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.90, back: 0.10 },
     equipment: ['low_pulley', 'single_handle'],
+    optionalEquipment: ['single_rope'],
     weightType: 'machine',
     description: {
       en: 'Constant tension lateral raise with cable. Stand sideways to low pulley, raise arm out to side against resistance, the cable provides tension throughout the entire range of motion.',
@@ -2616,6 +2648,7 @@ export const exercises = [
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.85, chest: 0.15 },
     equipment: ['low_pulley', 'single_handle'],
+    optionalEquipment: ['single_rope'],
     weightType: 'machine',
     description: {
       en: 'Cable version of front raises for constant tension. Face away from low pulley, raise handle in front to shoulder height, the cable ensures resistance even at the bottom.',
@@ -2630,6 +2663,7 @@ export const exercises = [
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.75, back: 0.25 },
     equipment: ['high_pulley', 'single_handle'],
+    optionalEquipment: ['rope', 'single_rope'],
     weightType: 'machine',
     description: {
       en: 'Rear delt isolation using cables for constant tension. Using high pulleys or rope, pull apart to engage rear delts, hold the squeeze, return with control maintaining tension.',
@@ -2749,6 +2783,7 @@ export const exercises = [
     muscleGroup: 'biceps',
     muscles: { biceps: 0.95, shoulders: 0.05 },
     equipment: ['ez_bar', 'plates', 'preacher_pad'],
+    optionalEquipment: ['straight_bar'],
     weightType: 'barbell',
     description: {
       en: 'Strict bicep isolation eliminating momentum. Rest arms on preacher pad, curl bar up squeezing biceps, lower fully to stretch, the pad prevents cheating and isolates completely.',
@@ -2805,6 +2840,7 @@ export const exercises = [
     muscleGroup: 'biceps',
     muscles: { biceps: 0.90, shoulders: 0.10 },
     equipment: ['low_pulley', 'single_handle'],
+    optionalEquipment: ['single_rope'],
     weightType: 'machine',
     description: {
       en: 'Unilateral cable curl for isolation and balance. Stand sideways to low pulley, curl single handle while keeping elbow fixed, excellent for addressing strength imbalances between arms.',
@@ -2818,11 +2854,12 @@ export const exercises = [
     name: { en: 'Cable High Curl', es: 'Curl Alto en Polea' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
-    equipment: ['high_pulley', 'single_handle'],
+    equipment: ['high_pulley', 'curved_bar_attachment'],
+    optionalEquipment: ['straight_bar_attachment', 'rope'],
     weightType: 'machine',
     description: {
-      en: 'Bicep curl from high pulley position. Stand between high pulleys, curl handles toward your head, excellent for hitting biceps from a unique angle and creating a strong peak contraction.',
-      es: 'Curl de bíceps desde posición de polea alta. De pie entre poleas altas, curl hacia la cabeza, excelente para trabajar bíceps desde un ángulo único y crear fuerte contracción de pico.',
+      en: 'Bicep curl from high pulley using a curved bar attachment. Stand facing the high pulley, grip the curved bar with both hands and curl toward your forehead, excellent for hitting biceps from a unique overhead angle and creating a strong peak contraction.',
+      es: 'Curl de bíceps desde polea alta usando barra curva. De pie frente a la polea alta, agarra la barra curva con ambas manos y curl hacia la frente, excelente para trabajar bíceps desde un ángulo único y crear fuerte contracción de pico.',
     },
     bmc: 1.0,
     wf: 0.02,
@@ -2832,11 +2869,12 @@ export const exercises = [
     name: { en: 'Cable Preacher Curl', es: 'Curl en Banco Scott con Polea' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.95, shoulders: 0.05 },
-    equipment: ['low_pulley', 'preacher_pad', 'single_handle'],
+    equipment: ['low_pulley', 'preacher_pad', 'curved_bar_attachment'],
+    optionalEquipment: ['straight_bar_attachment', 'single_handle'],
     weightType: 'machine',
     description: {
-      en: 'Preacher curl with constant cable tension. Position preacher pad facing low pulley, curl keeping upper arms on pad, the cable ensures tension throughout the entire movement.',
-      es: 'Curl en banco scott con tensión constante de cable. Posiciona el pad frente a polea baja, curl manteniendo brazos en el pad, el cable asegura tensión durante todo el movimiento.',
+      en: 'Preacher curl with constant cable tension using a curved bar attachment. Position preacher pad facing low pulley, curl keeping upper arms on pad, the cable ensures tension throughout the entire movement.',
+      es: 'Curl en banco scott con tensión constante de cable usando barra curva. Posiciona el pad frente a polea baja, curl manteniendo brazos en el pad, el cable asegura tensión durante todo el movimiento.',
     },
     bmc: 1.0,
     wf: 0.02,
@@ -2934,7 +2972,7 @@ export const exercises = [
     name: { en: 'Cable Overhead Extension (Single Arm)', es: 'Extensión sobre Cabeza en Polea (Un Brazo)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
-    equipment: ['low_pulley', 'single_handle'],
+    equipment: ['low_pulley', ['single_handle', 'single_rope']],
     weightType: 'machine',
     description: {
       en: 'Unilateral overhead extension for balanced triceps. Single arm allows full focus on each tricep, extend fully overhead while keeping upper arm stationary, great for imbalances.',
@@ -2948,7 +2986,7 @@ export const exercises = [
     name: { en: 'Triceps Cable Kickback', es: 'Patada de Triceps en Polea' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
-    equipment: ['low_pulley', 'single_handle'],
+    equipment: ['low_pulley', ['single_handle', 'single_rope']],
     weightType: 'machine',
     description: {
       en: 'Cable version of kickbacks for constant tension. Hinge forward, extend arm back against cable resistance, the cable maintains tension throughout entire range of motion.',
@@ -3086,6 +3124,7 @@ export const exercises = [
     muscleGroup: 'quads',
     muscles: { quads: 0.55, glutes: 0.30, hamstrings: 0.10, core: 0.05 },
     equipment: ['ball'],
+    optionalEquipment: ['dumbbells', 'plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Place an exercise ball between your lower back and the wall. Stand with feet shoulder-width apart, slightly forward of the ball. Squat down until thighs are parallel to the floor, the ball rolls along your back. Press through heels to stand. Add dumbbells for extra resistance.',
@@ -3101,10 +3140,11 @@ export const exercises = [
   // ============================================
   {
     id: 'leg_curl',
-    name: { en: 'Leg Curl', es: 'Curl de Piernas' },
+    name: { en: 'Standing Leg Curl (Single-Leg)', es: 'Curl de Piernas de Pie (Una Pierna)' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.85, calves: 0.15 },
     equipment: ['standing_leg_curl_station'],
+    singleWeight: true,
     weightType: 'machine',
     description: {
       en: 'Machine isolation for hamstring knee flexion. Curl heels toward glutes, squeeze hamstrings at top, lower with control, keeps hips stable for strict isolation.',
@@ -3115,7 +3155,7 @@ export const exercises = [
   },
   {
     id: 'seated_leg_curl',
-    name: { en: 'Leg Curl', es: 'Curl de Piernas' },
+    name: { en: 'Leg Curl (Seated or Lying)', es: 'Curl de Piernas (Sentado o Tumbado)' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.85, calves: 0.15 },
     equipment: ['leg_curl_station'],
@@ -3217,9 +3257,52 @@ export const exercises = [
     wf: 0.03,
   },
 
+  {
+    id: 'hip_abduction',
+    name: { en: 'Hip Abduction (Machine)', es: 'Abducción de Cadera (Máquina)' },
+    muscleGroup: 'glutes',
+    muscles: { glutes: 0.85, quads: 0.15 },
+    equipment: ['hip_abductor_adductor'],
+    weightType: 'machine',
+    description: {
+      en: 'Seated hip abduction on machine. Sit with pads on outer thighs, push legs apart against resistance, squeeze glutes at full abduction, return with control. Targets the gluteus medius and minimus.',
+      es: 'Abducción de cadera sentado en máquina. Siéntate con almohadillas en la parte externa de los muslos, empuja las piernas separándolas contra la resistencia, aprieta glúteos en abducción completa. Trabaja glúteo medio y menor.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+  {
+    id: 'hip_adduction',
+    name: { en: 'Hip Adduction (Machine)', es: 'Aducción de Cadera (Máquina)' },
+    muscleGroup: 'glutes',
+    muscles: { glutes: 0.40, quads: 0.60 },
+    equipment: ['hip_abductor_adductor'],
+    weightType: 'machine',
+    description: {
+      en: 'Seated hip adduction on machine. Sit with pads on inner thighs, squeeze legs together against resistance, hold briefly at full adduction, return with control. Targets the inner thigh adductor muscles.',
+      es: 'Aducción de cadera sentado en máquina. Siéntate con almohadillas en la parte interna de los muslos, aprieta las piernas juntándolas contra la resistencia, mantén brevemente en aducción completa. Trabaja los músculos aductores del muslo interno.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
+
   // ============================================
   // CALVES
   // ============================================
+  {
+    id: 'standing_calf_raise_machine',
+    name: { en: 'Standing Calf Raise (Machine)', es: 'Elevación de Talones de Pie (Máquina)' },
+    muscleGroup: 'calves',
+    muscles: { calves: 1.0 },
+    equipment: ['calf_station'],
+    weightType: 'machine',
+    description: {
+      en: 'Standing calf raise on dedicated machine. Position shoulders under pads, rise onto toes with full range of motion, the machine allows heavy loading with stable form for maximum calf development.',
+      es: 'Elevación de talones de pie en máquina dedicada. Posiciona hombros bajo las almohadillas, sube a las puntas con rango completo, la máquina permite carga pesada con forma estable para máximo desarrollo.',
+    },
+    bmc: 1.5,
+    wf: 0.02,
+  },
   {
     id: 'leg_press_calf_raise',
     name: { en: 'Leg Press Calf Raise', es: 'Elevación de Talones en Prensa' },
@@ -3272,6 +3355,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.65, shoulders: 0.20, back: 0.15 },
     equipment: ['high_pulley', 'single_handle'],
+    optionalEquipment: ['single_rope', 'rope'],
     weightType: 'machine',
     description: {
       en: 'Rotational core exercise from high to low. Pull cable diagonally across body from high to low, rotating through core, excellent for building rotational power and oblique strength.',
@@ -3286,6 +3370,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.65, shoulders: 0.20, quads: 0.15 },
     equipment: ['low_pulley', 'single_handle'],
+    optionalEquipment: ['single_rope', 'rope'],
     weightType: 'machine',
     description: {
       en: 'Rotational movement from low to high position. Pull cable diagonally upward across body, rotating through core, works obliques and rotational muscles from a different angle.',
@@ -3300,6 +3385,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.80, shoulders: 0.15, chest: 0.05 },
     equipment: ['mid_pulley', 'single_handle'],
+    optionalEquipment: ['single_rope', 'rope'],
     weightType: 'machine',
     description: {
       en: 'Anti-rotation exercise for core stability. Stand perpendicular to cable, press handle straight out resisting rotation, return to chest, builds crucial rotational stability for sports.',
@@ -3344,6 +3430,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.90, quads: 0.10 },
     equipment: ['ball'],
+    optionalEquipment: ['plates', 'dumbbells'],
     weightType: 'bodyweight',
     description: {
       en: 'Sit on the exercise ball and walk your feet forward until your lower back rests on the ball. Place hands behind your head or across your chest. Crunch upward, contracting your abs. The ball increases range of motion compared to floor crunches.',
@@ -3374,6 +3461,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { back: 0.45, core: 0.30, glutes: 0.25 },
     equipment: ['ball'],
+    optionalEquipment: ['plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Lie face down with your hips on the exercise ball and feet on the ground. Cross arms over your chest or behind your head. Lower your upper body toward the floor, then extend back up by squeezing your lower back and glutes.',
@@ -3405,6 +3493,7 @@ export const exercises = [
     muscleGroup: 'core',
     muscles: { core: 0.85, shoulders: 0.15 },
     equipment: ['ball'],
+    optionalEquipment: ['dumbbells', 'plates'],
     weightType: 'bodyweight',
     description: {
       en: 'Sit on the exercise ball, walk feet forward until upper back and shoulders rest on the ball with hips lifted. Extend arms straight above your chest with hands together. Rotate your torso to one side, then the other, keeping hips level.',
