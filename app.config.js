@@ -6,8 +6,8 @@ export default ({ config }) => {
     name: isFree ? 'HomeFit Free' : 'HomeFit',
     slug: 'HomeFit',
     scheme: isFree ? 'homefitfree' : 'homefit',
-    version: '1.0.5',
-    orientation: 'portrait',
+    version: '1.1.0',
+    orientation: 'default',
     icon: isFree ? './assets/icon-free.png' : './assets/icon.png',
     userInterfaceStyle: 'light',
     splash: {
@@ -20,7 +20,7 @@ export default ({ config }) => {
       bundleIdentifier: isFree ? 'com.aidoru.HomeFitFree' : 'com.aidoru.HomeFit',
     },
     android: {
-      versionCode: 5,
+      versionCode: 6,
       adaptiveIcon: {
         foregroundImage: isFree ? './assets/adaptive-icon-free.png' : './assets/adaptive-icon.png',
         backgroundImage: isFree ? './assets/adaptive-icon-free-bg.png' : './assets/adaptive-icon-bg.png',
@@ -35,7 +35,7 @@ export default ({ config }) => {
     web: {
       favicon: isFree ? './assets/favicon-free.png' : './assets/favicon.png',
     },
-    plugins: ['expo-audio'],
+    plugins: ['expo-audio', 'expo-asset'],
     extra: {
       eas: {
         projectId: '94a5c8f3-6876-485f-af16-a57e83350a30',

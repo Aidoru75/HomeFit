@@ -372,8 +372,9 @@ const styles = StyleSheet.create({
     ...shadows.small,
   },
   emptyIconImage: {
-    width: 250,
-    height: 250,
+    width: '60%',
+    maxWidth: 250,
+    aspectRatio: 1,
     marginBottom: spacing.md,
     resizeMode: 'contain',
   },

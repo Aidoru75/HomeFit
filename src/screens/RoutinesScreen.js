@@ -12,9 +12,9 @@ import {
   Alert,
   PanResponder,
   Animated,
-  Dimensions,
   Image,
   Linking,
+  useWindowDimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions } from 'expo-camera';
@@ -34,7 +34,6 @@ import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
 import { encodeRoutine, decodeRoutine, isValidRoutineCode, MAX_QR_SIZE } from '../utils/routineCodec';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // Icons
 const editIcon = IS_PRO
@@ -49,6 +48,7 @@ const exportIcon = require('../../assets/icons/export.png');
 const exportAccentIcon = require('../../assets/icons/export_accent.png');
 
 export default function RoutinesScreen({ navigation, route }) {
+  const { width: windowWidth } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
   const [routines, setRoutines] = useState([]);
@@ -1518,7 +1518,7 @@ export default function RoutinesScreen({ navigation, route }) {
               {encodedRoutine ? (
                 <QRCode
                   value={encodedRoutine}
-                  size={SCREEN_WIDTH * 0.6}
+                  size={Math.min(windowWidth * 0.6, 300)}
                   backgroundColor={colors.white}
                   color={colors.primary}
                 />
@@ -1686,8 +1686,9 @@ const styles = StyleSheet.create({
     marginTop: spacing.xl,
   },
   emptyIconImage: {
-    width: 200,
-    height: 200,
+    width: '60%',
+    maxWidth: 200,
+    aspectRatio: 1,
     marginBottom: spacing.md,
     resizeMode: 'contain',
   },
@@ -1960,6 +1961,9 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.lg,
     padding: spacing.lg,
     maxHeight: '80%',
+    maxWidth: 600,
+    width: '100%',
+    alignSelf: 'center',
   },
   modalTitle: {
     fontFamily: fonts.bold,

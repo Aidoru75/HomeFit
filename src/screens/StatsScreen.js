@@ -7,7 +7,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  Dimensions,
   Image,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -19,7 +18,6 @@ import { t } from '../data/translations';
 
 const ITEMS_PER_PAGE = 10;
 const CHART_HEIGHT = 180;
-const screenWidth = Dimensions.get('window').width;
 
 // Colors for different routine days
 const DAY_COLORS = [

@@ -26,6 +26,7 @@ import { loadRoutines, loadSettings, saveLastWorkout, addToHistory, updateRoutin
 import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
 import { lbToKg, inchesToCm, getWeightIncrement, getSmallWeightIncrement } from '../utils/unitConversions';
+import { useResponsiveLayout } from '../hooks/useResponsiveLayout';
 import { IS_PRO } from '../config';
 
 // Audio source for countdown timer (single 10-second sequence)
@@ -41,6 +42,7 @@ const successBackground = IS_PRO
 
 export default function TrainingScreen({ route, navigation }) {
   const insets = useSafeAreaInsets();
+  const { isLandscape, width, height } = useResponsiveLayout();
   const { routineId, dayIndex } = route.params || {};
   
   const [routine, setRoutine] = useState(null);
@@ -1459,15 +1461,20 @@ export default function TrainingScreen({ route, navigation }) {
       {/* Thumbnail strip */}
       {renderThumbnailStrip()}
 
-      <View style={styles.restContent}>
-        <Text style={styles.restLabel}>
-          {t('restLabel', lang)}
-        </Text>
-        <Text style={styles.restTimer}>{restTimeLeft}</Text>
-        <Text style={styles.restSeconds}>{t('seconds', lang)}</Text>
-        
+      <View style={[styles.restContent, isLandscape && styles.restContentLandscape]}>
+        <View style={[styles.restTimerSide, isLandscape && styles.restTimerSideLandscape]}>
+          <Text style={styles.restLabel}>
+            {t('restLabel', lang)}
+          </Text>
+          <Text style={[styles.restTimer, isLandscape && styles.restTimerLandscape]}>{restTimeLeft}</Text>
+          <Text style={styles.restSeconds}>{t('seconds', lang)}</Text>
+          <TouchableOpacity style={styles.skipRestButton} onPress={skipRest}>
+            <Text style={styles.skipRestButtonText}>{t('skipRest', lang)}</Text>
+          </TouchableOpacity>
+        </View>
+
         {nextInfo && (
-          <View style={styles.nextPreview}>
+          <View style={[styles.nextPreview, isLandscape && styles.nextPreviewLandscape]}>
             <Text style={styles.nextLabel}>
               {nextInfo.isSuperset ? `${t('superset', lang).toUpperCase()} - ${t('upNext', lang)}` : t('upNext', lang)}
             </Text>
@@ -1512,10 +1519,6 @@ export default function TrainingScreen({ route, navigation }) {
             )}
           </View>
         )}
-        
-        <TouchableOpacity style={styles.skipRestButton} onPress={skipRest}>
-          <Text style={styles.skipRestButtonText}>{t('skipRest', lang)}</Text>
-        </TouchableOpacity>
       </View>
     </View>
   ) : (
@@ -1525,54 +1528,70 @@ export default function TrainingScreen({ route, navigation }) {
       {renderThumbnailStrip()}
 
       {/* Main content */}
-      <View style={styles.exerciseContent}>
-        {/* Exercise name */}
-        <Text style={styles.exerciseName}>
-          {exerciseData ? getExerciseName(exerciseData, lang) : 'Exercise'}
-        </Text>
-        
-        {/* Exercise description */}
-        {exerciseData && (
-          <Text style={styles.exerciseDescription}>
-            {getExerciseDescription(exerciseData, lang)}
-          </Text>
-        )}
-        
-        {/* Set indicator */}
-        <Text style={styles.setIndicator}>
-          {t('set', lang).toUpperCase()} {currentSetIndex + 1} / {currentEx?.sets || 3}
-        </Text>
-
-        {/* Superset indicator */}
-        {isInSuperset() && (
-          <View style={styles.supersetIndicator}>
-            <Text style={styles.supersetIndicatorText}>
-              ⛓ {t('superset', lang)} {getSupersetExercises(currentExerciseIndex).indexOf(currentExerciseIndex) + 1}/{getSupersetExercises(currentExerciseIndex).length}
-            </Text>
+      <View style={[styles.exerciseContent, isLandscape && styles.exerciseContentLandscape]}>
+        {/* Left side in landscape: image */}
+        {isLandscape && (
+          <View style={styles.landscapeImageSide}>
+            <ExerciseImage
+              exerciseId={currentEx?.exerciseId}
+              size={Math.min(height * 0.55, width * 0.35)}
+              animate={true}
+              animationDuration={2000}
+            />
           </View>
         )}
 
-        {/* Exercise Image */}
-        <View style={styles.imageContainer}>
-          <ExerciseImage 
-            exerciseId={currentEx?.exerciseId} 
-            size={220}
-            animate={true}
-            animationDuration={2000}
-          />
-        </View>
-
-        {/* Done / Start button */}
-        <TouchableOpacity
-          style={styles.doneButton}
-          onPress={exerciseData?.timeBased && currentReps !== 'E' ? startExerciseTimer : completeSet}
-        >
-          <Text style={styles.doneButtonText}>
-            {exerciseData?.timeBased && currentReps !== 'E'
-              ? (t('start', lang) || 'START').toUpperCase()
-              : (t('done', lang) || 'DONE')}
+        {/* Right side in landscape / full content in portrait */}
+        <View style={[styles.exerciseControlsSide, isLandscape && styles.exerciseControlsSideLandscape]}>
+          {/* Exercise name */}
+          <Text style={[styles.exerciseName, isLandscape && styles.exerciseNameLandscape]}>
+            {exerciseData ? getExerciseName(exerciseData, lang) : 'Exercise'}
           </Text>
-        </TouchableOpacity>
+
+          {/* Exercise description - hide in landscape to save space */}
+          {!isLandscape && exerciseData && (
+            <Text style={styles.exerciseDescription}>
+              {getExerciseDescription(exerciseData, lang)}
+            </Text>
+          )}
+
+          {/* Set indicator */}
+          <Text style={styles.setIndicator}>
+            {t('set', lang).toUpperCase()} {currentSetIndex + 1} / {currentEx?.sets || 3}
+          </Text>
+
+          {/* Superset indicator */}
+          {isInSuperset() && (
+            <View style={styles.supersetIndicator}>
+              <Text style={styles.supersetIndicatorText}>
+                ⛓ {t('superset', lang)} {getSupersetExercises(currentExerciseIndex).indexOf(currentExerciseIndex) + 1}/{getSupersetExercises(currentExerciseIndex).length}
+              </Text>
+            </View>
+          )}
+
+          {/* Exercise Image - portrait only (landscape shows it on the left) */}
+          {!isLandscape && (
+            <View style={styles.imageContainer}>
+              <ExerciseImage
+                exerciseId={currentEx?.exerciseId}
+                size={220}
+                animate={true}
+                animationDuration={2000}
+              />
+            </View>
+          )}
+
+          {/* Done / Start button */}
+          <TouchableOpacity
+            style={[styles.doneButton, isLandscape && { marginVertical: spacing.sm }]}
+            onPress={exerciseData?.timeBased && currentReps !== 'E' ? startExerciseTimer : completeSet}
+          >
+            <Text style={styles.doneButtonText}>
+              {exerciseData?.timeBased && currentReps !== 'E'
+                ? (t('start', lang) || 'START').toUpperCase()
+                : (t('done', lang) || 'DONE')}
+            </Text>
+          </TouchableOpacity>
 
         {/* Reps control */}
         <View style={styles.controlsRow}>
@@ -1648,6 +1667,7 @@ export default function TrainingScreen({ route, navigation }) {
             {t('changesDetected', lang) || '* Changes will be saved when you finish'}
           </Text>
         )}
+        </View>
 
         {/* Exercise Countdown Timer Modal */}
         <Modal
@@ -1880,6 +1900,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.xl,
   },
+  restContentLandscape: {
+    flexDirection: 'row',
+    padding: spacing.lg,
+  },
+  restTimerSide: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  restTimerSideLandscape: {
+    flex: 1,
+  },
+  restTimerLandscape: {
+    fontSize: 100,
+  },
+  nextPreviewLandscape: {
+    flex: 1,
+    marginTop: 0,
+    marginLeft: spacing.lg,
+    justifyContent: 'center',
+  },
   restLabel: {
     fontFamily: fonts.regular,
     color: '#666666',
@@ -2016,6 +2056,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.lg,
+  },
+  exerciseContentLandscape: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    paddingTop: spacing.sm,
+  },
+  landscapeImageSide: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  exerciseControlsSide: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  exerciseControlsSideLandscape: {
+    justifyContent: 'center',
+    paddingHorizontal: spacing.md,
+  },
+  exerciseNameLandscape: {
+    fontSize: fontSize.lg,
   },
   exerciseName: {
     fontFamily: fonts.bold,

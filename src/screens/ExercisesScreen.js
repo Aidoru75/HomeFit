@@ -489,6 +489,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: borderRadius.xl,
     borderTopRightRadius: borderRadius.xl,
     maxHeight: '85%',
+    maxWidth: 600,
+    width: '100%',
+    alignSelf: 'center',
   },
   modalHeader: {
     padding: spacing.lg,

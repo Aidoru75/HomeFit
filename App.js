@@ -95,12 +95,7 @@ export default function App() {
     async function configureNavigationBar() {
       if (Platform.OS === 'android') {
         try {
-          // Hide the Android navigation bar
           await NavigationBar.setVisibilityAsync('hidden');
-          // Allow user to reveal it by swiping from edge
-          await NavigationBar.setBehaviorAsync('overlay-swipe');
-          // Set navigation bar color to black (when visible)
-          await NavigationBar.setBackgroundColorAsync('#000000');
         } catch (error) {
           console.warn('Failed to configure navigation bar:', error);
         }
