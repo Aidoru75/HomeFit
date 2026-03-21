@@ -15,6 +15,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { colors, spacing, borderRadius, fonts, fontSize, shadows } from '../theme';
+import { useResponsiveLayout } from '../hooks/useResponsiveLayout';
 import {
   availableExercises,
   muscleGroups,
@@ -30,6 +31,7 @@ import ExerciseImage from '../components/ExerciseImage';
 
 export default function ExercisesScreen() {
   const insets = useSafeAreaInsets();
+  const { isLandscape } = useResponsiveLayout();
   const [selectedMuscle, setSelectedMuscle] = useState(null);
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [settings, setSettings] = useState({ language: 'en' });
@@ -243,8 +245,8 @@ export default function ExercisesScreen() {
         transparent={true}
         onRequestClose={() => setSelectedExercise(null)}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
+        <View style={[styles.modalOverlay, isLandscape && styles.modalOverlayLandscape]}>
+          <View style={[styles.modalContent, isLandscape && styles.modalContentLandscape]}>
             {selectedExercise && (
               <>
                 <View style={[
@@ -262,9 +264,9 @@ export default function ExercisesScreen() {
                 <ScrollView style={styles.modalBody}>
                   {/* Exercise Image */}
                   <View style={styles.imageContainer}>
-                    <ExerciseImage 
-                      exerciseId={selectedExercise.id} 
-                      size={350}
+                    <ExerciseImage
+                      exerciseId={selectedExercise.id}
+                      size={isLandscape ? 200 : 350}
                       animate={true}
                     />
                   </View>
@@ -484,6 +486,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
   },
+  modalOverlayLandscape: {
+    justifyContent: 'center',
+  },
   modalContent: {
     backgroundColor: colors.white,
     borderTopLeftRadius: borderRadius.xl,
@@ -492,6 +497,10 @@ const styles = StyleSheet.create({
     maxWidth: 600,
     width: '100%',
     alignSelf: 'center',
+  },
+  modalContentLandscape: {
+    maxHeight: '95%',
+    borderRadius: borderRadius.xl,
   },
   modalHeader: {
     padding: spacing.lg,

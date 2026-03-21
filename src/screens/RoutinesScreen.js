@@ -14,12 +14,12 @@ import {
   Animated,
   Image,
   Linking,
-  useWindowDimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import QRCode from 'react-native-qrcode-svg';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
+import { useResponsiveLayout } from '../hooks/useResponsiveLayout';
 import {
   availableExercises,
   muscleGroups,
@@ -48,7 +48,7 @@ const exportIcon = require('../../assets/icons/export.png');
 const exportAccentIcon = require('../../assets/icons/export_accent.png');
 
 export default function RoutinesScreen({ navigation, route }) {
-  const { width: windowWidth } = useWindowDimensions();
+  const { width: windowWidth, isLandscape } = useResponsiveLayout();
   const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
   const [routines, setRoutines] = useState([]);
@@ -1035,11 +1035,14 @@ export default function RoutinesScreen({ navigation, route }) {
         transparent={true}
         onRequestClose={() => { setIsSubstituting(false); isEdit ? setShowEditExerciseModal(false) : setShowAddExerciseModal(false); }}
       >
-        <View style={styles.modalOverlay}>
-          <View style={[styles.modalContent, { maxHeight: '90%' }]}>
-            <Text style={styles.modalTitle}>
-              {isSubstituting ? t('substitute', lang) : isEdit ? t('editExercise', lang) : t('addExercise', lang)}
-            </Text>
+        <View style={[styles.modalOverlay, isLandscape && styles.modalOverlayLandscape]}>
+          <View style={[styles.modalContent, isLandscape ? styles.modalContentLandscape : { maxHeight: '90%' }]}>
+            {/* Title: hidden in landscape config mode (shown in right column instead) */}
+            {(!isLandscape || !exerciseConfig.exerciseId) && (
+              <Text style={styles.modalTitle}>
+                {isSubstituting ? t('substitute', lang) : isEdit ? t('editExercise', lang) : t('addExercise', lang)}
+              </Text>
+            )}
 
             {!exerciseConfig.exerciseId ? (
               // Exercise selection (Add mode or Substitute mode)
@@ -1102,8 +1105,138 @@ export default function RoutinesScreen({ navigation, route }) {
                   )}
                 />
               </>
+            ) : isLandscape ? (
+              // Landscape: exercise header + sets/reps on left, buttons on right
+              <View style={styles.configLandscapeRow}>
+                {/* Left+Center: header, sets, reps */}
+                <View style={styles.configMainArea}>
+                  {exerciseData && (
+                    <View style={styles.selectedExercise}>
+                      <ExerciseImage exerciseId={exerciseData.id} size={40} />
+                      <Text style={styles.selectedExerciseName}>
+                        {getExerciseName(exerciseData, lang)}
+                      </Text>
+                    </View>
+                  )}
+                  <View style={styles.configColumnsRow}>
+                    {/* Sets (vertical +/−) + Exhaustion */}
+                    <View style={styles.configLeftColumn}>
+                      <Text style={styles.inputLabel}>{t('sets', lang)}</Text>
+                      <TouchableOpacity
+                        style={styles.setsButton}
+                        onPress={() => updateSetsCount(exerciseConfig.sets + 1)}
+                      >
+                        <Text style={styles.setsButtonText}>+</Text>
+                      </TouchableOpacity>
+                      <Text style={styles.setsValue}>{exerciseConfig.sets}</Text>
+                      <TouchableOpacity
+                        style={styles.setsButton}
+                        onPress={() => updateSetsCount(exerciseConfig.sets - 1)}
+                      >
+                        <Text style={styles.setsButtonText}>−</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[styles.exhaustionToggle, exerciseConfig.reps[0] === 'E' && styles.exhaustionToggleActive, { marginTop: spacing.md }]}
+                        onPress={() => {
+                          setExerciseConfig(prev => {
+                            const isCurrentlyE = prev.reps[0] === 'E';
+                            if (isCurrentlyE) {
+                              const defaultRep = exerciseData?.timeBased ? 1 : 10;
+                              return { ...prev, reps: Array(prev.sets).fill(defaultRep) };
+                            } else {
+                              return { ...prev, reps: Array(prev.sets).fill('E') };
+                            }
+                          });
+                        }}
+                      >
+                        <Text style={[styles.exhaustionToggleText, exerciseConfig.reps[0] === 'E' && styles.exhaustionToggleTextActive]}>
+                          {t('toExhaustion', lang)}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+
+                    {/* Set rows (scrollable) */}
+                    <ScrollView style={styles.configCenterColumn} showsVerticalScrollIndicator={false}>
+                      <Text style={styles.inputLabel}>{exerciseData?.timeBased ? t('min', lang) : t('reps', lang)} & {settings.measurementSystem === 'imperial' ? t('weightLbs', lang) : t('weight', lang)}</Text>
+                      {Array.from({ length: exerciseConfig.sets }).map((_, index) => (
+                        <View key={index} style={styles.setRow}>
+                          <Text style={styles.setNumber}>{index + 1}</Text>
+                          <TouchableOpacity
+                            style={styles.setInput}
+                            onPress={() => exerciseConfig.reps[index] !== 'E' && openNumberInput('reps', index, isAddMode)}
+                            activeOpacity={exerciseConfig.reps[index] === 'E' ? 1 : 0.6}
+                          >
+                            <Text style={styles.setInputLabel}>{exerciseData?.timeBased ? t('min', lang) : t('reps', lang)}</Text>
+                            <Text style={[styles.setInputValue, exerciseConfig.reps[index] === 'E' && styles.setInputFieldDisabled]}>
+                              {exerciseConfig.reps[index] === 'E' ? '—' : String(exerciseConfig.reps[index] || (exerciseData?.timeBased ? 1 : 10))}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={styles.setInput}
+                            onPress={() => openNumberInput('weight', index, isAddMode)}
+                            activeOpacity={0.6}
+                          >
+                            <Text style={styles.setInputLabel}>{settings.measurementSystem === 'imperial' ? t('lbs', lang) : t('kg', lang)}</Text>
+                            <Text style={styles.setInputValue}>
+                              {weightInputs[index] || '0'}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      ))}
+                    </ScrollView>
+                  </View>
+                </View>
+
+                {/* Right: Title + Action buttons */}
+                <View style={styles.configRightColumn}>
+                  <Text style={styles.configRightTitle}>
+                    {isSubstituting ? t('substitute', lang) : isEdit ? t('editExercise', lang) : t('addExercise', lang)}
+                  </Text>
+                  {isEdit && exerciseConfig.exerciseId && (
+                    <>
+                      <TouchableOpacity
+                        style={[styles.substituteButton, styles.configRightButton]}
+                        onPress={handleSubstitute}
+                      >
+                        <Text style={styles.substituteButtonText}>{t('substitute', lang)}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[styles.deleteButton, styles.configRightButton]}
+                        onPress={handleRemoveExercise}
+                      >
+                        <Text style={styles.deleteButtonText}>{t('delete', lang)}</Text>
+                      </TouchableOpacity>
+                    </>
+                  )}
+                  <TouchableOpacity
+                    style={[styles.modalCancelButton, styles.configRightButton]}
+                    onPress={() => {
+                      if (isSubstituting) {
+                        setExerciseConfig(prev => {
+                          const config = { ...prev, exerciseId: prev._prevExerciseId };
+                          delete config._prevExerciseId;
+                          return config;
+                        });
+                        setIsSubstituting(false);
+                      } else {
+                        isEdit ? setShowEditExerciseModal(false) : setShowAddExerciseModal(false);
+                      }
+                    }}
+                  >
+                    <Text style={styles.modalCancelText}>{isSubstituting ? t('back', lang) : t('cancel', lang)}</Text>
+                  </TouchableOpacity>
+                  {exerciseConfig.exerciseId && (
+                    <TouchableOpacity
+                      style={[styles.modalCreateButton, styles.configRightButton]}
+                      onPress={isEdit ? handleSaveExercise : handleAddExercise}
+                    >
+                      <Text style={styles.modalCreateText}>{isEdit ? t('save', lang) : t('add', lang)}</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              </View>
             ) : (
-              // Exercise configuration (both Add and Edit modes)
+              // Portrait: Exercise configuration (both Add and Edit modes)
               <ScrollView showsVerticalScrollIndicator={false}>
                 {exerciseData && (
                   <View style={styles.selectedExercise}>
@@ -1183,6 +1316,8 @@ export default function RoutinesScreen({ navigation, route }) {
               </ScrollView>
             )}
 
+            {/* Buttons - only shown in portrait or selection phase */}
+            {(!isLandscape || !exerciseConfig.exerciseId) && (
             <View style={styles.modalButtonsColumn}>
               {isEdit && exerciseConfig.exerciseId && (
                 <View style={styles.editActionRow}>
@@ -1228,6 +1363,7 @@ export default function RoutinesScreen({ navigation, route }) {
               )}
               </View>
             </View>
+            )}
           </View>
         </View>
       </Modal>
@@ -1956,6 +2092,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: spacing.md,
   },
+  modalOverlayLandscape: {
+    padding: spacing.sm,
+  },
   modalContent: {
     backgroundColor: colors.white,
     borderRadius: borderRadius.lg,
@@ -1964,6 +2103,10 @@ const styles = StyleSheet.create({
     maxWidth: 600,
     width: '100%',
     alignSelf: 'center',
+  },
+  modalContentLandscape: {
+    maxHeight: '95%',
+    flex: 1,
   },
   modalTitle: {
     fontFamily: fonts.bold,
@@ -2114,9 +2257,9 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
   },
   setsButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: colors.accent,
     justifyContent: 'center',
     alignItems: 'center',
@@ -2124,7 +2267,10 @@ const styles = StyleSheet.create({
   setsButtonText: {
     fontFamily: fonts.bold,
     color: colors.white,
-    fontSize: fontSize.xxl,
+    fontSize: fontSize.lg,
+    lineHeight: fontSize.lg + 2,
+    includeFontPadding: false,
+    textAlignVertical: 'center',
   },
   setsValue: {
     fontFamily: fonts.regular,
@@ -2229,6 +2375,46 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     color: colors.white,
     fontSize: fontSize.md,
+  },
+
+  // Landscape config layout
+  configLandscapeRow: {
+    flexDirection: 'row',
+    flex: 1,
+    gap: spacing.md,
+  },
+  configMainArea: {
+    flex: 1,
+  },
+  configColumnsRow: {
+    flexDirection: 'row',
+    flex: 1,
+    gap: spacing.md,
+  },
+  configLeftColumn: {
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  configCenterColumn: {
+    flex: 1,
+  },
+  configRightColumn: {
+    width: 115,
+    justifyContent: 'flex-start',
+    gap: spacing.sm,
+    paddingTop: spacing.lg,
+  },
+  configRightTitle: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.lg,
+    color: colors.textPrimary,
+    textAlign: 'center',
+    marginBottom: spacing.md,
+  },
+  configRightButton: {
+    flex: 0,
+    marginTop: 0,
   },
 
   // Header actions

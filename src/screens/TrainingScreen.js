@@ -1313,12 +1313,13 @@ export default function TrainingScreen({ route, navigation }) {
     if (!day?.exercises) return null;
 
     return (
-      <View style={styles.thumbnailContainer}>
+      <View style={[styles.thumbnailContainer, isLandscape && styles.thumbnailContainerLandscape]}>
         <ScrollView
           ref={thumbnailScrollRef}
-          horizontal
+          horizontal={!isLandscape}
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.thumbnailScroll}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={[styles.thumbnailScroll, isLandscape && styles.thumbnailScrollLandscape]}
         >
           {day.exercises.map((ex, index) => (
             <TouchableOpacity
@@ -1457,11 +1458,47 @@ export default function TrainingScreen({ route, navigation }) {
 
   return isResting ? (
     /* Rest screen */
-    <View style={[styles.restScreen, { paddingTop: insets.top }]}>
+    <View style={[styles.restScreen, { paddingTop: insets.top }, isLandscape && styles.restScreenLandscape]}>
       {/* Thumbnail strip */}
       {renderThumbnailStrip()}
 
       <View style={[styles.restContent, isLandscape && styles.restContentLandscape]}>
+        {/* In landscape: next preview on the LEFT */}
+        {isLandscape && nextInfo && (
+          <View style={[styles.nextPreview, styles.nextPreviewLandscape]}>
+            <Text style={styles.nextLabel}>
+              {nextInfo.isSuperset ? `${t('superset', lang).toUpperCase()} - ${t('upNext', lang)}` : t('upNext', lang)}
+            </Text>
+            {nextInfo.isSuperset && nextInfo.supersetExercises ? (
+              <View style={styles.supersetPreview}>
+                {nextInfo.supersetExercises.map((ex, idx) => (
+                  <View key={idx} style={styles.supersetExerciseRow}>
+                    <ExerciseImage exerciseId={ex.exerciseId} size={50} animate={true} animationDuration={1500} />
+                    <Text style={styles.supersetExerciseName}>{ex.name}</Text>
+                  </View>
+                ))}
+                <Text style={styles.nextDetails}>
+                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps === 'E' ? t('toExhaustion', lang) : `${nextInfo.reps} ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}
+                </Text>
+              </View>
+            ) : (
+              <>
+                <View style={styles.nextImageContainer}>
+                  <ExerciseImage exerciseId={nextInfo.exerciseId} size={80} animate={true} animationDuration={1500} />
+                </View>
+                <Text style={styles.nextExercise}>{nextInfo.name}</Text>
+                <Text style={styles.nextDetails}>
+                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps === 'E' ? t('toExhaustion', lang) : `${nextInfo.reps} ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}
+                </Text>
+                <Text style={[styles.nextWeight, nextInfo.weightChanged && styles.nextWeightChanged]}>
+                  {nextInfo.weight > 0 && ` ${formatWeight(nextInfo.weight)} ${weightUnit}`}
+                </Text>
+              </>
+            )}
+          </View>
+        )}
+
+        {/* Timer + skip (always visible, RIGHT side in landscape) */}
         <View style={[styles.restTimerSide, isLandscape && styles.restTimerSideLandscape]}>
           <Text style={styles.restLabel}>
             {t('restLabel', lang)}
@@ -1473,23 +1510,17 @@ export default function TrainingScreen({ route, navigation }) {
           </TouchableOpacity>
         </View>
 
-        {nextInfo && (
-          <View style={[styles.nextPreview, isLandscape && styles.nextPreviewLandscape]}>
+        {/* In portrait: next preview BELOW timer */}
+        {!isLandscape && nextInfo && (
+          <View style={styles.nextPreview}>
             <Text style={styles.nextLabel}>
               {nextInfo.isSuperset ? `${t('superset', lang).toUpperCase()} - ${t('upNext', lang)}` : t('upNext', lang)}
             </Text>
-
             {nextInfo.isSuperset && nextInfo.supersetExercises ? (
-              // Superset preview - show all exercises
               <View style={styles.supersetPreview}>
                 {nextInfo.supersetExercises.map((ex, idx) => (
                   <View key={idx} style={styles.supersetExerciseRow}>
-                    <ExerciseImage
-                      exerciseId={ex.exerciseId}
-                      size={50}
-                      animate={true}
-                      animationDuration={1500}
-                    />
+                    <ExerciseImage exerciseId={ex.exerciseId} size={50} animate={true} animationDuration={1500} />
                     <Text style={styles.supersetExerciseName}>{ex.name}</Text>
                   </View>
                 ))}
@@ -1498,15 +1529,9 @@ export default function TrainingScreen({ route, navigation }) {
                 </Text>
               </View>
             ) : (
-              // Normal single exercise preview
               <>
                 <View style={styles.nextImageContainer}>
-                  <ExerciseImage
-                    exerciseId={nextInfo.exerciseId}
-                    size={80}
-                    animate={true}
-                    animationDuration={1500}
-                  />
+                  <ExerciseImage exerciseId={nextInfo.exerciseId} size={80} animate={true} animationDuration={1500} />
                 </View>
                 <Text style={styles.nextExercise}>{nextInfo.name}</Text>
                 <Text style={styles.nextDetails}>
@@ -1523,7 +1548,7 @@ export default function TrainingScreen({ route, navigation }) {
     </View>
   ) : (
     /* Exercise mode */
-    <View style={[styles.exerciseScreen, { paddingTop: insets.top }]}>
+    <View style={[styles.exerciseScreen, { paddingTop: insets.top }, isLandscape && styles.exerciseScreenLandscape]}>
       {/* Thumbnail strip */}
       {renderThumbnailStrip()}
 
@@ -1534,7 +1559,7 @@ export default function TrainingScreen({ route, navigation }) {
           <View style={styles.landscapeImageSide}>
             <ExerciseImage
               exerciseId={currentEx?.exerciseId}
-              size={Math.min(height * 0.55, width * 0.35)}
+              size={Math.min(height * 0.8, (width - 66) * 0.45)}
               animate={true}
               animationDuration={2000}
             />
@@ -1894,6 +1919,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
+  restScreenLandscape: {
+    flexDirection: 'row',
+  },
   restContent: {
     flex: 1,
     justifyContent: 'center',
@@ -1917,7 +1945,7 @@ const styles = StyleSheet.create({
   nextPreviewLandscape: {
     flex: 1,
     marginTop: 0,
-    marginLeft: spacing.lg,
+    marginRight: spacing.lg,
     justifyContent: 'center',
   },
   restLabel: {
@@ -2027,6 +2055,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
+  exerciseScreenLandscape: {
+    flexDirection: 'row',
+  },
   
   // Thumbnail strip
   thumbnailContainer: {
@@ -2049,6 +2080,19 @@ const styles = StyleSheet.create({
   thumbnailWrapperActive: {
     borderColor: '#000000',
   },
+  thumbnailContainerLandscape: {
+    borderBottomWidth: 0,
+    borderRightWidth: 1,
+    borderRightColor: '#EEEEEE',
+    paddingVertical: 0,
+    paddingHorizontal: spacing.xs,
+    width: 66,
+  },
+  thumbnailScrollLandscape: {
+    paddingHorizontal: 0,
+    paddingVertical: spacing.md,
+    alignItems: 'center',
+  },
   
   // Exercise content
   exerciseContent: {
@@ -2060,7 +2104,7 @@ const styles = StyleSheet.create({
   exerciseContentLandscape: {
     flexDirection: 'row',
     alignItems: 'stretch',
-    paddingTop: spacing.sm,
+    paddingTop: 0,
   },
   landscapeImageSide: {
     flex: 1,
@@ -2070,6 +2114,7 @@ const styles = StyleSheet.create({
   exerciseControlsSide: {
     flex: 1,
     alignItems: 'center',
+    alignSelf: 'stretch',
   },
   exerciseControlsSideLandscape: {
     justifyContent: 'center',

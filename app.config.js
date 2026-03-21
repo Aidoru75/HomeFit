@@ -20,7 +20,7 @@ export default ({ config }) => {
       bundleIdentifier: isFree ? 'com.aidoru.HomeFitFree' : 'com.aidoru.HomeFit',
     },
     android: {
-      versionCode: 6,
+      versionCode: 7,
       adaptiveIcon: {
         foregroundImage: isFree ? './assets/adaptive-icon-free.png' : './assets/adaptive-icon.png',
         backgroundImage: isFree ? './assets/adaptive-icon-free-bg.png' : './assets/adaptive-icon-bg.png',
