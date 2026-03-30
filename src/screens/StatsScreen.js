@@ -1,5 +1,5 @@
 // Stats Screen - Workout statistics and history
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,20 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
+import { BarChart } from 'react-native-gifted-charts';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { getHistory, loadSettings, clearHistory } from '../storage/storage';
 import { muscleGroups } from '../data/exercises';
 import { t } from '../data/translations';
+
+// Helper to adjust hex color brightness
+const adjustColor = (hex, amount) => {
+  const num = parseInt(hex.replace('#', ''), 16);
+  const r = Math.min(255, Math.max(0, (num >> 16) + amount));
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
+  const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
+  return `#${(r << 16 | g << 8 | b).toString(16).padStart(6, '0')}`;
+};
 
 const ITEMS_PER_PAGE = 10;
 const CHART_HEIGHT = 180;
@@ -38,7 +48,6 @@ export default function StatsScreen({ route }) {
   const [loaded, setLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [activeTab, setActiveTab] = useState(route.params?.tab || 'overview');
-  const histogramScrollRef = useRef(null);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -252,64 +261,34 @@ export default function StatsScreen({ route }) {
         <View style={styles.chartCard}>
           <Text style={styles.chartTitle}>{t('last30Days', lang)}</Text>
 
-          <View style={styles.chartContainer}>
-            {/* Y-axis labels */}
-            <View style={styles.yAxis}>
-              <Text style={styles.yAxisLabel}>{maxCalories}</Text>
-              <Text style={styles.yAxisLabel}>{Math.round(maxCalories / 2)}</Text>
-              <Text style={styles.yAxisLabel}>0</Text>
-            </View>
-
-            {/* Bars */}
-            <ScrollView
-              ref={histogramScrollRef}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              style={styles.barsScrollView}
-              contentContainerStyle={styles.barsContainer}
-              onContentSizeChange={() => {
-                histogramScrollRef.current?.scrollToEnd({ animated: false });
-              }}
-            >
-              {days.map((day, index) => {
-                const MIN_BAR_HEIGHT = 8; // Minimum visible height for any workout
-
-                return (
-                  <View key={index} style={styles.barColumn}>
-                    <View style={styles.barWrapper}>
-                      {day.workouts.length > 0 ? (
-                        day.workouts.map((workout, wIndex) => {
-                          const calories = workout.caloriesBurned || 0;
-                          // Calculate height, but ensure minimum visibility
-                          const calculatedHeight = calories > 0
-                            ? (calories / maxCalories) * CHART_HEIGHT
-                            : MIN_BAR_HEIGHT;
-                          const workoutHeight = Math.max(calculatedHeight, MIN_BAR_HEIGHT);
-                          return (
-                            <View
-                              key={wIndex}
-                              style={[
-                                styles.bar,
-                                {
-                                  height: workoutHeight,
-                                  backgroundColor: workout.color || colors.accent,
-                                },
-                              ]}
-                            />
-                          );
-                        })
-                      ) : (
-                        <View style={[styles.bar, styles.barEmpty]} />
-                      )}
-                    </View>
-                    {(index === 0 || index === 14 || index === 29) && (
-                      <Text style={styles.xAxisLabel}>{day.dayOfMonth}</Text>
-                    )}
-                  </View>
-                );
-              })}
-            </ScrollView>
-          </View>
+          <BarChart
+            data={days.filter(day => day.workouts.length > 0).map((day) => {
+              const dateStr = `${day.date.getDate()}/${day.date.getMonth() + 1}`;
+              const barColor = day.workouts[0]?.color || colors.accent;
+              return {
+                value: Math.max(Math.round(day.calories), 1),
+                frontColor: barColor,
+                gradientColor: adjustColor(barColor, 50),
+                onPress: () => Alert.alert(dateStr, `${Math.round(day.calories)} kcal`),
+              };
+            })}
+            showGradient
+            height={CHART_HEIGHT}
+            barWidth={26}
+            barBorderTopLeftRadius={4}
+            barBorderTopRightRadius={4}
+            spacing={6}
+            maxValue={maxCalories}
+            noOfSections={4}
+            hideRules
+            xAxisThickness={1}
+            yAxisThickness={0}
+            xAxisColor={colors.border}
+            yAxisTextStyle={{ fontFamily: fonts.regular, fontSize: fontSize.xs, color: colors.textLight }}
+            xAxisLabelsHeight={0}
+            isAnimated
+            animationDuration={600}
+          />
 
           {/* Legend */}
           {legendItems.length > 0 && (
@@ -558,7 +537,7 @@ export default function StatsScreen({ route }) {
                   <Text style={[styles.tableCell, styles.colRoutine, styles.tableCellBold]} numberOfLines={1}>
                     {workout.routineName}
                   </Text>
-                  <Text style={[styles.tableCell, styles.colDay]} numberOfLines={1}>
+                  <Text style={[styles.tableCell, styles.colDay]}>
                     {workout.dayName}
                   </Text>
                   <Text style={[styles.tableCell, styles.colDuration]} numberOfLines={1}>
@@ -760,55 +739,6 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     lineHeight: fontSize.sm + 1,
   },
-  chartContainer: {
-    flexDirection: 'row',
-    height: CHART_HEIGHT + 30,
-  },
-  yAxis: {
-    width: 35,
-    height: CHART_HEIGHT,
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    paddingRight: spacing.xs,
-  },
-  yAxisLabel: {
-    fontFamily: fonts.regular,
-    fontSize: fontSize.xs,
-    color: colors.textLight,
-  },
-  barsScrollView: {
-    flex: 1,
-  },
-  barsContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    height: CHART_HEIGHT + 20,
-    paddingBottom: 20,
-  },
-  barColumn: {
-    alignItems: 'center',
-    width: 10,
-    marginHorizontal: 1,
-  },
-  barWrapper: {
-    height: CHART_HEIGHT,
-    justifyContent: 'flex-end',
-  },
-  bar: {
-    width: 8,
-    borderRadius: 2,
-    minHeight: 2,
-  },
-  barEmpty: {
-    backgroundColor: colors.border,
-    height: 2,
-  },
-  xAxisLabel: {
-    fontFamily: fonts.regular,
-    fontSize: fontSize.xs,
-    color: colors.textLight,
-    marginTop: spacing.xs,
-  },
   legendContainer: {
     marginTop: spacing.md,
     paddingTop: spacing.md,
@@ -1009,22 +939,25 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
   },
   colDate: {
-    width: 45,
+    width: '14%',
+    minWidth: 45,
   },
   colRoutine: {
     flex: 1,
     paddingRight: spacing.xs,
   },
   colDay: {
-    width: 70,
+    width: '20%',
     paddingRight: spacing.xs,
   },
   colDuration: {
-    width: 35,
+    width: '13%',
+    minWidth: 35,
     textAlign: 'right',
   },
   colCalories: {
-    width: 40,
+    width: '13%',
+    minWidth: 40,
     textAlign: 'right',
   },
   pagination: {

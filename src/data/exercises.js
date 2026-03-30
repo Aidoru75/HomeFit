@@ -298,8 +298,7 @@ export const exercises = [
     name: { en: 'Barbell Bent-Over Row', es: 'Remo con Barra Inclinado' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
-    equipment: ['straight_bar', 'plates'],
-    optionalEquipment: ['ez_bar', 'neutral_bar'],
+    equipment: [['straight_bar', 'ez_bar', 'neutral_bar'], 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Fundamental mass builder for the entire back. Hinge forward with flat back, pull bar to lower chest or upper abdomen, squeeze shoulder blades together, then lower with control.',
@@ -313,8 +312,7 @@ export const exercises = [
     name: { en: 'Barbell Bent-Over Row (Underhand)', es: 'Remo con Barra (Agarre Supino)' },
     muscleGroup: 'back',
     muscles: { back: 0.55, biceps: 0.30, shoulders: 0.10, core: 0.05 },
-    equipment: ['straight_bar', 'plates'],
-    optionalEquipment: ['ez_bar'],
+    equipment: [['straight_bar', 'ez_bar'], 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Supinated grip row emphasizing lower lats and biceps. Same hip-hinge position as standard rows, but with palms facing up, pull to your lower chest for maximum lat engagement.',
@@ -328,8 +326,7 @@ export const exercises = [
     name: { en: 'Barbell Pendlay Row', es: 'Remo Pendlay con Barra' },
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.20, shoulders: 0.10, core: 0.05 },
-    equipment: ['straight_bar', 'plates'],
-    optionalEquipment: ['ez_bar', 'neutral_bar'],
+    equipment: [['straight_bar', 'ez_bar', 'neutral_bar'], 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Explosive rowing variation with bar starting from the floor. Keep torso parallel to ground, explosively row the bar to your chest, then lower it completely to the floor between each rep.',
@@ -473,8 +470,7 @@ export const exercises = [
     name: { en: 'Shrugs (Barbell)', es: 'Encogimientos (Barra)' },
     muscleGroup: 'back',
     muscles: { back: 0.85, shoulders: 0.15 },
-    equipment: ['straight_bar', 'plates'],
-    optionalEquipment: ['ez_bar'],
+    equipment: [['straight_bar', 'ez_bar'], 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Trap builder using heavy barbell loads. Hold bar at arm\'s length, elevate shoulders straight up toward ears, squeeze traps hard at the top, then lower with control without rolling shoulders.',
@@ -660,8 +656,7 @@ export const exercises = [
     name: { en: 'Upright Row (Barbell)', es: 'Remo al Mentón (Barra)' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.55, back: 0.30, biceps: 0.15 },
-    equipment: ['ez_bar', 'plates'],
-    optionalEquipment: ['straight_bar'],
+    equipment: [['ez_bar', 'straight_bar'], 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Compound movement for traps and lateral delts. Pull bar up close to body leading with elbows, raise until elbows are at shoulder height, lower with control, use moderate grip width.',
@@ -732,8 +727,7 @@ export const exercises = [
     name: { en: 'Barbell High Pull', es: 'Tirón Alto con Barra' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.40, back: 0.30, biceps: 0.15, quads: 0.10, core: 0.05 },
-    equipment: ['straight_bar', 'plates'],
-    optionalEquipment: ['ez_bar'],
+    equipment: [['straight_bar', 'ez_bar'], 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Explosive movement for traps and shoulders. Similar to upright row but with more hip drive and explosive pulling, raise bar to upper chest level with elbows high, builds power and size.',
@@ -906,8 +900,7 @@ export const exercises = [
     name: { en: 'Drag Curl (Barbell)', es: 'Curl Arrastrado (Barra)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
-    equipment: ['straight_bar', 'plates'],
-    optionalEquipment: ['ez_bar'],
+    equipment: [['straight_bar', 'ez_bar'], 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Unique curl dragging bar up the body. Keep bar in contact with body as you curl, pull elbows back as bar rises, this emphasizes the bicep peak and long head significantly.',
@@ -970,8 +963,7 @@ export const exercises = [
     name: { en: 'Barbell Skull Crushers', es: 'Rompecráneos con Barra' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.85, shoulders: 0.10, chest: 0.05 },
-    equipment: ['straight_bar', 'flat_bench', 'plates'],
-    optionalEquipment: ['ez_bar'],
+    equipment: [['straight_bar', 'ez_bar'], 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Lying tricep extension targeting all three heads. Lower bar to forehead or just behind head, extend arms fully, keep upper arms stationary throughout for maximum isolation.',
@@ -1094,8 +1086,7 @@ export const exercises = [
     name: { en: 'Barbell Wrist Curl', es: 'Curl de Muñeca con Barra' },
     muscleGroup: 'forearms',
     muscles: { biceps: 1.0 },
-    equipment: ['straight_bar', 'flat_bench', 'plates'],
-    optionalEquipment: ['ez_bar'],
+    equipment: [['straight_bar', 'ez_bar'], 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Primary forearm flexor builder. Rest forearms on bench with wrists hanging over edge, curl bar up using only wrist movement, lower fully to stretch forearm flexors completely.',
@@ -1109,8 +1100,7 @@ export const exercises = [
     name: { en: 'Barbell Reverse Wrist Curl', es: 'Curl de Muñeca Inverso con Barra' },
     muscleGroup: 'forearms',
     muscles: { biceps: 1.0 },
-    equipment: ['straight_bar', 'flat_bench', 'plates'],
-    optionalEquipment: ['ez_bar'],
+    equipment: [['straight_bar', 'ez_bar'], 'flat_bench', 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Targets forearm extensors. Forearms on bench with palms facing down, extend wrists upward against resistance, this builds the top of the forearm for balanced development.',
@@ -2362,8 +2352,7 @@ export const exercises = [
     name: { en: 'Cable Crossover (High)', es: 'Cruce de Cables (Alto)' },
     muscleGroup: 'chest',
     muscles: { chest: 0.80, shoulders: 0.15, core: 0.05 },
-    equipment: ['high_pulley', 'single_handle'],
-    optionalEquipment: ['single_rope'],
+    equipment: ['high_pulley', ['single_handle', 'single_rope']],
     weightType: 'machine',
     description: {
       en: 'Constant tension chest isolation from high pulleys. Step forward, pull handles down and across your body in an arc, crossing at the bottom while squeezing your lower chest intensely.',
@@ -2377,8 +2366,7 @@ export const exercises = [
     name: { en: 'Cable Crossover (Low to High)', es: 'Cruce de Cables (Bajo a Alto)' },
     muscleGroup: 'chest',
     muscles: { chest: 0.75, shoulders: 0.20, core: 0.05 },
-    equipment: ['low_pulley', 'single_handle'],
-    optionalEquipment: ['single_rope'],
+    equipment: ['low_pulley', ['single_handle', 'single_rope']],
     weightType: 'machine',
     description: {
       en: 'Targets upper chest with upward cable motion. From low pulleys, bring handles up and together in front of your face, focusing on contracting the upper chest fibers throughout.',
@@ -2392,8 +2380,7 @@ export const exercises = [
     name: { en: 'Cable Flyes (Mid)', es: 'Aperturas en Polea (Media)' },
     muscleGroup: 'chest',
     muscles: { chest: 0.80, shoulders: 0.15, core: 0.05 },
-    equipment: ['mid_pulley', 'single_handle'],
-    optionalEquipment: ['single_rope'],
+    equipment: ['mid_pulley', ['single_handle', 'single_rope']],
     weightType: 'machine',
     description: {
       en: 'Mid-level cable fly for overall chest development. With pulleys at chest height, bring handles together in front maintaining slight elbow bend, squeezing hard at the center.',
@@ -2569,8 +2556,7 @@ export const exercises = [
     name: { en: 'Single-Arm Cable Row', es: 'Remo Unilateral en Polea' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, core: 0.10, shoulders: 0.05 },
-    equipment: ['low_pulley', 'single_handle'],
-    optionalEquipment: ['single_rope'],
+    equipment: ['low_pulley', ['single_handle', 'single_rope']],
     weightType: 'machine',
     description: {
       en: 'Unilateral rowing for balanced back development. Stand or kneel, pull the handle to your hip while rotating your torso slightly, focusing on a full stretch and strong contraction.',
@@ -2632,8 +2618,7 @@ export const exercises = [
     name: { en: 'Cable Lateral Raise', es: 'Elevación Lateral en Polea' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.90, back: 0.10 },
-    equipment: ['low_pulley', 'single_handle'],
-    optionalEquipment: ['single_rope'],
+    equipment: ['low_pulley', ['single_handle', 'single_rope']],
     weightType: 'machine',
     description: {
       en: 'Constant tension lateral raise with cable. Stand sideways to low pulley, raise arm out to side against resistance, the cable provides tension throughout the entire range of motion.',
@@ -2647,8 +2632,7 @@ export const exercises = [
     name: { en: 'Cable Front Raise', es: 'Elevación Frontal en Polea' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.85, chest: 0.15 },
-    equipment: ['low_pulley', 'single_handle'],
-    optionalEquipment: ['single_rope'],
+    equipment: ['low_pulley', ['single_handle', 'single_rope']],
     weightType: 'machine',
     description: {
       en: 'Cable version of front raises for constant tension. Face away from low pulley, raise handle in front to shoulder height, the cable ensures resistance even at the bottom.',
@@ -2662,8 +2646,7 @@ export const exercises = [
     name: { en: 'Cable Rear Delt Fly', es: 'Aperturas Posteriores en Polea' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.75, back: 0.25 },
-    equipment: ['high_pulley', 'single_handle'],
-    optionalEquipment: ['rope', 'single_rope'],
+    equipment: ['high_pulley', ['single_handle', 'rope', 'single_rope']],
     weightType: 'machine',
     description: {
       en: 'Rear delt isolation using cables for constant tension. Using high pulleys or rope, pull apart to engage rear delts, hold the squeeze, return with control maintaining tension.',
@@ -2782,8 +2765,7 @@ export const exercises = [
     name: { en: 'EZ Bar Preacher Curl', es: 'Curl en Banco Scott con Barra Z' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.95, shoulders: 0.05 },
-    equipment: ['ez_bar', 'plates', 'preacher_pad'],
-    optionalEquipment: ['straight_bar'],
+    equipment: [['ez_bar', 'straight_bar'], 'plates', 'preacher_pad'],
     weightType: 'barbell',
     description: {
       en: 'Strict bicep isolation eliminating momentum. Rest arms on preacher pad, curl bar up squeezing biceps, lower fully to stretch, the pad prevents cheating and isolates completely.',
@@ -2839,8 +2821,7 @@ export const exercises = [
     name: { en: 'Cable Curl (Single Arm)', es: 'Curl en Polea (Un Brazo)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.90, shoulders: 0.10 },
-    equipment: ['low_pulley', 'single_handle'],
-    optionalEquipment: ['single_rope'],
+    equipment: ['low_pulley', ['single_handle', 'single_rope']],
     weightType: 'machine',
     description: {
       en: 'Unilateral cable curl for isolation and balance. Stand sideways to low pulley, curl single handle while keeping elbow fixed, excellent for addressing strength imbalances between arms.',
@@ -2854,8 +2835,7 @@ export const exercises = [
     name: { en: 'Cable High Curl', es: 'Curl Alto en Polea' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
-    equipment: ['high_pulley', 'curved_bar_attachment'],
-    optionalEquipment: ['straight_bar_attachment', 'rope'],
+    equipment: ['high_pulley', ['curved_bar_attachment', 'straight_bar_attachment', 'rope']],
     weightType: 'machine',
     description: {
       en: 'Bicep curl from high pulley using a curved bar attachment. Stand facing the high pulley, grip the curved bar with both hands and curl toward your forehead, excellent for hitting biceps from a unique overhead angle and creating a strong peak contraction.',
@@ -2869,8 +2849,7 @@ export const exercises = [
     name: { en: 'Cable Preacher Curl', es: 'Curl en Banco Scott con Polea' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.95, shoulders: 0.05 },
-    equipment: ['low_pulley', 'preacher_pad', 'curved_bar_attachment'],
-    optionalEquipment: ['straight_bar_attachment', 'single_handle'],
+    equipment: ['low_pulley', 'preacher_pad', ['curved_bar_attachment', 'straight_bar_attachment', 'single_handle']],
     weightType: 'machine',
     description: {
       en: 'Preacher curl with constant cable tension using a curved bar attachment. Position preacher pad facing low pulley, curl keeping upper arms on pad, the cable ensures tension throughout the entire movement.',
@@ -3354,8 +3333,7 @@ export const exercises = [
     name: { en: 'Cable Woodchop (High to Low)', es: 'Leñador en Polea (Alto a Bajo)' },
     muscleGroup: 'core',
     muscles: { core: 0.65, shoulders: 0.20, back: 0.15 },
-    equipment: ['high_pulley', 'single_handle'],
-    optionalEquipment: ['single_rope', 'rope'],
+    equipment: ['high_pulley', ['single_handle', 'single_rope', 'rope']],
     weightType: 'machine',
     description: {
       en: 'Rotational core exercise from high to low. Pull cable diagonally across body from high to low, rotating through core, excellent for building rotational power and oblique strength.',
@@ -3369,8 +3347,7 @@ export const exercises = [
     name: { en: 'Cable Woodchop (Low to High)', es: 'Leñador en Polea (Bajo a Alto)' },
     muscleGroup: 'core',
     muscles: { core: 0.65, shoulders: 0.20, quads: 0.15 },
-    equipment: ['low_pulley', 'single_handle'],
-    optionalEquipment: ['single_rope', 'rope'],
+    equipment: ['low_pulley', ['single_handle', 'single_rope', 'rope']],
     weightType: 'machine',
     description: {
       en: 'Rotational movement from low to high position. Pull cable diagonally upward across body, rotating through core, works obliques and rotational muscles from a different angle.',
@@ -3384,8 +3361,7 @@ export const exercises = [
     name: { en: 'Cable Pallof Press', es: 'Press Pallof en Polea' },
     muscleGroup: 'core',
     muscles: { core: 0.80, shoulders: 0.15, chest: 0.05 },
-    equipment: ['mid_pulley', 'single_handle'],
-    optionalEquipment: ['single_rope', 'rope'],
+    equipment: ['mid_pulley', ['single_handle', 'single_rope', 'rope']],
     weightType: 'machine',
     description: {
       en: 'Anti-rotation exercise for core stability. Stand perpendicular to cable, press handle straight out resisting rotation, return to chest, builds crucial rotational stability for sports.',

@@ -93,6 +93,7 @@ export default function TrainingScreen({ route, navigation }) {
   // Track whether timer sound / rep announcement has been triggered for current countdown
   const timerPlayedRef = useRef(false);
   const repAnnouncedRef = useRef(false);
+  const nextInfoRef = useRef(null);
 
   const lang = settings.language || 'en';
   const isImperial = settings.measurementSystem === 'imperial';
@@ -831,6 +832,8 @@ export default function TrainingScreen({ route, navigation }) {
       const text = buildAnnouncement(info, true);
       Speech.speak(text, getSpeechOpts());
     }
+    // Store for 13-second countdown announcement (avoids stale closure in setInterval)
+    nextInfoRef.current = info;
   }, [isResting]);
 
   // Voice: announce first exercise when workout starts
@@ -897,7 +900,7 @@ export default function TrainingScreen({ route, navigation }) {
       // Voice: announce upcoming reps + encouragement at 13 seconds remaining
       if (remaining === 13 && !repAnnouncedRef.current && voiceEnabledRef.current) {
         repAnnouncedRef.current = true;
-        const info = getNextInfo();
+        const info = nextInfoRef.current;
         if (info) {
           const encouragements = {
             en: ['Come on!', 'You got this!', "Let's go!", 'Push it!', 'Stay strong!', 'Keep going!', "Let's do it!", 'Give it your all!'],
