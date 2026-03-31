@@ -1,7 +1,7 @@
 // HomeFit - Main App Entry Point
 import React, { useState, useEffect, useCallback } from 'react';
 import { Image, StyleSheet, View, ActivityIndicator, Text, Platform, Linking } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Font from 'expo-font';
@@ -22,7 +22,8 @@ import { IS_PRO } from './src/config';
 
 // Theme and translations
 import { colors } from './src/theme';
-import { loadSettings, seedDefaultRoutines } from './src/storage/storage';
+import { loadSettings, seedDefaultRoutines, checkOnboarded, markOnboarded } from './src/storage/storage';
+import OnboardingWalkthrough from './src/components/OnboardingWalkthrough';
 
 const Tab = createBottomTabNavigator();
 
@@ -89,6 +90,8 @@ function MainNavigator() {
 export default function App() {
   const [language, setLanguage] = useState('en');
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const navigationRef = useNavigationContainerRef();
 
   // Configure Android navigation bar (immersive mode)
   useEffect(() => {
@@ -132,8 +135,13 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    loadLanguage();
-    seedDefaultRoutines();
+    async function init() {
+      await loadLanguage();
+      seedDefaultRoutines();
+      const onboarded = await checkOnboarded();
+      if (!onboarded) setShowOnboarding(true);
+    }
+    init();
   }, [loadLanguage]);
 
   // Show loading screen while fonts are loading
@@ -160,10 +168,19 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer linking={linking} onStateChange={loadLanguage}>
+      <NavigationContainer ref={navigationRef} linking={linking} onStateChange={loadLanguage}>
         <StatusBar style="light" backgroundColor={colors.primary} />
         <MainNavigator />
       </NavigationContainer>
+      {showOnboarding && (
+        <OnboardingWalkthrough
+          lang={language}
+          onDone={async () => {
+            await markOnboarded();
+            setShowOnboarding(false);
+          }}
+        />
+      )}
     </SafeAreaProvider>
   );
 }

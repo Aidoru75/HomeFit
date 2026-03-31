@@ -67,7 +67,7 @@ No internet connection required. No account needed. Works completely offline.
 
 ### 8) What changes did you make to your app based on what you learned during your closed test?
 
-We published two updates during the testing period, each addressing specific feedback themes.
+We published three updates during the testing period, each addressing specific feedback themes.
 
 **Update 1 (published ~day 7 of testing) — Content and usability:**
 - Expanded the exercise library from ~200 to 246 exercises, adding neutral grip bar variants, cable machine exercises, hip abductor/adductor machine exercises, and calf machine exercises.
@@ -81,8 +81,8 @@ We published two updates during the testing period, each addressing specific fee
 - Added a **Privacy Policy link** in the Settings screen, accessible at any time.
 - Integrated a **native in-app rating prompt** (expo-store-review) that appears after a user completes their third workout session.
 
-**Planned for first post-launch update:**
-- First-launch onboarding walkthrough (in development).
+**Update 3 (published ~day 16 of testing) — Onboarding:**
+- Added a **first-launch onboarding walkthrough** — 8 illustrated slides covering equipment setup, routine creation, the training screen, stats, and QR sharing. Shown once on first launch, skippable at any time, adapts to portrait and landscape orientations.
 
 ---
 
@@ -96,14 +96,14 @@ After 16 days of testing on real devices across multiple Android versions with 2
 - The app now includes a privacy policy link, satisfying Play Store compliance requirements.
 - A store listing with accurate screenshots, descriptions, and proper app categorization is in place.
 
-The remaining tester suggestion (onboarding walkthrough) is a UX enhancement, not a stability blocker, and is planned for the first post-launch update.
+All feedback themes raised during testing have been addressed across the three updates.
 
 ---
 
 ### 10) What did you do differently this time?
 
-Compared to earlier builds, the most significant changes were in content depth, everyday usability, and compliance. We published two updates during the 16-day testing window rather than leaving the app static — the first focused on content and UX (246 exercises, rebuilt routines, improved routine editor), the second on trust and compliance (privacy policy link, in-app rating prompt). Responding to feedback actively during the testing period rather than after it gave us a much clearer picture of real user needs before going to production.
+Compared to earlier builds, the most significant changes were in content depth, everyday usability, and compliance. We published three updates during the 16-day testing window rather than leaving the app static — the first focused on content and UX (246 exercises, rebuilt routines, improved routine editor), the second on trust and compliance (privacy policy link, in-app rating prompt), and the third on onboarding (a first-launch walkthrough addressing tester feedback about the cold-start experience). Responding to feedback actively during the testing period rather than after it gave us a much clearer picture of real user needs before going to production.
 
 ---
 
-*Note: Submit only after Update 2 (privacy policy + rating prompt) is live in the closed test build (~April 4-5).*
+*Note: Submit only after Update 3 (onboarding walkthrough) is live in the closed test build (~April 8-9).*

@@ -203,7 +203,12 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.accentButtonText}>{t('createFirstRoutine', lang)}</Text>
             </TouchableOpacity>
           ) : (
-            <Text style={styles.emptySubtitle}>{t('selectRoutine', lang)}</Text>
+            <TouchableOpacity
+              style={styles.accentButton}
+              onPress={() => navigation.navigate('Routines')}
+            >
+              <Text style={styles.accentButtonText}>{t('selectRoutine', lang)}</Text>
+            </TouchableOpacity>
           )}
         </View>
       )}

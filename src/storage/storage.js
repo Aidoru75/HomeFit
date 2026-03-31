@@ -1,5 +1,6 @@
 // Local storage for routines, settings, and workout history
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Localization from 'expo-localization';
 import { exercises } from '../data/exercises';
 import { getAllEquipmentIds } from '../data/equipment';
 import { IS_PRO } from '../config';
@@ -12,6 +13,7 @@ const KEYS = {
   EXCLUDED_EXERCISES: 'homefit_excluded_exercises',
   AVAILABLE_EQUIPMENT: 'homefit_available_equipment',
   DEFAULTS_SEEDED: 'homefit_defaults_seeded',
+  HAS_ONBOARDED: 'homefit_has_onboarded',
 };
 
 // Default settings
@@ -36,7 +38,9 @@ export const loadSettings = async () => {
     if (data) {
       return { ...DEFAULT_SETTINGS, ...JSON.parse(data) };
     }
-    return DEFAULT_SETTINGS;
+    // First launch: detect device locale and default to Spanish if applicable
+    const locale = Localization.getLocales?.()?.[0]?.languageCode ?? '';
+    return { ...DEFAULT_SETTINGS, language: locale.startsWith('es') ? 'es' : 'en' };
   } catch (error) {
     console.error('Error loading settings:', error);
     return DEFAULT_SETTINGS;
@@ -313,4 +317,21 @@ export const clearAllData = async () => {
     console.error('Error clearing data:', error);
     return false;
   }
+};
+
+// ============ ONBOARDING ============
+
+export const checkOnboarded = async () => {
+  try {
+    const val = await AsyncStorage.getItem(KEYS.HAS_ONBOARDED);
+    return val === 'true';
+  } catch {
+    return false;
+  }
+};
+
+export const markOnboarded = async () => {
+  try {
+    await AsyncStorage.setItem(KEYS.HAS_ONBOARDED, 'true');
+  } catch {}
 };
