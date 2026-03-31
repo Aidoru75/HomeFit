@@ -11,20 +11,12 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { BarChart } from 'react-native-gifted-charts';
+import { IsoBarChart, IsoStackedBar, IsoHBar } from '../components/IsoCharts';
 import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { getHistory, loadSettings, clearHistory } from '../storage/storage';
 import { muscleGroups } from '../data/exercises';
 import { t } from '../data/translations';
 
-// Helper to adjust hex color brightness
-const adjustColor = (hex, amount) => {
-  const num = parseInt(hex.replace('#', ''), 16);
-  const r = Math.min(255, Math.max(0, (num >> 16) + amount));
-  const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
-  const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
-  return `#${(r << 16 | g << 8 | b).toString(16).padStart(6, '0')}`;
-};
 
 const ITEMS_PER_PAGE = 10;
 const CHART_HEIGHT = 180;
@@ -259,35 +251,20 @@ export default function StatsScreen({ route }) {
       <>
         {/* Histogram */}
         <View style={styles.chartCard}>
-          <Text style={styles.chartTitle}>{t('last30Days', lang)}</Text>
+          <Text style={[styles.chartTitle, { marginBottom: spacing.md }]}>{t('last30Days', lang)}</Text>
 
-          <BarChart
+          <IsoBarChart
             data={days.filter(day => day.workouts.length > 0).map((day) => {
               const dateStr = `${day.date.getDate()}/${day.date.getMonth() + 1}`;
-              const barColor = day.workouts[0]?.color || colors.accent;
               return {
                 value: Math.max(Math.round(day.calories), 1),
-                frontColor: barColor,
-                gradientColor: adjustColor(barColor, 50),
+                color: day.workouts[0]?.color || colors.accent,
                 onPress: () => Alert.alert(dateStr, `${Math.round(day.calories)} kcal`),
               };
             })}
-            showGradient
-            height={CHART_HEIGHT}
-            barWidth={26}
-            barBorderTopLeftRadius={4}
-            barBorderTopRightRadius={4}
-            spacing={6}
+            chartHeight={CHART_HEIGHT}
             maxValue={maxCalories}
-            noOfSections={4}
-            hideRules
-            xAxisThickness={1}
-            yAxisThickness={0}
-            xAxisColor={colors.border}
-            yAxisTextStyle={{ fontFamily: fonts.regular, fontSize: fontSize.xs, color: colors.textLight }}
-            xAxisLabelsHeight={0}
-            isAnimated
-            animationDuration={600}
+            depth={10}
           />
 
           {/* Legend */}
@@ -404,18 +381,15 @@ export default function StatsScreen({ route }) {
             return (
               <View key={entry.id} style={styles.volumeBarRow}>
                 <Text style={styles.volumeBarLabel} numberOfLines={1}>{entry.name}</Text>
-                <View style={styles.volumeBarTrack}>
-                  {entry.volume > 0 ? (
-                    <View style={[styles.volumeBarFill, {
-                      backgroundColor: entry.color,
-                      width: `${Math.max((entry.volume / maxVolume) * 100, 3)}%`,
-                    }]} />
-                  ) : (
-                    <View style={styles.volumeBarEmpty} />
-                  )}
-                  {targetPct > 0 && (
-                    <View style={[styles.balanceMarker, { left: `${targetPct}%` }]} />
-                  )}
+                <View style={{ flex: 1, marginHorizontal: spacing.sm }}>
+                  <IsoHBar
+                    id={entry.id}
+                    pct={entry.volume > 0 ? Math.max((entry.volume / maxVolume) * 100, 3) : 0}
+                    color={entry.color}
+                    barHeight={16}
+                    depth={6}
+                    targetPct={targetPct}
+                  />
                 </View>
                 <Text style={styles.volumeBarValue}>{formatVolume(entry.volume)}</Text>
               </View>
@@ -439,19 +413,16 @@ export default function StatsScreen({ route }) {
                       {workout.routineName} — {workout.dayName}
                     </Text>
                   </View>
-                  <View style={styles.stackedBarContainer}>
-                    {MUSCLE_KEYS.map(muscleId => {
-                      const vol = workout.muscleVolume[muscleId] || 0;
-                      if (vol === 0) return null;
-                      const pct = (vol / totalVol) * 100;
-                      return (
-                        <View key={muscleId} style={[styles.stackedBarSegment, {
-                          backgroundColor: colors.muscleColors[muscleId],
-                          width: `${pct}%`,
-                        }]} />
-                      );
-                    })}
-                  </View>
+                  <IsoStackedBar
+                    segments={MUSCLE_KEYS
+                      .filter(id => (workout.muscleVolume[id] || 0) > 0)
+                      .map(id => ({
+                        color: colors.muscleColors[id],
+                        pct: (workout.muscleVolume[id] / totalVol) * 100,
+                      }))}
+                    barHeight={20}
+                    depth={8}
+                  />
                 </View>
               );
             })}
@@ -805,31 +776,6 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
     width: 80,
   },
-  volumeBarTrack: {
-    flex: 1,
-    height: 16,
-    backgroundColor: colors.background,
-    borderRadius: borderRadius.sm,
-    overflow: 'hidden',
-    marginHorizontal: spacing.sm,
-  },
-  volumeBarFill: {
-    height: '100%',
-    borderRadius: borderRadius.sm,
-  },
-  volumeBarEmpty: {
-    height: '100%',
-    width: 2,
-    backgroundColor: colors.border,
-  },
-  balanceMarker: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    width: 2,
-    backgroundColor: colors.textPrimary,
-    opacity: 0.5,
-  },
   volumeBarValue: {
     fontFamily: fonts.bold,
     fontSize: fontSize.xs,
@@ -861,15 +807,6 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     color: colors.textPrimary,
     flex: 1,
-  },
-  stackedBarContainer: {
-    flexDirection: 'row',
-    height: 20,
-    borderRadius: borderRadius.sm,
-    overflow: 'hidden',
-  },
-  stackedBarSegment: {
-    height: '100%',
   },
   emptyCard: {
     backgroundColor: colors.card,
