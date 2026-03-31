@@ -1,0 +1,28 @@
+<en-US>
+What's new in v1.1.2
+
+- Privacy Policy and Terms of Service links added to Settings
+- In-app rating prompt appears after completing your 3rd workout
+- Minor improvements
+</en-US>
+<es-419>
+Novedades de la versión 1.1.2
+
+- Política de privacidad y términos de servicio añadidos a Ajustes
+- Solicitud de valoración integrada tras completar tu 3er entrenamiento
+- Mejoras menores
+</es-419>
+<es-ES>
+Novedades de la versión 1.1.2
+
+- Política de privacidad y términos de servicio añadidos a Ajustes
+- Solicitud de valoración integrada tras completar tu 3er entrenamiento
+- Mejoras menores
+</es-ES>
+<es-US>
+Novedades de la versión 1.1.2
+
+- Política de privacidad y términos de servicio añadidos a Ajustes
+- Solicitud de valoración integrada tras completar tu 3er entrenamiento
+- Mejoras menores
+</es-US>

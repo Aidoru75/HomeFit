@@ -18,11 +18,12 @@ import {
 } from 'react-native';
 import { useAudioPlayer, setAudioModeAsync } from 'expo-audio';
 import * as Speech from 'expo-speech';
+import * as StoreReview from 'expo-store-review';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { colors, spacing, borderRadius, fontSize, fonts } from '../theme';
 import { exercises, getExerciseName, getExerciseDescription } from '../data/exercises';
-import { loadRoutines, loadSettings, saveLastWorkout, addToHistory, updateRoutine } from '../storage/storage';
+import { loadRoutines, loadSettings, saveLastWorkout, addToHistory, getHistory, updateRoutine } from '../storage/storage';
 import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
 import { lbToKg, inchesToCm, getWeightIncrement, getSmallWeightIncrement } from '../utils/unitConversions';
@@ -1145,6 +1146,18 @@ export default function TrainingScreen({ route, navigation }) {
       duration: durationSeconds,
       muscleVolume,
     });
+
+    // Request store review after 3rd and every 10th completed workout
+    try {
+      const history = await getHistory();
+      const count = history.length;
+      if (count === 3 || (count > 3 && count % 10 === 0)) {
+        const isAvailable = await StoreReview.isAvailableAsync();
+        if (isAvailable) {
+          await StoreReview.requestReview();
+        }
+      }
+    } catch (_) {}
 
     setWorkoutComplete(true);
   };

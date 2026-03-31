@@ -8,6 +8,7 @@ import {
   ScrollView,
   Switch,
   Alert,
+  Linking,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -281,6 +282,26 @@ export default function SettingsScreen() {
           </View>
         </View>
 
+        {/* Legal Section */}
+        <Text style={styles.sectionTitle}>{t('legal', lang)}</Text>
+        <View style={styles.card}>
+          <TouchableOpacity
+            style={styles.legalRow}
+            onPress={() => Linking.openURL('https://www.aidoru.com/homefit/privacy-policy.html')}
+          >
+            <Text style={styles.legalLink}>{t('privacyPolicy', lang)}</Text>
+            <Text style={styles.legalChevron}>›</Text>
+          </TouchableOpacity>
+          <View style={styles.legalDivider} />
+          <TouchableOpacity
+            style={styles.legalRow}
+            onPress={() => Linking.openURL('https://www.aidoru.com/homefit/terms-of-service.html')}
+          >
+            <Text style={styles.legalLink}>{t('termsOfService', lang)}</Text>
+            <Text style={styles.legalChevron}>›</Text>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.bottomPadding} />
       </ScrollView>
     </View>
@@ -408,5 +429,24 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: 100,
+  },
+  legalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: spacing.sm,
+  },
+  legalLink: {
+    fontFamily: fonts.regular,
+    fontSize: fontSize.md,
+    color: colors.accent,
+  },
+  legalChevron: {
+    fontSize: 20,
+    color: colors.textSecondary,
+  },
+  legalDivider: {
+    height: 1,
+    backgroundColor: colors.border,
   },
 });

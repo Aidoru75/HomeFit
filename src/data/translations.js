@@ -222,6 +222,9 @@ export const translations = {
     spanish: 'Spanish',
     about: 'About',
     version: 'Version',
+    legal: 'Legal',
+    privacyPolicy: 'Privacy Policy',
+    termsOfService: 'Terms of Service',
   },
   
   es: {
@@ -445,6 +448,9 @@ export const translations = {
     spanish: 'Español',
     about: 'Acerca de',
     version: 'Versión',
+    legal: 'Legal',
+    privacyPolicy: 'Política de Privacidad',
+    termsOfService: 'Términos de Servicio',
   },
 };
 
