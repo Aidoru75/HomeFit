@@ -365,7 +365,7 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   suggestedButtonText: {
     fontFamily: fonts.bold,
-    color: colors.textPrimary,
+    color: colors.primary,
     fontSize: fontSize.md,
   },
   suggestedButtonTextDisabled: {

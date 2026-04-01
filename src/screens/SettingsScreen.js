@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
@@ -254,24 +255,35 @@ export default function SettingsScreen() {
 
           {(settings.soundEnabled || settings.voiceEnabled) && (
             <View style={styles.volumeContainer}>
-              <Text style={styles.label}>{t('volume', lang)}</Text>
+              <View style={styles.volumeLabelRow}>
+                <Text style={styles.label}>{t('volume', lang)}</Text>
+                <Text style={styles.volumeValue}>{Math.round(settings.soundVolume * 100)}%</Text>
+              </View>
               <View style={styles.sliderRow}>
-                <Text style={styles.volumeIcon}>🔈</Text>
+                <Image
+                  source={isDark
+                    ? require('../../assets/icons/volume-low-dark.png')
+                    : require('../../assets/icons/volume-low-light.png')}
+                  style={styles.volumeIcon}
+                />
                 <Slider
                   style={styles.slider}
                   minimumValue={0}
                   maximumValue={1}
                   value={settings.soundVolume}
+                  onValueChange={(value) => setSettings(s => ({ ...s, soundVolume: value }))}
                   onSlidingComplete={(value) => updateSetting('soundVolume', value)}
                   minimumTrackTintColor={colors.accent}
                   maximumTrackTintColor={colors.border}
                   thumbTintColor={colors.accent}
                 />
-                <Text style={styles.volumeIcon}>🔊</Text>
+                <Image
+                  source={isDark
+                    ? require('../../assets/icons/volume-high-dark.png')
+                    : require('../../assets/icons/volume-high-light.png')}
+                  style={styles.volumeIcon}
+                />
               </View>
-              <Text style={styles.volumeValue}>
-                {Math.round(settings.soundVolume * 100)}%
-              </Text>
             </View>
           )}
         </View>
@@ -420,14 +432,17 @@ const makeStyles = (colors) => StyleSheet.create({
     height: 40,
   },
   volumeIcon: {
-    fontFamily: fonts.regular,
-    fontSize: 18,
-    width: 30,
-    textAlign: 'center',
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
+  volumeLabelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   volumeValue: {
     fontFamily: fonts.regular,
-    textAlign: 'center',
     color: colors.textSecondary,
     fontSize: fontSize.sm,
   },

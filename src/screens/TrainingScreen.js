@@ -33,6 +33,8 @@ import { IS_PRO } from '../config';
 
 // Audio source for countdown timer (single 10-second sequence)
 const timerSource = require('../../assets/audio/timer.mp3');
+// Silent clip — played before voice announcements to grab audio focus and stop background music
+const silentSource = require('../../assets/audio/silent.mp3');
 
 // Background images
 const startBackground = IS_PRO
@@ -88,6 +90,8 @@ export default function TrainingScreen({ route, navigation }) {
 
   // Audio player for countdown timer
   const timerPlayer = useAudioPlayer(timerSource);
+  // Silent player — grabs audio focus before voice announcements to stop background music
+  const silentPlayer = useAudioPlayer(silentSource);
 
   // Refs to track current sound settings (updated on focus)
   const soundEnabledRef = useRef(true);
@@ -137,9 +141,9 @@ export default function TrainingScreen({ route, navigation }) {
     setHasChanges(false);
   }, []);
 
-  // Configure audio mode on mount - mix with other audio (PiP videos, music, etc.)
-  // Android: handled via native patch (patches/expo-audio+1.1.1.patch) that defaults
-  // interruptionMode to MIX_WITH_OTHERS, since setAudioModeAsync has an enum casting bug
+  // Configure audio mode on mount - stop other audio (music, etc.) when playing
+  // Android: handled via native patch (patches/expo-audio+55.0.8.patch) that defaults
+  // interruptionMode to DO_NOT_MIX, since setAudioModeAsync has an enum casting bug
   // iOS: configured here via setAudioModeAsync
   useEffect(() => {
     const configureAudio = async () => {
@@ -147,7 +151,7 @@ export default function TrainingScreen({ route, navigation }) {
         try {
           await setAudioModeAsync({
             playsInSilentMode: true,
-            interruptionMode: 'mixWithOthers',
+            interruptionMode: 'doNotMix',
           });
         } catch (error) {
           console.log('Error configuring audio mode:', error);
@@ -806,6 +810,12 @@ export default function TrainingScreen({ route, navigation }) {
     return opts;
   };
 
+  const speakWithFocus = (text, opts) => {
+    silentPlayer.seekTo(0);
+    silentPlayer.play();
+    Speech.speak(text, opts);
+  };
+
   const speakExerciseAt = (exerciseIndex, setIndex, isNext = false) => {
     if (!voiceEnabledRef.current) return;
     const day = routine?.days?.[paramsRef.current.dayIndex];
@@ -823,7 +833,7 @@ export default function TrainingScreen({ route, navigation }) {
       sameExercise: false,
       weightChanged: false,
     }, isNext);
-    Speech.speak(text, getSpeechOpts());
+    speakWithFocus(text, getSpeechOpts());
   };
 
   // Voice: announce when rest starts (state is settled in useEffect)
@@ -834,7 +844,7 @@ export default function TrainingScreen({ route, navigation }) {
       // Exercise rest means we switched exercises — always announce the name
       if (isExerciseRest) info.sameExercise = false;
       const text = buildAnnouncement(info, true);
-      Speech.speak(text, getSpeechOpts());
+      speakWithFocus(text, getSpeechOpts());
     }
     // Store for 13-second countdown announcement (avoids stale closure in setInterval)
     nextInfoRef.current = info;
@@ -877,7 +887,7 @@ export default function TrainingScreen({ route, navigation }) {
     const complete = lang === 'es' ? 'Entrenamiento completado' : 'Workout complete';
     const text = `${complete}. ${mins} ${minWord}, ${caloriesBurned} ${calWord}. ${motto}`;
     Speech.stop();
-    Speech.speak(text, getSpeechOpts());
+    speakWithFocus(text, getSpeechOpts());
   }, [workoutComplete]);
 
   const startRest = (isExRest = false, isSupersetRound = false) => {
@@ -923,7 +933,7 @@ export default function TrainingScreen({ route, navigation }) {
             repsText = `${info.reps} ${unit}`;
           }
           Speech.stop();
-          Speech.speak(`${repsText}. ${motto}`, getSpeechOpts());
+          speakWithFocus(`${repsText}. ${motto}`, getSpeechOpts());
         }
       }
 
@@ -1936,7 +1946,7 @@ const makeStyles = (colors) => StyleSheet.create({
   // Rest screen
   restScreen: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background,
   },
   restScreenLandscape: {
     flexDirection: 'row',
@@ -1969,22 +1979,22 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   restLabel: {
     fontFamily: fonts.regular,
-    color: '#666666',
+    color: colors.textSecondary,
     fontSize: fontSize.lg,
     letterSpacing: 4,
   },
   restTimer: {
     fontFamily: fonts.regular,
-    color: '#000000',
+    color: colors.textPrimary,
     fontSize: 170,
   },
   restSeconds: {
     fontFamily: fonts.regular,
-    color: '#666666',
+    color: colors.textSecondary,
     fontSize: fontSize.lg,
   },
   nextPreview: {
-    backgroundColor: '#F0F0F0',
+    backgroundColor: colors.card,
     padding: spacing.lg,
     borderRadius: borderRadius.lg,
     marginTop: spacing.xl,
@@ -2002,20 +2012,20 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   nextExercise: {
     fontFamily: fonts.bold,
-    color: '#000000',
+    color: colors.textPrimary,
     fontSize: fontSize.lg,
     marginTop: spacing.sm,
     textAlign: 'center',
   },
   nextDetails: {
     fontFamily: fonts.regular,
-    color: '#666666',
+    color: colors.textSecondary,
     fontSize: fontSize.md,
     marginTop: spacing.xs,
   },
   nextWeight: {
     fontFamily: fonts.bold,
-    color: '#666666',
+    color: colors.textSecondary,
     fontSize: fontSize.xl,
     marginTop: spacing.xs,
   },
@@ -2030,7 +2040,7 @@ const makeStyles = (colors) => StyleSheet.create({
   supersetExerciseRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.card,
     borderRadius: borderRadius.md,
     padding: spacing.sm,
     marginVertical: spacing.xs,
@@ -2038,7 +2048,7 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   supersetExerciseName: {
     fontFamily: fonts.bold,
-    color: '#000000',
+    color: colors.textPrimary,
     fontSize: fontSize.md,
     marginLeft: spacing.md,
     flex: 1,
@@ -2056,7 +2066,7 @@ const makeStyles = (colors) => StyleSheet.create({
     fontSize: fontSize.sm,
   },
   skipRestButton: {
-    backgroundColor: '#000000',
+    backgroundColor: colors.textPrimary,
     paddingHorizontal: spacing.xl * 2,
     paddingVertical: spacing.md,
     borderRadius: borderRadius.round,
@@ -2064,7 +2074,7 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   skipRestButtonText: {
     fontFamily: fonts.bold,
-    color: '#FFFFFF',
+    color: colors.background,
     fontSize: fontSize.lg,
     letterSpacing: 1,
   },
@@ -2072,7 +2082,7 @@ const makeStyles = (colors) => StyleSheet.create({
   // Exercise screen
   exerciseScreen: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background,
   },
   exerciseScreenLandscape: {
     flexDirection: 'row',
@@ -2080,10 +2090,10 @@ const makeStyles = (colors) => StyleSheet.create({
   
   // Thumbnail strip
   thumbnailContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.card,
     paddingVertical: spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
+    borderBottomColor: colors.border,
   },
   thumbnailScroll: {
     paddingHorizontal: spacing.md,
@@ -2097,12 +2107,12 @@ const makeStyles = (colors) => StyleSheet.create({
     borderColor: 'transparent',
   },
   thumbnailWrapperActive: {
-    borderColor: '#000000',
+    borderColor: colors.textPrimary,
   },
   thumbnailContainerLandscape: {
     borderBottomWidth: 0,
     borderRightWidth: 1,
-    borderRightColor: '#EEEEEE',
+    borderRightColor: colors.border,
     paddingVertical: 0,
     paddingHorizontal: spacing.xs,
     width: 66,
@@ -2144,13 +2154,13 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   exerciseName: {
     fontFamily: fonts.bold,
-    color: '#000000',
+    color: colors.textPrimary,
     fontSize: fontSize.xl,
     textAlign: 'center',
   },
   exerciseDescription: {
     fontFamily: fonts.narrow,
-    color: '#666666',
+    color: colors.textSecondary,
     fontSize: fontSize.sm,
     textAlign: 'center',
     marginTop: spacing.xs,
@@ -2158,7 +2168,7 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   setIndicator: {
     fontFamily: fonts.regular,
-    color: '#666666',
+    color: colors.textSecondary,
     fontSize: fontSize.md,
     marginTop: spacing.xs,
     letterSpacing: 1,
@@ -2171,7 +2181,7 @@ const makeStyles = (colors) => StyleSheet.create({
   
   // Done button
   doneButton: {
-    backgroundColor: '#000000',
+    backgroundColor: colors.textPrimary,
     paddingHorizontal: spacing.xl * 2,
     paddingVertical: spacing.md,
     borderRadius: borderRadius.round,
@@ -2179,7 +2189,7 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   doneButtonText: {
     fontFamily: fonts.bold,
-    color: '#FFFFFF',
+    color: colors.background,
     fontSize: fontSize.lg,
     letterSpacing: 1,
   },
@@ -2196,7 +2206,7 @@ const makeStyles = (colors) => StyleSheet.create({
     alignItems: 'center',
   },
   controlLabel: {
-    color: '#666666',
+    color: colors.textSecondary,
     fontSize: fontSize.sm,
     marginBottom: spacing.xs,
   },
@@ -2210,24 +2220,24 @@ const makeStyles = (colors) => StyleSheet.create({
     borderRadius: 20,
     marginLeft: 3,
     marginRight: 3,
-    backgroundColor: '#000000',
+    backgroundColor: colors.textPrimary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   controlButtonText: {
     fontFamily: fonts.bold,
-    color: '#FFFFFF',
+    color: colors.background,
     fontSize: fontSize.xl,
     lineHeight: fontSize.xl,
   },
   controlButtonTextS: {
     fontFamily: fonts.bold,
-    color: '#FFFFFF',
+    color: colors.background,
     fontSize: fontSize.xs,
   },
   controlValue: {
     fontFamily: fonts.bold,
-    color: '#000000',
+    color: colors.textPrimary,
     fontSize: fontSize.xxl,
     minWidth: 90,
     textAlign: 'center',
@@ -2286,7 +2296,7 @@ const makeStyles = (colors) => StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   weightInputBox: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.card,
     borderRadius: borderRadius.lg,
     padding: spacing.lg,
     minWidth: 160,
@@ -2295,11 +2305,11 @@ const makeStyles = (colors) => StyleSheet.create({
   weightInputField: {
     fontFamily: fonts.bold,
     fontSize: fontSize.xxl,
-    color: '#000000',
+    color: colors.textPrimary,
     textAlign: 'center',
     minWidth: 120,
     borderBottomWidth: 2,
-    borderBottomColor: '#000000',
+    borderBottomColor: colors.textPrimary,
     paddingVertical: spacing.sm,
   },
 });

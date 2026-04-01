@@ -739,7 +739,7 @@ const makeStyles = (colors) => StyleSheet.create({
     padding: spacing.md,
     fontSize: fontSize.md,
     color: colors.textPrimary,
-    backgroundColor: colors.white,
+    backgroundColor: colors.card,
   },
   inputWithUnit: {
     flexDirection: 'row',
@@ -771,7 +771,7 @@ const makeStyles = (colors) => StyleSheet.create({
     borderRadius: borderRadius.md,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: colors.white,
+    backgroundColor: colors.card,
   },
   sexOptionSelected: {
     backgroundColor: colors.accent,

@@ -271,6 +271,7 @@ export default function ExercisesScreen() {
                       exerciseId={selectedExercise.id}
                       size={isLandscape ? 200 : 350}
                       animate={true}
+                      backgroundColor={colors.card}
                     />
                   </View>
 
@@ -371,7 +372,7 @@ const makeStyles = (colors) => StyleSheet.create({
     marginTop: spacing.xs,
   },
   filterContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.card,
     paddingVertical: spacing.md,
     ...shadows.small,
   },
@@ -399,7 +400,7 @@ const makeStyles = (colors) => StyleSheet.create({
   searchContainer: {
     paddingHorizontal: spacing.md,
     paddingTop: spacing.sm,
-    backgroundColor: colors.white,
+    backgroundColor: colors.card,
   },
   exerciseSearchInput: {
     fontFamily: fonts.regular,
@@ -409,7 +410,7 @@ const makeStyles = (colors) => StyleSheet.create({
     padding: spacing.sm,
     fontSize: fontSize.md,
     color: colors.textPrimary,
-    backgroundColor: colors.white,
+    backgroundColor: colors.background,
   },
   hintContainer: {
     paddingHorizontal: spacing.lg,
@@ -426,7 +427,7 @@ const makeStyles = (colors) => StyleSheet.create({
     paddingBottom: 100,
   },
   exerciseCard: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.card,
     borderRadius: borderRadius.md,
     marginBottom: spacing.sm,
     flexDirection: 'row',
@@ -493,7 +494,7 @@ const makeStyles = (colors) => StyleSheet.create({
     justifyContent: 'center',
   },
   modalContent: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.card,
     borderTopLeftRadius: borderRadius.xl,
     borderTopRightRadius: borderRadius.xl,
     maxHeight: '85%',

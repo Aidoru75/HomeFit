@@ -1,5 +1,5 @@
 diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt
-index 72a6e9e..57d41dc 100644
+index 72a6e9e..338121d 100644
 --- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt
 +++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt
 @@ -58,7 +58,7 @@ class AudioModule : Module() {
@@ -7,7 +7,7 @@ index 72a6e9e..57d41dc 100644
    private var shouldRouteThroughEarpiece = false
    private var focusAcquired = false
 -  private var interruptionMode: InterruptionMode? = null
-+  private var interruptionMode: InterruptionMode? = InterruptionMode.MIX_WITH_OTHERS
++  private var interruptionMode: InterruptionMode? = InterruptionMode.DO_NOT_MIX
    private var allowsBackgroundRecording = false
  
    private val allPlayables: Sequence<Playable>

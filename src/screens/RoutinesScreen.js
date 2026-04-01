@@ -2099,7 +2099,7 @@ const makeStyles = (colors) => StyleSheet.create({
     padding: spacing.sm,
   },
   modalContent: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.card,
     borderRadius: borderRadius.lg,
     padding: spacing.lg,
     maxHeight: '80%',
@@ -2221,7 +2221,7 @@ const makeStyles = (colors) => StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.textPrimary,
     marginBottom: spacing.sm,
-    backgroundColor: colors.white,
+    backgroundColor: colors.background,
   },
   exerciseList: {
     maxHeight: 300,
@@ -2356,7 +2356,7 @@ const makeStyles = (colors) => StyleSheet.create({
   substituteButton: {
     flex: 1,
     padding: spacing.md,
-    backgroundColor: colors.white,
+    backgroundColor: colors.card,
     borderRadius: borderRadius.md,
     borderWidth: 1.5,
     borderColor: colors.accent,
@@ -2466,7 +2466,7 @@ const makeStyles = (colors) => StyleSheet.create({
 
   // QR Modal styles
   qrModalContent: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.card,
     borderRadius: borderRadius.lg,
     padding: spacing.xl,
     alignItems: 'center',
