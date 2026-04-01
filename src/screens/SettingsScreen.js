@@ -17,7 +17,10 @@ import * as Updates from 'expo-updates';
 import Constants from 'expo-constants';
 import { spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { useTheme } from '../context/ThemeContext';
-import { loadSettings, saveSettings } from '../storage/storage';
+import { loadSettings, saveSettings, exportAllData, importAllData } from '../storage/storage';
+import * as FileSystem from 'expo-file-system/legacy';
+import * as Sharing from 'expo-sharing';
+import * as DocumentPicker from 'expo-document-picker';
 import { t } from '../data/translations';
 import {
   inchesToCm,
@@ -143,6 +146,53 @@ export default function SettingsScreen() {
   };
 
   const lang = settings.language;
+
+  const handleExport = async () => {
+    try {
+      const backup = await exportAllData();
+      const date = new Date().toISOString().slice(0, 10);
+      const uri = FileSystem.cacheDirectory + `homefit_backup_${date}.json`;
+      await FileSystem.writeAsStringAsync(uri, JSON.stringify(backup, null, 2));
+      await Sharing.shareAsync(uri, { mimeType: 'application/json', dialogTitle: t('exportBackup', lang) });
+    } catch (e) {
+      Alert.alert('HomeFit', t('exportError', lang));
+    }
+  };
+
+  const handleImport = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({ type: 'application/json', copyToCacheDirectory: true });
+      if (result.canceled) return;
+      const content = await FileSystem.readAsStringAsync(result.assets[0].uri);
+      const backup = JSON.parse(content);
+      if (backup.version !== 1 || !backup.data?.settings || !backup.data?.routines ||
+          !backup.data?.equipment || !backup.data?.history) {
+        Alert.alert('HomeFit', t('importInvalid', lang));
+        return;
+      }
+      Alert.alert(
+        t('importChoiceTitle', lang),
+        t('importChoiceMessage', lang),
+        [
+          { text: t('importChoiceReplace', lang), onPress: async () => {
+            await importAllData(backup, 'replace');
+            Alert.alert('HomeFit', t('importSuccess', lang), [
+              { text: 'OK', onPress: () => Updates.reloadAsync() }
+            ]);
+          }},
+          { text: t('importChoiceMerge', lang), onPress: async () => {
+            await importAllData(backup, 'merge');
+            Alert.alert('HomeFit', t('importSuccess', lang), [
+              { text: 'OK', onPress: () => Updates.reloadAsync() }
+            ]);
+          }},
+          { text: t('cancel', lang), style: 'cancel' },
+        ]
+      );
+    } catch (e) {
+      Alert.alert('HomeFit', t('importError', lang));
+    }
+  };
 
   if (!loaded) {
     return (
@@ -302,6 +352,18 @@ export default function SettingsScreen() {
           </View>
         </View>
         {/* END DARK MODE TOGGLE */}
+
+        {/* Data Section */}
+        <Text style={styles.sectionTitle}>{t('data', lang)}</Text>
+        <View style={styles.card}>
+          <TouchableOpacity style={styles.dataButton} onPress={handleExport}>
+            <Text style={styles.dataButtonText}>{t('exportBackup', lang)}</Text>
+          </TouchableOpacity>
+          <View style={styles.legalDivider} />
+          <TouchableOpacity style={styles.dataButton} onPress={handleImport}>
+            <Text style={styles.dataButtonText}>{t('importBackup', lang)}</Text>
+          </TouchableOpacity>
+        </View>
 
         {/* About Section */}
         <Text style={styles.sectionTitle}>{t('about', lang)}</Text>
@@ -481,5 +543,13 @@ const makeStyles = (colors) => StyleSheet.create({
   legalDivider: {
     height: 1,
     backgroundColor: colors.border,
+  },
+  dataButton: {
+    paddingVertical: spacing.sm,
+  },
+  dataButtonText: {
+    fontFamily: fonts.regular,
+    fontSize: fontSize.md,
+    color: colors.accent,
   },
 });

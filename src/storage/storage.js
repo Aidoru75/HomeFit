@@ -320,6 +320,35 @@ export const clearAllData = async () => {
   }
 };
 
+// ============ BACKUP / RESTORE ============
+
+export const exportAllData = async () => {
+  const [settings, routines, equipment, history] = await Promise.all([
+    loadSettings(), loadRoutines(), loadAvailableEquipment(), getHistory(),
+  ]);
+  return {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    data: { settings, routines, equipment, history },
+  };
+};
+
+export const importAllData = async (backup, mode) => {
+  const { settings, routines, equipment, history } = backup.data;
+  let finalRoutines = routines;
+  if (mode === 'merge') {
+    const existing = await loadRoutines();
+    const names = new Set(existing.map(r => r.name));
+    finalRoutines = [...existing, ...routines.filter(r => !names.has(r.name))];
+  }
+  await Promise.all([
+    saveSettings(settings),
+    saveRoutines(finalRoutines),
+    AsyncStorage.setItem(KEYS.WORKOUT_HISTORY, JSON.stringify(history)),
+  ]);
+  await updateExcludedByEquipment(equipment); // also saves equipment
+};
+
 // ============ ONBOARDING ============
 
 export const checkOnboarded = async () => {
