@@ -1946,7 +1946,7 @@ const makeStyles = (colors) => StyleSheet.create({
   // Rest screen
   restScreen: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.card,
   },
   restScreenLandscape: {
     flexDirection: 'row',
@@ -2066,7 +2066,7 @@ const makeStyles = (colors) => StyleSheet.create({
     fontSize: fontSize.sm,
   },
   skipRestButton: {
-    backgroundColor: colors.textPrimary,
+    backgroundColor: colors.primary,
     paddingHorizontal: spacing.xl * 2,
     paddingVertical: spacing.md,
     borderRadius: borderRadius.round,
@@ -2074,7 +2074,7 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   skipRestButtonText: {
     fontFamily: fonts.bold,
-    color: colors.background,
+    color: colors.white,
     fontSize: fontSize.lg,
     letterSpacing: 1,
   },
@@ -2082,7 +2082,7 @@ const makeStyles = (colors) => StyleSheet.create({
   // Exercise screen
   exerciseScreen: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.card,
   },
   exerciseScreenLandscape: {
     flexDirection: 'row',
@@ -2181,7 +2181,7 @@ const makeStyles = (colors) => StyleSheet.create({
   
   // Done button
   doneButton: {
-    backgroundColor: colors.textPrimary,
+    backgroundColor: colors.primary,
     paddingHorizontal: spacing.xl * 2,
     paddingVertical: spacing.md,
     borderRadius: borderRadius.round,
@@ -2189,7 +2189,7 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   doneButtonText: {
     fontFamily: fonts.bold,
-    color: colors.background,
+    color: colors.white,
     fontSize: fontSize.lg,
     letterSpacing: 1,
   },
@@ -2220,19 +2220,19 @@ const makeStyles = (colors) => StyleSheet.create({
     borderRadius: 20,
     marginLeft: 3,
     marginRight: 3,
-    backgroundColor: colors.textPrimary,
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   controlButtonText: {
     fontFamily: fonts.bold,
-    color: colors.background,
+    color: colors.white,
     fontSize: fontSize.xl,
     lineHeight: fontSize.xl,
   },
   controlButtonTextS: {
     fontFamily: fonts.bold,
-    color: colors.background,
+    color: colors.white,
     fontSize: fontSize.xs,
   },
   controlValue: {
