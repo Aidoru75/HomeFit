@@ -35,7 +35,7 @@ export default ({ config }) => {
     web: {
       favicon: isFree ? './assets/favicon-free.png' : './assets/favicon.png',
     },
-    plugins: ['expo-audio', 'expo-asset', 'expo-localization', 'expo-sharing', './plugins/withDisableLint'],
+    plugins: ['expo-audio', 'expo-asset', 'expo-localization', 'expo-sharing', './plugins/withHomeFitFileAssociation', './plugins/withDisableLint'],
     extra: {
       eas: {
         projectId: '94a5c8f3-6876-485f-af16-a57e83350a30',

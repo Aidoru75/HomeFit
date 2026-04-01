@@ -1,6 +1,6 @@
 // HomeFit - Main App Entry Point
 import React, { useState, useEffect, useCallback } from 'react';
-import { Image, StyleSheet, View, ActivityIndicator, Text, Platform, Linking } from 'react-native';
+import { Alert, Image, StyleSheet, View, ActivityIndicator, Text, Platform, Linking } from 'react-native';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -25,6 +25,7 @@ import { colors } from './src/theme';
 import { loadSettings, seedDefaultRoutines, checkOnboarded, markOnboarded } from './src/storage/storage';
 import OnboardingWalkthrough from './src/components/OnboardingWalkthrough';
 import { ThemeProvider } from './src/context/ThemeContext';
+import { readAndValidateBackup, promptAndImport } from './src/utils/backupImport';
 
 const Tab = createBottomTabNavigator();
 
@@ -144,6 +145,23 @@ export default function App() {
     }
     init();
   }, [loadLanguage]);
+
+  // Handle .homefit backup files opened from other apps (WhatsApp, Files, etc.)
+  useEffect(() => {
+    const handle = async (url) => {
+      // Only handle file/content URIs — ignore homefit:// deep links and null
+      if (!url || (!url.startsWith('content://') && !url.startsWith('file://'))) return;
+      try {
+        const backup = await readAndValidateBackup(url);
+        promptAndImport(backup, language, Alert);
+      } catch (e) {
+        Alert.alert('HomeFit', e.message === 'invalid' ? 'Invalid backup file.' : 'Could not open backup file.');
+      }
+    };
+    Linking.getInitialURL().then(handle);
+    const sub = Linking.addEventListener('url', ({ url }) => handle(url));
+    return () => sub.remove();
+  }, [language]);
 
   // Show loading screen while fonts are loading
   if (!fontsLoaded) {

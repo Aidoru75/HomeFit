@@ -276,7 +276,7 @@ export function IsoHBar({ id, pct, color, barHeight = 16, depth = 6, targetPct }
 
           {/* Background track — shifted up by dy to sit behind depth area */}
           <Polygon
-            points={pts([0, 1], [trackW, 1], [trackW, 1 + barHeight], [0, 1 + barHeight])}
+            points={pts([dx, 1], [trackW + dx, 1], [trackW + dx, 1 + barHeight], [dx, 1 + barHeight])}
             fill="rgba(0,0,0,0.15)"
           />
 

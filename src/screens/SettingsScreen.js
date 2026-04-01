@@ -17,10 +17,11 @@ import * as Updates from 'expo-updates';
 import Constants from 'expo-constants';
 import { spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { useTheme } from '../context/ThemeContext';
-import { loadSettings, saveSettings, exportAllData, importAllData } from '../storage/storage';
+import { loadSettings, saveSettings, exportAllData } from '../storage/storage';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
+import { readAndValidateBackup, promptAndImport } from '../utils/backupImport';
 import { t } from '../data/translations';
 import {
   inchesToCm,
@@ -151,9 +152,9 @@ export default function SettingsScreen() {
     try {
       const backup = await exportAllData();
       const date = new Date().toISOString().slice(0, 10);
-      const uri = FileSystem.cacheDirectory + `homefit_backup_${date}.json`;
+      const uri = FileSystem.cacheDirectory + `homefit_backup_${date}.homefit`;
       await FileSystem.writeAsStringAsync(uri, JSON.stringify(backup, null, 2));
-      await Sharing.shareAsync(uri, { mimeType: 'application/json', dialogTitle: t('exportBackup', lang) });
+      await Sharing.shareAsync(uri, { mimeType: 'application/x-homefit', dialogTitle: t('exportBackup', lang) });
     } catch (e) {
       Alert.alert('HomeFit', t('exportError', lang));
     }
@@ -161,36 +162,12 @@ export default function SettingsScreen() {
 
   const handleImport = async () => {
     try {
-      const result = await DocumentPicker.getDocumentAsync({ type: 'application/json', copyToCacheDirectory: true });
+      const result = await DocumentPicker.getDocumentAsync({ type: '*/*', copyToCacheDirectory: true });
       if (result.canceled) return;
-      const content = await FileSystem.readAsStringAsync(result.assets[0].uri);
-      const backup = JSON.parse(content);
-      if (backup.version !== 1 || !backup.data?.settings || !backup.data?.routines ||
-          !backup.data?.equipment || !backup.data?.history) {
-        Alert.alert('HomeFit', t('importInvalid', lang));
-        return;
-      }
-      Alert.alert(
-        t('importChoiceTitle', lang),
-        t('importChoiceMessage', lang),
-        [
-          { text: t('importChoiceReplace', lang), onPress: async () => {
-            await importAllData(backup, 'replace');
-            Alert.alert('HomeFit', t('importSuccess', lang), [
-              { text: 'OK', onPress: () => Updates.reloadAsync() }
-            ]);
-          }},
-          { text: t('importChoiceMerge', lang), onPress: async () => {
-            await importAllData(backup, 'merge');
-            Alert.alert('HomeFit', t('importSuccess', lang), [
-              { text: 'OK', onPress: () => Updates.reloadAsync() }
-            ]);
-          }},
-          { text: t('cancel', lang), style: 'cancel' },
-        ]
-      );
+      const backup = await readAndValidateBackup(result.assets[0].uri);
+      promptAndImport(backup, lang, Alert);
     } catch (e) {
-      Alert.alert('HomeFit', t('importError', lang));
+      Alert.alert('HomeFit', e.message === 'invalid' ? t('importInvalid', lang) : t('importError', lang));
     }
   };
 
@@ -354,7 +331,15 @@ export default function SettingsScreen() {
         {/* END DARK MODE TOGGLE */}
 
         {/* Data Section */}
-        <Text style={styles.sectionTitle}>{t('data', lang)}</Text>
+        <View style={styles.sectionTitleRow}>
+          <Text style={[styles.sectionTitle, { marginHorizontal: 0, marginTop: 0, marginBottom: 0 }]}>{t('data', lang)}</Text>
+          <TouchableOpacity
+            onPress={() => Alert.alert(t('dataHelp', lang), t('dataHelpBody', lang))}
+            style={styles.helpButton}
+          >
+            <Text style={styles.helpButtonText}>?</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.card}>
           <TouchableOpacity style={styles.dataButton} onPress={handleExport}>
             <Text style={styles.dataButtonText}>{t('exportBackup', lang)}</Text>
@@ -543,6 +528,29 @@ const makeStyles = (colors) => StyleSheet.create({
   legalDivider: {
     height: 1,
     backgroundColor: colors.border,
+  },
+  sectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
+    marginBottom: spacing.sm,
+  },
+  helpButton: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    borderWidth: 1.5,
+    borderColor: colors.textSecondary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: spacing.sm,
+  },
+  helpButtonText: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.sm,
+    color: colors.textSecondary,
+    lineHeight: fontSize.sm + 1,
   },
   dataButton: {
     paddingVertical: spacing.sm,
