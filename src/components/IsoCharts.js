@@ -308,24 +308,25 @@ export function IsoHBar({ id, pct, color, barHeight = 16, depth = 6, targetPct }
             const mX        = (targetPct / 100) * trackW;
             const mW        = 3;
             const showRight = pct < targetPct;
+            const bX = mX - mW;
             return (
               <>
                 {showRight && (
                   <Polygon
                     points={pts(
-                      [mX + mW, barTop], [mX + mW + dx, barTop - dy],
-                      [mX + mW + dx, barBottom - dy], [mX + mW, barBottom]
+                      [bX + mW, barTop], [bX + mW + dx, barTop - dy],
+                      [bX + mW + dx, barBottom - dy], [bX + mW, barBottom]
                     )}
-                    fill="black" fillOpacity={0.3}
+                    fill="black" fillOpacity={0.21}
                   />
                 )}
                 <Polygon
-                  points={pts([mX, barTop], [mX + mW, barTop], [mX + mW, barBottom], [mX, barBottom])}
-                  fill="black" fillOpacity={0.6}
+                  points={pts([bX, barTop], [bX + mW, barTop], [bX + mW, barBottom], [bX, barBottom])}
+                  fill="black" fillOpacity={0.42}
                 />
                 <Polygon
-                  points={pts([mX, barTop], [mX + mW, barTop], [mX + mW + dx, barTop - dy], [mX + dx, barTop - dy])}
-                  fill="black" fillOpacity={0.4}
+                  points={pts([bX, barTop], [bX + mW, barTop], [bX + mW + dx, barTop - dy], [bX + dx, barTop - dy])}
+                  fill="black" fillOpacity={0.28}
                 />
               </>
             );
