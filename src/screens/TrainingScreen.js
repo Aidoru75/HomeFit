@@ -1363,6 +1363,7 @@ export default function TrainingScreen({ route, navigation }) {
                 exerciseId={ex.exerciseId}
                 size={50}
                 animate={false}
+                backgroundColor={colors.card}
               />
             </TouchableOpacity>
           ))}
@@ -1502,7 +1503,7 @@ export default function TrainingScreen({ route, navigation }) {
               <View style={styles.supersetPreview}>
                 {nextInfo.supersetExercises.map((ex, idx) => (
                   <View key={idx} style={styles.supersetExerciseRow}>
-                    <ExerciseImage exerciseId={ex.exerciseId} size={50} animate={true} animationDuration={1500} />
+                    <ExerciseImage exerciseId={ex.exerciseId} size={50} animate={true} animationDuration={1500} backgroundColor={colors.card} />
                     <Text style={styles.supersetExerciseName}>{ex.name}</Text>
                   </View>
                 ))}
@@ -1513,7 +1514,7 @@ export default function TrainingScreen({ route, navigation }) {
             ) : (
               <>
                 <View style={styles.nextImageContainer}>
-                  <ExerciseImage exerciseId={nextInfo.exerciseId} size={80} animate={true} animationDuration={1500} />
+                  <ExerciseImage exerciseId={nextInfo.exerciseId} size={80} animate={true} animationDuration={1500} backgroundColor={colors.card} />
                 </View>
                 <Text style={styles.nextExercise}>{nextInfo.name}</Text>
                 <Text style={styles.nextDetails}>
@@ -1549,7 +1550,7 @@ export default function TrainingScreen({ route, navigation }) {
               <View style={styles.supersetPreview}>
                 {nextInfo.supersetExercises.map((ex, idx) => (
                   <View key={idx} style={styles.supersetExerciseRow}>
-                    <ExerciseImage exerciseId={ex.exerciseId} size={50} animate={true} animationDuration={1500} />
+                    <ExerciseImage exerciseId={ex.exerciseId} size={50} animate={true} animationDuration={1500} backgroundColor={colors.card} />
                     <Text style={styles.supersetExerciseName}>{ex.name}</Text>
                   </View>
                 ))}
@@ -1560,7 +1561,7 @@ export default function TrainingScreen({ route, navigation }) {
             ) : (
               <>
                 <View style={styles.nextImageContainer}>
-                  <ExerciseImage exerciseId={nextInfo.exerciseId} size={80} animate={true} animationDuration={1500} />
+                  <ExerciseImage exerciseId={nextInfo.exerciseId} size={80} animate={true} animationDuration={1500} backgroundColor={colors.card} />
                 </View>
                 <Text style={styles.nextExercise}>{nextInfo.name}</Text>
                 <Text style={styles.nextDetails}>
