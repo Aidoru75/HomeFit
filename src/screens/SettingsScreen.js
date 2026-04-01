@@ -1,5 +1,5 @@
 // Settings Screen - App preferences (without profile - moved to ProfileScreen)
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,8 @@ import Slider from '@react-native-community/slider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Updates from 'expo-updates';
 import Constants from 'expo-constants';
-import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
+import { spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 import { loadSettings, saveSettings } from '../storage/storage';
 import { t } from '../data/translations';
 import {
@@ -26,6 +27,8 @@ import {
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
+  const { colors, isDark, toggleDark } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
   const [settings, setSettings] = useState({
     language: 'en',
     soundEnabled: true,
@@ -273,6 +276,21 @@ export default function SettingsScreen() {
           )}
         </View>
 
+        {/* DARK MODE TOGGLE — comment out the block below to hide from users */}
+        <Text style={styles.sectionTitle}>{t('appearance', lang)}</Text>
+        <View style={styles.card}>
+          <View style={styles.switchRow}>
+            <Text style={styles.label}>{t('darkMode', lang)}</Text>
+            <Switch
+              value={isDark}
+              onValueChange={toggleDark}
+              trackColor={{ false: colors.border, true: colors.accentLight }}
+              thumbColor={isDark ? colors.accent : colors.textLight}
+            />
+          </View>
+        </View>
+        {/* END DARK MODE TOGGLE */}
+
         {/* About Section */}
         <Text style={styles.sectionTitle}>{t('about', lang)}</Text>
         <View style={styles.card}>
@@ -308,7 +326,7 @@ export default function SettingsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,

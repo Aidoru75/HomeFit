@@ -12,7 +12,8 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { IsoBarChart, IsoStackedBar, IsoHBar } from '../components/IsoCharts';
-import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
+import { spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 import { getHistory, loadSettings, clearHistory } from '../storage/storage';
 import { muscleGroups } from '../data/exercises';
 import { t } from '../data/translations';
@@ -35,6 +36,8 @@ const DAY_COLORS = [
 
 export default function StatsScreen({ route }) {
   const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
   const [history, setHistory] = useState([]);
   const [settings, setSettings] = useState({ language: 'en' });
   const [loaded, setLoaded] = useState(false);
@@ -565,7 +568,7 @@ export default function StatsScreen({ route }) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,

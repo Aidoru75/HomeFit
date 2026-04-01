@@ -1,5 +1,5 @@
 // Home Screen - Dashboard with quick actions and last workout info
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,8 @@ import {
   Image,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
+import { spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 import { getLastWorkout, getHistory, loadRoutines, loadSettings } from '../storage/storage';
 import { t } from '../data/translations';
 import { IS_PRO } from '../config';
@@ -80,6 +81,8 @@ const getWeekDays = (history) => {
 
 export default function HomeScreen({ navigation }) {
   const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
   const [lastWorkout, setLastWorkout] = useState(null);
   const [routines, setRoutines] = useState([]);
   const [suggestedNext, setSuggestedNext] = useState(null);
@@ -281,7 +284,7 @@ export default function HomeScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors) => StyleSheet.create({
   container: {
     fontFamily: fonts.regular,
     flex: 1,

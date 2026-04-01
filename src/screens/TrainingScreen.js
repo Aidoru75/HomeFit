@@ -1,6 +1,6 @@
 // Training Screen - Active workout with timer and exercise guidance
 // Redesigned with thumbnail navigation, editable reps/weight, and change tracking
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -21,7 +21,8 @@ import * as Speech from 'expo-speech';
 import * as StoreReview from 'expo-store-review';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { colors, spacing, borderRadius, fontSize, fonts } from '../theme';
+import { spacing, borderRadius, fontSize, fonts } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 import { exercises, getExerciseName, getExerciseDescription } from '../data/exercises';
 import { loadRoutines, loadSettings, saveLastWorkout, addToHistory, getHistory, updateRoutine } from '../storage/storage';
 import { t } from '../data/translations';
@@ -44,6 +45,8 @@ const successBackground = IS_PRO
 export default function TrainingScreen({ route, navigation }) {
   const insets = useSafeAreaInsets();
   const { isLandscape, width, height } = useResponsiveLayout();
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
   const { routineId, dayIndex } = route.params || {};
   
   const [routine, setRoutine] = useState(null);
@@ -1773,7 +1776,7 @@ export default function TrainingScreen({ route, navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors) => StyleSheet.create({
   // Background image
   backgroundImage: {
     flex: 1,

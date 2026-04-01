@@ -1,5 +1,5 @@
 // Routines Screen - Create and manage workout routines
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   View,
   Text,
@@ -18,7 +18,8 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import QRCode from 'react-native-qrcode-svg';
-import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
+import { spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 import { useResponsiveLayout } from '../hooks/useResponsiveLayout';
 import {
   availableExercises,
@@ -50,6 +51,8 @@ const exportAccentIcon = require('../../assets/icons/export_accent.png');
 export default function RoutinesScreen({ navigation, route }) {
   const { width: windowWidth, isLandscape } = useResponsiveLayout();
   const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
   const [permission, requestPermission] = useCameraPermissions();
   const [routines, setRoutines] = useState([]);
   const [selectedRoutine, setSelectedRoutine] = useState(null);
@@ -1768,7 +1771,7 @@ export default function RoutinesScreen({ navigation, route }) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,

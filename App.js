@@ -24,6 +24,7 @@ import { IS_PRO } from './src/config';
 import { colors } from './src/theme';
 import { loadSettings, seedDefaultRoutines, checkOnboarded, markOnboarded } from './src/storage/storage';
 import OnboardingWalkthrough from './src/components/OnboardingWalkthrough';
+import { ThemeProvider } from './src/context/ThemeContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -167,6 +168,7 @@ export default function App() {
   };
 
   return (
+    <ThemeProvider>
     <SafeAreaProvider>
       <NavigationContainer ref={navigationRef} linking={linking} onStateChange={loadLanguage}>
         <StatusBar style="light" backgroundColor={colors.primary} />
@@ -182,6 +184,7 @@ export default function App() {
         />
       )}
     </SafeAreaProvider>
+    </ThemeProvider>
   );
 }
 

@@ -1,7 +1,7 @@
 // First-launch onboarding walkthrough
 // Portrait: image on top, text below. Landscape: image left, text right.
 // FREE and PRO have separate slide definitions — add free-XX.png images when ready.
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,8 @@ import {
   ScrollView,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, spacing, borderRadius, fontSize, fonts } from '../theme';
+import { spacing, borderRadius, fontSize, fonts } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 import { t } from '../data/translations';
 import { IS_PRO } from '../config';
 
@@ -69,6 +70,8 @@ const FREE_SLIDES = PRO_SLIDES.filter((_, i) => i !== 6); // exclude Stats slide
 
 export default function OnboardingWalkthrough({ lang, onDone }) {
   const [step, setStep] = useState(0);
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
   const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
   const isLandscape = width > height;
@@ -168,7 +171,7 @@ export default function OnboardingWalkthrough({ lang, onDone }) {
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
 
-const styles = StyleSheet.create({
+const makeStyles = (colors) => StyleSheet.create({
   // Portrait
   portraitContainer: {
     flex: 1,

@@ -1,5 +1,5 @@
 // Profile Screen - User profile and equipment management
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -99,7 +99,8 @@ const equipmentImages = {
 };
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { colors, spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
+import { spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 import { 
   loadSettings, 
   saveSettings, 
@@ -123,6 +124,8 @@ import {
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
   const [settings, setSettings] = useState({
     userName: '',
     userHeight: '',
@@ -643,7 +646,7 @@ export default function ProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,

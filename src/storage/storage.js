@@ -28,6 +28,7 @@ const DEFAULT_SETTINGS = {
   soundEnabled: true,
   soundVolume: 1.0, // 0.0 to 1.0
   voiceEnabled: false,
+  darkMode: false,
 };
 
 // ============ SETTINGS ============

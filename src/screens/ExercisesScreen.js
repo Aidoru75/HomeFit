@@ -1,5 +1,5 @@
 // Exercises Screen - Browse all exercises by muscle group
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useMemo } from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,8 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { colors, spacing, borderRadius, fonts, fontSize, shadows } from '../theme';
+import { spacing, borderRadius, fonts, fontSize, shadows } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 import { useResponsiveLayout } from '../hooks/useResponsiveLayout';
 import {
   availableExercises,
@@ -31,6 +32,8 @@ import ExerciseImage from '../components/ExerciseImage';
 
 export default function ExercisesScreen() {
   const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
   const { isLandscape } = useResponsiveLayout();
   const [selectedMuscle, setSelectedMuscle] = useState(null);
   const [selectedExercise, setSelectedExercise] = useState(null);
@@ -346,7 +349,7 @@ export default function ExercisesScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
