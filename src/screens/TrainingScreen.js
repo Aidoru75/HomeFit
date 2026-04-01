@@ -1591,7 +1591,7 @@ export default function TrainingScreen({ route, navigation }) {
               size={Math.min(height * 0.8, (width - 66) * 0.45)}
               animate={true}
               animationDuration={2000}
-              backgroundColor={colors.card}
+              backgroundColor={colors.background}
             />
           </View>
         )}
@@ -1632,7 +1632,7 @@ export default function TrainingScreen({ route, navigation }) {
                 size={220}
                 animate={true}
                 animationDuration={2000}
-                backgroundColor={colors.card}
+                backgroundColor={colors.background}
               />
             </View>
           )}
