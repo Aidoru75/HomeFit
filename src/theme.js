@@ -31,12 +31,12 @@ export const lightColors = {
 
   // Neutrals
   white: '#FFFFFF',
-  background: '#FFFFFF',
-  card: '#F5F6FA',
+  background: '#F5F6FA',
+  card: '#FFFFFF',
   border: '#E0E0E0',
 
   // Text
-  textPrimary: '#000000',
+  textPrimary: '#2C3E50',
   textSecondary: '#7F8C8D',
   textLight: '#BDC3C7',
   textOnPrimary: '#FFFFFF',

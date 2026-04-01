@@ -541,7 +541,7 @@ export default function RoutinesScreen({ navigation, route }) {
   const handleRemoveExercise = () => {
     if (selectedRoutine && editingDayIndex !== null && editingExerciseIndex !== null) {
       const exerciseName = exerciseConfig.exerciseId
-        ? getExerciseName(exerciseConfig.exerciseId, lang)
+        ? getExerciseName(getExerciseById(exerciseConfig.exerciseId), lang)
         : '';
       Alert.alert(
         t('delete', lang),
