@@ -17,6 +17,7 @@ import { useTheme } from '../context/ThemeContext';
 import { getHistory, loadSettings, clearHistory } from '../storage/storage';
 import { muscleGroups } from '../data/exercises';
 import { t } from '../data/translations';
+import { IS_PRO } from '../config';
 
 
 const ITEMS_PER_PAGE = 10;
@@ -375,7 +376,7 @@ export default function StatsScreen({ route }) {
               onPress={() => Alert.alert(t('workloadHelp', lang), t('workloadHelpBody', lang))}
               style={styles.helpButton}
             >
-              <Text style={styles.helpButtonText}>?</Text>
+              <Image source={IS_PRO ? require('../../assets/icons/tooltip_pro.png') : require('../../assets/icons/tooltip_free.png')} style={styles.helpButtonIcon} />
             </TouchableOpacity>
           </View>
           {volumeEntries.map(entry => {
@@ -701,11 +702,13 @@ const makeStyles = (colors) => StyleSheet.create({
   helpButton: {
     width: 22,
     height: 22,
-    borderRadius: 11,
-    borderWidth: 1.5,
-    borderColor: colors.textSecondary,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  helpButtonIcon: {
+    width: 22,
+    height: 22,
+    resizeMode: 'contain',
   },
   helpButtonText: {
     fontFamily: fonts.bold,

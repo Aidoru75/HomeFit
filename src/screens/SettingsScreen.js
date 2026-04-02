@@ -23,6 +23,7 @@ import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import { readAndValidateBackup, promptAndImport } from '../utils/backupImport';
 import { t } from '../data/translations';
+import { IS_PRO } from '../config';
 import {
   inchesToCm,
   cmToInches,
@@ -337,7 +338,7 @@ export default function SettingsScreen() {
             onPress={() => Alert.alert(t('dataHelp', lang), t('dataHelpBody', lang))}
             style={styles.helpButton}
           >
-            <Text style={styles.helpButtonText}>?</Text>
+            <Image source={IS_PRO ? require('../../assets/icons/tooltip_pro.png') : require('../../assets/icons/tooltip_free.png')} style={styles.helpButtonIcon} />
           </TouchableOpacity>
         </View>
         <View style={styles.card}>
@@ -539,12 +540,14 @@ const makeStyles = (colors) => StyleSheet.create({
   helpButton: {
     width: 22,
     height: 22,
-    borderRadius: 11,
-    borderWidth: 1.5,
-    borderColor: colors.textSecondary,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: spacing.sm,
+  },
+  helpButtonIcon: {
+    width: 22,
+    height: 22,
+    resizeMode: 'contain',
   },
   helpButtonText: {
     fontFamily: fonts.bold,
