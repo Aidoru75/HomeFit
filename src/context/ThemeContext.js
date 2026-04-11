@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { loadSettings, saveSettings } from '../storage/storage';
 import { lightColors, darkColors } from '../theme';
+import { IS_PRO } from '../config';
 
 const ThemeContext = createContext();
 
@@ -8,7 +9,7 @@ export function ThemeProvider({ children }) {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    loadSettings().then(s => setIsDark(s.darkMode === true));
+    if (IS_PRO) loadSettings().then(s => setIsDark(s.darkMode === true));
   }, []);
 
   const toggleDark = async (value) => {
