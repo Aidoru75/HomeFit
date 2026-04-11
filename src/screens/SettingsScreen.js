@@ -316,7 +316,7 @@ export default function SettingsScreen() {
           )}
         </View>
 
-        {/* DARK MODE TOGGLE — comment out the block below to hide from users */}
+        {/* DARK MODE TOGGLE — uncomment to expose to users
         <Text style={styles.sectionTitle}>{t('appearance', lang)}</Text>
         <View style={styles.card}>
           <View style={styles.switchRow}>
@@ -329,7 +329,7 @@ export default function SettingsScreen() {
             />
           </View>
         </View>
-        {/* END DARK MODE TOGGLE */}
+        */}
 
         {/* Data Section */}
         <View style={styles.sectionTitleRow}>
