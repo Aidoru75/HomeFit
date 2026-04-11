@@ -380,6 +380,27 @@ export default function SettingsScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* Upgrade to PRO banner — free version only */}
+        {!IS_PRO && (
+          <View style={styles.upgradeBanner}>
+            <View style={styles.upgradeTitleRow}>
+              <Text style={styles.upgradeTitle}>{t('wantMore', lang)}</Text>
+              <TouchableOpacity
+                onPress={() => Alert.alert(t('proFeaturesTitle', lang), t('proFeaturesBody', lang))}
+                style={styles.helpButton}
+              >
+                <Image source={require('../../assets/icons/tooltip_free.png')} style={styles.helpButtonIcon} />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={styles.upgradeButton}
+              onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=com.aidoru.HomeFit')}
+            >
+              <Text style={styles.upgradeButtonText}>{t('upgradeToProButton', lang)}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
         <View style={styles.bottomPadding} />
       </ScrollView>
     </View>
@@ -507,6 +528,39 @@ const makeStyles = (colors) => StyleSheet.create({
   aboutValue: {
     fontSize: fontSize.md,
     color: colors.textSecondary,
+  },
+  upgradeBanner: {
+    marginHorizontal: spacing.md,
+    marginTop: spacing.lg,
+    padding: spacing.lg,
+    backgroundColor: colors.card,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1.5,
+    borderColor: colors.accent,
+    alignItems: 'center',
+  },
+  upgradeTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+    gap: spacing.sm,
+  },
+  upgradeTitle: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
+  },
+  upgradeButton: {
+    backgroundColor: colors.accent,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.round,
+  },
+  upgradeButtonText: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.md,
+    color: colors.white,
+    letterSpacing: 0.5,
   },
   bottomPadding: {
     height: 100,
