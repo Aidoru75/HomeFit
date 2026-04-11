@@ -630,8 +630,8 @@ const exerciseImages = {
 // ─── Transparent PNG images (dark-mode compatible) ───────────────────────────
 // Place PNGs in assets/exercises/png/ with transparent backgrounds.
 // Uncomment each entry after adding the file. PNG takes priority over JPG.
-// NOTE: Set pngImages = {} below to disable PNG bundling without losing the index.
-const _pngImages = {
+// NOTE: Remove the /* */ around _pngImages and set pngImages = _pngImages to enable bundling.
+/* const _pngImages = {
 
   // ############################################
   // FREE EXERCISES (Home Gym Equipment Only)
@@ -1227,8 +1227,8 @@ const _pngImages = {
   ball_pass_start: require('../../assets/exercises/png/ball_pass_start.png'),
   ball_pass_mid: require('../../assets/exercises/png/ball_pass_mid.png'),
   ball_pass_end: require('../../assets/exercises/png/ball_pass_end.png'),
-};
-// Disable PNG bundling: swap the two lines below to enable/disable.
+}; */
+// To enable PNG bundling: remove the /* */ around _pngImages and use the second line below.
 const pngImages = {}; // disabled
 // const pngImages = _pngImages; // enabled
 
