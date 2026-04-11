@@ -859,14 +859,12 @@ export default function RoutinesScreen({ navigation, route }) {
           <Text style={styles.hintText}>{t('longPressDelete', lang)}</Text>
         </>
       )}
-      {IS_PRO && (
-        <TouchableOpacity
-          style={styles.discoverButton}
-          onPress={() => Linking.openURL(`https://www.aidoru.com/homefit/?lang=${lang}`)}
-        >
-          <Text style={styles.discoverButtonText}>{t('discoverRoutines', lang)}</Text>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        style={styles.discoverButton}
+        onPress={() => Linking.openURL(`https://www.aidoru.com/homefit/?lang=${lang}`)}
+      >
+        <Text style={styles.discoverButtonText}>{t('discoverRoutines', lang)}</Text>
+      </TouchableOpacity>
       <View style={styles.bottomPadding} />
     </ScrollView>
   );
