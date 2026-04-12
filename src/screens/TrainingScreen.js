@@ -1997,7 +1997,7 @@ const makeStyles = (colors) => StyleSheet.create({
     fontSize: fontSize.lg,
   },
   nextPreview: {
-    backgroundColor: colors.card,
+    backgroundColor: colors.background,
     padding: spacing.lg,
     borderRadius: borderRadius.lg,
     marginTop: spacing.xl,

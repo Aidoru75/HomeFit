@@ -1,6 +1,7 @@
 // HomeFit - Main App Entry Point
 import React, { useState, useEffect, useCallback } from 'react';
 import { Alert, Image, StyleSheet, View, ActivityIndicator, Text, Platform, Linking } from 'react-native';
+import VersionCheck from 'react-native-version-check';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -26,6 +27,12 @@ import { loadSettings, seedDefaultRoutines, checkOnboarded, markOnboarded } from
 import OnboardingWalkthrough from './src/components/OnboardingWalkthrough';
 import { ThemeProvider } from './src/context/ThemeContext';
 import { readAndValidateBackup, promptAndImport } from './src/utils/backupImport';
+import { t } from './src/data/translations';
+
+const STORE_URL = IS_PRO
+  ? 'https://play.google.com/store/apps/details?id=com.aidoru.HomeFit'
+  : 'https://play.google.com/store/apps/details?id=com.aidoru.HomeFitFree';
+const PACKAGE_NAME = IS_PRO ? 'com.aidoru.HomeFit' : 'com.aidoru.HomeFitFree';
 
 const Tab = createBottomTabNavigator();
 
@@ -145,6 +152,25 @@ export default function App() {
     }
     init();
   }, [loadLanguage]);
+
+  // Check for app updates on Play Store
+  useEffect(() => {
+    VersionCheck.needUpdate({ provider: 'playStore', packageName: PACKAGE_NAME })
+      .then(res => {
+        if (res?.isNeeded) {
+          const lang = language;
+          Alert.alert(
+            t('updateAvailableTitle', lang),
+            t('updateAvailableMessage', lang),
+            [
+              { text: t('later', lang), style: 'cancel' },
+              { text: t('updateNow', lang), onPress: () => Linking.openURL(STORE_URL) },
+            ]
+          );
+        }
+      })
+      .catch(() => {});
+  }, [language]);
 
   // Handle .homefit backup files opened from other apps (WhatsApp, Files, etc.)
   useEffect(() => {

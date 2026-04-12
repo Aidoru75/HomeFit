@@ -133,10 +133,15 @@ export default function RoutinesScreen({ navigation, route }) {
   // Handle deep link import (homefit://import?importData=...)
   useEffect(() => {
     const data = route.params?.importData;
-    if (!data || !IS_PRO) return;
+    if (!data) return;
 
     // Clear the param so it doesn't re-trigger
     navigation.setParams({ importData: undefined });
+
+    if (!IS_PRO) {
+      Alert.alert(t('proRoutineAlertTitle', lang), t('proRoutineAlertMessage', lang));
+      return;
+    }
 
     if (!isValidRoutineCode(data)) {
       Alert.alert(t('invalidQRCode', lang), t('invalidQRCodeMessage', lang));
