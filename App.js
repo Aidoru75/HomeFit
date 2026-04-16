@@ -6,6 +6,7 @@ import { NavigationContainer, useNavigationContainerRef } from '@react-navigatio
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Font from 'expo-font';
+import * as Speech from 'expo-speech';
 import { StatusBar } from 'expo-status-bar';
 import * as NavigationBar from 'expo-navigation-bar';
 
@@ -141,20 +142,23 @@ export default function App() {
   const loadLanguage = useCallback(async () => {
     const settings = await loadSettings();
     setLanguage(settings.language || 'en');
+    return settings;
   }, []);
 
   useEffect(() => {
     async function init() {
-      await loadLanguage();
+      const settings = await loadLanguage();
       seedDefaultRoutines();
+      // Warm up TTS engine with the user's language to pre-cache the correct voice
+      Speech.speak(' ', { volume: 0, language: settings?.language === 'es' ? 'es-ES' : 'en-US' });
       const onboarded = await checkOnboarded();
       if (!onboarded) setShowOnboarding(true);
     }
     init();
   }, [loadLanguage]);
 
-  // Check for app updates on Play Store
-  useEffect(() => {
+  // Check for app updates on Play Store — disabled temporarily
+  /* useEffect(() => {
     VersionCheck.needUpdate({ provider: 'playStore', packageName: PACKAGE_NAME })
       .then(res => {
         if (res?.isNeeded) {
@@ -170,7 +174,7 @@ export default function App() {
         }
       })
       .catch(() => {});
-  }, [language]);
+  }, [language]); */
 
   // Handle .homefit backup files opened from other apps (WhatsApp, Files, etc.)
   useEffect(() => {

@@ -399,9 +399,11 @@ export const isProEquipment = (equipmentId) => {
 
 export const isProExercise = (exercise) => {
   if (!exercise?.equipment || exercise.equipment.length === 0) return false;
+  // An exercise is PRO-only if ANY required slot has no free alternative
+  // (i.e. every alternative in that slot is PRO equipment)
   return exercise.equipment.some(item =>
     Array.isArray(item)
-      ? item.some(alt => isProEquipment(alt))
+      ? item.every(alt => isProEquipment(alt))
       : isProEquipment(item)
   );
 };

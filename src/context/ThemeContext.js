@@ -9,7 +9,7 @@ export function ThemeProvider({ children }) {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    if (IS_PRO) loadSettings().then(s => setIsDark(s.darkMode === true));
+    loadSettings().then(s => setIsDark(s.darkMode === true));
   }, []);
 
   const toggleDark = async (value) => {

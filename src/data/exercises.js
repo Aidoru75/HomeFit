@@ -1,4 +1,4 @@
-// 246 Exercises - Complete Catalog - Bilingual (English/Spanish)
+// 247 Exercises - Complete Catalog - Bilingual (English/Spanish)
 import { isProExercise } from './equipment';
 import { IS_PRO } from '../config';
 
@@ -1964,6 +1964,21 @@ export const exercises = [
     bmc: 1.0,
     wf: 0.0,
     bwFraction: 0.20,
+  },
+  {
+    id: 'lying_leg_raise',
+    name: { en: 'Lying Leg Raise', es: 'Elevación de Piernas Tumbado' },
+    muscleGroup: 'core',
+    muscles: { core: 0.80, quads: 0.15, glutes: 0.05 },
+    equipment: [],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Lower ab and hip flexor exercise on the floor. Lie flat on back with hands under hips, raise straight legs to 90°, then curl hips slightly off the floor at the top, lower legs slowly without touching the floor.',
+      es: 'Ejercicio de abdominales bajos y flexores de cadera en el suelo. Túmbate boca arriba con manos bajo las caderas, sube las piernas rectas a 90°, luego eleva ligeramente el culo del suelo al final, baja lentamente sin tocar el suelo.',
+    },
+    bmc: 1.2,
+    wf: 0.0,
+    bwFraction: 0.25,
   },
   {
     id: 'bicycle_crunches',

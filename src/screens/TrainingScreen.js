@@ -35,6 +35,8 @@ import { IS_PRO } from '../config';
 const timerSource = require('../../assets/audio/timer.mp3');
 // Silent clip — played before voice announcements to grab audio focus and stop background music
 const silentSource = require('../../assets/audio/silent.mp3');
+// 6-second silent clip — played at rest start to give a clean break before voice announcement
+const silent6Source = require('../../assets/audio/silent6.mp3');
 
 // Background images
 const startBackground = IS_PRO
@@ -92,6 +94,8 @@ export default function TrainingScreen({ route, navigation }) {
   const timerPlayer = useAudioPlayer(timerSource);
   // Silent player — grabs audio focus before voice announcements to stop background music
   const silentPlayer = useAudioPlayer(silentSource);
+  // 6-second silent player — played at rest start for a clean break before voice announcement
+  const silent6Player = useAudioPlayer(silent6Source);
 
   // Refs to track current sound settings (updated on focus)
   const soundEnabledRef = useRef(true);
@@ -840,14 +844,21 @@ export default function TrainingScreen({ route, navigation }) {
   useEffect(() => {
     if (!isResting || !voiceEnabledRef.current) return;
     const info = getNextInfo();
+    // Store for 13-second countdown announcement (avoids stale closure in setInterval)
+    nextInfoRef.current = info;
     if (info) {
       // Exercise rest means we switched exercises — always announce the name
       if (isExerciseRest) info.sameExercise = false;
       const text = buildAnnouncement(info, true);
-      speakWithFocus(text, getSpeechOpts());
+      // Play 6-second silent simultaneously with speech to hold audio focus.
+      // Stop the silent as soon as speech finishes so music can resume promptly.
+      silent6Player.seekTo(0);
+      silent6Player.play();
+      Speech.speak(text, {
+        ...getSpeechOpts(),
+        onDone: () => setTimeout(() => silent6Player.pause(), 300),
+      });
     }
-    // Store for 13-second countdown announcement (avoids stale closure in setInterval)
-    nextInfoRef.current = info;
   }, [isResting]);
 
   // Voice: announce first exercise when workout starts
@@ -1495,7 +1506,7 @@ export default function TrainingScreen({ route, navigation }) {
       <View style={[styles.restContent, isLandscape && styles.restContentLandscape]}>
         {/* In landscape: next preview on the LEFT */}
         {isLandscape && nextInfo && (
-          <View style={[styles.nextPreview, styles.nextPreviewLandscape]}>
+          <View style={styles.nextPreviewLandscape}>
             <Text style={styles.nextLabel}>
               {nextInfo.isSuperset ? `${t('superset', lang).toUpperCase()} - ${t('upNext', lang)}` : t('upNext', lang)}
             </Text>
@@ -1975,9 +1986,13 @@ const makeStyles = (colors) => StyleSheet.create({
     fontSize: 100,
   },
   nextPreviewLandscape: {
-    flex: 1,
-    marginTop: 0,
-    marginRight: spacing.lg,
+    width: '50%',
+    overflow: 'hidden',
+    backgroundColor: colors.background,
+    borderRadius: borderRadius.lg,
+    marginRight: spacing.md,
+    padding: spacing.lg,
+    alignItems: 'center',
     justifyContent: 'center',
   },
   restLabel: {
@@ -2119,6 +2134,7 @@ const makeStyles = (colors) => StyleSheet.create({
     paddingVertical: 0,
     paddingHorizontal: spacing.xs,
     width: 66,
+    flexShrink: 0,
   },
   thumbnailScrollLandscape: {
     paddingHorizontal: 0,
@@ -2137,9 +2153,11 @@ const makeStyles = (colors) => StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
     paddingTop: 0,
+    paddingHorizontal: 0,
   },
   landscapeImageSide: {
-    flex: 1,
+    width: '50%',
+    overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
   },
