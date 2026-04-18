@@ -6,7 +6,7 @@ export default ({ config }) => {
     name: isFree ? 'HomeFit Free' : 'HomeFit',
     slug: 'HomeFit',
     scheme: isFree ? 'homefitfree' : 'homefit',
-    version: '1.2.0',
+    version: '1.2.1',
     orientation: 'default',
     icon: isFree ? './assets/icon-free.png' : './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -20,7 +20,7 @@ export default ({ config }) => {
       bundleIdentifier: isFree ? 'com.aidoru.HomeFitFree' : 'com.aidoru.HomeFit',
     },
     android: {
-      versionCode: 11,
+      versionCode: 12,
       adaptiveIcon: {
         foregroundImage: isFree ? './assets/adaptive-icon-free.png' : './assets/adaptive-icon.png',
         backgroundImage: isFree ? './assets/adaptive-icon-free-bg.png' : './assets/adaptive-icon-bg.png',

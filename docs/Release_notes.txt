@@ -1,36 +1,40 @@
 <en-US>
-What's new in v1.2.0
+What's new in v1.2.1
 
-- Backup & restore: export all your data as a .homefit file and import on any device
-- Voice announcements now interrupt background music during training
-- New Workload tab in Stats: muscle group volume over the last 30 days
-- Isometric 3D bar charts for calories and volume history
-- Various bug fixes and visual improvements
+- New exercise: Lying Leg Raise
+- Dark mode: muscle group colors now use a properly muted palette for better readability
+- Exercise images upgraded to PNG for sharper quality across all screen densities
+- Fixed landscape layout during training: image column no longer overlaps the thumbnail strip
+- Fixed Sumo Deadlift incorrectly requiring a squat rack
+- Fixed Dips (chest and triceps) not appearing for users who own parallel bars
 </en-US>
 <es-419>
-Novedades de la versión 1.2.0
+Novedades de la versión 1.2.1
 
-- Copia de seguridad: exporta tus datos como archivo .homefit e impórtalo en cualquier dispositivo
-- Los anuncios de voz ahora interrumpen la música de fondo durante el entrenamiento
-- Nueva pestaña Carga en Estadísticas: volumen por grupo muscular en los últimos 30 días
-- Gráficos 3D isométricos para calorías y volumen
-- Correcciones y mejoras diversas
+- Nuevo ejercicio: Elevación de Piernas Tumbado
+- Modo oscuro: los colores de grupos musculares ahora usan una paleta más suave para mayor legibilidad
+- Imágenes de ejercicios actualizadas a PNG para mayor nitidez en todas las pantallas
+- Corregido el diseño en horizontal durante el entrenamiento: la columna de imagen ya no se superpone a la barra lateral
+- Corregido: el Peso Muerto Sumo ya no requiere incorrectamente un rack
+- Corregido: los Fondos (pecho y tríceps) ahora aparecen correctamente para usuarios con barras paralelas
 </es-419>
 <es-ES>
-Novedades de la versión 1.2.0
+Novedades de la versión 1.2.1
 
-- Copia de seguridad: exporta tus datos como archivo .homefit e impórtalo en cualquier dispositivo
-- Los anuncios de voz ahora interrumpen la música de fondo durante el entrenamiento
-- Nueva pestaña Carga en Estadísticas: volumen por grupo muscular en los últimos 30 días
-- Gráficos 3D isométricos para calorías y volumen
-- Correcciones y mejoras diversas
+- Nuevo ejercicio: Elevación de Piernas Tumbado
+- Modo oscuro: los colores de grupos musculares ahora usan una paleta más suave para mayor legibilidad
+- Imágenes de ejercicios actualizadas a PNG para mayor nitidez en todas las pantallas
+- Corregido el diseño en horizontal durante el entrenamiento: la columna de imagen ya no se superpone a la barra lateral
+- Corregido: el Peso Muerto Sumo ya no requiere incorrectamente un rack
+- Corregido: los Fondos (pecho y tríceps) ahora aparecen correctamente para usuarios con barras paralelas
 </es-ES>
 <es-US>
-Novedades de la versión 1.2.0
+Novedades de la versión 1.2.1
 
-- Copia de seguridad: exporta tus datos como archivo .homefit e impórtalo en cualquier dispositivo
-- Los anuncios de voz ahora interrumpen la música de fondo durante el entrenamiento
-- Nueva pestaña Carga en Estadísticas: volumen por grupo muscular en los últimos 30 días
-- Gráficos 3D isométricos para calorías y volumen
-- Correcciones y mejoras diversas
+- Nuevo ejercicio: Elevación de Piernas Tumbado
+- Modo oscuro: los colores de grupos musculares ahora usan una paleta más suave para mayor legibilidad
+- Imágenes de ejercicios actualizadas a PNG para mayor nitidez en todas las pantallas
+- Corregido el diseño en horizontal durante el entrenamiento: la columna de imagen ya no se superpone a la barra lateral
+- Corregido: el Peso Muerto Sumo ya no requiere incorrectamente un rack
+- Corregido: los Fondos (pecho y tríceps) ahora aparecen correctamente para usuarios con barras paralelas
 </es-US>
