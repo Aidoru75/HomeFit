@@ -14,6 +14,19 @@ const muscleColors = {
   core: '#FF5722',
 };
 
+const darkMuscleColors = {
+  chest: '#b05050',
+  back: '#4a80aa',
+  shoulders: '#7a5898',
+  biceps: '#a06830',
+  triceps: '#a08020',
+  quads: '#3a8858',
+  hamstrings: '#2a7870',
+  glutes: '#a83870',
+  calves: '#2888a0',
+  core: '#b05038',
+};
+
 export const lightColors = {
   // Primary palette
   primary: '#000000',
@@ -41,7 +54,7 @@ export const lightColors = {
   textLight: '#BDC3C7',
   textOnPrimary: '#FFFFFF',
 
-  // Muscle group colors (same in both themes)
+  // Muscle group colors
   muscleColors,
 };
 
@@ -72,8 +85,8 @@ export const darkColors = {
   textLight: '#666666',
   textOnPrimary: '#FFFFFF',
 
-  // Muscle group colors (same in both themes)
-  muscleColors,
+  // Muscle group colors — muted for dark backgrounds
+  muscleColors: darkMuscleColors,
 };
 
 // Backward-compat alias — screens not yet on useTheme() still get light colors

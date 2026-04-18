@@ -226,6 +226,22 @@ export const exercises = [
     bmc: 1.5,
     wf: 0.02,
   },
+  {
+    id: 'dips_chest',
+    name: { en: 'Dips (Chest Focus)', es: 'Fondos (Enfoque Pecho)' },
+    muscleGroup: 'chest',
+    muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
+    equipment: ['parallels'],
+    optionalEquipment: ['dip_belt', 'plates'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Compound movement for lower chest when performed with forward lean. Keep torso tilted forward, lower until shoulders are below elbows, then push up maintaining the chest-focused position.',
+      es: 'Movimiento compuesto para pecho inferior realizado con inclinación hacia adelante. Mantén el torso inclinado, baja hasta que los hombros estén bajo los codos, luego empuja manteniendo la posición.',
+    },
+    bmc: 2.5,
+    wf: 0.04,
+    bwFraction: 0.95,
+  },
 
   // ============================================
   // BACK
@@ -1048,6 +1064,22 @@ export const exercises = [
     bwFraction: 0.50,
   },
   {
+    id: 'dips_triceps',
+    name: { en: 'Dips (Tricep Focus)', es: 'Fondos (Enfoque Tríceps)' },
+    muscleGroup: 'triceps',
+    muscles: { triceps: 0.55, chest: 0.30, shoulders: 0.15 },
+    equipment: ['parallels'],
+    optionalEquipment: ['dip_belt', 'plates'],
+    weightType: 'bodyweight',
+    description: {
+      en: 'Compound tricep builder with upright torso. Keep body vertical, lower until upper arms are parallel to floor, push up focusing on tricep contraction, elbows close to body.',
+      es: 'Constructor compuesto de tríceps con torso erguido. Mantén el cuerpo vertical, baja hasta que brazos estén paralelos al suelo, empuja enfocándote en contracción de tríceps.',
+    },
+    bmc: 2.5,
+    wf: 0.04,
+    bwFraction: 0.95,
+  },
+  {
     id: 'diamond_push_ups',
     name: { en: 'Diamond Push-Ups', es: 'Flexiones Diamante' },
     muscleGroup: 'triceps',
@@ -1680,7 +1712,7 @@ export const exercises = [
     name: { en: 'Sumo Deadlift', es: 'Peso Muerto Sumo' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.35, quads: 0.25, hamstrings: 0.20, back: 0.15, core: 0.05 },
-    equipment: ['straight_bar', 'plates', 'rack'],
+    equipment: ['straight_bar', 'plates'],
     weightType: 'barbell',
     description: {
       en: 'Wide stance deadlift emphasizing glutes and adductors. Feet wide, toes pointed out, grip inside legs, drive through heels to stand, keeps torso more upright than conventional deadlift.',
@@ -2433,22 +2465,6 @@ export const exercises = [
     wf: 0.03,
   },
   {
-    id: 'dips_chest',
-    name: { en: 'Dips (Chest Focus)', es: 'Fondos (Enfoque Pecho)' },
-    muscleGroup: 'chest',
-    muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
-    equipment: ['parallels'],
-    optionalEquipment: ['dip_belt', 'plates'],
-    weightType: 'bodyweight',
-    description: {
-      en: 'Compound movement for lower chest when performed with forward lean. Keep torso tilted forward, lower until shoulders are below elbows, then push up maintaining the chest-focused position.',
-      es: 'Movimiento compuesto para pecho inferior realizado con inclinación hacia adelante. Mantén el torso inclinado, baja hasta que los hombros estén bajo los codos, luego empuja manteniendo la posición.',
-    },
-    bmc: 2.5,
-    wf: 0.04,
-    bwFraction: 0.95,
-  },
-  {
     id: 'neutral_bench_press',
     name: { en: 'Neutral Grip Bench Press', es: 'Press de Banca Agarre Neutro' },
     muscleGroup: 'chest',
@@ -2988,22 +3004,6 @@ export const exercises = [
     },
     bmc: 1.0,
     wf: 0.02,
-  },
-  {
-    id: 'dips_triceps',
-    name: { en: 'Dips (Tricep Focus)', es: 'Fondos (Enfoque Tríceps)' },
-    muscleGroup: 'triceps',
-    muscles: { triceps: 0.55, chest: 0.30, shoulders: 0.15 },
-    equipment: ['parallels'],
-    optionalEquipment: ['dip_belt', 'plates'],
-    weightType: 'bodyweight',
-    description: {
-      en: 'Compound tricep builder with upright torso. Keep body vertical, lower until upper arms are parallel to floor, push up focusing on tricep contraction, elbows close to body.',
-      es: 'Constructor compuesto de tríceps con torso erguido. Mantén el cuerpo vertical, baja hasta que brazos estén paralelos al suelo, empuja enfocándote en contracción de tríceps.',
-    },
-    bmc: 2.5,
-    wf: 0.04,
-    bwFraction: 0.95,
   },
   {
     id: 'neutral_skull_crushers',
