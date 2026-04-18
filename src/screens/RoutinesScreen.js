@@ -30,6 +30,7 @@ import {
   getExerciseById,
 } from '../data/exercises';
 import { IS_PRO } from '../config';
+import { isProExercise } from '../data/equipment';
 import { loadRoutines, addRoutine, updateRoutine, deleteRoutine, loadSettings, loadExcludedExercises } from '../storage/storage';
 import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
@@ -138,11 +139,6 @@ export default function RoutinesScreen({ navigation, route }) {
     // Clear the param so it doesn't re-trigger
     navigation.setParams({ importData: undefined });
 
-    if (!IS_PRO) {
-      Alert.alert(t('proRoutineAlertTitle', lang), t('proRoutineAlertMessage', lang));
-      return;
-    }
-
     if (!isValidRoutineCode(data)) {
       Alert.alert(t('invalidQRCode', lang), t('invalidQRCodeMessage', lang));
       return;
@@ -152,6 +148,16 @@ export default function RoutinesScreen({ navigation, route }) {
     if (!decoded) {
       Alert.alert(t('invalidQRCode', lang), t('invalidQRCodeMessage', lang));
       return;
+    }
+
+    if (!IS_PRO) {
+      const hasProExercise = decoded.days?.some(day =>
+        day.exercises?.some(ex => isProExercise(getExerciseById(ex.exerciseId)))
+      );
+      if (hasProExercise) {
+        Alert.alert(t('proRoutineAlertTitle', lang), t('proRoutineAlertMessage', lang));
+        return;
+      }
     }
 
     let totalExercises = 0;
