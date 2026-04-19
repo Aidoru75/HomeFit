@@ -964,14 +964,17 @@ export default function RoutinesScreen({ navigation, route }) {
                     {/* Superset indicator bar */}
                     {inSuperset && <View style={styles.supersetBar} />}
 
+                    {/* LEFT: thumbnail */}
                     <View style={styles.exerciseThumbnail}>
                       <ExerciseImage
                         exerciseId={ex.exerciseId}
-                        size={40}
+                        size={68}
                         showEndImage={true}
                         animate={false}
                       />
                     </View>
+
+                    {/* MIDDLE: name + details + superset link */}
                     <View style={styles.exerciseInfo}>
                       <Text style={styles.exerciseItemName}>
                         {exerciseData ? getExerciseName(exerciseData, lang) : 'Unknown'}
@@ -980,7 +983,31 @@ export default function RoutinesScreen({ navigation, route }) {
                         {ex.sets} {t('sets', lang).toLowerCase()} • {ex.reps?.[0] === 'E' ? t('toExhaustion', lang) : `${ex.reps?.[0] || 10} ${exerciseData?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}
                         {totalWeight > 0 && ` • ${ex.weights[0]}${settings.measurementSystem === 'imperial' ? t('lbs', lang) : t('kg', lang)}`}
                       </Text>
+                      {!isLastExercise && (
+                        <TouchableOpacity
+                          style={[
+                            styles.supersetLinkButton,
+                            linkedWithNext && styles.supersetLinkButtonActive,
+                          ]}
+                          onPress={() => toggleSuperset(dayIndex, exIndex)}
+                        >
+                          <Text style={[
+                            styles.supersetLinkIcon,
+                            linkedWithNext && styles.supersetLinkIconActive,
+                          ]}>
+                            {linkedWithNext ? '⛓' : '○'}
+                          </Text>
+                          <Text style={[
+                            styles.supersetLinkText,
+                            linkedWithNext && styles.supersetLinkTextActive,
+                          ]}>
+                            {linkedWithNext ? t('inSuperset', lang) : t('linkSuperset', lang)}
+                          </Text>
+                        </TouchableOpacity>
+                      )}
                     </View>
+
+                    {/* RIGHT: reorder arrows */}
                     <View style={styles.reorderButtons}>
                       {exIndex > 0 && (
                         <TouchableOpacity
@@ -1000,30 +1027,6 @@ export default function RoutinesScreen({ navigation, route }) {
                       )}
                     </View>
                   </TouchableOpacity>
-
-                  {/* Superset link button between exercises */}
-                  {!isLastExercise && (
-                    <TouchableOpacity
-                      style={[
-                        styles.supersetLinkButton,
-                        linkedWithNext && styles.supersetLinkButtonActive,
-                      ]}
-                      onPress={() => toggleSuperset(dayIndex, exIndex)}
-                    >
-                      <Text style={[
-                        styles.supersetLinkIcon,
-                        linkedWithNext && styles.supersetLinkIconActive,
-                      ]}>
-                        {linkedWithNext ? '⛓' : '○'}
-                      </Text>
-                      <Text style={[
-                        styles.supersetLinkText,
-                        linkedWithNext && styles.supersetLinkTextActive,
-                      ]}>
-                        {linkedWithNext ? t('inSuperset', lang) : t('linkSuperset', lang)}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
                 </React.Fragment>
               );
             })
@@ -1934,16 +1937,22 @@ const makeStyles = (colors) => StyleSheet.create({
     flex: 1,
   },
   dayReorderButtons: {
-    flexDirection: 'column',
+    flexDirection: 'row',
+    gap: 6,
     marginRight: spacing.sm,
   },
   dayReorderButton: {
-    padding: spacing.xs,
+    width: 29,
+    height: 29,
+    borderRadius: 15,
+    backgroundColor: colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   dayReorderIcon: {
     fontFamily: fonts.regular,
     color: colors.accent,
-    fontSize: fontSize.xs,
+    fontSize: 18,
   },
   dayTitleTouchable: {
     flexDirection: 'row',
@@ -2008,7 +2017,7 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   exerciseItem: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     paddingVertical: spacing.sm,
     borderTopWidth: 1,
     borderTopColor: colors.border,
@@ -2049,23 +2058,28 @@ const makeStyles = (colors) => StyleSheet.create({
   },
   reorderButtons: {
     flexDirection: 'column',
-    gap: 2,
+    gap: 10,
+    marginLeft: 10,
   },
   reorderButton: {
-    padding: spacing.xs,
+    width: 29,
+    height: 29,
+    borderRadius: 15,
+    backgroundColor: colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   reorderIcon: {
     fontFamily: fonts.regular,
     color: colors.accent,
-    fontSize: fontSize.sm,
+    fontSize: 18,
   },
   supersetLinkButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: spacing.xs,
-    marginVertical: 2,
-    marginHorizontal: spacing.lg,
+    marginTop: spacing.xs,
     borderRadius: borderRadius.sm,
     borderWidth: 1,
     borderColor: colors.border,

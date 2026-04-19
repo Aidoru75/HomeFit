@@ -135,9 +135,9 @@ export default function ExercisesScreen() {
           <View style={[styles.exerciseColorBar, { backgroundColor: muscleColor }]} />
           {/* Exercise Thumbnail */}
           <View style={styles.exerciseThumbnail}>
-            <ExerciseImage 
-              exerciseId={item.id} 
-              size={48} 
+            <ExerciseImage
+              exerciseId={item.id}
+              size={68}
               showEndImage={true}
               animate={false}
             />
@@ -450,7 +450,7 @@ const makeStyles = (colors) => StyleSheet.create({
     left: 0,
   },
   exerciseThumbnail: {
-    marginLeft: spacing.sm,
+    marginLeft: 13,
     marginVertical: spacing.xs,
     borderRadius: borderRadius.sm,
     overflow: 'hidden',

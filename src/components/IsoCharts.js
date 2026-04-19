@@ -43,7 +43,7 @@ function pts(...pairs) {
 
 // ─── Vertical bar chart ───────────────────────────────────────────────────────
 
-export function IsoBarChart({ data, chartHeight = 180, depth = 10, maxValue }) {
+export function IsoBarChart({ data, chartHeight = 180, depth = 10, maxValue, colors }) {
   const [chartAreaWidth, setChartAreaWidth] = useState(0);
 
   if (!data || data.length === 0) return null;
@@ -102,13 +102,15 @@ export function IsoBarChart({ data, chartHeight = 180, depth = 10, maxValue }) {
         ))}
       </Defs>
 
-      {/* Grid lines (drawn first — behind bars) */}
+      {/* Grid lines (drawn first — behind bars, offset to top-face plane) */}
       {Array.from({ length: NO_SECTIONS + 1 }, (_, k) => {
         const y = baseline - k * (chartHeight / NO_SECTIONS);
+        const baseStroke  = colors?.textLight ?? '#cccccc';
+        const subStroke   = colors?.border ?? '#ebebeb';
         return (
           <Line key={`g${k}`}
-            x1={0} y1={y} x2={chartW - dx} y2={y}
-            stroke={k === 0 ? '#cccccc' : '#ebebeb'}
+            x1={dx} y1={y - dy} x2={chartW} y2={y - dy}
+            stroke={k === 0 ? baseStroke : subStroke}
             strokeWidth={k === 0 ? 1 : 0.5}
           />
         );
@@ -250,7 +252,7 @@ export function IsoStackedBar({ segments, barHeight = 20, depth = 8 }) {
 
 // ─── Single horizontal 3D bar (Workload volume rows) ─────────────────────────
 
-export function IsoHBar({ id, pct, color, barHeight = 16, depth = 6, targetPct }) {
+export function IsoHBar({ id, pct, color, barHeight = 16, depth = 6, targetPct, colors }) {
   const [containerWidth, setContainerWidth] = useState(0);
 
   const dx = depth * COS30;
@@ -277,7 +279,7 @@ export function IsoHBar({ id, pct, color, barHeight = 16, depth = 6, targetPct }
           {/* Background track — shifted up by dy to sit behind depth area */}
           <Polygon
             points={pts([dx, 1], [trackW + dx, 1], [trackW + dx, 1 + barHeight], [dx, 1 + barHeight])}
-            fill="rgba(0,0,0,0.15)"
+            fill={colors?.background === '#121212' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.15)'}
           />
 
           {barW > 0 && (

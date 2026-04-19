@@ -269,6 +269,7 @@ export default function StatsScreen({ route }) {
             chartHeight={CHART_HEIGHT}
             maxValue={maxCalories}
             depth={10}
+            colors={colors}
           />
 
           {/* Legend */}
@@ -390,9 +391,10 @@ export default function StatsScreen({ route }) {
                     id={entry.id}
                     pct={entry.volume > 0 ? Math.max((entry.volume / maxVolume) * 100, 3) : 0}
                     color={entry.color}
-                    barHeight={16}
+                    barHeight={22}
                     depth={6}
                     targetPct={targetPct}
+                    colors={colors}
                   />
                 </View>
                 <Text style={styles.volumeBarValue}>{formatVolume(entry.volume)}</Text>
@@ -774,7 +776,7 @@ const makeStyles = (colors) => StyleSheet.create({
   volumeBarRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: spacing.sm,
+    marginBottom: 2,
   },
   volumeBarLabel: {
     fontFamily: fonts.bold,

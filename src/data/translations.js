@@ -175,7 +175,10 @@ export const translations = {
     myEquipment: 'My Equipment',
     items: 'items',
     enabled: 'enabled',
-    equipmentHint: 'Select the equipment you have available. Exercises requiring missing equipment will be deactivated in the library.\nPLEASE NOTE: You can select multiple pieces of equipment if they are comprised into one you have. For example, if you have an adjustable bench you can select all benches (incline, decline, ...).',
+    equipmentHint: 'Select the equipment you have available. Exercises requiring missing equipment will be deactivated in the library.\n\nYou can select multiple pieces of equipment if they are comprised into one you have. For example, if you have an adjustable bench you can select all benches (incline, decline, ...).',
+    equipmentHintTitle: 'My Equipment',
+    equipmentWarningTitle: 'Heads up',
+    equipmentWarning: '⚠️ Any change to your equipment selection will reset the manual overrides you have set in the exercise library.',
     selectAll: 'Select All',
     deselectAll: 'Deselect All',
     
@@ -448,7 +451,10 @@ export const translations = {
     myEquipment: 'Mi Equipamiento',
     items: 'elementos',
     enabled: 'activos',
-    equipmentHint: 'Selecciona el equipamiento que tienes disponible. Los ejercicios que requieran equipamiento no disponible se desactivarán en la biblioteca.\nNOTA: Puedes seleccionar varios equipos si están incluidos en uno que ya tienes. Por ejemplo, si tienes un banco ajustable, puedes seleccionar todos los bancos (inclinados, declinados, etc.).',
+    equipmentHint: 'Selecciona el equipamiento que tienes disponible. Los ejercicios que requieran equipamiento no disponible se desactivarán en la biblioteca.\n\nPuedes seleccionar varios equipos si están incluidos en uno que ya tienes. Por ejemplo, si tienes un banco ajustable, puedes seleccionar todos los bancos (inclinados, declinados, etc.).',
+    equipmentHintTitle: 'Mi Equipamiento',
+    equipmentWarningTitle: 'Atención',
+    equipmentWarning: '⚠️ Cualquier cambio en el equipamiento seleccionado restablecerá las exclusiones manuales que hayas configurado en la biblioteca de ejercicios.',
     selectAll: 'Seleccionar Todo',
     deselectAll: 'Deseleccionar Todo',
     

@@ -1,5 +1,5 @@
 // Profile Screen - User profile and equipment management
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import {
   View,
   Text,
@@ -101,11 +101,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { spacing, borderRadius, fontSize, shadows, fonts } from '../theme';
 import { useTheme } from '../context/ThemeContext';
-import { 
-  loadSettings, 
-  saveSettings, 
+import {
+  loadSettings,
+  saveSettings,
   loadAvailableEquipment,
   updateExcludedByEquipment,
+  loadExcludedExercises,
+  calculateExcludedByEquipment,
 } from '../storage/storage';
 import {
   equipment,
@@ -115,6 +117,7 @@ import {
   getVisibleCategories,
 } from '../data/equipment';
 import { t } from '../data/translations';
+import { IS_PRO } from '../config';
 import {
   totalInchesToFeetInches,
   feetInchesToTotalInches,
@@ -154,6 +157,14 @@ export default function ProfileScreen() {
     const savedEquipment = await loadAvailableEquipment();
     setSettings(savedSettings);
     setAvailableEquipment(savedEquipment);
+
+    const excluded = await loadExcludedExercises();
+    const equipmentExcluded = calculateExcludedByEquipment(savedEquipment);
+    const excludedSet = new Set(excluded);
+    const equipmentSet = new Set(equipmentExcluded);
+    hasManualOverrides.current =
+      excluded.some(id => !equipmentSet.has(id)) ||
+      equipmentExcluded.some(id => !excludedSet.has(id));
 
     // Parse height into feet/inches if imperial and height exists
     if (savedSettings.measurementSystem === 'imperial' && savedSettings.userHeight) {
@@ -197,6 +208,18 @@ export default function ProfileScreen() {
       ...prev,
       [categoryId]: !prev[categoryId],
     }));
+  };
+
+  const hasManualOverrides = useRef(false);
+  const withEquipmentWarning = (action) => {
+    if (hasManualOverrides.current) {
+      Alert.alert(t('equipmentWarningTitle', lang), t('equipmentWarning', lang), [
+        { text: t('cancel', lang), style: 'cancel' },
+        { text: t('continue', lang), onPress: action },
+      ]);
+    } else {
+      action();
+    }
   };
 
   const toggleEquipment = async (equipmentId) => {
@@ -271,7 +294,7 @@ export default function ProfileScreen() {
         </Text>
         <Switch
           value={isAvailable}
-          onValueChange={() => toggleEquipment(equipmentId)}
+          onValueChange={() => withEquipmentWarning(() => toggleEquipment(equipmentId))}
           trackColor={{ false: colors.border, true: colors.accentLight }}
           thumbColor={isAvailable ? colors.accent : colors.textLight}
         />
@@ -347,8 +370,8 @@ export default function ProfileScreen() {
         <Text style={styles.headerTitle}>{t('profileTitle', lang)}</Text>
       </View>
 
-      <ScrollView 
-        style={styles.content} 
+      <ScrollView
+        style={[styles.content, { backgroundColor: colors.background }]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
@@ -364,115 +387,117 @@ export default function ProfileScreen() {
         {/* Personal Info Section */}
         <Text style={styles.sectionTitle}>{t('personalInfo', lang)}</Text>
         <View style={styles.card}>
-          {/* Name */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>{t('yourName', lang)}</Text>
-            <TextInput
-              style={styles.textInput}
-              value={settings.userName}
-              onChangeText={(text) => updateSetting('userName', text)}
-              placeholder={t('namePlaceholder', lang)}
-              placeholderTextColor={colors.textLight}
-              autoCapitalize="words"
-            />
-          </View>
-
-          {/* Height */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>{t('height', lang)}</Text>
-            {isImperial ? (
-              <View style={styles.inputWithUnit}>
-                <TextInput
-                  style={[styles.textInput, styles.smallNumberInput]}
-                  value={heightFeet}
-                  onChangeText={(text) => {
-                    const numericValue = text.replace(/[^0-9]/g, '');
-                    updateImperialHeight(numericValue, heightInches);
-                  }}
-                  placeholder="5"
-                  placeholderTextColor={colors.textLight}
-                  keyboardType="numeric"
-                  maxLength={1}
-                />
-                <Text style={styles.unitText}>{t('feet', lang)}</Text>
-                <TextInput
-                  style={[styles.textInput, styles.smallNumberInput]}
-                  value={heightInches}
-                  onChangeText={(text) => {
-                    const numericValue = text.replace(/[^0-9]/g, '');
-                    // Limit inches to 0-11
-                    const inches = parseInt(numericValue) || 0;
-                    if (inches <= 11) {
-                      updateImperialHeight(heightFeet, numericValue);
-                    }
-                  }}
-                  placeholder="10"
-                  placeholderTextColor={colors.textLight}
-                  keyboardType="numeric"
-                  maxLength={2}
-                />
-                <Text style={styles.unitText}>{t('inches', lang)}</Text>
-              </View>
-            ) : (
+          {/* Name + Age row */}
+          <View style={{ flexDirection: 'row', gap: spacing.md }}>
+            <View style={[styles.inputGroup, { flex: 1 }]}>
+              <Text style={styles.label}>{t('yourName', lang)}</Text>
+              <TextInput
+                style={styles.textInput}
+                value={settings.userName}
+                onChangeText={(text) => updateSetting('userName', text)}
+                placeholder={t('namePlaceholder', lang)}
+                placeholderTextColor={colors.textLight}
+                autoCapitalize="words"
+              />
+            </View>
+            <View style={[styles.inputGroup, { flex: 0.6 }]}>
+              <Text style={styles.label}>{t('age', lang)}</Text>
               <View style={styles.inputWithUnit}>
                 <TextInput
                   style={[styles.textInput, styles.numberInput]}
-                  value={settings.userHeight}
+                  value={settings.userAge}
                   onChangeText={(text) => {
                     const numericValue = text.replace(/[^0-9]/g, '');
-                    updateSetting('userHeight', numericValue);
+                    updateSetting('userAge', numericValue);
                   }}
-                  placeholder="175"
+                  placeholder="30"
                   placeholderTextColor={colors.textLight}
                   keyboardType="numeric"
                   maxLength={3}
                 />
-                <Text style={styles.unitText}>{t('cm', lang)}</Text>
+                <Text style={styles.unitText}>{t('years', lang)}</Text>
               </View>
-            )}
-          </View>
-
-          {/* Weight */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>{t('bodyWeight', lang)}</Text>
-            <View style={styles.inputWithUnit}>
-              <TextInput
-                style={[styles.textInput, styles.numberInput]}
-                value={settings.userWeight}
-                onChangeText={(text) => {
-                  const numericValue = text.replace(/[^0-9.]/g, '');
-                  const parts = numericValue.split('.');
-                  const sanitized = parts.length > 2
-                    ? parts[0] + '.' + parts.slice(1).join('')
-                    : numericValue;
-                  updateSetting('userWeight', sanitized);
-                }}
-                placeholder={isImperial ? "155" : "70"}
-                placeholderTextColor={colors.textLight}
-                keyboardType="decimal-pad"
-                maxLength={5}
-              />
-              <Text style={styles.unitText}>{isImperial ? t('lbs', lang) : t('kg', lang)}</Text>
             </View>
           </View>
 
-          {/* Age */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>{t('age', lang)}</Text>
-            <View style={styles.inputWithUnit}>
-              <TextInput
-                style={[styles.textInput, styles.numberInput]}
-                value={settings.userAge}
-                onChangeText={(text) => {
-                  const numericValue = text.replace(/[^0-9]/g, '');
-                  updateSetting('userAge', numericValue);
-                }}
-                placeholder="30"
-                placeholderTextColor={colors.textLight}
-                keyboardType="numeric"
-                maxLength={3}
-              />
-              <Text style={styles.unitText}>{t('years', lang)}</Text>
+          {/* Height + Weight row */}
+          <View style={{ flexDirection: 'row', gap: spacing.md }}>
+            {/* Height */}
+            <View style={[styles.inputGroup, { flex: 1 }]}>
+              <Text style={styles.label}>{t('height', lang)}</Text>
+              {isImperial ? (
+                <View style={styles.inputWithUnit}>
+                  <TextInput
+                    style={[styles.textInput, styles.smallNumberInput]}
+                    value={heightFeet}
+                    onChangeText={(text) => {
+                      const numericValue = text.replace(/[^0-9]/g, '');
+                      updateImperialHeight(numericValue, heightInches);
+                    }}
+                    placeholder="5"
+                    placeholderTextColor={colors.textLight}
+                    keyboardType="numeric"
+                    maxLength={1}
+                  />
+                  <Text style={styles.unitText}>{t('feet', lang)}</Text>
+                  <TextInput
+                    style={[styles.textInput, styles.smallNumberInput]}
+                    value={heightInches}
+                    onChangeText={(text) => {
+                      const numericValue = text.replace(/[^0-9]/g, '');
+                      const inches = parseInt(numericValue) || 0;
+                      if (inches <= 11) {
+                        updateImperialHeight(heightFeet, numericValue);
+                      }
+                    }}
+                    placeholder="10"
+                    placeholderTextColor={colors.textLight}
+                    keyboardType="numeric"
+                    maxLength={2}
+                  />
+                  <Text style={styles.unitText}>{t('inches', lang)}</Text>
+                </View>
+              ) : (
+                <View style={styles.inputWithUnit}>
+                  <TextInput
+                    style={[styles.textInput, styles.numberInput]}
+                    value={settings.userHeight}
+                    onChangeText={(text) => {
+                      const numericValue = text.replace(/[^0-9]/g, '');
+                      updateSetting('userHeight', numericValue);
+                    }}
+                    placeholder="175"
+                    placeholderTextColor={colors.textLight}
+                    keyboardType="numeric"
+                    maxLength={3}
+                  />
+                  <Text style={styles.unitText}>{t('cm', lang)}</Text>
+                </View>
+              )}
+            </View>
+
+            {/* Weight */}
+            <View style={[styles.inputGroup, { flex: 1 }]}>
+              <Text style={styles.label}>{t('bodyWeight', lang)}</Text>
+              <View style={styles.inputWithUnit}>
+                <TextInput
+                  style={[styles.textInput, styles.numberInput]}
+                  value={settings.userWeight}
+                  onChangeText={(text) => {
+                    const numericValue = text.replace(/[^0-9.]/g, '');
+                    const parts = numericValue.split('.');
+                    const sanitized = parts.length > 2
+                      ? parts[0] + '.' + parts.slice(1).join('')
+                      : numericValue;
+                    updateSetting('userWeight', sanitized);
+                  }}
+                  placeholder={isImperial ? "155" : "70"}
+                  placeholderTextColor={colors.textLight}
+                  keyboardType="decimal-pad"
+                  maxLength={5}
+                />
+                <Text style={styles.unitText}>{isImperial ? t('lbs', lang) : t('kg', lang)}</Text>
+              </View>
             </View>
           </View>
 
@@ -581,28 +606,35 @@ export default function ProfileScreen() {
 
         {/* My Equipment Section */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>{t('myEquipment', lang)}</Text>
-          <Text style={styles.sectionSubtitle}>
-            {availableCount}/{totalEquipment} {t('items', lang)}
-          </Text>
+          <Text style={[styles.sectionTitle, { marginHorizontal: 0, marginTop: 0, marginBottom: 0 }]}>{t('myEquipment', lang)}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.sm }}>
+            <Text style={styles.sectionSubtitle}>
+              {availableCount}/{totalEquipment} {t('items', lang)}
+            </Text>
+            <TouchableOpacity
+              onPress={() => Alert.alert(t('equipmentHintTitle', lang), t('equipmentHint', lang))}
+              style={styles.helpButton}
+            >
+              <Image
+                source={IS_PRO ? require('../../assets/icons/tooltip_pro.png') : require('../../assets/icons/tooltip_free.png')}
+                style={styles.helpButtonIcon}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-        
+
         <View style={styles.card}>
-          <Text style={styles.equipmentHint}>
-            {t('equipmentHint', lang)}
-          </Text>
-          
           {/* Quick actions */}
           <View style={styles.quickActions}>
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={selectAllEquipment}
+              onPress={() => withEquipmentWarning(selectAllEquipment)}
             >
               <Text style={styles.quickActionText}>{t('selectAll', lang)}</Text>
             </TouchableOpacity>
             <TouchableOpacity 
               style={[styles.quickActionButton, styles.quickActionButtonOutline]}
-              onPress={deselectAllEquipment}
+              onPress={() => withEquipmentWarning(deselectAllEquipment)}
             >
               <Text style={[styles.quickActionText, styles.quickActionTextOutline]}>
                 {t('deselectAll', lang)}
@@ -805,12 +837,16 @@ const makeStyles = (colors) => StyleSheet.create({
     color: colors.textSecondary,
     marginTop: spacing.xs,
   },
-  equipmentHint: {
-    fontFamily: fonts.regular,
-    fontSize: fontSize.sm,
-    color: colors.textSecondary,
-    marginBottom: spacing.md,
-    lineHeight: 20,
+  helpButton: {
+    width: 22,
+    height: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  helpButtonIcon: {
+    width: 22,
+    height: 22,
+    resizeMode: 'contain',
   },
   quickActions: {
     flexDirection: 'row',
@@ -857,9 +893,9 @@ const makeStyles = (colors) => StyleSheet.create({
     flex: 1,
   },
   categoryIcon: {
-    width: 28,
-    height: 28,
-    marginRight: spacing.md,
+    width: 50,
+    height: 50,
+    marginRight: 20,
   },
   categoryName: {
     fontSize: fontSize.md,
@@ -898,13 +934,13 @@ const makeStyles = (colors) => StyleSheet.create({
     borderBottomColor: colors.border,
   },
   equipmentImageContainer: {
-    width: 40,
-    height: 40,
-    marginRight: spacing.sm,
+    width: 50,
+    height: 50,
+    marginRight: 20,
   },
   equipmentImage: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     borderRadius: borderRadius.sm,
   },
   equipmentName: {
@@ -942,6 +978,6 @@ const makeStyles = (colors) => StyleSheet.create({
     textAlign: 'center',
   },
   bottomPadding: {
-    height: 120,
+    height: 40,
   },
 });
