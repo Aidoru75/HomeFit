@@ -41,7 +41,11 @@ export const loadSettings = async () => {
     }
     // First launch: detect device locale and default to Spanish if applicable
     const locale = Localization.getLocales?.()?.[0]?.languageCode ?? '';
-    return { ...DEFAULT_SETTINGS, language: locale.startsWith('es') ? 'es' : 'en' };
+    const language = locale.startsWith('es') ? 'es'
+      : locale.startsWith('fr') ? 'fr'
+      : locale.startsWith('pt') ? 'pt-BR'
+      : 'en';
+    return { ...DEFAULT_SETTINGS, language };
   } catch (error) {
     console.error('Error loading settings:', error);
     return DEFAULT_SETTINGS;

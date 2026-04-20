@@ -1,5 +1,5 @@
 // Exercises Screen - Browse all exercises by muscle group
-import React, { useState, useCallback, useRef, useMemo } from 'react';
+import React, { useState, useCallback, useRef, useMemo, useEffect } from 'react';
 import {
   View,
   Text,
@@ -27,6 +27,7 @@ import {
 } from '../data/exercises';
 import { getEquipmentName } from '../data/equipment';
 import { loadSettings, loadExcludedExercises, toggleExerciseExclusion } from '../storage/storage';
+import * as Speech from 'expo-speech';
 import { t } from '../data/translations';
 import ExerciseImage from '../components/ExerciseImage';
 
@@ -46,8 +47,21 @@ export default function ExercisesScreen() {
     useCallback(() => {
       loadUserSettings();
       loadExcluded();
+      return () => Speech.stop();
     }, [])
   );
+
+  useEffect(() => {
+    if (!selectedExercise) {
+      Speech.stop();
+      return;
+    }
+    if (!settings.voiceEnabled) return;
+    const localeMap = { es: 'es-ES', fr: 'fr-FR', 'pt-BR': 'pt-BR' };
+    const language = localeMap[lang] || 'en-US';
+    const text = getExerciseName(selectedExercise, lang) + '. ' + getExerciseDescription(selectedExercise, lang);
+    Speech.speak(text, { language });
+  }, [selectedExercise]);
 
   const loadUserSettings = async () => {
     const saved = await loadSettings();

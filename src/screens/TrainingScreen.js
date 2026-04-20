@@ -740,30 +740,34 @@ export default function TrainingScreen({ route, navigation }) {
   // Voice announcement refs
   const initialAnnouncedRef = useRef(false);
   const thumbnailSwitchRef = useRef(null);
-  const voiceIdRef = useRef({ en: undefined, es: undefined });
+  const voiceIdRef = useRef({ en: undefined, es: undefined, fr: undefined, 'pt-BR': undefined });
 
   // Resolve best male voice per language on mount
   useEffect(() => {
     const maleNames = [
       'daniel', 'james', 'tom', 'aaron', 'alex', 'fred', 'oliver', 'thomas',
       'george', 'arthur', 'david', 'male', 'jorge', 'diego', 'carlos', 'andrés',
-      'juan', 'pablo',
+      'juan', 'pablo', 'thomas', 'pierre', 'lucas', 'felipe', 'ricardo',
     ];
     Speech.getAvailableVoicesAsync().then(voices => {
-      for (const locale of ['en', 'es']) {
-        const candidates = voices.filter(v => v.language?.startsWith(locale));
+      const localeMap = { en: 'en', es: 'es', fr: 'fr', 'pt-BR': 'pt' };
+      for (const [key, prefix] of Object.entries(localeMap)) {
+        const candidates = voices.filter(v => v.language?.startsWith(prefix));
         const male = candidates.find(v =>
           maleNames.some(n => v.name?.toLowerCase().includes(n))
         );
-        if (male) voiceIdRef.current[locale] = male.identifier;
+        if (male) voiceIdRef.current[key] = male.identifier;
       }
     }).catch(() => {});
   }, []);
 
   const buildAnnouncement = (info, isNext = true) => {
-    const prefix = isNext ? (lang === 'es' ? 'Siguiente' : 'Next') : '';
-    const setWord = lang === 'es' ? 'Serie' : 'Set';
-    const ofWord = lang === 'es' ? 'de' : 'of';
+    const pick = (en, es, fr, pt) =>
+      lang === 'es' ? es : lang === 'fr' ? fr : lang === 'pt-BR' ? pt : en;
+
+    const prefix = isNext ? pick('Next', 'Siguiente', 'Suivant', 'Próximo') : '';
+    const setWord = pick('Set', 'Serie', 'Série', 'Série');
+    const ofWord = pick('of', 'de', 'de', 'de');
 
     // Only include exercise name for new exercises
     let nameText = '';
@@ -771,7 +775,7 @@ export default function TrainingScreen({ route, navigation }) {
       let name = info.name;
       if (info.isSuperset && info.supersetExercises) {
         const names = info.supersetExercises.map(e => e.name);
-        const label = lang === 'es' ? 'Superserie' : 'Superset';
+        const label = pick('Superset', 'Superserie', 'Supersérie', 'Superset');
         name = `${label}: ${names.join(', ')}`;
       }
       nameText = name + '. ';
@@ -781,23 +785,23 @@ export default function TrainingScreen({ route, navigation }) {
 
     let repsText;
     if (info.reps === 'E') {
-      repsText = lang === 'es' ? 'al fallo' : 'to exhaustion';
+      repsText = pick('to exhaustion', 'al fallo', 'jusqu\'à l\'échec', 'até a falha');
     } else {
       const exData = getExerciseData(info.exerciseId);
       const unit = exData?.timeBased
-        ? (lang === 'es' ? 'minutos' : 'minutes')
-        : (lang === 'es' ? 'repeticiones' : 'reps');
+        ? pick('minutes', 'minutos', 'minutes', 'minutos')
+        : pick('reps', 'repeticiones', 'répétitions', 'repetições');
       repsText = `${info.reps} ${unit}`;
     }
 
     let weightText = '';
     if (info.weight > 0) {
       if (info.sameExercise && !info.weightChanged) {
-        weightText = lang === 'es' ? ', mismo peso' : ', same weight';
+        weightText = ', ' + pick('same weight', 'mismo peso', 'même poids', 'mesmo peso');
       } else {
         const unitName = isImperial
-          ? (lang === 'es' ? 'libras' : 'pounds')
-          : (lang === 'es' ? 'kilos' : 'kilograms');
+          ? pick('pounds', 'libras', 'livres', 'libras')
+          : pick('kilograms', 'kilos', 'kilos', 'quilogramas');
         weightText = `, ${formatWeight(info.weight)} ${unitName}`;
       }
     }
@@ -807,7 +811,8 @@ export default function TrainingScreen({ route, navigation }) {
   };
 
   const getSpeechOpts = () => {
-    const locale = lang === 'es' ? 'es-ES' : 'en-US';
+    const localeMap = { es: 'es-ES', fr: 'fr-FR', 'pt-BR': 'pt-BR' };
+    const locale = localeMap[lang] || 'en-US';
     const voice = voiceIdRef.current[lang];
     const opts = { language: locale, volume: soundVolumeRef.current };
     if (voice) opts.voice = voice;
@@ -881,21 +886,18 @@ export default function TrainingScreen({ route, navigation }) {
   useEffect(() => {
     if (!workoutComplete || !voiceEnabledRef.current) return;
     const motivational = {
-      en: [
-        'Great job!', 'Well done!', 'Keep it up!', 'Nicely done!',
-        'You crushed it!', 'Strong work!', 'Excellent job!', 'Impressive!',
-      ],
-      es: [
-        '¡Buen trabajo!', '¡Bien hecho!', '¡Sigue así!', '¡Muy bien!',
-        '¡Lo lograste!', '¡Gran esfuerzo!', '¡Excelente trabajo!', '¡Impresionante!',
-      ],
+      en: ['Great job!', 'Well done!', 'Keep it up!', 'Nicely done!', 'You crushed it!', 'Strong work!', 'Excellent job!', 'Impressive!'],
+      es: ['¡Buen trabajo!', '¡Bien hecho!', '¡Sigue así!', '¡Muy bien!', '¡Lo lograste!', '¡Gran esfuerzo!', '¡Excelente trabajo!', '¡Impresionante!'],
+      fr: ['Bravo !', 'Bien joué !', 'Continue comme ça !', 'Bien fait !', 'Tu l\'as écrasé !', 'Beau travail !', 'Excellent boulot !', 'Impressionnant !'],
+      'pt-BR': ['Ótimo trabalho!', 'Muito bem!', 'Continue assim!', 'Bem feito!', 'Você arrasou!', 'Força total!', 'Excelente trabalho!', 'Impressionante!'],
     };
     const msgs = motivational[lang] || motivational.en;
     const motto = msgs[Math.floor(Math.random() * msgs.length)];
     const mins = Math.floor(workoutDuration / 60);
-    const calWord = lang === 'es' ? 'calorías' : 'calories';
-    const minWord = lang === 'es' ? 'minutos' : 'minutes';
-    const complete = lang === 'es' ? 'Entrenamiento completado' : 'Workout complete';
+    const pick = (en, es, fr, pt) => lang === 'es' ? es : lang === 'fr' ? fr : lang === 'pt-BR' ? pt : en;
+    const calWord = pick('calories', 'calorías', 'calories', 'calorias');
+    const minWord = pick('minutes', 'minutos', 'minutes', 'minutos');
+    const complete = pick('Workout complete', 'Entrenamiento completado', 'Entraînement terminé', 'Treino concluído');
     const text = `${complete}. ${mins} ${minWord}, ${caloriesBurned} ${calWord}. ${motto}`;
     Speech.stop();
     speakWithFocus(text, getSpeechOpts());
@@ -930,17 +932,20 @@ export default function TrainingScreen({ route, navigation }) {
           const encouragements = {
             en: ['Come on!', 'You got this!', "Let's go!", 'Push it!', 'Stay strong!', 'Keep going!', "Let's do it!", 'Give it your all!'],
             es: ['¡Vamos!', '¡Tú puedes!', '¡Dale!', '¡Con todo!', '¡Fuerza!', '¡Sigue así!', '¡A por ello!', '¡No pares!'],
+            fr: ['Allez !', 'Tu peux le faire !', 'C\'est parti !', 'Force !', 'Reste fort !', 'Continue !', 'On y va !', 'Donne tout !'],
+            'pt-BR': ['Vamos!', 'Você consegue!', 'Bora!', 'Força!', 'Não para!', 'Continua!', 'Vai com tudo!', 'Dá o máximo!'],
           };
           const msgs = encouragements[lang] || encouragements.en;
           const motto = msgs[Math.floor(Math.random() * msgs.length)];
+          const pickE = (en, es, fr, pt) => lang === 'es' ? es : lang === 'fr' ? fr : lang === 'pt-BR' ? pt : en;
           let repsText;
           if (info.reps === 'E') {
-            repsText = lang === 'es' ? 'Al fallo' : 'To exhaustion';
+            repsText = pickE('To exhaustion', 'Al fallo', 'Jusqu\'à l\'échec', 'Até a falha');
           } else {
             const exData = getExerciseData(info.exerciseId);
             const unit = exData?.timeBased
-              ? (lang === 'es' ? 'minutos' : 'minutes')
-              : (lang === 'es' ? 'repeticiones' : 'reps');
+              ? pickE('minutes', 'minutos', 'minutes', 'minutos')
+              : pickE('reps', 'repeticiones', 'répétitions', 'repetições');
             repsText = `${info.reps} ${unit}`;
           }
           Speech.stop();
@@ -1225,12 +1230,17 @@ export default function TrainingScreen({ route, navigation }) {
         return data ? getExerciseName(data, lang) : 'Exercise';
       });
 
-      // Weight change comparison
+      // Weight and reps change comparison
       const prevWeight = currentSetIndex > 0
         ? (modifiedExercises[firstIdx]?.weights[currentSetIndex - 1]
            || firstEx?.weights?.[currentSetIndex - 1] || 0)
         : null;
       const weightChanged = prevWeight !== null && nextWeight !== prevWeight;
+      const prevReps = currentSetIndex > 0
+        ? (modifiedExercises[firstIdx]?.reps[currentSetIndex - 1]
+           || firstEx?.reps?.[currentSetIndex - 1] || 10)
+        : null;
+      const repsChanged = prevReps !== null && nextReps !== prevReps;
 
       return {
         exerciseId: firstEx?.exerciseId,
@@ -1240,6 +1250,7 @@ export default function TrainingScreen({ route, navigation }) {
         reps: nextReps,
         weight: nextWeight,
         weightChanged,
+        repsChanged,
         sameExercise: true,
         isSuperset: true,
         supersetExercises: supersetIndices.map(idx => ({
@@ -1262,6 +1273,11 @@ export default function TrainingScreen({ route, navigation }) {
            || currentEx?.weights?.[currentSetIndex - 1] || 0)
         : null;
       const weightChanged = prevWeight !== null && nextWeight !== prevWeight;
+      const prevReps = currentSetIndex > 0
+        ? (modifiedExercises[currentExerciseIndex]?.reps[currentSetIndex - 1]
+           || currentEx?.reps?.[currentSetIndex - 1] || 10)
+        : null;
+      const repsChanged = prevReps !== null && nextReps !== prevReps;
 
       return {
         exerciseId: currentEx?.exerciseId,
@@ -1271,6 +1287,7 @@ export default function TrainingScreen({ route, navigation }) {
         reps: nextReps,
         weight: nextWeight,
         weightChanged,
+        repsChanged,
         sameExercise: true,
         isSuperset: false,
       };
@@ -1291,6 +1308,7 @@ export default function TrainingScreen({ route, navigation }) {
         reps: nextReps,
         weight: nextWeight,
         weightChanged: false,
+        repsChanged: false,
         sameExercise: false,
         isSuperset: false,
       };
@@ -1514,25 +1532,33 @@ export default function TrainingScreen({ route, navigation }) {
               <View style={styles.supersetPreview}>
                 {nextInfo.supersetExercises.map((ex, idx) => (
                   <View key={idx} style={styles.supersetExerciseRow}>
-                    <ExerciseImage exerciseId={ex.exerciseId} size={50} animate={true} animationDuration={1500} backgroundColor={colors.card} />
+                    <View style={{ width: 105, height: 105, borderRadius: 19, overflow: 'hidden', backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' }}>
+                      <ExerciseImage exerciseId={ex.exerciseId} size={90} animate={true} animationDuration={1500} backgroundColor={colors.card} />
+                    </View>
                     <Text style={styles.supersetExerciseName}>{ex.name}</Text>
                   </View>
                 ))}
-                <Text style={styles.nextDetails}>
-                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps === 'E' ? t('toExhaustion', lang) : `${nextInfo.reps} ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}
+                <Text style={styles.nextDetails}>{t('set', lang)} {nextInfo.set} {t('of', lang)} {nextInfo.totalSets}</Text>
+                <Text style={styles.nextWeight}>
+                  {nextInfo.reps === 'E'
+                    ? <Text style={nextInfo.repsChanged && styles.nextWeightChanged}>{t('toExhaustion', lang)}</Text>
+                    : <><Text style={nextInfo.repsChanged && styles.nextWeightChanged}>{nextInfo.reps}</Text>{` ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}</>
+                  }
                 </Text>
               </View>
             ) : (
               <>
-                <View style={styles.nextImageContainer}>
-                  <ExerciseImage exerciseId={nextInfo.exerciseId} size={80} animate={true} animationDuration={1500} backgroundColor={colors.card} />
+                <View style={[styles.nextImageContainer, { width: 159, height: 159, borderRadius: 29, overflow: 'hidden', backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' }]}>
+                  <ExerciseImage exerciseId={nextInfo.exerciseId} size={144} animate={true} animationDuration={1500} backgroundColor={colors.card} />
                 </View>
                 <Text style={styles.nextExercise}>{nextInfo.name}</Text>
-                <Text style={styles.nextDetails}>
-                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps === 'E' ? t('toExhaustion', lang) : `${nextInfo.reps} ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}
-                </Text>
-                <Text style={[styles.nextWeight, nextInfo.weightChanged && styles.nextWeightChanged]}>
-                  {nextInfo.weight > 0 && ` ${formatWeight(nextInfo.weight)} ${weightUnit}`}
+                <Text style={styles.nextDetails}>{t('set', lang)} {nextInfo.set} {t('of', lang)} {nextInfo.totalSets}</Text>
+                <Text style={styles.nextWeight}>
+                  {nextInfo.reps === 'E'
+                    ? <Text style={nextInfo.repsChanged && styles.nextWeightChanged}>{t('toExhaustion', lang)}</Text>
+                    : <><Text style={nextInfo.repsChanged && styles.nextWeightChanged}>{nextInfo.reps}</Text>{` ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}</>
+                  }
+                  {nextInfo.weight > 0 && <>{' • '}<Text style={nextInfo.weightChanged && styles.nextWeightChanged}>{formatWeight(nextInfo.weight)}</Text>{` ${weightUnit}`}</>}
                 </Text>
               </>
             )}
@@ -1561,25 +1587,33 @@ export default function TrainingScreen({ route, navigation }) {
               <View style={styles.supersetPreview}>
                 {nextInfo.supersetExercises.map((ex, idx) => (
                   <View key={idx} style={styles.supersetExerciseRow}>
-                    <ExerciseImage exerciseId={ex.exerciseId} size={50} animate={true} animationDuration={1500} backgroundColor={colors.card} />
+                    <View style={{ width: 81, height: 81, borderRadius: 15, overflow: 'hidden', backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' }}>
+                      <ExerciseImage exerciseId={ex.exerciseId} size={66} animate={true} animationDuration={1500} backgroundColor={colors.card} />
+                    </View>
                     <Text style={styles.supersetExerciseName}>{ex.name}</Text>
                   </View>
                 ))}
-                <Text style={styles.nextDetails}>
-                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps === 'E' ? t('toExhaustion', lang) : `${nextInfo.reps} ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}
+                <Text style={styles.nextDetails}>{t('set', lang)} {nextInfo.set} {t('of', lang)} {nextInfo.totalSets}</Text>
+                <Text style={styles.nextWeight}>
+                  {nextInfo.reps === 'E'
+                    ? <Text style={nextInfo.repsChanged && styles.nextWeightChanged}>{t('toExhaustion', lang)}</Text>
+                    : <><Text style={nextInfo.repsChanged && styles.nextWeightChanged}>{nextInfo.reps}</Text>{` ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}</>
+                  }
                 </Text>
               </View>
             ) : (
               <>
-                <View style={styles.nextImageContainer}>
-                  <ExerciseImage exerciseId={nextInfo.exerciseId} size={80} animate={true} animationDuration={1500} backgroundColor={colors.card} />
+                <View style={[styles.nextImageContainer, { width: 121, height: 121, borderRadius: 22, overflow: 'hidden', backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' }]}>
+                  <ExerciseImage exerciseId={nextInfo.exerciseId} size={106} animate={true} animationDuration={1500} backgroundColor={colors.card} />
                 </View>
                 <Text style={styles.nextExercise}>{nextInfo.name}</Text>
-                <Text style={styles.nextDetails}>
-                  {t('set', lang)} {nextInfo.set} • {nextInfo.reps === 'E' ? t('toExhaustion', lang) : `${nextInfo.reps} ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}
-                </Text>
-                <Text style={[styles.nextWeight, nextInfo.weightChanged && styles.nextWeightChanged]}>
-                  {nextInfo.weight > 0 && ` ${formatWeight(nextInfo.weight)} ${weightUnit}`}
+                <Text style={styles.nextDetails}>{t('set', lang)} {nextInfo.set} {t('of', lang)} {nextInfo.totalSets}</Text>
+                <Text style={styles.nextWeight}>
+                  {nextInfo.reps === 'E'
+                    ? <Text style={nextInfo.repsChanged && styles.nextWeightChanged}>{t('toExhaustion', lang)}</Text>
+                    : <><Text style={nextInfo.repsChanged && styles.nextWeightChanged}>{nextInfo.reps}</Text>{` ${getExerciseData(nextInfo.exerciseId)?.timeBased ? t('min', lang) : t('reps', lang).toLowerCase()}`}</>
+                  }
+                  {nextInfo.weight > 0 && <>{' • '}<Text style={nextInfo.weightChanged && styles.nextWeightChanged}>{formatWeight(nextInfo.weight)}</Text>{` ${weightUnit}`}</>}
                 </Text>
               </>
             )}
@@ -2084,7 +2118,7 @@ const makeStyles = (colors) => StyleSheet.create({
     fontSize: fontSize.sm,
   },
   skipRestButton: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.background === '#121212' ? colors.accent : colors.primary,
     paddingHorizontal: spacing.xl * 2,
     paddingVertical: spacing.md,
     borderRadius: borderRadius.round,
@@ -2202,7 +2236,7 @@ const makeStyles = (colors) => StyleSheet.create({
   
   // Done button
   doneButton: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.background === '#121212' ? colors.accent : colors.primary,
     paddingHorizontal: spacing.xl * 2,
     paddingVertical: spacing.md,
     borderRadius: borderRadius.round,

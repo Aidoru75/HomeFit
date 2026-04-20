@@ -1,20 +1,20 @@
-// 247 Exercises - Complete Catalog - Bilingual (English/Spanish)
+// 247 Exercises - Complete Catalog - Quadrilingual (EN/ES/FR/PT-BR)
 import { isProExercise } from './equipment';
 import { IS_PRO } from '../config';
 
 export const muscleGroups = [
-  { id: 'chest', name: { en: 'Chest', es: 'Pecho' }},
-  { id: 'back', name: { en: 'Back', es: 'Espalda' }},
-  { id: 'shoulders', name: { en: 'Shoulders', es: 'Hombros' }},
-  { id: 'biceps', name: { en: 'Biceps', es: 'Bíceps' }},
-  { id: 'triceps', name: { en: 'Triceps', es: 'Tríceps' }},
-  { id: 'forearms', name: { en: 'Forearms', es: 'Antebrazos' }},
-  { id: 'quads', name: { en: 'Quadriceps', es: 'Cuádriceps' }},
-  { id: 'hamstrings', name: { en: 'Hamstrings', es: 'Isquiotibiales' }},
-  { id: 'glutes', name: { en: 'Glutes', es: 'Glúteos' }},
-  { id: 'calves', name: { en: 'Calves', es: 'Gemelos' }},
-  { id: 'core', name: { en: 'Core', es: 'Core' }},
-  { id: 'cardio', name: { en: 'Cardio', es: 'Cardio' }},
+  { id: 'chest', name: { en: 'Chest', es: 'Pecho' , fr: 'Pectoraux', 'pt-BR': 'Peitoral' }},
+  { id: 'back', name: { en: 'Back', es: 'Espalda' , fr: 'Dos', 'pt-BR': 'Costas' }},
+  { id: 'shoulders', name: { en: 'Shoulders', es: 'Hombros' , fr: 'Épaules', 'pt-BR': 'Ombros' }},
+  { id: 'biceps', name: { en: 'Biceps', es: 'Bíceps' , fr: 'Biceps', 'pt-BR': 'Bíceps' }},
+  { id: 'triceps', name: { en: 'Triceps', es: 'Tríceps' , fr: 'Triceps', 'pt-BR': 'Tríceps' }},
+  { id: 'forearms', name: { en: 'Forearms', es: 'Antebrazos' , fr: 'Avant-Bras', 'pt-BR': 'Antebraços' }},
+  { id: 'quads', name: { en: 'Quadriceps', es: 'Cuádriceps' , fr: 'Quadriceps', 'pt-BR': 'Quadríceps' }},
+  { id: 'hamstrings', name: { en: 'Hamstrings', es: 'Isquiotibiales' , fr: 'Ischio-Jambiers', 'pt-BR': 'Isquiotibiais' }},
+  { id: 'glutes', name: { en: 'Glutes', es: 'Glúteos' , fr: 'Fessiers', 'pt-BR': 'Glúteos' }},
+  { id: 'calves', name: { en: 'Calves', es: 'Gemelos' , fr: 'Mollets', 'pt-BR': 'Panturrilhas' }},
+  { id: 'core', name: { en: 'Core', es: 'Core' , fr: 'Gainage', 'pt-BR': 'Core' }},
+  { id: 'cardio', name: { en: 'Cardio', es: 'Cardio' , fr: 'Cardio', 'pt-BR': 'Cardio' }},
 ];
 
 export const exercises = [
@@ -27,7 +27,7 @@ export const exercises = [
   // ============================================
   {
     id: 'bench_press',
-    name: { en: 'Barbell Bench Press', es: 'Press de Banca con Barra' },
+    name: { en: 'Barbell Bench Press', es: 'Press de Banca con Barra' , fr: 'Développé Couché à la Barre', 'pt-BR': 'Supino Reto com Barra' },
     muscleGroup: 'chest',
     muscles: { chest: 0.60, triceps: 0.25, shoulders: 0.15 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
@@ -35,13 +35,15 @@ export const exercises = [
     description: {
       en: 'The king of chest exercises. Lie flat on a bench, grip the bar slightly wider than shoulder-width, lower it to mid-chest, then press up powerfully while keeping your feet firmly planted.',
       es: 'El rey de los ejercicios de pecho. Acuéstate en un banco, agarra la barra un poco más ancho que los hombros, bájala al pecho medio, luego empuja con fuerza manteniendo los pies firmes.',
+      fr: 'Le roi des exercices de pectoraux. Allongez-vous sur un banc, saisissez la barre légèrement plus large que les épaules, descendez-la jusqu\'à mi-poitrine, puis poussez puissamment en gardant les pieds bien à plat.',
+      'pt-BR': 'O rei dos exercícios de peitoral. Deite-se no banco, segure a barra um pouco mais larga que os ombros, desça até o meio do peito e empurre com força mantendo os pés bem apoiados.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'incline_press',
-    name: { en: 'Barbell Incline Press', es: 'Press Inclinado con Barra' },
+    name: { en: 'Barbell Incline Press', es: 'Press Inclinado con Barra' , fr: 'Développé Incliné à la Barre', 'pt-BR': 'Supino Inclinado com Barra' },
     muscleGroup: 'chest',
     muscles: { chest: 0.50, shoulders: 0.30, triceps: 0.20 },
     equipment: ['straight_bar', 'incline_bench', 'plates'],
@@ -49,13 +51,15 @@ export const exercises = [
     description: {
       en: 'Targets the upper chest with the bench set at 30-45 degrees. Lower the bar to your upper chest just below the collarbone, then press up while maintaining tight shoulder blades.',
       es: 'Trabaja el pecho superior con el banco a 30-45 grados. Baja la barra al pecho superior justo debajo de la clavícula, luego empuja manteniendo las escápulas apretadas.',
+      fr: 'Cible la partie haute des pectoraux avec le banc incliné à 30-45 degrés. Descendez la barre jusqu\'à la partie haute du pectoral juste sous la clavicule, puis poussez en maintenant les omoplates serrées.',
+      'pt-BR': 'Trabalha a parte superior do peitoral com o banco inclinado a 30-45 graus. Desça a barra até a parte superior do peito abaixo da clavícula e empurre mantendo as escápulas contraídas.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'decline_press',
-    name: { en: 'Barbell Decline Press', es: 'Press Declinado con Barra' },
+    name: { en: 'Barbell Decline Press', es: 'Press Declinado con Barra' , fr: 'Développé Décliné à la Barre', 'pt-BR': 'Supino Declinado com Barra' },
     muscleGroup: 'chest',
     muscles: { chest: 0.65, triceps: 0.25, shoulders: 0.10 },
     equipment: ['straight_bar', 'decline_bench', 'plates'],
@@ -63,13 +67,15 @@ export const exercises = [
     description: {
       en: 'Emphasizes the lower chest fibers with the bench declined 15-30 degrees. Secure your legs, lower the bar to your lower chest, then press up maintaining control throughout.',
       es: 'Enfatiza las fibras inferiores del pecho con el banco declinado 15-30 grados. Asegura las piernas, baja la barra al pecho bajo, luego empuja manteniendo control.',
+      fr: 'Met l\'accent sur les fibres inférieures du pectoral avec le banc décliné à 15-30 degrés. Bloquez vos jambes, descendez la barre vers le bas du pectoral, puis poussez en maintenant le contrôle.',
+      'pt-BR': 'Enfatiza as fibras inferiores do peitoral com o banco declinado a 15-30 graus. Prenda as pernas, desça a barra até a parte inferior do peito e empurre mantendo o controle durante todo o movimento.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'db_bench_press',
-    name: { en: 'Dumbbell Bench Press', es: 'Press de Banca con Mancuernas' },
+    name: { en: 'Dumbbell Bench Press', es: 'Press de Banca con Mancuernas' , fr: 'Développé Couché aux Haltères', 'pt-BR': 'Supino Reto com Halteres' },
     muscleGroup: 'chest',
     muscles: { chest: 0.60, triceps: 0.25, shoulders: 0.15 },
     equipment: ['dumbbells', 'flat_bench'],
@@ -77,13 +83,15 @@ export const exercises = [
     description: {
       en: 'Allows greater range of motion than barbell. Press dumbbells from chest level with palms facing forward, bring them together at the top, then lower with control for a deep stretch.',
       es: 'Permite mayor rango de movimiento que la barra. Empuja las mancuernas desde el pecho con palmas al frente, júntalas arriba, luego baja con control para un estiramiento profundo.',
+      fr: 'Offre une plus grande amplitude de mouvement qu\'avec la barre. Poussez les haltères depuis la poitrine paumes vers l\'avant, rapprochez-les en haut, puis redescendez avec contrôle pour un étirement profond.',
+      'pt-BR': 'Permite maior amplitude de movimento do que a barra. Empurre os halteres da altura do peito com as palmas para frente, aproxime-os no topo e desça com controle para um alongamento profundo.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'db_incline_press',
-    name: { en: 'Dumbbell Incline Press', es: 'Press Inclinado con Mancuernas' },
+    name: { en: 'Dumbbell Incline Press', es: 'Press Inclinado con Mancuernas' , fr: 'Développé Incliné aux Haltères', 'pt-BR': 'Supino Inclinado com Halteres' },
     muscleGroup: 'chest',
     muscles: { chest: 0.50, shoulders: 0.30, triceps: 0.20 },
     equipment: ['dumbbells', 'incline_bench'],
@@ -91,13 +99,15 @@ export const exercises = [
     description: {
       en: 'Develops the upper chest with independent arm movement. Set bench at 30-45 degrees, press dumbbells up and slightly inward, squeezing at the top before lowering.',
       es: 'Desarrolla el pecho superior con movimiento independiente de brazos. Banco a 30-45 grados, empuja las mancuernas arriba y ligeramente adentro, apretando arriba antes de bajar.',
+      fr: 'Développe la partie haute des pectoraux avec un mouvement indépendant de chaque bras. Réglez le banc à 30-45 degrés, poussez les haltères vers le haut et légèrement vers l\'intérieur en contractant au sommet avant de redescendre.',
+      'pt-BR': 'Desenvolve a parte superior do peitoral com movimento independente dos braços. Ajuste o banco a 30-45 graus, empurre os halteres para cima e levemente para dentro contraindo no topo antes de descer.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'db_decline_press',
-    name: { en: 'Dumbbell Decline Press', es: 'Press Declinado con Mancuernas' },
+    name: { en: 'Dumbbell Decline Press', es: 'Press Declinado con Mancuernas' , fr: 'Développé Décliné aux Haltères', 'pt-BR': 'Supino Declinado com Halteres' },
     muscleGroup: 'chest',
     muscles: { chest: 0.65, triceps: 0.25, shoulders: 0.10 },
     equipment: ['dumbbells', 'decline_bench'],
@@ -105,13 +115,15 @@ export const exercises = [
     description: {
       en: 'Targets lower chest with dumbbells for balanced development. On a declined bench, press dumbbells up while keeping elbows at 45 degrees, focus on squeezing the chest at the top.',
       es: 'Trabaja el pecho inferior con mancuernas para desarrollo equilibrado. En banco declinado, empuja las mancuernas manteniendo codos a 45 grados, enfócate en apretar el pecho arriba.',
+      fr: 'Cible le bas des pectoraux avec des haltères pour un développement équilibré. Sur un banc décliné, poussez les haltères en gardant les coudes à 45 degrés, concentrez-vous sur la contraction du pectoral en haut.',
+      'pt-BR': 'Trabalha a parte inferior do peitoral com halteres para desenvolvimento equilibrado. No banco declinado, empurre os halteres mantendo os cotovelos a 45 graus e contraia o peitoral no topo.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'dumbbell_flyes',
-    name: { en: 'Dumbbell Flyes', es: 'Aperturas con Mancuernas' },
+    name: { en: 'Dumbbell Flyes', es: 'Aperturas con Mancuernas' , fr: 'Écarté Couché aux Haltères', 'pt-BR': 'Crucifixo Reto com Halteres' },
     muscleGroup: 'chest',
     muscles: { chest: 0.80, shoulders: 0.15, biceps: 0.05 },
     equipment: ['dumbbells', 'flat_bench'],
@@ -119,13 +131,15 @@ export const exercises = [
     description: {
       en: 'Isolation exercise for chest stretch and contraction. With a slight elbow bend, lower dumbbells in a wide arc until you feel a stretch, then squeeze them back together over your chest.',
       es: 'Ejercicio de aislamiento para estirar y contraer el pecho. Con codos ligeramente flexionados, baja las mancuernas en arco amplio hasta sentir estiramiento, luego apriétalas sobre el pecho.',
+      fr: 'Exercice d\'isolation pour l\'étirement et la contraction du pectoral. Les coudes légèrement fléchis, descendez les haltères en arc large jusqu\'à ressentir un étirement, puis ramenez-les en contractant les pectoraux.',
+      'pt-BR': 'Exercício de isolamento para alongamento e contração do peitoral. Com os cotovelos levemente flexionados, desça os halteres em arco amplo até sentir o alongamento e traga-os de volta contraindo o peito.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'incline_dumbbell_flyes',
-    name: { en: 'Incline Dumbbell Flyes', es: 'Aperturas Inclinadas con Mancuernas' },
+    name: { en: 'Incline Dumbbell Flyes', es: 'Aperturas Inclinadas con Mancuernas' , fr: 'Écarté Incliné aux Haltères', 'pt-BR': 'Crucifixo Inclinado com Halteres' },
     muscleGroup: 'chest',
     muscles: { chest: 0.70, shoulders: 0.25, biceps: 0.05 },
     equipment: ['dumbbells', 'incline_bench'],
@@ -133,13 +147,15 @@ export const exercises = [
     description: {
       en: 'Isolates the upper chest with a stretching motion. On an inclined bench, open arms wide with slight elbow bend, feel the upper chest stretch, then bring dumbbells together.',
       es: 'Aísla el pecho superior con movimiento de estiramiento. En banco inclinado, abre los brazos con codos ligeramente flexionados, siente el estiramiento del pecho superior, luego junta las mancuernas.',
+      fr: 'Isole la partie haute des pectoraux par un mouvement d\'ouverture. Sur un banc incliné, ouvrez les bras largement avec les coudes légèrement fléchis, ressentez l\'étirement du haut du pectoral, puis ramenez les haltères.',
+      'pt-BR': 'Isola a parte superior do peitoral com movimento de abertura. No banco inclinado, abra os braços com os cotovelos levemente flexionados, sinta o alongamento do peitoral superior e junte os halteres.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'decline_dumbbell_flyes',
-    name: { en: 'Decline Dumbbell Flyes', es: 'Aperturas Declinadas con Mancuernas' },
+    name: { en: 'Decline Dumbbell Flyes', es: 'Aperturas Declinadas con Mancuernas' , fr: 'Écarté Décliné aux Haltères', 'pt-BR': 'Crucifixo Declinado com Halteres' },
     muscleGroup: 'chest',
     muscles: { chest: 0.80, shoulders: 0.10, biceps: 0.10 },
     equipment: ['dumbbells', 'decline_bench'],
@@ -147,13 +163,15 @@ export const exercises = [
     description: {
       en: 'Focuses on lower chest fibers through isolation. On a declined bench, perform the fly motion with controlled tempo, emphasizing the stretch at the bottom and squeeze at the top.',
       es: 'Se enfoca en las fibras inferiores del pecho mediante aislamiento. En banco declinado, realiza el movimiento de apertura con tempo controlado, enfatizando el estiramiento abajo y contracción arriba.',
+      fr: 'Concentre le travail sur les fibres inférieures du pectoral par isolation. Sur un banc décliné, effectuez l\'écartement avec un tempo contrôlé en accentuant l\'étirement en bas et la contraction en haut.',
+      'pt-BR': 'Foca nas fibras inferiores do peitoral por isolamento. No banco declinado, realize o crucifixo com cadência controlada, enfatizando o alongamento embaixo e a contração em cima.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'push_ups',
-    name: { en: 'Push-Ups', es: 'Flexiones' },
+    name: { en: 'Push-Ups', es: 'Flexiones' , fr: 'Pompes', 'pt-BR': 'Flexão de Braços' },
     muscleGroup: 'chest',
     muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
     equipment: [],
@@ -162,6 +180,8 @@ export const exercises = [
     description: {
       en: 'Fundamental bodyweight chest exercise. Hands shoulder-width apart, lower your body until chest nearly touches the ground, then push up while keeping core tight and body in a straight line.',
       es: 'Ejercicio fundamental de pecho con peso corporal. Manos a la anchura de hombros, baja el cuerpo hasta casi tocar el suelo con el pecho, luego empuja manteniendo el core apretado.',
+      fr: 'Exercice de base pour les pectoraux au poids du corps. Mains à la largeur des épaules, descendez jusqu\'à ce que la poitrine frôle le sol, puis poussez en gardant le gainage serré et le corps aligné.',
+      'pt-BR': 'Exercício fundamental de peitoral com peso corporal. Mãos na largura dos ombros, desça até o peito quase tocar o chão e empurre mantendo o core contraído e o corpo em linha reta.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -169,7 +189,7 @@ export const exercises = [
   },
   {
     id: 'incline_push_ups',
-    name: { en: 'Incline Push-Ups', es: 'Flexiones Inclinadas' },
+    name: { en: 'Incline Push-Ups', es: 'Flexiones Inclinadas' , fr: 'Pompes Inclinées', 'pt-BR': 'Flexão Inclinada' },
     muscleGroup: 'chest',
     muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
     equipment: ['flat_bench'],
@@ -177,6 +197,8 @@ export const exercises = [
     description: {
       en: 'Easier push-up variation with hands elevated on a bench. Great for beginners or as a finisher, this targets the lower chest while reducing the load compared to standard push-ups.',
       es: 'Variación más fácil de flexión con manos elevadas en un banco. Ideal para principiantes o como finalizador, trabaja el pecho inferior reduciendo la carga comparado con flexiones estándar.',
+      fr: 'Variante de pompe plus facile avec les mains surélevées sur un banc. Idéal pour les débutants ou en finisher, cible le bas des pectoraux tout en réduisant la charge par rapport aux pompes classiques.',
+      'pt-BR': 'Variação de flexão mais fácil com as mãos elevadas em um banco. Ótima para iniciantes ou como finalizador, trabalha a parte inferior do peitoral reduzindo a carga em relação à flexão padrão.',
     },
     bmc: 1.2,
     wf: 0.0,
@@ -184,7 +206,7 @@ export const exercises = [
   },
   {
     id: 'decline_push_ups',
-    name: { en: 'Decline Push-Ups', es: 'Flexiones Declinadas' },
+    name: { en: 'Decline Push-Ups', es: 'Flexiones Declinadas' , fr: 'Pompes Déclinées', 'pt-BR': 'Flexão Declinada' },
     muscleGroup: 'chest',
     muscles: { chest: 0.50, shoulders: 0.30, triceps: 0.20 },
     equipment: ['flat_bench'],
@@ -192,6 +214,8 @@ export const exercises = [
     description: {
       en: 'Advanced push-up with feet elevated on a bench. This shifts more weight to your upper body and emphasizes the upper chest and front shoulders, increasing overall difficulty significantly.',
       es: 'Flexión avanzada con pies elevados en un banco. Esto traslada más peso al torso superior y enfatiza el pecho superior y hombros frontales, aumentando significativamente la dificultad.',
+      fr: 'Pompe avancée avec les pieds surélevés sur un banc. Cela déplace plus de poids vers le haut du corps et accentue le travail du pectoral supérieur et des deltoïdes antérieurs, augmentant considérablement la difficulté.',
+      'pt-BR': 'Flexão avançada com os pés elevados em um banco. Desloca mais peso para a parte superior do corpo, enfatizando o peitoral superior e o deltóide anterior, aumentando significativamente a dificuldade.',
     },
     bmc: 1.8,
     wf: 0.0,
@@ -199,7 +223,7 @@ export const exercises = [
   },
   {
     id: 'svend_press',
-    name: { en: 'Svend Press', es: 'Press Svend' },
+    name: { en: 'Svend Press', es: 'Press Svend' , fr: 'Press Svend', 'pt-BR': 'Press Svend' },
     muscleGroup: 'chest',
     muscles: { chest: 0.80, shoulders: 0.15, triceps: 0.05 },
     equipment: ['plates'],
@@ -207,13 +231,15 @@ export const exercises = [
     description: {
       en: 'Unique chest isolation using plate pressure. Press two plates together at chest level, extend arms forward while squeezing plates hard, then bring back to chest maintaining constant inward pressure.',
       es: 'Aislamiento único de pecho usando presión de discos. Presiona dos discos juntos a nivel del pecho, extiende brazos hacia adelante apretando fuerte, luego regresa manteniendo presión constante.',
+      fr: 'Isolation unique des pectoraux par pression de disques. Pressez deux disques l\'un contre l\'autre à hauteur de poitrine, tendez les bras vers l\'avant en serrant fort, puis ramenez à la poitrine en maintenant la pression.',
+      'pt-BR': 'Isolamento único do peitoral usando pressão de anilhas. Pressione duas anilhas juntas na altura do peito, estenda os braços para frente enquanto aperta com força e traga de volta ao peito mantendo a pressão constante.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'pullover_chest',
-    name: { en: 'Pullover (Chest Focus)', es: 'Pullover (Enfoque Pecho)' },
+    name: { en: 'Pullover (Chest Focus)', es: 'Pullover (Enfoque Pecho)' , fr: 'Pullover (Accent Pectoraux)', 'pt-BR': 'Pullover (Foco Peitoral)' },
     muscleGroup: 'chest',
     muscles: { chest: 0.55, back: 0.30, triceps: 0.10, core: 0.05 },
     equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
@@ -222,13 +248,15 @@ export const exercises = [
     description: {
       en: 'Stretches and works the chest through a long range of motion. Lie across a bench, lower dumbbell behind head with slight elbow bend, then pull over using chest muscles to starting position.',
       es: 'Estira y trabaja el pecho con amplio rango de movimiento. Acuéstate cruzado en un banco, baja la mancuerna detrás de la cabeza con codos flexionados, luego tira usando los músculos del pecho.',
+      fr: 'Étire et travaille les pectoraux sur une grande amplitude. Allongez-vous en travers du banc, descendez l\'haltère derrière la tête avec les coudes légèrement fléchis, puis tirez avec les pectoraux pour revenir en position initiale.',
+      'pt-BR': 'Alonga e trabalha o peitoral em grande amplitude de movimento. Deite-se transversal no banco, desça o haltere atrás da cabeça com os cotovelos levemente flexionados e puxe usando os músculos do peito até a posição inicial.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'dips_chest',
-    name: { en: 'Dips (Chest Focus)', es: 'Fondos (Enfoque Pecho)' },
+    name: { en: 'Dips (Chest Focus)', es: 'Fondos (Enfoque Pecho)' , fr: 'Dips (Accent Pectoraux)', 'pt-BR': 'Paralela (Foco Peitoral)' },
     muscleGroup: 'chest',
     muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
     equipment: ['parallels'],
@@ -237,6 +265,8 @@ export const exercises = [
     description: {
       en: 'Compound movement for lower chest when performed with forward lean. Keep torso tilted forward, lower until shoulders are below elbows, then push up maintaining the chest-focused position.',
       es: 'Movimiento compuesto para pecho inferior realizado con inclinación hacia adelante. Mantén el torso inclinado, baja hasta que los hombros estén bajo los codos, luego empuja manteniendo la posición.',
+      fr: 'Mouvement polyarticulaire pour le bas des pectoraux en s\'inclinant vers l\'avant. Gardez le torse penché, descendez jusqu\'à ce que les épaules soient sous les coudes, puis poussez en maintenant la position centrée sur le pectoral.',
+      'pt-BR': 'Movimento composto para o peitoral inferior com inclinação do tronco para frente. Mantenha o tronco inclinado, desça até os ombros ficarem abaixo dos cotovelos e empurre mantendo a posição com foco no peitoral.',
     },
     bmc: 2.5,
     wf: 0.04,
@@ -248,7 +278,7 @@ export const exercises = [
   // ============================================
   {
     id: 'pullups_wide',
-    name: { en: 'Pull-Ups (Wide Grip)', es: 'Dominadas (Agarre Ancho)' },
+    name: { en: 'Pull-Ups (Wide Grip)', es: 'Dominadas (Agarre Ancho)' , fr: 'Tractions (Prise Large)', 'pt-BR': 'Barra Fixa (Pegada Larga)' },
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.25, shoulders: 0.10 },
     equipment: ['pullup_rack'],
@@ -257,6 +287,8 @@ export const exercises = [
     description: {
       en: 'Classic back builder with wide overhand grip. Hang with arms fully extended, pull yourself up until chin clears the bar, focusing on driving elbows down and squeezing your lats.',
       es: 'Clásico constructor de espalda con agarre ancho pronado. Cuélgate con brazos extendidos, sube hasta que la barbilla pase la barra, enfocándote en llevar los codos abajo y apretar dorsales.',
+      fr: 'Exercice de dos classique en prise large pronation. Suspendez-vous bras tendus, tirez-vous jusqu\'à ce que le menton dépasse la barre en ramenant les coudes vers le bas et en contractant les dorsaux.',
+      'pt-BR': 'Clássico exercício de costas com pegada larga em pronação. Pendure-se com os braços totalmente estendidos, suba até o queixo ultrapassar a barra focando em puxar os cotovelos para baixo e contrair os dorsais.',
     },
     bmc: 3.0,
     wf: 0.04,
@@ -264,7 +296,7 @@ export const exercises = [
   },
   {
     id: 'pullups_close',
-    name: { en: 'Pull-Ups (Close Grip)', es: 'Dominadas (Agarre Cerrado)' },
+    name: { en: 'Pull-Ups (Close Grip)', es: 'Dominadas (Agarre Cerrado)' , fr: 'Tractions (Prise Serrée)', 'pt-BR': 'Barra Fixa (Pegada Fechada)' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.30, shoulders: 0.10 },
     equipment: ['pullup_rack'],
@@ -273,6 +305,8 @@ export const exercises = [
     description: {
       en: 'Variation emphasizing the lower lats and biceps. With hands close together, pull up while keeping elbows close to your body, squeezing your back muscles hard at the top.',
       es: 'Variación que enfatiza dorsales inferiores y bíceps. Con manos juntas, sube manteniendo los codos cerca del cuerpo, apretando fuerte los músculos de la espalda en la parte superior.',
+      fr: 'Variante accentuant les dorsaux inférieurs et les biceps. Mains rapprochées, tirez-vous en gardant les coudes près du corps et contractez fortement les muscles du dos au sommet.',
+      'pt-BR': 'Variação que enfatiza os dorsais inferiores e bíceps. Com as mãos juntas, suba mantendo os cotovelos próximos ao corpo e contraia com força os músculos das costas no topo.',
     },
     bmc: 3.0,
     wf: 0.04,
@@ -280,7 +314,7 @@ export const exercises = [
   },
   {
     id: 'chinups',
-    name: { en: 'Chin-Ups (Supinated)', es: 'Dominadas Supinas' },
+    name: { en: 'Chin-Ups (Supinated)', es: 'Dominadas Supinas' , fr: 'Tractions Supinées', 'pt-BR': 'Barra Fixa Supinada' },
     muscleGroup: 'back',
     muscles: { back: 0.50, biceps: 0.40, shoulders: 0.10 },
     equipment: ['pullup_rack'],
@@ -289,6 +323,8 @@ export const exercises = [
     description: {
       en: 'Underhand grip pull-up that heavily involves biceps. Grip the bar with palms facing you, pull up leading with your chest, lower with control to get a full stretch in lats and biceps.',
       es: 'Dominada con agarre supino que involucra mucho los bíceps. Agarra la barra con palmas hacia ti, sube liderando con el pecho, baja con control para estirar completamente dorsales y bíceps.',
+      fr: 'Traction en supination sollicitant fortement les biceps. Saisissez la barre paumes vers vous, tirez-vous en menant avec la poitrine, redescendez avec contrôle pour un étirement complet des dorsaux et des biceps.',
+      'pt-BR': 'Barra fixa com pegada supinada que envolve intensamente os bíceps. Segure a barra com as palmas voltadas para você, suba liderando com o peito e desça com controle para um alongamento completo dos dorsais e bíceps.',
     },
     bmc: 3.0,
     wf: 0.04,
@@ -296,7 +332,7 @@ export const exercises = [
   },
   {
     id: 'band_assisted_pullups',
-    name: { en: 'Band-Assisted Pull-Ups', es: 'Dominadas Asistidas con Banda' },
+    name: { en: 'Band-Assisted Pull-Ups', es: 'Dominadas Asistidas con Banda' , fr: 'Tractions Assistées par Élastique', 'pt-BR': 'Barra Fixa Assistida com Elástico' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.30, shoulders: 0.10 },
     equipment: ['pullup_rack', 'resistance_band'],
@@ -304,6 +340,8 @@ export const exercises = [
     description: {
       en: 'Regression for building pull-up strength. Loop a resistance band over the bar, place knee or foot in it, then perform pull-ups with the band providing assistance at the bottom.',
       es: 'Regresión para construir fuerza de dominadas. Engancha una banda en la barra, coloca rodilla o pie en ella, luego haz dominadas con la banda proporcionando asistencia en la parte inferior.',
+      fr: 'Régression pour développer la force aux tractions. Passez un élastique sur la barre, placez un genou ou un pied dedans, puis effectuez des tractions avec l\'élastique qui vous assiste en bas du mouvement.',
+      'pt-BR': 'Regressão para desenvolver força nas barras fixas. Prenda um elástico na barra, apoie o joelho ou o pé nele e realize as barras com o elástico fornecendo assistência na parte inferior do movimento.',
     },
     bmc: 2.5,
     wf: 0.0,
@@ -311,7 +349,7 @@ export const exercises = [
   },
   {
     id: 'barbell_row',
-    name: { en: 'Barbell Bent-Over Row', es: 'Remo con Barra Inclinado' },
+    name: { en: 'Barbell Bent-Over Row', es: 'Remo con Barra Inclinado' , fr: 'Rowing Barre Penché', 'pt-BR': 'Remada Curvada com Barra' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
     equipment: [['straight_bar', 'ez_bar', 'neutral_bar'], 'plates'],
@@ -319,13 +357,15 @@ export const exercises = [
     description: {
       en: 'Fundamental mass builder for the entire back. Hinge forward with flat back, pull bar to lower chest or upper abdomen, squeeze shoulder blades together, then lower with control.',
       es: 'Constructor fundamental de masa para toda la espalda. Inclínate con espalda plana, tira la barra al pecho bajo o abdomen superior, aprieta escápulas, luego baja con control.',
+      fr: 'Exercice fondamental de prise de masse pour tout le dos. Inclinez le torse dos plat, tirez la barre vers le bas de la poitrine ou l\'abdomen supérieur, serrez les omoplates, puis redescendez avec contrôle.',
+      'pt-BR': 'Exercício fundamental de ganho de massa para toda a região das costas. Incline o tronco com as costas retas, puxe a barra até o abdômen superior ou a parte inferior do peito, contraia as escápulas e desça com controle.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'barbell_row_underhand',
-    name: { en: 'Barbell Bent-Over Row (Underhand)', es: 'Remo con Barra (Agarre Supino)' },
+    name: { en: 'Barbell Bent-Over Row (Underhand)', es: 'Remo con Barra (Agarre Supino)' , fr: 'Rowing Barre Supination', 'pt-BR': 'Remada Curvada Supinada com Barra' },
     muscleGroup: 'back',
     muscles: { back: 0.55, biceps: 0.30, shoulders: 0.10, core: 0.05 },
     equipment: [['straight_bar', 'ez_bar'], 'plates'],
@@ -333,13 +373,15 @@ export const exercises = [
     description: {
       en: 'Supinated grip row emphasizing lower lats and biceps. Same hip-hinge position as standard rows, but with palms facing up, pull to your lower chest for maximum lat engagement.',
       es: 'Remo con agarre supino que enfatiza dorsales inferiores y bíceps. Misma posición de bisagra que remos estándar, pero con palmas arriba, tira al pecho bajo para máximo trabajo de dorsales.',
+      fr: 'Rowing en supination accentuant les dorsaux inférieurs et les biceps. Même position de flexion de hanche que le rowing classique, mais paumes vers le haut, tirez vers le bas de la poitrine pour un engagement maximal des dorsaux.',
+      'pt-BR': 'Remada com pegada supinada enfatizando os dorsais inferiores e bíceps. Mesma posição de dobradiça do quadril que a remada padrão, mas com as palmas para cima, puxe até a parte inferior do peito para máximo trabalho dos dorsais.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'pendlay_row',
-    name: { en: 'Barbell Pendlay Row', es: 'Remo Pendlay con Barra' },
+    name: { en: 'Barbell Pendlay Row', es: 'Remo Pendlay con Barra' , fr: 'Rowing Pendlay à la Barre', 'pt-BR': 'Remada Pendlay com Barra' },
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.20, shoulders: 0.10, core: 0.05 },
     equipment: [['straight_bar', 'ez_bar', 'neutral_bar'], 'plates'],
@@ -347,13 +389,15 @@ export const exercises = [
     description: {
       en: 'Explosive rowing variation with bar starting from the floor. Keep torso parallel to ground, explosively row the bar to your chest, then lower it completely to the floor between each rep.',
       es: 'Variación explosiva de remo con barra comenzando desde el suelo. Mantén torso paralelo al suelo, rema explosivamente al pecho, luego baja completamente al suelo entre cada repetición.',
+      fr: 'Variante explosive du rowing avec la barre qui repart du sol. Gardez le torse parallèle au sol, ramez la barre explosément vers la poitrine, puis reposez-la complètement au sol entre chaque répétition.',
+      'pt-BR': 'Variação explosiva de remada com a barra partindo do chão. Mantenha o tronco paralelo ao chão, puxe a barra explosivamente até o peito e a deposite completamente no chão entre cada repetição.',
     },
     bmc: 3.5,
     wf: 0.03,
   },
   {
     id: 'dumbbell_row',
-    name: { en: 'Dumbbell Single-Arm Row', es: 'Remo con Mancuerna a Una Mano' },
+    name: { en: 'Dumbbell Single-Arm Row', es: 'Remo con Mancuerna a Una Mano' , fr: 'Rowing Unilatéral à l\'Haltère', 'pt-BR': 'Remada Unilateral com Haltere' },
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.25, shoulders: 0.10 },
     equipment: ['dumbbells', 'flat_bench'],
@@ -362,13 +406,15 @@ export const exercises = [
     description: {
       en: 'Unilateral back exercise allowing full range of motion. Support yourself on a bench, row the dumbbell to your hip, focusing on driving your elbow back and squeezing your lat at the top.',
       es: 'Ejercicio unilateral de espalda permitiendo rango completo de movimiento. Apóyate en un banco, rema la mancuerna a la cadera, enfocándote en llevar el codo atrás y apretar el dorsal.',
+      fr: 'Exercice unilatéral pour le dos offrant une pleine amplitude. Appuyez-vous sur un banc, ramez l\'haltère jusqu\'à la hanche en tirant le coude vers l\'arrière et en contractant le dorsal au sommet.',
+      'pt-BR': 'Exercício unilateral de costas que permite amplitude completa de movimento. Apoie-se no banco, puxe o haltere até o quadril focando em puxar o cotovelo para trás e contrair o dorsal no topo.',
     },
     bmc: 2.5,
     wf: 0.03,
   },
   {
     id: 'db_bent_over_row',
-    name: { en: 'Dumbbell Bent-Over Row', es: 'Remo Inclinado con Mancuernas' },
+    name: { en: 'Dumbbell Bent-Over Row', es: 'Remo Inclinado con Mancuernas' , fr: 'Rowing Penché aux Haltères', 'pt-BR': 'Remada Curvada com Halteres' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
     equipment: ['dumbbells'],
@@ -376,13 +422,15 @@ export const exercises = [
     description: {
       en: 'Bilateral dumbbell row for back thickness. Hinge forward holding two dumbbells, row both to your hips simultaneously, squeeze your back at the top, then lower with controlled tempo.',
       es: 'Remo bilateral con mancuernas para grosor de espalda. Inclínate sosteniendo dos mancuernas, rema ambas a las caderas simultáneamente, aprieta la espalda arriba, luego baja con tempo controlado.',
+      fr: 'Rowing bilatéral aux haltères pour l\'épaisseur du dos. Inclinez-vous en tenant deux haltères, ramez-les simultanément jusqu\'aux hanches, contractez le dos en haut, puis redescendez avec un tempo contrôlé.',
+      'pt-BR': 'Remada bilateral com halteres para espessura das costas. Incline o tronco segurando dois halteres, puxe ambos até os quadris simultaneamente, contraia as costas no topo e desça com cadência controlada.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'pullover_back',
-    name: { en: 'Dumbbell Pullover (Back Focus)', es: 'Pullover con Mancuerna (Enfoque Espalda)' },
+    name: { en: 'Dumbbell Pullover (Back Focus)', es: 'Pullover con Mancuerna (Enfoque Espalda)' , fr: 'Pullover Haltère (Accent Dos)', 'pt-BR': 'Pullover com Haltere (Foco Costas)' },
     muscleGroup: 'back',
     muscles: { back: 0.65, chest: 0.20, triceps: 0.10, core: 0.05 },
     equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
@@ -391,13 +439,15 @@ export const exercises = [
     description: {
       en: 'Stretches and works the lats through a unique angle. Lie across a bench, keep arms straighter than chest version, lower dumbbell behind head, pull back over using your lats primarily.',
       es: 'Estira y trabaja los dorsales desde un ángulo único. Acuéstate cruzado en un banco, mantén brazos más rectos que la versión de pecho, baja la mancuerna detrás, tira usando principalmente dorsales.',
+      fr: 'Étire et travaille les dorsaux sous un angle unique. Allongez-vous en travers du banc, gardez les bras plus tendus que pour la version pectoraux, descendez l\'haltère derrière la tête et ramenez en utilisant principalement les dorsaux.',
+      'pt-BR': 'Alonga e trabalha os dorsais por um ângulo único. Deite-se transversal no banco, mantenha os braços mais esticados que na versão de peitoral, desça o haltere atrás da cabeça e puxe de volta usando principalmente os dorsais.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'tbar_row',
-    name: { en: 'T-Bar Row (Landmine)', es: 'Remo en T (Landmine)' },
+    name: { en: 'T-Bar Row (Landmine)', es: 'Remo en T (Landmine)' , fr: 'Rowing en T (Landmine)', 'pt-BR': 'Remada T (Landmine)' },
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.20, shoulders: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'rowing_handle', 'plates'],
@@ -405,13 +455,15 @@ export const exercises = [
     description: {
       en: 'Powerful mid-back builder using landmine setup. Straddle the bar, grip the handle attachment, row toward your chest while keeping your torso stable, squeezing hard at the top.',
       es: 'Poderoso constructor de espalda media usando configuración landmine. A horcajadas sobre la barra, agarra el accesorio, rema hacia el pecho manteniendo torso estable, apretando fuerte arriba.',
+      fr: 'Puissant exercice pour le dos médian en configuration landmine. Enjambez la barre, saisissez la poignée, ramez vers la poitrine en stabilisant le torse et en contractant fort au sommet.',
+      'pt-BR': 'Poderoso construtor do dorsal médio usando configuração landmine. Fique sobre a barra, segure o acessório, puxe até o peito mantendo o tronco estável e contraindo com força no topo.',
     },
     bmc: 3.5,
     wf: 0.03,
   },
   {
     id: 'deadlift',
-    name: { en: 'Deadlift', es: 'Peso Muerto' },
+    name: { en: 'Deadlift', es: 'Peso Muerto' , fr: 'Soulevé de Terre', 'pt-BR': 'Levantamento Terra' },
     muscleGroup: 'back',
     muscles: { back: 0.30, hamstrings: 0.25, glutes: 0.25, quads: 0.10, core: 0.10 },
     equipment: ['straight_bar', 'plates'],
@@ -419,13 +471,15 @@ export const exercises = [
     description: {
       en: 'The ultimate full-body pulling movement. With flat back, grip bar outside knees, drive through heels to stand up, keeping bar close to body throughout, then reverse with control.',
       es: 'El movimiento de tirón de cuerpo completo definitivo. Con espalda plana, agarra la barra fuera de las rodillas, empuja con talones para pararte, manteniendo barra cerca del cuerpo.',
+      fr: 'Le mouvement de tirade corps entier par excellence. Dos plat, saisissez la barre en dehors des genoux, poussez sur les talons pour vous redresser en gardant la barre contre le corps, puis redescendez avec contrôle.',
+      'pt-BR': 'O movimento de puxada de corpo inteiro definitivo. Com as costas retas, segure a barra fora dos joelhos, empurre pelos calcanhares para se levantar mantendo a barra próxima ao corpo e reverta com controle.',
     },
     bmc: 6.0,
     wf: 0.05,
   },
   {
     id: 'romanian_deadlift_barbell',
-    name: { en: 'Romanian Deadlift (Barbell)', es: 'Peso Muerto Rumano (Barra)' },
+    name: { en: 'Romanian Deadlift (Barbell)', es: 'Peso Muerto Rumano (Barra)' , fr: 'Soulevé de Terre Roumain (Barre)', 'pt-BR': 'Levantamento Terra Romeno (Barra)' },
     muscleGroup: 'back',
     muscles: { hamstrings: 0.40, back: 0.30, glutes: 0.25, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
@@ -433,13 +487,15 @@ export const exercises = [
     description: {
       en: 'Hip hinge focusing on posterior chain. Start standing, push hips back while lowering bar along your legs, feel the hamstring stretch, then drive hips forward maintaining flat back.',
       es: 'Bisagra de cadera enfocada en cadena posterior. Comienza de pie, empuja caderas atrás bajando la barra por las piernas, siente el estiramiento de isquios, luego empuja caderas adelante.',
+      fr: 'Charnière de hanche ciblant la chaîne postérieure. Debout, poussez les hanches vers l\'arrière en faisant glisser la barre le long des jambes, ressentez l\'étirement des ischio-jambiers, puis propulsez les hanches vers l\'avant dos plat.',
+      'pt-BR': 'Dobradiça do quadril com foco na cadeia posterior. Partindo em pé, empurre o quadril para trás enquanto desce a barra pelas pernas, sinta o alongamento dos isquiotibiais e impulsione o quadril para frente mantendo as costas retas.',
     },
     bmc: 4.0,
     wf: 0.04,
   },
   {
     id: 'romanian_deadlift_dumbbell',
-    name: { en: 'Dumbbell Romanian Deadlift', es: 'Peso Muerto Rumano con Mancuernas' },
+    name: { en: 'Dumbbell Romanian Deadlift', es: 'Peso Muerto Rumano con Mancuernas' , fr: 'Soulevé de Terre Roumain aux Haltères', 'pt-BR': 'Levantamento Terra Romeno com Halteres' },
     muscleGroup: 'back',
     muscles: { hamstrings: 0.40, back: 0.30, glutes: 0.25, core: 0.05 },
     equipment: ['dumbbells'],
@@ -447,13 +503,15 @@ export const exercises = [
     description: {
       en: 'Dumbbell variation allowing natural arm path. Hold dumbbells in front of thighs, hinge at hips keeping back flat, lower until you feel hamstring stretch, then return to standing.',
       es: 'Variación con mancuernas permitiendo trayectoria natural de brazos. Sostén mancuernas frente a los muslos, haz bisagra en caderas con espalda plana, baja hasta sentir estiramiento de isquios.',
+      fr: 'Variante aux haltères permettant une trajectoire naturelle des bras. Tenez les haltères devant les cuisses, fléchissez au niveau des hanches dos plat, descendez jusqu\'à ressentir l\'étirement des ischio-jambiers, puis revenez debout.',
+      'pt-BR': 'Variação com halteres permitindo trajetória natural dos braços. Segure os halteres na frente das coxas, dobre no quadril com as costas retas, desça até sentir o alongamento dos isquiotibiais e retorne à posição ereta.',
     },
     bmc: 4.0,
     wf: 0.04,
   },
   {
     id: 'good_mornings',
-    name: { en: 'Good Mornings', es: 'Buenos Días' },
+    name: { en: 'Good Mornings', es: 'Buenos Días' , fr: 'Good Mornings', 'pt-BR': 'Good Mornings' },
     muscleGroup: 'back',
     muscles: { back: 0.35, hamstrings: 0.35, glutes: 0.20, core: 0.10 },
     equipment: ['straight_bar', 'plates'],
@@ -461,13 +519,15 @@ export const exercises = [
     description: {
       en: 'Posterior chain exercise with bar on upper back. With bar positioned like a squat, bow forward by pushing hips back, keep back flat, lower until torso is near parallel, then return upright.',
       es: 'Ejercicio de cadena posterior con barra en espalda alta. Con barra posicionada como sentadilla, inclínate empujando caderas atrás, mantén espalda plana, baja hasta casi paralelo, luego regresa.',
+      fr: 'Exercice de chaîne postérieure avec la barre sur le haut du dos. La barre positionnée comme au squat, inclinez-vous en poussant les hanches vers l\'arrière dos plat, descendez jusqu\'à ce que le torse soit presque parallèle, puis revenez droit.',
+      'pt-BR': 'Exercício de cadeia posterior com a barra na parte superior das costas. Com a barra posicionada como no agachamento, incline-se empurrando o quadril para trás, costas retas, desça até o tronco ficar quase paralelo ao chão e retorne ereto.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'hyperextension',
-    name: { en: 'Hyperextensions (On Bench)', es: 'Hiperextensiones (en banco)' },
+    name: { en: 'Hyperextensions (On Bench)', es: 'Hiperextensiones (en banco)' , fr: 'Hyperextensions (sur Banc)', 'pt-BR': 'Hiperextensões (no Banco)' },
     muscleGroup: 'back',
     muscles: { back: 0.45, glutes: 0.30, hamstrings: 0.25 },
     equipment: ['incline_bench'],
@@ -476,6 +536,8 @@ export const exercises = [
     description: {
       en: 'Lower back strengthening on a decline bench. Position yourself face down with hips at edge, lower upper body toward floor, then raise up by contracting lower back and glutes.',
       es: 'Fortalecimiento de espalda baja en banco declinado. Posiciónate boca abajo con caderas en el borde, baja el torso hacia el suelo, luego sube contrayendo espalda baja y glúteos.',
+      fr: 'Renforcement du bas du dos sur un banc décliné. Positionnez-vous face vers le bas avec les hanches au bord, descendez le torse vers le sol, puis remontez en contractant le bas du dos et les fessiers.',
+      'pt-BR': 'Fortalecimento da lombar no banco declinado. Posicione-se com o rosto para baixo e os quadris na borda, desça o tronco em direção ao chão e suba contraindo os músculos lombares e glúteos.',
     },
     bmc: 2.0,
     wf: 0.0,
@@ -483,7 +545,7 @@ export const exercises = [
   },
   {
     id: 'shrugs_barbell',
-    name: { en: 'Shrugs (Barbell)', es: 'Encogimientos (Barra)' },
+    name: { en: 'Shrugs (Barbell)', es: 'Encogimientos (Barra)' , fr: 'Haussements d\'Épaules (Barre)', 'pt-BR': 'Encolhimento de Ombros (Barra)' },
     muscleGroup: 'back',
     muscles: { back: 0.85, shoulders: 0.15 },
     equipment: [['straight_bar', 'ez_bar'], 'plates'],
@@ -491,13 +553,15 @@ export const exercises = [
     description: {
       en: 'Trap builder using heavy barbell loads. Hold bar at arm\'s length, elevate shoulders straight up toward ears, squeeze traps hard at the top, then lower with control without rolling shoulders.',
       es: 'Constructor de trapecios usando cargas pesadas de barra. Sostén la barra con brazos extendidos, eleva hombros hacia las orejas, aprieta trapecios arriba, luego baja con control.',
+      fr: 'Exercice de trapèzes avec charges lourdes à la barre. Tenez la barre bras tendus, élevez les épaules droit vers les oreilles, contractez fort les trapèzes en haut, puis redescendez avec contrôle sans faire rouler les épaules.',
+      'pt-BR': 'Construtor de trapézios com cargas pesadas na barra. Segure a barra com os braços estendidos, eleve os ombros diretamente em direção às orelhas, contraia os trapézios com força no topo e desça com controle sem girar os ombros.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'shrugs_dumbbell',
-    name: { en: 'Shrugs (Dumbbell)', es: 'Encogimientos (Mancuernas)' },
+    name: { en: 'Shrugs (Dumbbell)', es: 'Encogimientos (Mancuernas)' , fr: 'Haussements d\'Épaules (Haltères)', 'pt-BR': 'Encolhimento de Ombros (Halteres)' },
     muscleGroup: 'back',
     muscles: { back: 0.85, shoulders: 0.15 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -505,6 +569,8 @@ export const exercises = [
     description: {
       en: 'Trap isolation with dumbbells at your sides. Stand holding dumbbells, shrug shoulders up as high as possible, hold the contraction briefly, then lower slowly to maximize time under tension.',
       es: 'Aislamiento de trapecios con mancuernas a los lados. De pie sosteniendo mancuernas, encoge los hombros lo más alto posible, mantén la contracción brevemente, luego baja lento.',
+      fr: 'Isolation des trapèzes avec des haltères de chaque côté. Debout en tenant les haltères, haussez les épaules aussi haut que possible, maintenez la contraction brièvement, puis redescendez lentement pour maximiser le temps sous tension.',
+      'pt-BR': 'Isolamento dos trapézios com halteres ao lado do corpo. De pé segurando os halteres, eleve os ombros o mais alto possível, mantenha a contração brevemente e desça lentamente para maximizar o tempo sob tensão.',
     },
     bmc: 1.5,
     wf: 0.02,
@@ -515,7 +581,7 @@ export const exercises = [
   // ============================================
   {
     id: 'overhead_press_standing',
-    name: { en: 'Barbell Overhead Press (Standing)', es: 'Press Militar de Pie' },
+    name: { en: 'Barbell Overhead Press (Standing)', es: 'Press Militar de Pie' , fr: 'Développé Militaire Debout', 'pt-BR': 'Desenvolvimento Militar em Pé' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.60, triceps: 0.25, core: 0.10, chest: 0.05 },
     equipment: ['straight_bar', 'plates'],
@@ -523,13 +589,15 @@ export const exercises = [
     description: {
       en: 'Fundamental shoulder strength builder. Start with bar at collarbone, press overhead while keeping core tight, lock out arms at top, then lower back to starting position under control.',
       es: 'Constructor fundamental de fuerza de hombros. Comienza con barra en clavícula, empuja sobre la cabeza manteniendo core apretado, bloquea brazos arriba, luego baja con control.',
+      fr: 'Exercice fondamental de force des épaules. Commencez barre à la clavicule, poussez au-dessus de la tête en gardant le gainage, verrouillez les bras en haut, puis redescendez sous contrôle.',
+      'pt-BR': 'Exercício fundamental de força para ombros. Comece com a barra na clavícula, pressione acima da cabeça mantendo o core contraído, trave os braços no topo e desça com controle.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'overhead_press_seated',
-    name: { en: 'Barbell Overhead Press (Seated)', es: 'Press Militar Sentado' },
+    name: { en: 'Barbell Overhead Press (Seated)', es: 'Press Militar Sentado' , fr: 'Développé Militaire Assis', 'pt-BR': 'Desenvolvimento Militar Sentado' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.65, triceps: 0.25, chest: 0.10 },
     equipment: ['straight_bar', 'upright_bench', 'plates'],
@@ -537,13 +605,15 @@ export const exercises = [
     description: {
       en: 'Strict overhead pressing without leg drive. Sit with back supported, press bar from shoulders to full lockout overhead, this isolates shoulders more by eliminating leg momentum.',
       es: 'Press sobre cabeza estricto sin impulso de piernas. Siéntate con espalda apoyada, empuja la barra desde hombros hasta bloqueo completo, esto aísla más los hombros eliminando impulso.',
+      fr: 'Développé strict au-dessus de la tête sans élan des jambes. Assis le dos soutenu, poussez la barre des épaules jusqu\'au blocage complet — cela isole davantage les épaules en éliminant le momentum.',
+      'pt-BR': 'Desenvolvimento estrito acima da cabeça sem impulso das pernas. Sentado com o dorso apoiado, pressione a barra dos ombros até o travamento completo — isola mais os ombros eliminando o momentum.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'push_press',
-    name: { en: 'Barbell Push Press', es: 'Push Press con Barra' },
+    name: { en: 'Barbell Push Press', es: 'Push Press con Barra' , fr: 'Push Press à la Barre', 'pt-BR': 'Push Press com Barra' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.50, triceps: 0.20, quads: 0.15, core: 0.10, chest: 0.05 },
     equipment: ['straight_bar', 'plates'],
@@ -551,13 +621,15 @@ export const exercises = [
     description: {
       en: 'Explosive overhead press using leg drive. Dip slightly at knees, then explosively drive up while pressing bar overhead, this allows handling heavier weights than strict pressing.',
       es: 'Press sobre cabeza explosivo usando impulso de piernas. Flexiona ligeramente las rodillas, luego impulsa explosivamente mientras empujas la barra arriba, permite manejar pesos más pesados.',
+      fr: 'Développé explosif au-dessus de la tête utilisant l\'élan des jambes. Fléchissez légèrement les genoux, puis poussez de façon explosive en pressant la barre vers le haut — permet de soulever des charges plus lourdes qu\'en développé strict.',
+      'pt-BR': 'Desenvolvimento explosivo acima da cabeça usando o impulso das pernas. Dobre levemente os joelhos e empurre de forma explosiva enquanto pressiona a barra para cima — permite trabalhar com cargas maiores que no desenvolvimento estrito.',
     },
     bmc: 2.5,
     wf: 0.03,
   },
   {
     id: 'behind_neck_press',
-    name: { en: 'Barbell Behind-Neck Press', es: 'Press Tras Nuca con Barra' },
+    name: { en: 'Barbell Behind-Neck Press', es: 'Press Tras Nuca con Barra' , fr: 'Développé Nuque à la Barre', 'pt-BR': 'Desenvolvimento por Trás com Barra' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.70, triceps: 0.25, back: 0.05 },
     equipment: ['straight_bar', 'upright_bench', 'plates'],
@@ -565,13 +637,15 @@ export const exercises = [
     description: {
       en: 'Advanced shoulder press lowering bar behind head. Requires good shoulder mobility, lower bar to base of neck, press up to lockout, use lighter weight and control to protect joints.',
       es: 'Press de hombros avanzado bajando barra detrás de la cabeza. Requiere buena movilidad de hombros, baja la barra a la base del cuello, empuja hasta bloqueo, usa peso ligero y control.',
+      fr: 'Développé épaules avancé avec la barre derrière la tête. Exige une bonne mobilité des épaules — descendez la barre à la base du cou, poussez jusqu\'au blocage, utilisez un poids léger et contrôlez pour protéger les articulations.',
+      'pt-BR': 'Desenvolvimento de ombros avançado baixando a barra por trás da cabeça. Exige boa mobilidade — desça a barra até a base do pescoço, pressione até o travamento e use carga leve com controle para proteger as articulações.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'db_shoulder_press_seated',
-    name: { en: 'Dumbbell Shoulder Press (Seated)', es: 'Press de Hombros con Mancuernas (Sentado)' },
+    name: { en: 'Dumbbell Shoulder Press (Seated)', es: 'Press de Hombros con Mancuernas (Sentado)' , fr: 'Développé Épaules aux Haltères (Assis)', 'pt-BR': 'Desenvolvimento com Halteres (Sentado)' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.65, triceps: 0.25, chest: 0.10 },
     equipment: ['dumbbells', 'upright_bench'],
@@ -579,13 +653,15 @@ export const exercises = [
     description: {
       en: 'Seated pressing allowing independent arm movement. Press dumbbells from shoulder height to overhead, bring them slightly together at top, lower with control for full shoulder development.',
       es: 'Press sentado permitiendo movimiento independiente de brazos. Empuja mancuernas desde altura de hombros arriba, júntalas ligeramente arriba, baja con control para desarrollo completo.',
+      fr: 'Développé assis permettant un mouvement indépendant des bras. Pressez les haltères depuis la hauteur des épaules jusqu\'en haut en les rapprochant légèrement au sommet, redescendez sous contrôle pour un développement complet.',
+      'pt-BR': 'Desenvolvimento sentado com movimento independente dos braços. Pressione os halteres da altura dos ombros até acima, aproxime-os levemente no topo e desça com controle para desenvolvimento completo dos ombros.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'db_shoulder_press_standing',
-    name: { en: 'Dumbbell Shoulder Press (Standing)', es: 'Press de Hombros con Mancuernas (De Pie)' },
+    name: { en: 'Dumbbell Shoulder Press (Standing)', es: 'Press de Hombros con Mancuernas (De Pie)' , fr: 'Développé Épaules aux Haltères (Debout)', 'pt-BR': 'Desenvolvimento com Halteres (Em Pé)' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.60, triceps: 0.25, core: 0.10, chest: 0.05 },
     equipment: ['dumbbells'],
@@ -593,13 +669,15 @@ export const exercises = [
     description: {
       en: 'Standing overhead press engaging more stabilizers. Press dumbbells overhead while maintaining core stability, this variation builds functional strength and challenges balance throughout.',
       es: 'Press sobre cabeza de pie involucrando más estabilizadores. Empuja mancuernas arriba manteniendo estabilidad del core, esta variación construye fuerza funcional y desafía el equilibrio.',
+      fr: 'Développé debout au-dessus de la tête sollicitant davantage les stabilisateurs. Pressez les haltères en maintenant le gainage — cette variante développe la force fonctionnelle et sollicite l\'équilibre tout au long du mouvement.',
+      'pt-BR': 'Desenvolvimento em pé acima da cabeça ativando mais estabilizadores. Pressione os halteres mantendo a estabilidade do core — esta variação desenvolve força funcional e desafia o equilíbrio durante todo o movimento.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'arnold_press',
-    name: { en: 'Arnold Press', es: 'Press Arnold' },
+    name: { en: 'Arnold Press', es: 'Press Arnold' , fr: 'Press Arnold', 'pt-BR': 'Press Arnold' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.65, triceps: 0.20, chest: 0.15 },
     equipment: ['dumbbells', 'upright_bench'],
@@ -607,13 +685,15 @@ export const exercises = [
     description: {
       en: 'Rotational press hitting all three delt heads. Start with palms facing you at chest, rotate and press up so palms face forward at top, reverse the motion on the way down.',
       es: 'Press rotacional que trabaja las tres cabezas del deltoides. Comienza con palmas hacia ti en el pecho, rota y empuja para que las palmas miren adelante arriba, invierte al bajar.',
+      fr: 'Développé rotatif travaillant les trois faisceaux du deltoïde. Commencez les paumes face à vous à hauteur de poitrine, faites pivoter et poussez jusqu\'à ce que les paumes regardent vers l\'avant en haut, puis inversez à la descente.',
+      'pt-BR': 'Desenvolvimento rotacional que trabalha as três cabeças do deltoide. Comece com as palmas voltadas para você na altura do peito, gire e pressione até as palmas ficarem para frente no topo e reverta o movimento na descida.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'lateral_raise',
-    name: { en: 'Dumbbell Lateral Raise', es: 'Elevaciones Laterales con Mancuernas' },
+    name: { en: 'Dumbbell Lateral Raise', es: 'Elevaciones Laterales con Mancuernas' , fr: 'Élévation Latérale aux Haltères', 'pt-BR': 'Elevação Lateral com Halteres' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.90, back: 0.10 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -621,13 +701,15 @@ export const exercises = [
     description: {
       en: 'Primary side delt isolation exercise. Raise dumbbells out to sides with slight elbow bend, lift until arms are parallel to floor, lower with control, avoid swinging or using momentum.',
       es: 'Ejercicio principal de aislamiento de deltoides lateral. Eleva mancuernas a los lados con codos ligeramente flexionados, sube hasta brazos paralelos al suelo, baja con control.',
+      fr: 'Principal exercice d\'isolation pour les deltoïdes latéraux. Levez les haltères sur les côtés avec une légère flexion des coudes, montez jusqu\'à ce que les bras soient parallèles au sol, redescendez sous contrôle sans balancement ni élan.',
+      'pt-BR': 'Principal exercício de isolamento para o deltoide lateral. Eleve os halteres para os lados com leve flexão dos cotovelos, suba até os braços ficarem paralelos ao chão e desça com controle — sem balanço ou impulso.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'front_raise',
-    name: { en: 'Dumbbell Front Raise', es: 'Elevaciones Frontales con Mancuernas' },
+    name: { en: 'Dumbbell Front Raise', es: 'Elevaciones Frontales con Mancuernas' , fr: 'Élévation Frontale aux Haltères', 'pt-BR': 'Elevação Frontal com Halteres' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.85, chest: 0.15 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -635,13 +717,15 @@ export const exercises = [
     description: {
       en: 'Isolation for anterior deltoids. Raise dumbbells in front of body to shoulder height, keep arms straight with slight elbow bend, lower under control, alternate arms or lift both.',
       es: 'Aislamiento para deltoides anterior. Eleva mancuernas frente al cuerpo hasta altura de hombros, mantén brazos rectos con ligera flexión, baja con control, alterna o levanta ambos.',
+      fr: 'Isolation pour les deltoïdes antérieurs. Levez les haltères devant le corps jusqu\'à la hauteur des épaules, gardez les bras tendus avec une légère flexion des coudes, redescendez sous contrôle — alternez ou levez les deux ensemble.',
+      'pt-BR': 'Isolamento para os deltoides anteriores. Eleve os halteres à frente do corpo até a altura dos ombros com leve flexão dos cotovelos e desça com controle — alterne os braços ou eleve ambos ao mesmo tempo.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'rear_delt_fly_bent',
-    name: { en: 'Dumbbell Rear Delt Fly (Bent Over)', es: 'Aperturas Posteriores (Inclinado)' },
+    name: { en: 'Dumbbell Rear Delt Fly (Bent Over)', es: 'Aperturas Posteriores (Inclinado)' , fr: 'Oiseau (Penché)', 'pt-BR': 'Crucifixo Invertido (Curvado)' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.75, back: 0.25 },
     equipment: ['dumbbells'],
@@ -649,13 +733,15 @@ export const exercises = [
     description: {
       en: 'Bent-over fly targeting posterior deltoids. Hinge forward at hips, raise dumbbells out to sides leading with elbows, squeeze rear delts at top, lower with control.',
       es: 'Apertura inclinada que trabaja deltoides posteriores. Inclínate desde las caderas, eleva mancuernas a los lados liderando con codos, aprieta deltoides posteriores arriba, baja con control.',
+      fr: 'Écarté penché ciblant les deltoïdes postérieurs. Inclinez-vous depuis les hanches, levez les haltères sur les côtés en menant avec les coudes, contractez les deltoïdes postérieurs en haut, redescendez sous contrôle.',
+      'pt-BR': 'Crucifixo invertido inclinado para os deltoides posteriores. Incline-se a partir do quadril, eleve os halteres para os lados liderando com os cotovelos, contraia os deltoides posteriores no topo e desça com controle.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'rear_delt_fly_incline',
-    name: { en: 'Dumbbell Rear Delt Fly (Incline)', es: 'Aperturas Posteriores (En Banco Inclinado)' },
+    name: { en: 'Dumbbell Rear Delt Fly (Incline)', es: 'Aperturas Posteriores (En Banco Inclinado)' , fr: 'Oiseau (sur Banc Incliné)', 'pt-BR': 'Crucifixo Invertido (no Banco Inclinado)' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.75, back: 0.25 },
     equipment: ['dumbbells', 'incline_bench'],
@@ -663,13 +749,15 @@ export const exercises = [
     description: {
       en: 'Chest-supported rear delt isolation. Lie face down on incline bench, perform fly motion focusing on rear delts, the bench support eliminates momentum and lower back strain.',
       es: 'Aislamiento de deltoides posterior con pecho apoyado. Acuéstate boca abajo en banco inclinado, realiza movimiento de apertura enfocándote en deltoides posteriores, el banco elimina impulso.',
+      fr: 'Isolation des deltoïdes postérieurs avec la poitrine appuyée. Allongez-vous face vers le bas sur un banc incliné, effectuez un mouvement d\'écarté en ciblant les deltoïdes postérieurs — le banc élimine l\'élan et la tension lombaire.',
+      'pt-BR': 'Isolamento do deltoide posterior com apoio no banco. Deite-se de bruços no banco inclinado e execute o movimento de crucifixo focando no deltoide posterior — o apoio elimina o impulso e a tensão lombar.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'upright_row_barbell',
-    name: { en: 'Upright Row (Barbell)', es: 'Remo al Mentón (Barra)' },
+    name: { en: 'Upright Row (Barbell)', es: 'Remo al Mentón (Barra)' , fr: 'Rowing Vertical à la Barre', 'pt-BR': 'Remada Alta com Barra' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.55, back: 0.30, biceps: 0.15 },
     equipment: [['ez_bar', 'straight_bar'], 'plates'],
@@ -677,13 +765,15 @@ export const exercises = [
     description: {
       en: 'Compound movement for traps and lateral delts. Pull bar up close to body leading with elbows, raise until elbows are at shoulder height, lower with control, use moderate grip width.',
       es: 'Movimiento compuesto para trapecios y deltoides laterales. Tira la barra cerca del cuerpo liderando con codos, sube hasta que los codos estén a altura de hombros, baja con control.',
+      fr: 'Mouvement polyarticulaire pour les trapèzes et deltoïdes latéraux. Tirez la barre près du corps en menant avec les coudes, montez jusqu\'à ce que les coudes soient à hauteur des épaules, redescendez sous contrôle avec une prise modérée.',
+      'pt-BR': 'Movimento composto para trapézios e deltoides laterais. Puxe a barra junto ao corpo liderando com os cotovelos, suba até os cotovelos ficarem na altura dos ombros e desça com controle com pegada de largura moderada.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'upright_row_dumbbell',
-    name: { en: 'Upright Row (Dumbbells)', es: 'Remo al Mentón (Mancuernas)' },
+    name: { en: 'Upright Row (Dumbbells)', es: 'Remo al Mentón (Mancuernas)' , fr: 'Rowing Vertical aux Haltères', 'pt-BR': 'Remada Alta com Halteres' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.55, back: 0.30, biceps: 0.15 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -691,13 +781,15 @@ export const exercises = [
     description: {
       en: 'Dumbbell version allowing more natural arm path. Pull dumbbells up along body with elbows leading, this variation is often more comfortable for those with shoulder mobility limitations.',
       es: 'Versión con mancuernas permitiendo trayectoria más natural de brazos. Tira las mancuernas hacia arriba con codos liderando, esta variación es más cómoda para quienes tienen limitaciones.',
+      fr: 'Version aux haltères permettant une trajectoire de bras plus naturelle. Tirez les haltères vers le haut le long du corps en menant avec les coudes — cette variante est souvent plus confortable pour ceux ayant des limitations de mobilité des épaules.',
+      'pt-BR': 'Versão com halteres que permite uma trajetória mais natural dos braços. Puxe os halteres para cima ao longo do corpo com os cotovelos à frente — costuma ser mais confortável para quem tem limitações de mobilidade nos ombros.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'plate_front_raise',
-    name: { en: 'Plate Front Raise', es: 'Elevación Frontal con Disco' },
+    name: { en: 'Plate Front Raise', es: 'Elevación Frontal con Disco' , fr: 'Élévation Frontale avec Disque', 'pt-BR': 'Elevação Frontal com Anilha' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.85, chest: 0.15 },
     equipment: ['plates'],
@@ -705,13 +797,15 @@ export const exercises = [
     description: {
       en: 'Front raise variation using a weight plate. Hold plate with both hands at sides, raise in front to eye level or overhead, the wider grip engages shoulders differently than dumbbells.',
       es: 'Variación de elevación frontal usando un disco. Sostén el disco con ambas manos a los lados, eleva al frente hasta nivel de ojos o arriba, el agarre más ancho activa los hombros diferente.',
+      fr: 'Variante d\'élévation frontale avec un disque. Tenez le disque à deux mains, levez-le devant vous jusqu\'au niveau des yeux ou au-dessus — la largeur de prise sollicite les épaules différemment des haltères.',
+      'pt-BR': 'Variação de elevação frontal com anilha. Segure a anilha com as duas mãos e eleve à frente até a altura dos olhos ou acima — a pegada mais larga ativa os ombros de forma diferente dos halteres.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'bus_drivers',
-    name: { en: 'Bus Drivers', es: 'Conductores de Bus' },
+    name: { en: 'Bus Drivers', es: 'Conductores de Bus' , fr: 'Bus Drivers', 'pt-BR': 'Bus Drivers' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.80, chest: 0.10, core: 0.10 },
     equipment: ['plates'],
@@ -719,13 +813,15 @@ export const exercises = [
     description: {
       en: 'Rotational shoulder exercise with a plate. Hold plate extended in front, rotate it like turning a steering wheel, this challenges all parts of the shoulder through multiple planes.',
       es: 'Ejercicio rotacional de hombros con disco. Sostén el disco extendido al frente, rótalo como girando un volante, esto desafía todas las partes del hombro en múltiples planos.',
+      fr: 'Exercice rotationnel pour les épaules avec un disque. Tenez le disque tendu devant vous et faites-le pivoter comme un volant — cet exercice sollicite toutes les parties de l\'épaule dans plusieurs plans de mouvement.',
+      'pt-BR': 'Exercício rotacional para ombros com anilha. Segure a anilha estendida à frente e gire como se estivesse virando um volante — desafia todas as partes do ombro em múltiplos planos de movimento.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'band_pull_aparts',
-    name: { en: 'Band Pull-Aparts', es: 'Separaciones con Banda' },
+    name: { en: 'Band Pull-Aparts', es: 'Separaciones con Banda' , fr: 'Écartés avec Élastique', 'pt-BR': 'Separação de Elástico' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.70, back: 0.30 },
     equipment: ['resistance_band'],
@@ -733,6 +829,8 @@ export const exercises = [
     description: {
       en: 'Great warm-up and rear delt exercise with band. Hold band at arm\'s length in front, pull apart until band touches chest, squeeze rear delts, excellent for shoulder health and posture.',
       es: 'Excelente calentamiento y ejercicio de deltoides posterior con banda. Sostén la banda con brazos extendidos, separa hasta que toque el pecho, aprieta deltoides posteriores, ideal para postura.',
+      fr: 'Excellent exercice d\'échauffement et d\'isolation des deltoïdes postérieurs avec élastique. Tenez l\'élastique tendu devant vous, écartez jusqu\'à ce qu\'il touche la poitrine en contractant les deltoïdes postérieurs — idéal pour la santé des épaules et la posture.',
+      'pt-BR': 'Excelente exercício de aquecimento e isolamento do deltoide posterior com elástico. Segure o elástico estendido à frente e separe até ele tocar o peito contraindo os deltoides posteriores — ótimo para a saúde dos ombros e postura.',
     },
     bmc: 0.8,
     wf: 0.0,
@@ -740,7 +838,7 @@ export const exercises = [
   },
   {
     id: 'barbell_high_pull',
-    name: { en: 'Barbell High Pull', es: 'Tirón Alto con Barra' },
+    name: { en: 'Barbell High Pull', es: 'Tirón Alto con Barra' , fr: 'High Pull à la Barre', 'pt-BR': 'High Pull com Barra' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.40, back: 0.30, biceps: 0.15, quads: 0.10, core: 0.05 },
     equipment: [['straight_bar', 'ez_bar'], 'plates'],
@@ -748,6 +846,8 @@ export const exercises = [
     description: {
       en: 'Explosive movement for traps and shoulders. Similar to upright row but with more hip drive and explosive pulling, raise bar to upper chest level with elbows high, builds power and size.',
       es: 'Movimiento explosivo para trapecios y hombros. Similar al remo al mentón pero con más impulso de cadera y tirón explosivo, sube la barra al pecho alto con codos arriba, construye potencia.',
+      fr: 'Mouvement explosif pour les trapèzes et les épaules. Similaire au rowing vertical mais avec plus d\'élan des hanches et une traction explosive — montez la barre jusqu\'au haut de la poitrine avec les coudes hauts pour développer puissance et volume.',
+      'pt-BR': 'Movimento explosivo para trapézios e ombros. Semelhante à remada alta mas com mais impulso de quadril e tração explosiva — suba a barra até o peito alto com os cotovelos elevados para desenvolver potência e volume.',
     },
     bmc: 2.5,
     wf: 0.03,
@@ -758,7 +858,7 @@ export const exercises = [
   // ============================================
   {
     id: 'barbell_curl_standing',
-    name: { en: 'Barbell Curl (Standing)', es: 'Curl con Barra (De Pie)' },
+    name: { en: 'Barbell Curl (Standing)', es: 'Curl con Barra (De Pie)' , fr: 'Curl Barre Debout', 'pt-BR': 'Rosca Direta com Barra (Em Pé)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['straight_bar', 'plates'],
@@ -766,13 +866,15 @@ export const exercises = [
     description: {
       en: 'Classic mass builder for biceps. Stand with shoulder-width grip, curl bar to shoulders keeping elbows stationary at sides, lower with control, avoid swinging or using back momentum.',
       es: 'Clásico constructor de masa para bíceps. De pie con agarre a anchura de hombros, curl hacia los hombros manteniendo codos fijos a los lados, baja con control, evita balanceo o impulso.',
+      fr: 'Exercice classique de masse pour les biceps. Debout prise à largeur d\'épaules, curl la barre vers les épaules en gardant les coudes fixes, redescendez sous contrôle — évitez le balancement ou l\'élan du dos.',
+      'pt-BR': 'Exercício clássico para massa dos bíceps. De pé com pegada na largura dos ombros, faça a rosca até os ombros mantendo os cotovelos fixos e desça com controle — evite balanços ou impulso do dorso.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'barbell_curl_wide',
-    name: { en: 'Barbell Curl (Wide Grip)', es: 'Curl con Barra (Agarre Ancho)' },
+    name: { en: 'Barbell Curl (Wide Grip)', es: 'Curl con Barra (Agarre Ancho)' , fr: 'Curl Barre Prise Large', 'pt-BR': 'Rosca Direta com Barra (Pegada Larga)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['straight_bar', 'plates'],
@@ -780,13 +882,15 @@ export const exercises = [
     description: {
       en: 'Wide grip emphasizes the inner bicep head. Grip bar wider than shoulder width, perform curls focusing on the short head of the biceps, this builds inner arm thickness.',
       es: 'El agarre ancho enfatiza la cabeza interna del bíceps. Agarra la barra más ancho que los hombros, realiza curls enfocándote en la cabeza corta del bíceps, esto construye grosor interno.',
+      fr: 'La prise large accentue la tête courte du biceps. Saisissez la barre plus large que la largeur des épaules et effectuez des curls en ciblant la tête courte — développe l\'épaisseur interne du bras.',
+      'pt-BR': 'A pegada larga enfatiza a cabeça curta do bíceps. Pegue a barra mais larga que a largura dos ombros e faça a rosca focando na cabeça curta — desenvolve a espessura interna do braço.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'barbell_curl_close',
-    name: { en: 'Barbell Curl (Close Grip)', es: 'Curl con Barra (Agarre Cerrado)' },
+    name: { en: 'Barbell Curl (Close Grip)', es: 'Curl con Barra (Agarre Cerrado)' , fr: 'Curl Barre Prise Serrée', 'pt-BR': 'Rosca Direta com Barra (Pegada Fechada)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['straight_bar', 'plates'],
@@ -794,13 +898,15 @@ export const exercises = [
     description: {
       en: 'Close grip targets the outer bicep head. Grip bar narrower than shoulder width, curl while keeping elbows close to body, this variation develops the bicep peak and long head.',
       es: 'El agarre cerrado trabaja la cabeza externa del bíceps. Agarra la barra más cerrado que los hombros, haz curl manteniendo codos cerca del cuerpo, esto desarrolla el pico del bíceps.',
+      fr: 'La prise serrée cible la tête longue du biceps. Saisissez la barre plus étroit que la largeur des épaules, curl en gardant les coudes près du corps — développe le pic et la tête longue du biceps.',
+      'pt-BR': 'A pegada fechada trabalha a cabeça longa do bíceps. Pegue a barra mais fechado que a largura dos ombros, faça a rosca mantendo os cotovelos próximos ao corpo — desenvolve o pico e a cabeça longa do bíceps.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'ez_bar_curl',
-    name: { en: 'EZ Bar Curl', es: 'Curl con Barra Z' },
+    name: { en: 'EZ Bar Curl', es: 'Curl con Barra Z' , fr: 'Curl Barre EZ', 'pt-BR': 'Rosca Direta com Barra EZ' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['ez_bar', 'plates'],
@@ -808,13 +914,15 @@ export const exercises = [
     description: {
       en: 'Wrist-friendly curl using angled EZ bar. The camber reduces wrist strain while still effectively targeting biceps, curl with controlled tempo, squeeze at the top of each rep.',
       es: 'Curl amigable con las muñecas usando barra Z angulada. La curvatura reduce tensión en muñecas mientras trabaja efectivamente los bíceps, curl con tempo controlado, aprieta arriba.',
+      fr: 'Curl sans contrainte pour les poignets avec la barre EZ coudée. La courbure réduit la tension sur les poignets tout en ciblant efficacement les biceps — curl avec tempo contrôlé en serrant au sommet.',
+      'pt-BR': 'Rosca confortável para os pulsos com a barra EZ angulada. A curvatura reduz a tensão nos pulsos enquanto trabalha os bíceps com eficácia — execute com tempo controlado e contraia no topo.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'ez_bar_curl_wide',
-    name: { en: 'EZ Bar Curl (Wide Grip)', es: 'Curl con Barra Z (Agarre Ancho)' },
+    name: { en: 'EZ Bar Curl (Wide Grip)', es: 'Curl con Barra Z (Agarre Ancho)' , fr: 'Curl Barre EZ Prise Large', 'pt-BR': 'Rosca Direta com Barra EZ (Pegada Larga)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['ez_bar', 'plates'],
@@ -822,13 +930,15 @@ export const exercises = [
     description: {
       en: 'Wide grip EZ curl for inner bicep emphasis. Use the outer angled grips on the EZ bar, this reduces wrist strain while targeting the short head of the biceps effectively.',
       es: 'Curl con barra Z con agarre ancho para énfasis interno. Usa los agarres angulados externos de la barra Z, esto reduce tensión en muñecas mientras trabaja la cabeza corta del bíceps.',
+      fr: 'Curl EZ prise large pour accentuer la tête courte. Utilisez les prises angulées externes de la barre EZ — réduit la tension sur les poignets tout en ciblant efficacement la tête courte du biceps.',
+      'pt-BR': 'Rosca EZ com pegada larga para ênfase na cabeça curta. Use as pegadas anguladas externas da barra EZ — reduz a tensão nos pulsos enquanto trabalha a cabeça curta do bíceps com eficácia.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'db_curl_standing',
-    name: { en: 'Dumbbell Curl (Standing)', es: 'Curl con Mancuernas (De Pie)' },
+    name: { en: 'Dumbbell Curl (Standing)', es: 'Curl con Mancuernas (De Pie)' , fr: 'Curl Haltères Debout', 'pt-BR': 'Rosca com Halteres (Em Pé)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -836,13 +946,15 @@ export const exercises = [
     description: {
       en: 'Versatile bicep curl allowing supination. Curl dumbbells while rotating wrists from neutral to supinated position, this engages the bicep fully and allows natural arm movement.',
       es: 'Curl de bíceps versátil permitiendo supinación. Curl con mancuernas rotando muñecas de posición neutra a supinada, esto activa completamente el bíceps y permite trayectoria natural.',
+      fr: 'Curl de biceps polyvalent permettant la supination. Curl avec rotation des poignets de la position neutre à supinée — active pleinement le biceps et permet une trajectoire naturelle des bras.',
+      'pt-BR': 'Rosca versátil que permite a supinação. Faça a rosca com halteres girando os pulsos da posição neutra para supinada — ativa completamente o bíceps e permite uma trajetória natural dos braços.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'db_curl_seated',
-    name: { en: 'Dumbbell Curl (Seated)', es: 'Curl con Mancuernas (Sentado)' },
+    name: { en: 'Dumbbell Curl (Seated)', es: 'Curl con Mancuernas (Sentado)' , fr: 'Curl Haltères Assis', 'pt-BR': 'Rosca com Halteres (Sentado)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.90, shoulders: 0.10 },
     equipment: [['dumbbells', 'kettlebells'], 'upright_bench'],
@@ -850,13 +962,15 @@ export const exercises = [
     description: {
       en: 'Seated curl reducing momentum and cheating. Sit on bench with back straight, curl dumbbells with strict form, being seated prevents body swing and forces biceps to work harder.',
       es: 'Curl sentado reduciendo impulso y trampa. Siéntate en banco con espalda recta, curl con mancuernas con forma estricta, estar sentado previene balanceo y fuerza los bíceps a trabajar más.',
+      fr: 'Curl assis réduisant l\'élan et la triche. Assis sur un banc, dos droit, curl avec une forme stricte — être assis empêche le balancement corporel et oblige les biceps à travailler plus intensément.',
+      'pt-BR': 'Rosca sentada que reduz o impulso e a trapaça. Sentado no banco com o dorso reto, faça a rosca com forma estrita — a posição sentada evita o balanço corporal e força os bíceps a trabalhar com mais intensidade.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'db_curl_incline',
-    name: { en: 'Dumbbell Curl (Incline)', es: 'Curl con Mancuernas (Inclinado)' },
+    name: { en: 'Dumbbell Curl (Incline)', es: 'Curl con Mancuernas (Inclinado)' , fr: 'Curl Haltères Incliné', 'pt-BR': 'Rosca com Halteres (Inclinado)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.90, shoulders: 0.10 },
     equipment: [['dumbbells', 'kettlebells'], 'incline_bench'],
@@ -864,13 +978,15 @@ export const exercises = [
     description: {
       en: 'Incline curl for maximum bicep stretch. Lie back on incline bench, let arms hang straight down, curl up while keeping upper arms stationary, the stretch at the bottom is intense.',
       es: 'Curl inclinado para máximo estiramiento de bíceps. Recuéstate en banco inclinado, deja brazos colgando, curl manteniendo brazos superiores fijos, el estiramiento abajo es intenso.',
+      fr: 'Curl incliné pour un étirement maximal du biceps. Allongez-vous sur un banc incliné, laissez les bras pendre droits, curl en gardant les bras supérieurs fixes — l\'étirement en bas est particulièrement intense.',
+      'pt-BR': 'Rosca inclinada para máximo alongamento do bíceps. Deite-se no banco inclinado, deixe os braços pendurados retos, faça a rosca mantendo os braços superiores fixos — o alongamento na posição baixa é intenso.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'hammer_curl',
-    name: { en: 'Dumbbell Hammer Curl', es: 'Curl Martillo con Mancuernas' },
+    name: { en: 'Dumbbell Hammer Curl', es: 'Curl Martillo con Mancuernas' , fr: 'Curl Marteau aux Haltères', 'pt-BR': 'Rosca Martelo com Halteres' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.75, shoulders: 0.10, back: 0.15 },
     equipment: ['dumbbells'],
@@ -878,13 +994,15 @@ export const exercises = [
     description: {
       en: 'Neutral grip curl for brachialis and forearms. Keep palms facing each other throughout, curl to shoulders, this builds arm thickness and strengthens the forearms significantly.',
       es: 'Curl con agarre neutro para braquial y antebrazos. Mantén palmas enfrentadas durante todo el movimiento, curl a los hombros, esto construye grosor de brazos y fortalece antebrazos.',
+      fr: 'Curl prise neutre pour le brachial et les avant-bras. Gardez les paumes face à face tout au long du mouvement, curl jusqu\'aux épaules — développe l\'épaisseur des bras et renforce significativement les avant-bras.',
+      'pt-BR': 'Rosca com pegada neutra para o braquial e antebraços. Mantenha as palmas voltadas uma para a outra durante todo o movimento e faça a rosca até os ombros — desenvolve a espessura dos braços e fortalece os antebraços.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'concentration_curl',
-    name: { en: 'Dumbbell Concentration Curl', es: 'Curl Concentrado con Mancuerna' },
+    name: { en: 'Dumbbell Concentration Curl', es: 'Curl Concentrado con Mancuerna' , fr: 'Curl Concentré à l\'Haltère', 'pt-BR': 'Rosca Concentrada com Haltere' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.95, shoulders: 0.05 },
     equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
@@ -893,13 +1011,15 @@ export const exercises = [
     description: {
       en: 'Maximum isolation for bicep peak. Sit with elbow braced against inner thigh, curl dumbbell to shoulder, squeeze hard at top, excellent for mind-muscle connection and peak development.',
       es: 'Máximo aislamiento para el pico del bíceps. Siéntate con codo apoyado en muslo interno, curl hacia el hombro, aprieta fuerte arriba, excelente para conexión mente-músculo.',
+      fr: 'Isolation maximale pour le pic du biceps. Assis avec le coude calé contre la face interne de la cuisse, curl jusqu\'à l\'épaule en contractant fort en haut — excellent pour la connexion esprit-muscle et le développement du pic.',
+      'pt-BR': 'Isolamento máximo para o pico do bíceps. Sentado com o cotovelo apoiado na face interna da coxa, faça a rosca até o ombro contraindo com força no topo — excelente para a conexão mente-músculo e o desenvolvimento do pico.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'zottman_curl',
-    name: { en: 'Dumbbell Zottman Curl', es: 'Curl Zottman con Mancuernas' },
+    name: { en: 'Dumbbell Zottman Curl', es: 'Curl Zottman con Mancuernas' , fr: 'Curl Zottman aux Haltères', 'pt-BR': 'Rosca Zottman com Halteres' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.75, shoulders: 0.15, back: 0.10 },
     equipment: ['dumbbells'],
@@ -907,13 +1027,15 @@ export const exercises = [
     description: {
       en: 'Compound curl working biceps and forearms together. Curl up with supinated grip, rotate to pronated at top, lower with palms down, works biceps going up and forearms going down.',
       es: 'Curl compuesto trabajando bíceps y antebrazos juntos. Curl con agarre supino, rota a pronado arriba, baja con palmas abajo, trabaja bíceps al subir y antebrazos al bajar.',
+      fr: 'Curl composé travaillant biceps et avant-bras ensemble. Curl en prise supinée, rotation en pronation au sommet, descente paumes vers le bas — sollicite les biceps à la montée et les avant-bras à la descente.',
+      'pt-BR': 'Rosca composta que trabalha bíceps e antebraços juntos. Faça a rosca com pegada supinada, gire para pronação no topo e desça com as palmas para baixo — trabalha os bíceps na subida e os antebraços na descida.',
     },
     bmc: 1.2,
     wf: 0.02,
   },
   {
     id: 'drag_curl',
-    name: { en: 'Drag Curl (Barbell)', es: 'Curl Arrastrado (Barra)' },
+    name: { en: 'Drag Curl (Barbell)', es: 'Curl Arrastrado (Barra)' , fr: 'Drag Curl à la Barre', 'pt-BR': 'Drag Curl com Barra' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: [['straight_bar', 'ez_bar'], 'plates'],
@@ -921,13 +1043,15 @@ export const exercises = [
     description: {
       en: 'Unique curl dragging bar up the body. Keep bar in contact with body as you curl, pull elbows back as bar rises, this emphasizes the bicep peak and long head significantly.',
       es: 'Curl único arrastrando la barra por el cuerpo. Mantén la barra en contacto con el cuerpo mientras subes, lleva codos atrás, esto enfatiza significativamente el pico y cabeza larga.',
+      fr: 'Curl unique en faisant glisser la barre le long du corps. Gardez la barre en contact avec le corps en montant, ramenez les coudes vers l\'arrière — accentue significativement le pic du biceps et la tête longue.',
+      'pt-BR': 'Rosca única deslizando a barra pelo corpo. Mantenha a barra em contato com o corpo durante a subida e leve os cotovelos para trás — enfatiza significativamente o pico e a cabeça longa do bíceps.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'chinups_biceps',
-    name: { en: 'Chin-Ups (Bicep Focus)', es: 'Dominadas Supinas (Enfoque Bíceps)' },
+    name: { en: 'Chin-Ups (Bicep Focus)', es: 'Dominadas Supinas (Enfoque Bíceps)' , fr: 'Tractions Supinées (Accent Biceps)', 'pt-BR': 'Barra Fixa Supinada (Foco Bíceps)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.55, back: 0.35, shoulders: 0.10 },
     equipment: ['pullup_rack'],
@@ -936,6 +1060,8 @@ export const exercises = [
     description: {
       en: 'Underhand pull-up emphasizing bicep engagement. Grip bar with palms facing you, pull up focusing on bicep contraction rather than back, excellent compound movement for arm size.',
       es: 'Dominada supina enfatizando activación de bíceps. Agarra la barra con palmas hacia ti, sube enfocándote en contracción de bíceps más que espalda, excelente movimiento compuesto.',
+      fr: 'Traction en prise inversée accentuant l\'activation des biceps. Saisissez la barre paumes face à vous, tirez vers le haut en vous concentrant sur la contraction des biceps plutôt que du dos — excellent mouvement polyarticulaire pour le volume des bras.',
+      'pt-BR': 'Barra fixa com pegada supinada enfatizando a ativação dos bíceps. Pegue a barra com as palmas voltadas para você e suba focando na contração dos bíceps em vez das costas — excelente movimento composto para o volume dos braços.',
     },
     bmc: 2.5,
     wf: 0.04,
@@ -943,7 +1069,7 @@ export const exercises = [
   },
   {
     id: 'band_curl',
-    name: { en: 'Band Curl', es: 'Curl con Banda' },
+    name: { en: 'Band Curl', es: 'Curl con Banda' , fr: 'Curl avec Élastique', 'pt-BR': 'Rosca com Elástico' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['resistance_band'],
@@ -951,6 +1077,8 @@ export const exercises = [
     description: {
       en: 'Bicep curl using resistance band. Stand on band, curl handles up, the increasing tension at top provides unique resistance curve, great for home workouts or travel training.',
       es: 'Curl de bíceps usando banda de resistencia. Párate sobre la banda, curl hacia arriba, la tensión creciente arriba proporciona curva de resistencia única, ideal para entrenar en casa.',
+      fr: 'Curl de biceps avec un élastique de résistance. Debout sur l\'élastique, curl les poignées vers le haut — la tension croissante en haut offre une courbe de résistance unique, idéale pour l\'entraînement à domicile.',
+      'pt-BR': 'Rosca com elástico de resistência. De pé sobre o elástico, faça a rosca puxando as alças para cima — a tensão crescente no topo oferece uma curva de resistência única, ótima para treinar em casa.',
     },
     bmc: 0.8,
     wf: 0.0,
@@ -962,7 +1090,7 @@ export const exercises = [
   // ============================================
   {
     id: 'close_grip_bench',
-    name: { en: 'Close-Grip Bench Press', es: 'Press de Banca Agarre Cerrado' },
+    name: { en: 'Close-Grip Bench Press', es: 'Press de Banca Agarre Cerrado' , fr: 'Développé Couché Prise Serrée', 'pt-BR': 'Supino Fechado' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.55, chest: 0.35, shoulders: 0.10 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
@@ -970,13 +1098,15 @@ export const exercises = [
     description: {
       en: 'Compound tricep builder with heavy loads. Grip bar shoulder-width or slightly narrower, lower to lower chest, press up focusing on tricep contraction, keep elbows closer to body.',
       es: 'Constructor compuesto de tríceps con cargas pesadas. Agarra la barra a anchura de hombros o más cerrado, baja al pecho bajo, empuja enfocándote en contracción de tríceps.',
+      fr: 'Exercice composé pour les triceps avec charges lourdes. Saisissez la barre à largeur d\'épaules ou légèrement plus serré, descendez vers le bas de la poitrine, poussez en contractant les triceps — gardez les coudes proches du corps.',
+      'pt-BR': 'Exercício composto para tríceps com cargas pesadas. Pegue a barra na largura dos ombros ou um pouco mais fechado, desça até a parte inferior do peito e pressione contraindo os tríceps — mantenha os cotovelos próximos ao corpo.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'skull_crushers',
-    name: { en: 'Barbell Skull Crushers', es: 'Rompecráneos con Barra' },
+    name: { en: 'Barbell Skull Crushers', es: 'Rompecráneos con Barra' , fr: 'Barre au Front (Barre)', 'pt-BR': 'Rosca Testa com Barra' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.85, shoulders: 0.10, chest: 0.05 },
     equipment: [['straight_bar', 'ez_bar'], 'flat_bench', 'plates'],
@@ -984,13 +1114,15 @@ export const exercises = [
     description: {
       en: 'Lying tricep extension targeting all three heads. Lower bar to forehead or just behind head, extend arms fully, keep upper arms stationary throughout for maximum isolation.',
       es: 'Extensión de tríceps acostado que trabaja las tres cabezas. Baja la barra a la frente o detrás de la cabeza, extiende brazos completamente, mantén brazos superiores fijos.',
+      fr: 'Extension de triceps allongée ciblant les trois chefs. Descendez la barre vers le front ou juste derrière la tête, étendez les bras complètement — gardez les bras supérieurs fixes pour une isolation maximale.',
+      'pt-BR': 'Extensão de tríceps deitado que trabalha as três cabeças. Desça a barra até a testa ou logo atrás da cabeça, estenda os braços completamente mantendo os braços superiores fixos para isolamento máximo.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'db_skull_crushers',
-    name: { en: 'Dumbbell Skull Crushers', es: 'Rompecráneos con Mancuernas' },
+    name: { en: 'Dumbbell Skull Crushers', es: 'Rompecráneos con Mancuernas' , fr: 'Barre au Front aux Haltères', 'pt-BR': 'Rosca Testa com Halteres' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.85, shoulders: 0.10, chest: 0.05 },
     equipment: ['dumbbells', 'flat_bench'],
@@ -998,13 +1130,15 @@ export const exercises = [
     description: {
       en: 'Dumbbell version allowing independent arm movement. Lower dumbbells to sides of head, extend fully, the dumbbell variation allows addressing imbalances and provides different feel.',
       es: 'Versión con mancuernas permitiendo movimiento independiente. Baja mancuernas a los lados de la cabeza, extiende completamente, la variación con mancuernas permite corregir desequilibrios.',
+      fr: 'Version aux haltères permettant un mouvement indépendant des bras. Descendez les haltères de chaque côté de la tête, étendez complètement — permet de corriger les déséquilibres et offre une sensation différente.',
+      'pt-BR': 'Versão com halteres que permite movimento independente dos braços. Desça os halteres para os lados da cabeça e estenda completamente — permite corrigir desequilíbrios e proporciona uma sensação diferente.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'db_overhead_extension_two',
-    name: { en: 'Dumbbell Overhead Extension (Two Hands)', es: 'Extensión sobre Cabeza (Dos Manos)' },
+    name: { en: 'Dumbbell Overhead Extension (Two Hands)', es: 'Extensión sobre Cabeza (Dos Manos)' , fr: 'Extension Triceps au-dessus Tête (2 Mains)', 'pt-BR': 'Extensão Tríceps Acima da Cabeça (Duas Mãos)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: [['dumbbells', 'kettlebells'], 'upright_bench'],
@@ -1013,13 +1147,15 @@ export const exercises = [
     description: {
       en: 'Overhead tricep extension holding one dumbbell with both hands. Lower dumbbell behind head, extend up fully, the stretched position at bottom emphasizes the long head.',
       es: 'Extensión de tríceps sobre cabeza sosteniendo una mancuerna con ambas manos. Baja la mancuerna detrás de la cabeza, extiende completamente, la posición estirada enfatiza la cabeza larga.',
+      fr: 'Extension de triceps au-dessus de la tête tenant un haltère à deux mains. Descendez l\'haltère derrière la tête, étendez complètement — la position étirée en bas accentue le chef long.',
+      'pt-BR': 'Extensão de tríceps acima da cabeça segurando um halter com as duas mãos. Desça o halter atrás da cabeça e estenda completamente — a posição alongada embaixo enfatiza a cabeça longa.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'db_overhead_extension_single',
-    name: { en: 'Dumbbell Overhead Extension (Single Arm)', es: 'Extensión sobre Cabeza (Un Brazo)' },
+    name: { en: 'Dumbbell Overhead Extension (Single Arm)', es: 'Extensión sobre Cabeza (Un Brazo)' , fr: 'Extension Triceps au-dessus Tête (1 Bras)', 'pt-BR': 'Extensão Tríceps Acima da Cabeça (Um Braço)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: [['dumbbells', 'kettlebells'], 'upright_bench'],
@@ -1028,13 +1164,15 @@ export const exercises = [
     description: {
       en: 'Single-arm overhead extension for balanced development. Extend one arm overhead, lower dumbbell behind head, extend fully, allows full focus on each tricep independently.',
       es: 'Extensión sobre cabeza a un brazo para desarrollo equilibrado. Extiende un brazo arriba, baja mancuerna detrás de la cabeza, extiende completamente, permite enfoque en cada tríceps.',
+      fr: 'Extension au-dessus de la tête à un bras pour un développement équilibré. Étendez un bras au-dessus, descendez l\'haltère derrière la tête, étendez complètement — permet de se concentrer pleinement sur chaque triceps.',
+      'pt-BR': 'Extensão unilateral acima da cabeça para desenvolvimento equilibrado. Estenda um braço para cima, desça o halter atrás da cabeça e estenda completamente — permite foco total em cada tríceps independentemente.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'db_kickback',
-    name: { en: 'Dumbbell Kickback', es: 'Patada Trasera con Mancuerna' },
+    name: { en: 'Dumbbell Kickback', es: 'Patada Trasera con Mancuerna' , fr: 'Kickback à l\'Haltère', 'pt-BR': 'Tríceps Coice com Haltere' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['dumbbells', 'flat_bench'],
@@ -1043,13 +1181,15 @@ export const exercises = [
     description: {
       en: 'Isolation exercise for tricep contraction. Hinge forward, keep upper arm parallel to floor, extend forearm back and squeeze at top, focus on peak contraction rather than weight.',
       es: 'Ejercicio de aislamiento para contracción del tríceps. Inclínate hacia adelante, mantén brazo superior paralelo al suelo, extiende antebrazo atrás y aprieta arriba.',
+      fr: 'Exercice d\'isolation pour la contraction du triceps. Inclinez-vous vers l\'avant, gardez le bras supérieur parallèle au sol, étendez l\'avant-bras vers l\'arrière en contractant fort — privilégiez la contraction à la charge.',
+      'pt-BR': 'Exercício de isolamento para contração do tríceps. Incline-se para frente, mantenha o braço superior paralelo ao chão, estenda o antebraço para trás e contraia forte no topo — priorize a contração em vez da carga.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'bench_dips',
-    name: { en: 'Bench Dips', es: 'Fondos en Banco' },
+    name: { en: 'Bench Dips', es: 'Fondos en Banco' , fr: 'Dips au Banc', 'pt-BR': 'Tríceps no Banco' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.60, chest: 0.25, shoulders: 0.15 },
     equipment: ['flat_bench'],
@@ -1058,6 +1198,8 @@ export const exercises = [
     description: {
       en: 'Bodyweight tricep exercise using a bench. Hands on bench behind you, lower body by bending elbows, push back up, feet can be elevated on another bench to increase difficulty.',
       es: 'Ejercicio de tríceps con peso corporal usando un banco. Manos en el banco detrás de ti, baja el cuerpo flexionando codos, empuja hacia arriba, pies pueden elevarse para más dificultad.',
+      fr: 'Exercice de triceps au poids de corps avec un banc. Mains sur le banc derrière vous, descendez en pliant les coudes, poussez pour remonter — les pieds peuvent être surélevés sur un autre banc pour augmenter la difficulté.',
+      'pt-BR': 'Exercício de tríceps com peso corporal usando um banco. Mãos no banco atrás de você, desça flexionando os cotovelos e empurre de volta — os pés podem ser elevados em outro banco para aumentar a dificuldade.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -1065,7 +1207,7 @@ export const exercises = [
   },
   {
     id: 'dips_triceps',
-    name: { en: 'Dips (Tricep Focus)', es: 'Fondos (Enfoque Tríceps)' },
+    name: { en: 'Dips (Tricep Focus)', es: 'Fondos (Enfoque Tríceps)' , fr: 'Dips (Accent Triceps)', 'pt-BR': 'Paralela (Foco Tríceps)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.55, chest: 0.30, shoulders: 0.15 },
     equipment: ['parallels'],
@@ -1074,6 +1216,8 @@ export const exercises = [
     description: {
       en: 'Compound tricep builder with upright torso. Keep body vertical, lower until upper arms are parallel to floor, push up focusing on tricep contraction, elbows close to body.',
       es: 'Constructor compuesto de tríceps con torso erguido. Mantén el cuerpo vertical, baja hasta que brazos estén paralelos al suelo, empuja enfocándote en contracción de tríceps.',
+      fr: 'Exercice composé de triceps avec le torse droit. Gardez le corps vertical, descendez jusqu\'à ce que les bras supérieurs soient parallèles au sol, poussez en contractant les triceps — coudes proches du corps.',
+      'pt-BR': 'Exercício composto de tríceps com o tronco ereto. Mantenha o corpo vertical, desça até os braços superiores ficarem paralelos ao chão e empurre contraindo os tríceps — cotovelos próximos ao corpo.',
     },
     bmc: 2.5,
     wf: 0.04,
@@ -1081,7 +1225,7 @@ export const exercises = [
   },
   {
     id: 'diamond_push_ups',
-    name: { en: 'Diamond Push-Ups', es: 'Flexiones Diamante' },
+    name: { en: 'Diamond Push-Ups', es: 'Flexiones Diamante' , fr: 'Pompes Diamant', 'pt-BR': 'Flexão Diamante' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.55, chest: 0.30, shoulders: 0.15 },
     equipment: [],
@@ -1089,6 +1233,8 @@ export const exercises = [
     description: {
       en: 'Close-hand push-up for tricep emphasis. Form a diamond shape with hands under chest, lower body keeping elbows close to sides, push up focusing on tricep contraction.',
       es: 'Flexión con manos juntas para énfasis en tríceps. Forma un diamante con las manos bajo el pecho, baja manteniendo codos cerca de los lados, empuja enfocándote en tríceps.',
+      fr: 'Pompe prise serrée pour accentuer les triceps. Formez un losange avec les mains sous la poitrine, descendez en gardant les coudes proches des côtés, poussez en contractant les triceps.',
+      'pt-BR': 'Flexão com mãos juntas para ênfase nos tríceps. Forme um losango com as mãos sob o peito, desça mantendo os cotovelos próximos aos lados e empurre contraindo os tríceps.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -1096,7 +1242,7 @@ export const exercises = [
   },
   {
     id: 'band_pushdown',
-    name: { en: 'Band Pushdown', es: 'Empuje con Banda' },
+    name: { en: 'Band Pushdown', es: 'Empuje con Banda' , fr: 'Pushdown avec Élastique', 'pt-BR': 'Pushdown com Elástico' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['resistance_band'],
@@ -1104,6 +1250,8 @@ export const exercises = [
     description: {
       en: 'Tricep pushdown using resistance band. Anchor band overhead, push down keeping elbows at sides, the increasing resistance at bottom provides unique tension curve for development.',
       es: 'Empuje de tríceps usando banda de resistencia. Ancla la banda arriba, empuja manteniendo codos a los lados, la resistencia creciente abajo proporciona curva de tensión única.',
+      fr: 'Extension de triceps avec élastique. Ancrez l\'élastique en hauteur, poussez vers le bas en gardant les coudes à vos côtés — la résistance croissante en bas offre une courbe de tension unique pour le développement.',
+      'pt-BR': 'Extensão de tríceps com elástico. Fixe o elástico acima e empurre para baixo mantendo os cotovelos ao lado do corpo — a resistência crescente embaixo oferece uma curva de tensão única para o desenvolvimento.',
     },
     bmc: 0.8,
     wf: 0.0,
@@ -1115,7 +1263,7 @@ export const exercises = [
   // ============================================
   {
     id: 'barbell_wrist_curl',
-    name: { en: 'Barbell Wrist Curl', es: 'Curl de Muñeca con Barra' },
+    name: { en: 'Barbell Wrist Curl', es: 'Curl de Muñeca con Barra' , fr: 'Curl de Poignet à la Barre', 'pt-BR': 'Rosca de Pulso com Barra' },
     muscleGroup: 'forearms',
     muscles: { biceps: 1.0 },
     equipment: [['straight_bar', 'ez_bar'], 'flat_bench', 'plates'],
@@ -1123,13 +1271,15 @@ export const exercises = [
     description: {
       en: 'Primary forearm flexor builder. Rest forearms on bench with wrists hanging over edge, curl bar up using only wrist movement, lower fully to stretch forearm flexors completely.',
       es: 'Constructor principal de flexores del antebrazo. Apoya antebrazos en banco con muñecas colgando, curl solo con movimiento de muñecas, baja completamente para estirar los flexores.',
+      fr: 'Exercice principal pour les fléchisseurs de l\'avant-bras. Appuyez les avant-bras sur un banc, poignets en surplomb, fléchissez en ne bougeant que les poignets, descendez complètement pour étirer les fléchisseurs.',
+      'pt-BR': 'Exercício principal para os flexores do antebraço. Apoie os antebraços no banco com os pulsos pendentes na borda, faça a rosca usando apenas o movimento dos pulsos e desça completamente para alongar os flexores.',
     },
     bmc: 0.5,
     wf: 0.02,
   },
   {
     id: 'barbell_reverse_wrist_curl',
-    name: { en: 'Barbell Reverse Wrist Curl', es: 'Curl de Muñeca Inverso con Barra' },
+    name: { en: 'Barbell Reverse Wrist Curl', es: 'Curl de Muñeca Inverso con Barra' , fr: 'Curl de Poignet Inversé à la Barre', 'pt-BR': 'Rosca de Pulso Inversa com Barra' },
     muscleGroup: 'forearms',
     muscles: { biceps: 1.0 },
     equipment: [['straight_bar', 'ez_bar'], 'flat_bench', 'plates'],
@@ -1137,13 +1287,15 @@ export const exercises = [
     description: {
       en: 'Targets forearm extensors. Forearms on bench with palms facing down, extend wrists upward against resistance, this builds the top of the forearm for balanced development.',
       es: 'Trabaja los extensores del antebrazo. Antebrazos en banco con palmas hacia abajo, extiende las muñecas hacia arriba contra resistencia, esto construye la parte superior del antebrazo.',
+      fr: 'Cible les extenseurs de l\'avant-bras. Avant-bras sur le banc, paumes vers le bas, étendez les poignets vers le haut contre la résistance — développe le dessus de l\'avant-bras pour un développement équilibré.',
+      'pt-BR': 'Trabalha os extensores do antebraço. Antebraços no banco com as palmas para baixo, estenda os pulsos para cima contra a resistência — desenvolve a parte superior do antebraço para um desenvolvimento equilibrado.',
     },
     bmc: 0.5,
     wf: 0.02,
   },
   {
     id: 'db_wrist_curl',
-    name: { en: 'Dumbbell Wrist Curl', es: 'Curl de Muñeca con Mancuernas' },
+    name: { en: 'Dumbbell Wrist Curl', es: 'Curl de Muñeca con Mancuernas' , fr: 'Curl de Poignet aux Haltères', 'pt-BR': 'Rosca de Pulso com Halteres' },
     muscleGroup: 'forearms',
     muscles: { biceps: 1.0 },
     equipment: ['dumbbells', 'flat_bench'],
@@ -1151,13 +1303,15 @@ export const exercises = [
     description: {
       en: 'Dumbbell version allowing independent wrist work. Can be done one arm at a time for better focus, rest forearm on thigh or bench, curl dumbbell up using wrist flexion only.',
       es: 'Versión con mancuernas permitiendo trabajo independiente. Puede hacerse un brazo a la vez para mejor enfoque, apoya antebrazo en muslo o banco, curl usando solo flexión de muñeca.',
+      fr: 'Version aux haltères permettant un travail indépendant des poignets. Peut se faire un bras à la fois pour une meilleure concentration — appuyez l\'avant-bras sur la cuisse ou le banc, fléchissez uniquement avec le poignet.',
+      'pt-BR': 'Versão com halteres que permite trabalho independente dos pulsos. Pode ser feito um braço de cada vez para melhor foco — apoie o antebraço na coxa ou no banco e faça a rosca usando apenas a flexão do pulso.',
     },
     bmc: 0.5,
     wf: 0.02,
   },
   {
     id: 'db_reverse_wrist_curl',
-    name: { en: 'Dumbbell Reverse Wrist Curl', es: 'Curl de Muñeca Inverso con Mancuernas' },
+    name: { en: 'Dumbbell Reverse Wrist Curl', es: 'Curl de Muñeca Inverso con Mancuernas' , fr: 'Curl de Poignet Inversé aux Haltères', 'pt-BR': 'Rosca de Pulso Inversa com Halteres' },
     muscleGroup: 'forearms',
     muscles: { biceps: 1.0 },
     equipment: ['dumbbells', 'flat_bench'],
@@ -1165,13 +1319,15 @@ export const exercises = [
     description: {
       en: 'Reverse curl with dumbbells for extensor development. Palm down grip, extend wrist up, lower with control, the dumbbell version allows unilateral work and natural wrist movement.',
       es: 'Curl inverso con mancuernas para desarrollo de extensores. Agarre con palma abajo, extiende muñeca arriba, baja con control, la versión con mancuernas permite trabajo unilateral.',
+      fr: 'Curl inversé aux haltères pour le développement des extenseurs. Prise paumes vers le bas, étendez le poignet vers le haut, redescendez sous contrôle — permet un travail unilatéral et un mouvement naturel du poignet.',
+      'pt-BR': 'Rosca inversa com halteres para desenvolvimento dos extensores. Pegada com a palma para baixo, estenda o pulso para cima e desça com controle — permite trabalho unilateral e movimento natural do pulso.',
     },
     bmc: 0.5,
     wf: 0.02,
   },
   {
     id: 'farmers_walk',
-    name: { en: "Farmer's Walk", es: 'Paseo del Granjero' },
+    name: { en: "Farmer's Walk", es: 'Paseo del Granjero', fr: 'Marche du Fermier', 'pt-BR': 'Caminhada do Fazendeiro' },
     muscleGroup: 'forearms',
     muscles: { biceps: 0.35, back: 0.25, shoulders: 0.20, core: 0.10, calves: 0.10 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -1180,13 +1336,15 @@ export const exercises = [
     description: {
       en: 'Loaded carry for grip strength and overall conditioning. Hold heavy dumbbells at sides, walk with good posture, builds crushing grip strength and challenges entire body stabilization.',
       es: 'Cargada para fuerza de agarre y acondicionamiento general. Sostén mancuernas pesadas a los lados, camina con buena postura, construye fuerza de agarre y desafía estabilización corporal.',
+      fr: 'Portage chargé pour la force de préhension et le conditionnement général. Tenez des haltères lourds sur les côtés, marchez avec une bonne posture — développe une force de préhension impressionnante et sollicite la stabilisation de tout le corps.',
+      'pt-BR': 'Caminhada com carga para força de preensão e condicionamento geral. Segure halteres pesados ao lado do corpo e caminhe com boa postura — desenvolve força de preensão intensa e desafia a estabilização de todo o corpo.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'plate_pinch_hold',
-    name: { en: 'Plate Pinch Hold', es: 'Agarre de Disco' },
+    name: { en: 'Plate Pinch Hold', es: 'Agarre de Disco' , fr: 'Prise de Disque', 'pt-BR': 'Pegada de Anilha' },
     muscleGroup: 'forearms',
     muscles: { biceps: 1.0 },
     equipment: ['plates'],
@@ -1195,13 +1353,15 @@ export const exercises = [
     description: {
       en: 'Grip exercise pinching weight plates together. Pinch two plates smooth sides out, hold at side for time, this specifically targets the pinching grip strength of fingers and thumb.',
       es: 'Ejercicio de agarre presionando discos juntos. Presiona dos discos con lados lisos afuera, sostén al lado por tiempo, esto trabaja específicamente la fuerza de agarre de pellizco.',
+      fr: 'Exercice de préhension en pinçant des disques. Pincez deux disques faces lisses vers l\'extérieur, maintenez-les sur le côté pendant un certain temps — cible spécifiquement la force de pincement des doigts et du pouce.',
+      'pt-BR': 'Exercício de preensão pressionando anilhas. Aperte duas anilhas com os lados lisos para fora e segure ao lado do corpo por tempo — trabalha especificamente a força de pinça dos dedos e do polegar.',
     },
     bmc: 0.8,
     wf: 0.02,
   },
   {
     id: 'dead_hang',
-    name: { en: 'Dead Hang', es: 'Colgado Pasivo' },
+    name: { en: 'Dead Hang', es: 'Colgado Pasivo' , fr: 'Suspente Passive', 'pt-BR': 'Suspensão Passiva' },
     muscleGroup: 'forearms',
     muscles: { biceps: 0.50, back: 0.30, shoulders: 0.20 },
     equipment: ['pullup_rack'],
@@ -1211,6 +1371,8 @@ export const exercises = [
     description: {
       en: 'Simple but effective grip endurance builder. Hang from pull-up bar with full bodyweight, work on increasing hang time, also great for shoulder health and spinal decompression.',
       es: 'Constructor simple pero efectivo de resistencia de agarre. Cuélgate de la barra con peso corporal completo, trabaja en aumentar el tiempo, también excelente para salud de hombros.',
+      fr: 'Exercice simple mais efficace pour l\'endurance de préhension. Suspendez-vous à la barre avec tout le poids du corps, travaillez à augmenter le temps de suspension — excellent aussi pour la santé des épaules et la décompression vertébrale.',
+      'pt-BR': 'Exercício simples mas eficaz para resistência de preensão. Suspenda-se na barra com todo o peso corporal e trabalhe para aumentar o tempo de suspensão — excelente também para a saúde dos ombros e descompressão da coluna.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -1218,7 +1380,7 @@ export const exercises = [
   },
   {
     id: 'towel_pullups',
-    name: { en: 'Towel Pull-Ups', es: 'Dominadas con Toalla' },
+    name: { en: 'Towel Pull-Ups', es: 'Dominadas con Toalla' , fr: 'Tractions à la Serviette', 'pt-BR': 'Barra Fixa com Toalha' },
     muscleGroup: 'forearms',
     muscles: { biceps: 0.40, back: 0.45, shoulders: 0.15 },
     equipment: ['rack', 'towel'],
@@ -1227,6 +1389,8 @@ export const exercises = [
     description: {
       en: 'Pull-ups gripping towels for extreme grip work. Drape towels over bar, grip towels and perform pull-ups, the unstable grip dramatically increases forearm and grip strength demands.',
       es: 'Dominadas agarrando toallas para trabajo extremo de agarre. Coloca toallas sobre la barra, agarra las toallas y haz dominadas, el agarre inestable aumenta demandas de antebrazos.',
+      fr: 'Tractions avec serviettes pour un travail de préhension extrême. Drapez des serviettes sur la barre, saisissez-les et effectuez des tractions — la prise instable augmente considérablement les exigences d\'avant-bras et de préhension.',
+      'pt-BR': 'Barra fixa com toalhas para trabalho extremo de preensão. Envolva toalhas na barra, segure-as e execute as barras fixas — a pegada instável aumenta drasticamente as exigências de antebraço e preensão.',
     },
     bmc: 3.0,
     wf: 0.04,
@@ -1234,7 +1398,7 @@ export const exercises = [
   },
   {
     id: 'reverse_curl_barbell',
-    name: { en: 'Reverse Curl (Barbell)', es: 'Curl Inverso (Barra)' },
+    name: { en: 'Reverse Curl (Barbell)', es: 'Curl Inverso (Barra)' , fr: 'Curl Inversé (Barre)', 'pt-BR': 'Rosca Inversa (Barra)' },
     muscleGroup: 'forearms',
     muscles: { biceps: 0.80, shoulders: 0.20 },
     equipment: ['straight_bar', 'plates'],
@@ -1242,13 +1406,15 @@ export const exercises = [
     description: {
       en: 'Overhand grip curl for brachioradialis and forearm extensors. Curl with palms facing down, this shifts emphasis from biceps to forearm muscles, use lighter weight than regular curls.',
       es: 'Curl con agarre prono para braquiorradial y extensores. Curl con palmas hacia abajo, esto traslada énfasis de bíceps a músculos del antebrazo, usa menos peso que curls regulares.',
+      fr: 'Curl prise pronée pour le brachio-radial et les extenseurs de l\'avant-bras. Curl paumes vers le bas — déplace l\'accent des biceps vers les muscles de l\'avant-bras, utilisez moins de charge que pour les curls classiques.',
+      'pt-BR': 'Rosca com pegada pronada para o braquiorradial e extensores do antebraço. Faça a rosca com as palmas para baixo — desloca o ênfase dos bíceps para os músculos do antebraço, use menos carga que nas roscas normais.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'reverse_curl_ez',
-    name: { en: 'Reverse Curl (EZ Bar)', es: 'Curl Inverso (Barra Z)' },
+    name: { en: 'Reverse Curl (EZ Bar)', es: 'Curl Inverso (Barra Z)' , fr: 'Curl Inversé (Barre EZ)', 'pt-BR': 'Rosca Inversa (Barra EZ)' },
     muscleGroup: 'forearms',
     muscles: { biceps: 0.80, shoulders: 0.20 },
     equipment: ['ez_bar',  'plates'],
@@ -1256,6 +1422,8 @@ export const exercises = [
     description: {
       en: 'Reverse curl with EZ bar for wrist comfort. The angled grip reduces wrist strain while targeting forearm extensors and brachioradialis, curl up and lower with controlled tempo.',
       es: 'Curl inverso con barra Z para comodidad de muñeca. El agarre angular reduce tensión en muñecas mientras trabaja extensores del antebrazo y braquiorradial, curl y baja con tempo controlado.',
+      fr: 'Curl inversé avec barre EZ pour le confort des poignets. La prise angulée réduit la tension sur les poignets tout en ciblant les extenseurs de l\'avant-bras et le brachio-radial — curl et descendez avec un tempo contrôlé.',
+      'pt-BR': 'Rosca inversa com barra EZ para conforto dos pulsos. A pegada angular reduz a tensão nos pulsos enquanto trabalha os extensores do antebraço e o braquiorradial — faça a rosca e desça com tempo controlado.',
     },
     bmc: 1.0,
     wf: 0.02,
@@ -1266,7 +1434,7 @@ export const exercises = [
   // ============================================
   {
     id: 'back_squat',
-    name: { en: 'Barbell Back Squat', es: 'Sentadilla con Barra' },
+    name: { en: 'Barbell Back Squat', es: 'Sentadilla con Barra' , fr: 'Squat Barre Nuque', 'pt-BR': 'Agachamento com Barra' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.15, core: 0.10 },
     equipment: ['straight_bar', 'rack', 'plates'],
@@ -1274,13 +1442,15 @@ export const exercises = [
     description: {
       en: 'The king of leg exercises. Bar on upper back, squat down until thighs are parallel or below, drive up through heels, builds massive quad strength and overall lower body development.',
       es: 'El rey de los ejercicios de piernas. Barra en espalda alta, baja hasta que muslos estén paralelos o más, sube empujando con talones, construye fuerza masiva de cuádriceps.',
+      fr: 'Le roi des exercices pour les jambes. Barre sur le haut du dos, descends jusqu\'à ce que les cuisses soient parallèles ou en dessous, pousse à travers les talons pour remonter, développe une force massive des quadriceps et de l\'ensemble du bas du corps.',
+      'pt-BR': 'O rei dos exercícios para pernas. Barra na parte superior das costas, agache até as coxas ficarem paralelas ou abaixo, impulsione pelos calcanhares para subir, desenvolve força massiva de quadríceps e do trem inferior.',
     },
     bmc: 5.0,
     wf: 0.04,
   },
   {
     id: 'front_squat',
-    name: { en: 'Barbell Front Squat', es: 'Sentadilla Frontal con Barra' },
+    name: { en: 'Barbell Front Squat', es: 'Sentadilla Frontal con Barra' , fr: 'Squat Barre Devant', 'pt-BR': 'Agachamento Frontal com Barra' },
     muscleGroup: 'quads',
     muscles: { quads: 0.55, glutes: 0.20, core: 0.15, hamstrings: 0.10 },
     equipment: ['straight_bar', 'rack', 'plates'],
@@ -1288,13 +1458,15 @@ export const exercises = [
     description: {
       en: 'Quad-dominant squat with bar in front position. Bar rests on front delts, requires upright torso, this shifts emphasis more to quadriceps while being easier on the lower back.',
       es: 'Sentadilla dominante de cuádriceps con barra al frente. La barra descansa en deltoides frontales, requiere torso erguido, esto enfatiza más los cuádriceps siendo más fácil para espalda.',
+      fr: 'Squat à dominante quadriceps avec la barre en position avant. La barre repose sur les deltoïdes antérieurs, exige un tronc bien droit, ce qui accentue davantage les quadriceps tout en ménageant le bas du dos.',
+      'pt-BR': 'Agachamento dominante de quadríceps com a barra na posição frontal. A barra descansa nos deltoides anteriores, exige tronco ereto, deslocando a ênfase para os quadríceps enquanto reduz a pressão na lombar.',
     },
     bmc: 5.0,
     wf: 0.04,
   },
   {
     id: 'box_squat',
-    name: { en: 'Barbell Box Squat', es: 'Sentadilla en Caja con Barra' },
+    name: { en: 'Barbell Box Squat', es: 'Sentadilla en Caja con Barra' , fr: 'Box Squat à la Barre', 'pt-BR': 'Agachamento na Caixa com Barra' },
     muscleGroup: 'quads',
     muscles: { quads: 0.40, glutes: 0.35, hamstrings: 0.15, core: 0.10 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
@@ -1302,13 +1474,15 @@ export const exercises = [
     description: {
       en: 'Squat to a box for consistent depth and power development. Sit back onto box, pause briefly, explode up, excellent for teaching proper squat mechanics and building starting strength.',
       es: 'Sentadilla a una caja para profundidad consistente y desarrollo de potencia. Siéntate en la caja, pausa brevemente, explota hacia arriba, excelente para enseñar mecánica correcta.',
+      fr: 'Squat vers une boîte pour une profondeur constante et le développement de la puissance. Assieds-toi sur la boîte, marque une courte pause, explose vers le haut, excellent pour enseigner la bonne mécanique du squat et développer la force de démarrage.',
+      'pt-BR': 'Agachamento em uma caixa para profundidade consistente e desenvolvimento de potência. Sente-se na caixa, pause brevemente, exploda para cima, excelente para ensinar a mecânica correta do agachamento e desenvolver força inicial.',
     },
     bmc: 5.0,
     wf: 0.04,
   },
   {
     id: 'pause_squat',
-    name: { en: 'Barbell Pause Squat', es: 'Sentadilla con Pausa' },
+    name: { en: 'Barbell Pause Squat', es: 'Sentadilla con Pausa' , fr: 'Squat avec Pause à la Barre', 'pt-BR': 'Agachamento com Pausa com Barra' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.15, core: 0.10 },
     equipment: ['straight_bar', 'rack', 'plates'],
@@ -1316,13 +1490,15 @@ export const exercises = [
     description: {
       en: 'Squat with pause at bottom position. Hold bottom position for two to three seconds before driving up, eliminates stretch reflex and builds tremendous strength out of the hole.',
       es: 'Sentadilla con pausa en posición inferior. Mantén la posición baja dos a tres segundos antes de subir, elimina el reflejo de estiramiento y construye fuerza tremenda desde abajo.',
+      fr: 'Squat avec pause en position basse. Maintiens la position basse deux à trois secondes avant de remonter, élimine le réflexe d\'étirement et développe une force considérable depuis le bas du mouvement.',
+      'pt-BR': 'Agachamento com pausa na posição mais baixa. Mantenha a posição por dois a três segundos antes de subir, elimina o reflexo de alongamento e desenvolve grande força saindo do fundo do movimento.',
     },
     bmc: 5.0,
     wf: 0.04,
   },
   {
     id: 'goblet_squat',
-    name: { en: 'Goblet Squat', es: 'Sentadilla Goblet' },
+    name: { en: 'Goblet Squat', es: 'Sentadilla Goblet' , fr: 'Squat Gobelet', 'pt-BR': 'Agachamento Goblet' },
     muscleGroup: 'quads',
     muscles: { quads: 0.50, glutes: 0.30, core: 0.15, hamstrings: 0.05 },
     equipment: ['dumbbells'],
@@ -1331,13 +1507,15 @@ export const exercises = [
     description: {
       en: 'Beginner-friendly squat holding dumbbell at chest. Hold dumbbell vertically against chest, squat deep keeping torso upright, excellent for learning squat form and building foundation.',
       es: 'Sentadilla amigable para principiantes sosteniendo mancuerna en el pecho. Sostén mancuerna vertical contra el pecho, sentadilla profunda con torso erguido, excelente para aprender técnica.',
+      fr: 'Squat accessible aux débutants en tenant une haltère contre la poitrine. Tiens l\'haltère verticalement contre le torse, descends profondément en gardant le buste droit, excellent pour apprendre la technique de squat et construire les bases.',
+      'pt-BR': 'Agachamento amigável para iniciantes segurando um halter contra o peito. Segure o halter verticalmente contra o peito, agache fundo mantendo o tronco ereto, excelente para aprender a forma do agachamento e construir a base.',
     },
     bmc: 4.0,
     wf: 0.03,
   },
   {
     id: 'dumbbell_squat',
-    name: { en: 'Dumbbell Squat', es: 'Sentadilla con Mancuernas' },
+    name: { en: 'Dumbbell Squat', es: 'Sentadilla con Mancuernas' , fr: 'Squat aux Haltères', 'pt-BR': 'Agachamento com Halteres' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.15, core: 0.10 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -1345,13 +1523,15 @@ export const exercises = [
     description: {
       en: 'Squat holding dumbbells at sides. Hold dumbbells at arm\'s length by sides, squat down with good form, useful when barbell is unavailable or for higher rep leg work.',
       es: 'Sentadilla sosteniendo mancuernas a los lados. Sostén mancuernas con brazos extendidos a los lados, sentadilla con buena forma, útil cuando no hay barra o para trabajo de más reps.',
+      fr: 'Squat en tenant des haltères le long du corps. Tiens les haltères bras tendus de chaque côté, fais un squat avec une bonne technique, utile quand la barre n\'est pas disponible ou pour les séries à hautes répétitions.',
+      'pt-BR': 'Agachamento segurando halteres ao lado do corpo. Segure os halteres com os braços estendidos ao longo do corpo, agache com boa forma, útil quando a barra não está disponível ou para séries de alta repetição.',
     },
     bmc: 4.0,
     wf: 0.03,
   },
   {
     id: 'lunges_forward',
-    name: { en: 'Dumbbell Lunges (Forward)', es: 'Zancadas Frontales con Mancuernas' },
+    name: { en: 'Dumbbell Lunges (Forward)', es: 'Zancadas Frontales con Mancuernas' , fr: 'Fentes Avant aux Haltères', 'pt-BR': 'Afundo Frontal com Halteres' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.35, hamstrings: 0.15, core: 0.05 },
     equipment: ['dumbbells'],
@@ -1359,13 +1539,15 @@ export const exercises = [
     description: {
       en: 'Forward stepping lunge for quad and glute development. Step forward, lower back knee toward floor, push back to start, alternating legs, excellent unilateral leg exercise.',
       es: 'Zancada hacia adelante para desarrollo de cuádriceps y glúteos. Da un paso adelante, baja la rodilla trasera hacia el suelo, empuja para regresar, alternando piernas.',
+      fr: 'Fente avant pour le développement des quadriceps et des fessiers. Fais un pas en avant, abaisse le genou arrière vers le sol, pousse pour revenir à la position initiale en alternant les jambes, excellent exercice unilatéral pour les jambes.',
+      'pt-BR': 'Afundo frontal para desenvolvimento de quadríceps e glúteos. Dê um passo à frente, abaixe o joelho traseiro em direção ao chão, empurre para voltar à posição inicial, alternando as pernas, excelente exercício unilateral para pernas.',
     },
     bmc: 3.5,
     wf: 0.03,
   },
   {
     id: 'lunges_reverse',
-    name: { en: 'Dumbbell Lunges (Reverse)', es: 'Zancadas Inversas con Mancuernas' },
+    name: { en: 'Dumbbell Lunges (Reverse)', es: 'Zancadas Inversas con Mancuernas' , fr: 'Fentes Arrière aux Haltères', 'pt-BR': 'Afundo Inverso com Halteres' },
     muscleGroup: 'quads',
     muscles: { quads: 0.40, glutes: 0.35, hamstrings: 0.20, core: 0.05 },
     equipment: ['dumbbells'],
@@ -1373,13 +1555,15 @@ export const exercises = [
     description: {
       en: 'Backward stepping lunge easier on knees. Step backward into lunge position, lower until back knee nearly touches floor, return to start, generally more knee-friendly than forward lunges.',
       es: 'Zancada hacia atrás más fácil para las rodillas. Da un paso atrás a posición de zancada, baja hasta que rodilla trasera casi toque el suelo, regresa, más amigable para rodillas.',
+      fr: 'Fente arrière plus douce pour les genoux. Fais un pas en arrière en position de fente, descends jusqu\'à ce que le genou arrière touche presque le sol, reviens à la position initiale, généralement plus adaptée aux genoux que la fente avant.',
+      'pt-BR': 'Afundo inverso mais gentil para os joelhos. Dê um passo para trás em posição de afundo, desça até o joelho traseiro quase tocar o chão, retorne à posição inicial, geralmente mais amigável para os joelhos do que o afundo frontal.',
     },
     bmc: 3.5,
     wf: 0.03,
   },
   {
     id: 'lunges_walking',
-    name: { en: 'Dumbbell Lunges (Walking)', es: 'Zancadas Caminando con Mancuernas' },
+    name: { en: 'Dumbbell Lunges (Walking)', es: 'Zancadas Caminando con Mancuernas' , fr: 'Fentes Marchées aux Haltères', 'pt-BR': 'Afundo Caminhado com Halteres' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.35, hamstrings: 0.15, core: 0.05 },
     equipment: ['dumbbells'],
@@ -1387,13 +1571,15 @@ export const exercises = [
     description: {
       en: 'Continuous walking lunges for endurance and size. Lunge forward, bring back leg through to next lunge, continue walking pattern, builds leg endurance and functional strength.',
       es: 'Zancadas caminando continuas para resistencia y tamaño. Zancada hacia adelante, trae la pierna trasera a la siguiente zancada, continúa caminando, construye resistencia y fuerza funcional.',
+      fr: 'Fentes marchées continues pour l\'endurance et la prise de masse. Fais une fente avant, ramène la jambe arrière pour enchaîner la fente suivante, continue le mouvement de marche, développe l\'endurance musculaire des jambes et la force fonctionnelle.',
+      'pt-BR': 'Afundos caminhados contínuos para resistência e volume. Afunde à frente, traga a perna traseira para o próximo afundo, continue o padrão de caminhada, desenvolve resistência muscular nas pernas e força funcional.',
     },
     bmc: 3.5,
     wf: 0.03,
   },
   {
     id: 'barbell_lunges',
-    name: { en: 'Barbell Lunges', es: 'Zancadas con Barra' },
+    name: { en: 'Barbell Lunges', es: 'Zancadas con Barra' , fr: 'Fentes à la Barre', 'pt-BR': 'Afundo com Barra' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.35, hamstrings: 0.15, core: 0.05 },
     equipment: ['straight_bar', 'rack', 'plates'],
@@ -1401,13 +1587,15 @@ export const exercises = [
     description: {
       en: 'Lunges with barbell for heavier loading. Bar on upper back like squat position, perform forward or reverse lunges, allows heavier weights than dumbbells for strength development.',
       es: 'Zancadas con barra para mayor carga. Barra en espalda alta como posición de sentadilla, realiza zancadas frontales o inversas, permite pesos más pesados que mancuernas.',
+      fr: 'Fentes avec barre pour des charges plus lourdes. Barre sur le haut du dos comme en squat, effectue des fentes avant ou arrière, permet des poids plus lourds que les haltères pour le développement de la force.',
+      'pt-BR': 'Afundos com barra para maior carga. Barra na parte superior das costas como na posição do agachamento, execute afundos frontais ou inversos, permite pesos mais pesados do que halteres para desenvolvimento de força.',
     },
     bmc: 4.0,
     wf: 0.03,
   },
   {
     id: 'barbell_static_lunges',
-    name: { en: 'Barbell Static Lunges', es: 'Zancadas Estáticas con Barra' },
+    name: { en: 'Barbell Static Lunges', es: 'Zancadas Estáticas con Barra' , fr: 'Fentes Statiques à la Barre', 'pt-BR': 'Afundo Estático com Barra' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.35, hamstrings: 0.15, core: 0.05 },
     equipment: ['straight_bar', 'rack', 'plates'],
@@ -1415,13 +1603,15 @@ export const exercises = [
     description: {
       en: 'Static lunges with barbell for heavier loading. Bar on upper back like squat position, perform static lunges, allows heavier weights than dumbbells for strength development.',
       es: 'Zancadas estáticas con barra para mayor carga. Barra en espalda alta como posición de sentadilla, realiza zancadas estáticas, permite pesos más pesados que mancuernas.',
+      fr: 'Fentes statiques avec barre pour des charges plus lourdes. Barre sur le haut du dos comme en squat, effectue des fentes statiques, permet des poids plus lourds que les haltères pour le développement de la force.',
+      'pt-BR': 'Afundos estáticos com barra para maior carga. Barra na parte superior das costas como na posição do agachamento, execute afundos estáticos, permite pesos mais pesados do que halteres para desenvolvimento de força.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'bulgarian_split_squat_db',
-    name: { en: 'Dumbbell Bulgarian Split Squat', es: 'Sentadilla Búlgara con Mancuernas' },
+    name: { en: 'Dumbbell Bulgarian Split Squat', es: 'Sentadilla Búlgara con Mancuernas' , fr: 'Fente Bulgare aux Haltères', 'pt-BR': 'Agachamento Búlgaro com Halteres' },
     muscleGroup: 'quads',
     muscles: { quads: 0.50, glutes: 0.35, hamstrings: 0.10, core: 0.05 },
     equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
@@ -1429,13 +1619,15 @@ export const exercises = [
     description: {
       en: 'Single-leg squat with rear foot elevated on bench. Holding dumbbells, lower until front thigh is parallel, excellent for quad development and addressing leg strength imbalances.',
       es: 'Sentadilla a una pierna con pie trasero elevado en banco. Sosteniendo mancuernas, baja hasta que muslo frontal esté paralelo, excelente para desarrollo de cuádriceps y desequilibrios.',
+      fr: 'Squat une jambe avec le pied arrière surélevé sur un banc. En tenant des haltères, descends jusqu\'à ce que la cuisse avant soit parallèle au sol, excellent pour le développement des quadriceps et la correction des déséquilibres de force.',
+      'pt-BR': 'Agachamento unilateral com o pé traseiro elevado num banco. Segurando halteres, desça até a coxa dianteira ficar paralela ao chão, excelente para desenvolvimento dos quadríceps e correção de desequilíbrios de força.',
     },
     bmc: 4.0,
     wf: 0.03,
   },
   {
     id: 'bulgarian_split_squat_bb',
-    name: { en: 'Barbell Bulgarian Split Squat', es: 'Sentadilla Búlgara con Barra' },
+    name: { en: 'Barbell Bulgarian Split Squat', es: 'Sentadilla Búlgara con Barra' , fr: 'Fente Bulgare à la Barre', 'pt-BR': 'Agachamento Búlgaro com Barra' },
     muscleGroup: 'quads',
     muscles: { quads: 0.50, glutes: 0.35, hamstrings: 0.10, core: 0.05 },
     equipment: ['straight_bar', 'rack', 'flat_bench', 'plates'],
@@ -1443,13 +1635,15 @@ export const exercises = [
     description: {
       en: 'Barbell loaded Bulgarian split squat for serious leg development. Bar on back, rear foot on bench, squat down on front leg, allows heavier loading than dumbbell version.',
       es: 'Sentadilla búlgara con barra para desarrollo serio de piernas. Barra en la espalda, pie trasero en banco, sentadilla con pierna frontal, permite mayor carga que versión con mancuernas.',
+      fr: 'Squat bulgare chargé avec barre pour un développement sérieux des jambes. Barre dans le dos, pied arrière sur le banc, effectue un squat sur la jambe avant, permet des charges plus lourdes que la version avec haltères.',
+      'pt-BR': 'Agachamento búlgaro com barra para desenvolvimento sério de pernas. Barra nas costas, pé traseiro no banco, agache na perna dianteira, permite carga maior do que a versão com halteres.',
     },
     bmc: 4.5,
     wf: 0.04,
   },
   {
     id: 'step_ups',
-    name: { en: 'Dumbbell Step-Ups', es: 'Step-Ups con Mancuernas' },
+    name: { en: 'Dumbbell Step-Ups', es: 'Step-Ups con Mancuernas' , fr: 'Montées sur Banc aux Haltères', 'pt-BR': 'Subida no Banco com Halteres' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.35, hamstrings: 0.15, core: 0.05 },
     equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
@@ -1457,13 +1651,15 @@ export const exercises = [
     description: {
       en: 'Functional unilateral leg exercise stepping onto a platform. Drive through heel of elevated foot to step up, lower with control, builds single-leg strength and balance.',
       es: 'Ejercicio funcional unilateral subiendo a una plataforma. Empuja con el talón del pie elevado para subir, baja con control, construye fuerza de una pierna y equilibrio.',
+      fr: 'Exercice fonctionnel unilatéral pour les jambes en montant sur une plateforme. Pousse à travers le talon du pied posé sur la plateforme pour monter, descends avec contrôle, développe la force d\'une jambe et l\'équilibre.',
+      'pt-BR': 'Exercício funcional unilateral para pernas subindo em uma plataforma. Impulsione pelo calcanhar do pé elevado para subir, desça com controle, desenvolve força unilateral nas pernas e equilíbrio.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'sissy_squat',
-    name: { en: 'Sissy Squat', es: 'Sentadilla Sissy' },
+    name: { en: 'Sissy Squat', es: 'Sentadilla Sissy' , fr: 'Sissy Squat', 'pt-BR': 'Sissy Squat' },
     muscleGroup: 'quads',
     muscles: { quads: 0.90, core: 0.10 },
     equipment: ['rack'],
@@ -1471,6 +1667,8 @@ export const exercises = [
     description: {
       en: 'Advanced quad isolation with unique body angle. Hold support, lean back while bending knees, lower until quads are fully stretched, intense rectus femoris emphasis at extreme stretch.',
       es: 'Aislamiento avanzado de cuádriceps con ángulo corporal único. Sostén un soporte, inclínate atrás mientras flexionas rodillas, baja hasta estirar completamente, énfasis intenso en recto femoral.',
+      fr: 'Isolation avancée des quadriceps avec un angle corporel unique. Tiens un support, penche-toi en arrière tout en fléchissant les genoux, descends jusqu\'à l\'étirement complet des quadriceps, sollicitation intense du droit fémoral à l\'étirement extrême.',
+      'pt-BR': 'Isolamento avançado de quadríceps com ângulo corporal único. Segure um apoio, incline-se para trás enquanto dobra os joelhos, desça até o alongamento completo dos quadríceps, ênfase intensa no reto femoral no estiramento extremo.',
     },
     bmc: 2.0,
     wf: 0.0,
@@ -1478,7 +1676,7 @@ export const exercises = [
   },
   {
     id: 'wall_sit',
-    name: { en: 'Wall Sit', es: 'Sentadilla en Pared' },
+    name: { en: 'Wall Sit', es: 'Sentadilla en Pared' , fr: 'Chaise Murale', 'pt-BR': 'Cadeira Isométrica' },
     muscleGroup: 'quads',
     muscles: { quads: 0.80, glutes: 0.15, core: 0.05 },
     equipment: [],
@@ -1488,6 +1686,8 @@ export const exercises = [
     description: {
       en: 'Isometric quad exercise against a wall. Slide down wall until thighs are parallel to floor, hold position, builds quad endurance and mental toughness through static contraction.',
       es: 'Ejercicio isométrico de cuádriceps contra una pared. Deslízate hasta que los muslos estén paralelos al suelo, mantén la posición, construye resistencia de cuádriceps y fortaleza mental.',
+      fr: 'Exercice isométrique pour les quadriceps contre un mur. Glisse le long du mur jusqu\'à ce que les cuisses soient parallèles au sol, maintiens la position, développe l\'endurance des quadriceps et la résistance mentale par la contraction statique.',
+      'pt-BR': 'Exercício isométrico de quadríceps contra uma parede. Deslize pela parede até as coxas ficarem paralelas ao chão, mantenha a posição, desenvolve resistência dos quadríceps e força mental através da contração estática.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -1495,7 +1695,7 @@ export const exercises = [
   },
   {
     id: 'band_squat',
-    name: { en: 'Band Squat', es: 'Sentadilla con Banda' },
+    name: { en: 'Band Squat', es: 'Sentadilla con Banda' , fr: 'Squat avec Élastique', 'pt-BR': 'Agachamento com Elástico' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.15, core: 0.10 },
     equipment: ['resistance_band'],
@@ -1503,6 +1703,8 @@ export const exercises = [
     description: {
       en: 'Squat with resistance band for added tension. Stand on band with handles at shoulders, squat down, the band adds resistance especially at the top of the movement.',
       es: 'Sentadilla con banda de resistencia para tensión adicional. Párate sobre la banda con mangos en hombros, haz sentadilla, la banda añade resistencia especialmente arriba del movimiento.',
+      fr: 'Squat avec élastique de résistance pour une tension supplémentaire. Debout sur l\'élastique avec les poignées aux épaules, fais un squat, l\'élastique ajoute de la résistance notamment en haut du mouvement.',
+      'pt-BR': 'Agachamento com faixa elástica para tensão adicional. Fique em pé sobre a faixa com as alças nos ombros, agache, a faixa adiciona resistência especialmente no topo do movimento.',
     },
     bmc: 2.0,
     wf: 0.0,
@@ -1514,7 +1716,7 @@ export const exercises = [
   // ============================================
   {
     id: 'rdl_barbell',
-    name: { en: 'Romanian Deadlift (Barbell)', es: 'Peso Muerto Rumano (Barra)' },
+    name: { en: 'Romanian Deadlift (Barbell)', es: 'Peso Muerto Rumano (Barra)' , fr: 'Soulevé de Terre Roumain (Barre)', 'pt-BR': 'Levantamento Terra Romeno (Barra)' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.45, glutes: 0.30, back: 0.20, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
@@ -1522,13 +1724,15 @@ export const exercises = [
     description: {
       en: 'Primary hamstring builder through hip hinge. Keep slight knee bend, push hips back lowering bar along legs, feel hamstring stretch, return by driving hips forward, maintain flat back.',
       es: 'Constructor principal de isquiotibiales mediante bisagra de cadera. Mantén ligera flexión de rodilla, empuja caderas atrás bajando la barra, siente el estiramiento, regresa empujando caderas.',
+      fr: 'Exercice principal pour les ischio-jambiers par charnière de hanche. Maintiens une légère flexion des genoux, pousse les hanches en arrière en abaissant la barre le long des jambes, ressens l\'étirement, reviens en propulsant les hanches vers l\'avant, garde le dos plat.',
+      'pt-BR': 'Exercício principal para isquiotibiais através de dobradiça de quadril. Mantenha leve flexão dos joelhos, empurre os quadris para trás baixando a barra ao longo das pernas, sinta o alongamento, retorne impulsionando os quadris para frente, mantenha as costas planas.',
     },
     bmc: 5.0,
     wf: 0.04,
   },
   {
     id: 'rdl_dumbbell',
-    name: { en: 'Romanian Deadlift (Dumbbell)', es: 'Peso Muerto Rumano (Mancuernas)' },
+    name: { en: 'Romanian Deadlift (Dumbbell)', es: 'Peso Muerto Rumano (Mancuernas)' , fr: 'Soulevé de Terre Roumain (Haltères)', 'pt-BR': 'Levantamento Terra Romeno (Halteres)' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.45, glutes: 0.30, back: 0.20, core: 0.05 },
     equipment: ['dumbbells'],
@@ -1536,13 +1740,15 @@ export const exercises = [
     description: {
       en: 'Dumbbell RDL allowing natural arm path. Hold dumbbells in front of thighs, hinge at hips keeping back flat, lower until hamstrings are stretched, return to standing position.',
       es: 'RDL con mancuernas permitiendo trayectoria natural de brazos. Sostén mancuernas frente a los muslos, haz bisagra en caderas con espalda plana, baja hasta estirar isquiotibiales.',
+      fr: 'RDL avec haltères permettant une trajectoire naturelle des bras. Tiens les haltères devant les cuisses, effectue une charnière de hanche en gardant le dos plat, descends jusqu\'à l\'étirement des ischio-jambiers, reviens debout.',
+      'pt-BR': 'RDL com halteres permitindo trajetória natural dos braços. Segure os halteres na frente das coxas, faça a dobradiça de quadril mantendo as costas planas, desça até o alongamento dos isquiotibiais, retorne à posição em pé.',
     },
     bmc: 4.5,
     wf: 0.03,
   },
   {
     id: 'stiff_leg_deadlift',
-    name: { en: 'Stiff-Leg Deadlift', es: 'Peso Muerto con Piernas Rígidas' },
+    name: { en: 'Stiff-Leg Deadlift', es: 'Peso Muerto con Piernas Rígidas' , fr: 'Soulevé de Terre Jambes Tendues', 'pt-BR': 'Terra com Pernas Estendidas' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.50, back: 0.25, glutes: 0.20, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
@@ -1550,13 +1756,15 @@ export const exercises = [
     description: {
       en: 'Deadlift variation with minimal knee bend for maximum hamstring stretch. Keep legs nearly straight, hinge forward lowering bar, feel extreme hamstring stretch, return maintaining flat back.',
       es: 'Variación de peso muerto con mínima flexión de rodilla para máximo estiramiento. Mantén piernas casi rectas, inclínate bajando la barra, siente estiramiento extremo de isquiotibiales.',
+      fr: 'Variante du soulevé de terre avec flexion minimale des genoux pour un étirement maximal des ischio-jambiers. Garde les jambes presque droites, incline-toi en abaissant la barre, ressens l\'étirement extrême, reviens en gardant le dos plat.',
+      'pt-BR': 'Variação do levantamento terra com flexão mínima dos joelhos para máximo alongamento dos isquiotibiais. Mantenha as pernas quase retas, incline-se baixando a barra, sinta o estiramento extremo, retorne mantendo as costas planas.',
     },
     bmc: 5.0,
     wf: 0.04,
   },
   {
     id: 'single_leg_rdl',
-    name: { en: 'Single-Leg Romanian Deadlift', es: 'Peso Muerto Rumano a Una Pierna' },
+    name: { en: 'Single-Leg Romanian Deadlift', es: 'Peso Muerto Rumano a Una Pierna' , fr: 'Soulevé de Terre Roumain Unilatéral', 'pt-BR': 'Levantamento Terra Romeno Unilateral' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.45, glutes: 0.30, back: 0.15, core: 0.10 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -1564,13 +1772,15 @@ export const exercises = [
     description: {
       en: 'Unilateral RDL for balance and hamstring development. Stand on one leg, hinge forward while extending other leg back, lower until torso is parallel, return maintaining balance.',
       es: 'RDL unilateral para equilibrio y desarrollo de isquiotibiales. De pie en una pierna, inclínate extendiendo la otra pierna atrás, baja hasta torso paralelo, regresa manteniendo equilibrio.',
+      fr: 'RDL unilatéral pour l\'équilibre et le développement des ischio-jambiers. Debout sur une jambe, incline-toi vers l\'avant en étendant l\'autre jambe en arrière, descends jusqu\'à ce que le torse soit parallèle, reviens en maintenant l\'équilibre.',
+      'pt-BR': 'RDL unilateral para equilíbrio e desenvolvimento dos isquiotibiais. Fique em pé em uma perna, incline-se para frente estendendo a outra perna para trás, desça até o tronco ficar paralelo, retorne mantendo o equilíbrio.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'good_mornings_hamstrings',
-    name: { en: 'Good Mornings', es: 'Buenos Días' },
+    name: { en: 'Good Mornings', es: 'Buenos Días' , fr: 'Good Mornings', 'pt-BR': 'Good Mornings' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.40, back: 0.30, glutes: 0.20, core: 0.10 },
     equipment: ['straight_bar', 'rack', 'plates'],
@@ -1578,13 +1788,15 @@ export const exercises = [
     description: {
       en: 'Posterior chain exercise emphasizing hamstrings. Bar on upper back, bow forward by pushing hips back, feel hamstring stretch, return to upright position maintaining flat back throughout.',
       es: 'Ejercicio de cadena posterior enfatizando isquiotibiales. Barra en espalda alta, inclínate empujando caderas atrás, siente el estiramiento de isquios, regresa erguido con espalda plana.',
+      fr: 'Exercice de la chaîne postérieure mettant l\'accent sur les ischio-jambiers. Barre sur le haut du dos, penche-toi vers l\'avant en poussant les hanches en arrière, ressens l\'étirement des ischio-jambiers, reviens à la position verticale en gardant le dos plat.',
+      'pt-BR': 'Exercício de cadeia posterior enfatizando os isquiotibiais. Barra na parte superior das costas, incline-se para frente empurrando os quadris para trás, sinta o alongamento dos isquiotibiais, retorne à posição ereta mantendo as costas planas.',
     },
     bmc: 4.0,
     wf: 0.03,
   },
   {
     id: 'hamstring_bridge',
-    name: { en: 'Hamstring Bridge', es: 'Puente de Isquiotibiales' },
+    name: { en: 'Hamstring Bridge', es: 'Puente de Isquiotibiales' , fr: 'Pont Ischio-Jambiers', 'pt-BR': 'Ponte para Isquiotibiais' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.80, glutes: 0.15, calves: 0.05 },
     equipment: ['flat_bench'],
@@ -1594,6 +1806,8 @@ export const exercises = [
     description: {
       en: 'Targeted strength exercise designed to isolate the hamstring muscles. Raise your hips toward the ceiling while maintaining a neutral spine. Maintain a slight posterior pelvic tilt and hold the contraction.',
       es: 'Ejercicio de fuerza específico diseñado para aislar los músculos isquiotibiales. Levanta las caderas hacia el techo mientras mantienes la columna en posición neutra. Mantén la contracción.',
+      fr: 'Exercice de force ciblé pour isoler les muscles ischio-jambiers. Lève les hanches vers le plafond en maintenant une colonne vertébrale neutre. Maintiens une légère bascule postérieure du bassin et tiens la contraction.',
+      'pt-BR': 'Exercício de força específico para isolar os músculos isquiotibiais. Eleve os quadris em direção ao teto mantendo a coluna em posição neutra. Mantenha uma leve inclinação pélvica posterior e segure a contração.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -1601,7 +1815,7 @@ export const exercises = [
   },
   {
     id: 'glute_ham_raise',
-    name: { en: 'Glute-Ham Raise (On Bench)', es: 'Elevación Glúteo-Isquio (en banco)' },
+    name: { en: 'Glute-Ham Raise (On Bench)', es: 'Elevación Glúteo-Isquio (en banco)' , fr: 'Relevé Ischios-Fessiers (sur Banc)', 'pt-BR': 'Elevação Glúteo-Isquio (no Banco)' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.55, glutes: 0.35, back: 0.10 },
     equipment: ['ghd_machine'],
@@ -1609,6 +1823,8 @@ export const exercises = [
     description: {
       en: 'Challenging hamstring and glute exercise. Position on decline bench face down, lower upper body then curl back up using hamstrings and glutes, extremely demanding posterior chain movement.',
       es: 'Ejercicio desafiante de isquiotibiales y glúteos. Posiciónate en banco declinado boca abajo, baja el torso y sube usando isquios y glúteos, movimiento muy exigente de cadena posterior.',
+      fr: 'Exercice intense pour les ischio-jambiers et les fessiers. Positionne-toi face vers le bas sur un banc décliné, abaisse le haut du corps puis remonte en utilisant les ischio-jambiers et les fessiers, mouvement de chaîne postérieure extrêmement exigeant.',
+      'pt-BR': 'Exercício desafiador para isquiotibiais e glúteos. Posicione-se de bruços em um banco declinado, abaixe a parte superior do corpo e suba usando isquiotibiais e glúteos, movimento de cadeia posterior extremamente exigente.',
     },
     bmc: 3.0,
     wf: 0.04,
@@ -1616,7 +1832,7 @@ export const exercises = [
   },
   {
     id: 'band_leg_curl',
-    name: { en: 'Band Leg Curl', es: 'Curl de Piernas con Banda' },
+    name: { en: 'Band Leg Curl', es: 'Curl de Piernas con Banda' , fr: 'Leg Curl avec Élastique', 'pt-BR': 'Rosca de Pernas com Elástico' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.85, calves: 0.15 },
     equipment: ['resistance_band'],
@@ -1624,6 +1840,8 @@ export const exercises = [
     description: {
       en: 'Hamstring curl using resistance band. Lie face down with band around ankles, curl heels toward glutes, great for home workouts or as a warm-up before heavier hamstring work.',
       es: 'Curl de isquiotibiales usando banda de resistencia. Boca abajo con banda en tobillos, curl de talones hacia glúteos, ideal para entrenar en casa o como calentamiento antes de trabajo pesado.',
+      fr: 'Curl d\'ischio-jambiers avec élastique de résistance. Allonge-toi face contre terre avec l\'élastique autour des chevilles, fléchis les talons vers les fessiers, idéal pour l\'entraînement à domicile ou en échauffement avant les séries plus lourdes.',
+      'pt-BR': 'Rosca de isquiotibiais com faixa elástica. Deite de bruços com a faixa em volta dos tornozelos, curve os calcanhares em direção aos glúteos, ótimo para treinos em casa ou como aquecimento antes de series mais pesadas.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -1635,7 +1853,7 @@ export const exercises = [
   // ============================================
   {
     id: 'hip_thrust_barbell',
-    name: { en: 'Barbell Hip Thrust', es: 'Empuje de Cadera con Barra' },
+    name: { en: 'Barbell Hip Thrust', es: 'Empuje de Cadera con Barra' , fr: 'Hip Thrust à la Barre', 'pt-BR': 'Hip Thrust com Barra' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.65, hamstrings: 0.25, core: 0.10 },
     equipment: ['straight_bar', 'flat_bench', 'plates'],
@@ -1643,13 +1861,15 @@ export const exercises = [
     description: {
       en: 'Primary glute builder with heavy loading potential. Back against bench, bar across hips, drive hips up squeezing glutes hard at top, lower with control, builds strong powerful glutes.',
       es: 'Constructor principal de glúteos con potencial de carga pesada. Espalda contra banco, barra en caderas, empuja caderas arriba apretando glúteos fuerte, baja con control.',
+      fr: 'Exercice principal pour les fessiers avec potentiel de charge lourde. Dos contre un banc, barre sur les hanches, propulse les hanches vers le haut en contractant fort les fessiers, redescends avec contrôle, développe des fessiers puissants.',
+      'pt-BR': 'Exercício principal para glúteos com potencial de carga pesada. Costas contra o banco, barra nos quadris, impulsione os quadris para cima contraindo fortemente os glúteos, desça com controle, desenvolve glúteos fortes e poderosos.',
     },
     bmc: 4.0,
     wf: 0.03,
   },
   {
     id: 'hip_thrust_dumbbell',
-    name: { en: 'Dumbbell Hip Thrust', es: 'Empuje de Cadera con Mancuerna' },
+    name: { en: 'Dumbbell Hip Thrust', es: 'Empuje de Cadera con Mancuerna' , fr: 'Hip Thrust à l\'Haltère', 'pt-BR': 'Hip Thrust com Haltere' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.65, hamstrings: 0.25, core: 0.10 },
     equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
@@ -1658,13 +1878,15 @@ export const exercises = [
     description: {
       en: 'Hip thrust with dumbbell for lighter loading. Place dumbbell on hips, perform hip thrust movement, good for beginners or higher rep glute work without need for barbell setup.',
       es: 'Empuje de cadera con mancuerna para carga más ligera. Coloca mancuerna en caderas, realiza el movimiento de empuje, bueno para principiantes o trabajo de más repeticiones.',
+      fr: 'Hip thrust avec haltère pour des charges plus légères. Place l\'haltère sur les hanches, effectue le mouvement de hip thrust, idéal pour les débutants ou les séries à hautes répétitions sans avoir besoin d\'une barre.',
+      'pt-BR': 'Hip thrust com halter para carga mais leve. Coloque o halter nos quadris, execute o movimento de hip thrust, bom para iniciantes ou séries de alta repetição sem precisar de barra.',
     },
     bmc: 3.5,
     wf: 0.03,
   },
   {
     id: 'single_leg_hip_thrust',
-    name: { en: 'Single-Leg Hip Thrust', es: 'Empuje de Cadera a Una Pierna' },
+    name: { en: 'Single-Leg Hip Thrust', es: 'Empuje de Cadera a Una Pierna' , fr: 'Hip Thrust Unilatéral', 'pt-BR': 'Hip Thrust Unilateral' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.70, hamstrings: 0.20, core: 0.10 },
     equipment: ['flat_bench'],
@@ -1673,6 +1895,8 @@ export const exercises = [
     description: {
       en: 'Unilateral hip thrust for balanced glute development. One foot planted, other leg extended or bent, thrust hips up using single leg, excellent for addressing glute imbalances.',
       es: 'Empuje de cadera unilateral para desarrollo equilibrado de glúteos. Un pie plantado, otra pierna extendida o flexionada, empuja con una pierna, excelente para desequilibrios.',
+      fr: 'Hip thrust unilatéral pour un développement équilibré des fessiers. Un pied posé au sol, l\'autre jambe étendue ou fléchie, propulse les hanches vers le haut avec une seule jambe, excellent pour corriger les déséquilibres fessiers.',
+      'pt-BR': 'Hip thrust unilateral para desenvolvimento equilibrado dos glúteos. Um pé apoiado no chão, a outra perna estendida ou dobrada, impulsione os quadris para cima com uma perna, excelente para corrigir desequilíbrios nos glúteos.',
     },
     bmc: 2.5,
     wf: 0.0,
@@ -1680,7 +1904,7 @@ export const exercises = [
   },
   {
     id: 'glute_bridge_barbell',
-    name: { en: 'Barbell Glute Bridge', es: 'Puente de Glúteos con Barra' },
+    name: { en: 'Barbell Glute Bridge', es: 'Puente de Glúteos con Barra' , fr: 'Pont Fessiers à la Barre', 'pt-BR': 'Ponte de Glúteos com Barra' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.70, hamstrings: 0.20, core: 0.10 },
     equipment: ['straight_bar' , 'plates'],
@@ -1688,13 +1912,15 @@ export const exercises = [
     description: {
       en: 'Floor-based glute exercise with barbell loading. Lie on floor, bar across hips, bridge up squeezing glutes at top, easier setup than hip thrusts while still building strong glutes.',
       es: 'Ejercicio de glúteos en el suelo con carga de barra. Acuéstate en el suelo, barra en caderas, eleva en puente apretando glúteos arriba, configuración más fácil que empujes de cadera.',
+      fr: 'Exercice fessiers au sol avec charge de barre. Allonge-toi sur le sol, barre sur les hanches, soulève les hanches en contractant les fessiers, installation plus simple que le hip thrust tout en développant de solides fessiers.',
+      'pt-BR': 'Exercício de glúteos no chão com carga de barra. Deite no chão, barra nos quadris, eleve os quadris contraindo os glúteos no topo, configuração mais fácil do que o hip thrust enquanto ainda desenvolve glúteos fortes.',
     },
     bmc: 3.5,
     wf: 0.03,
   },
   {
     id: 'glute_bridge_dumbbell',
-    name: { en: 'Dumbbell Glute Bridge', es: 'Puente de Glúteos con Mancuerna' },
+    name: { en: 'Dumbbell Glute Bridge', es: 'Puente de Glúteos con Mancuerna' , fr: 'Pont Fessiers à l\'Haltère', 'pt-BR': 'Ponte de Glúteos com Haltere' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.70, hamstrings: 0.20, core: 0.10 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -1703,13 +1929,15 @@ export const exercises = [
     description: {
       en: 'Simple glute bridge with dumbbell on hips. Lie on floor, place dumbbell on lower abdomen, bridge up squeezing glutes, great starting exercise for glute activation and development.',
       es: 'Puente de glúteos simple con mancuerna en caderas. Acuéstate en el suelo, coloca mancuerna en abdomen bajo, eleva apretando glúteos, excelente ejercicio inicial para activación.',
+      fr: 'Pont fessiers simple avec haltère sur les hanches. Allonge-toi sur le sol, place l\'haltère sur le bas de l\'abdomen, monte en pont en contractant les fessiers, excellent exercice de départ pour l\'activation et le développement des fessiers.',
+      'pt-BR': 'Ponte de glúteos simples com halter nos quadris. Deite no chão, coloque o halter no abdômen inferior, eleve contraindo os glúteos, excelente exercício inicial para ativação e desenvolvimento dos glúteos.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'sumo_deadlift',
-    name: { en: 'Sumo Deadlift', es: 'Peso Muerto Sumo' },
+    name: { en: 'Sumo Deadlift', es: 'Peso Muerto Sumo' , fr: 'Soulevé de Terre Sumo', 'pt-BR': 'Levantamento Terra Sumo' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.35, quads: 0.25, hamstrings: 0.20, back: 0.15, core: 0.05 },
     equipment: ['straight_bar', 'plates'],
@@ -1717,13 +1945,15 @@ export const exercises = [
     description: {
       en: 'Wide stance deadlift emphasizing glutes and adductors. Feet wide, toes pointed out, grip inside legs, drive through heels to stand, keeps torso more upright than conventional deadlift.',
       es: 'Peso muerto con postura ancha enfatizando glúteos y aductores. Pies anchos, puntas afuera, agarre dentro de piernas, empuja con talones para pararte, torso más erguido.',
+      fr: 'Soulevé de terre avec posture large mettant l\'accent sur les fessiers et les adducteurs. Pieds écartés, orteils pointés vers l\'extérieur, prise à l\'intérieur des jambes, pousse à travers les talons pour se redresser, maintient le torse plus droit que le soulevé de terre classique.',
+      'pt-BR': 'Levantamento terra com postura aberta enfatizando glúteos e adutores. Pés afastados, dedos apontados para fora, pegada entre as pernas, empurre pelos calcanhares para ficar em pé, mantém o tronco mais ereto do que o levantamento terra convencional.',
     },
     bmc: 6.0,
     wf: 0.05,
   },
   {
     id: 'sumo_squat',
-    name: { en: 'Sumo Squat', es: 'Sentadilla Sumo' },
+    name: { en: 'Sumo Squat', es: 'Sentadilla Sumo' , fr: 'Squat Sumo', 'pt-BR': 'Agachamento Sumo' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.40, quads: 0.35, hamstrings: 0.15, core: 0.10 },
     equipment: ['straight_bar', 'plates', 'rack'],
@@ -1731,13 +1961,15 @@ export const exercises = [
     description: {
       en: 'Wide stance squat for inner thighs and glutes. Hold barbell behind the neck, squat with wide stance and toes pointed out, emphasizes glutes and adductors more than standard squat.',
       es: 'Sentadilla con postura ancha para muslos internos y glúteos. Sostén barra detrás de la nuca, sentadilla con postura ancha y puntas afuera, enfatiza glúteos y aductores.',
+      fr: 'Squat avec posture large pour les cuisses internes et les fessiers. Tiens la barre derrière la nuque, fais un squat avec posture large et orteils vers l\'extérieur, sollicite davantage les fessiers et les adducteurs que le squat standard.',
+      'pt-BR': 'Agachamento com postura aberta para face interna das coxas e glúteos. Segure a barra atrás da nuca, agache com postura aberta e dedos apontados para fora, enfatiza glúteos e adutores mais do que o agachamento padrão.',
     },
     bmc: 4.0,
     wf: 0.03,
   },
   {
     id: 'db_sumo_squat',
-    name: { en: 'Sumo Squat (Dumbbells)', es: 'Sentadilla Sumo con Mancuerna' },
+    name: { en: 'Sumo Squat (Dumbbells)', es: 'Sentadilla Sumo con Mancuerna' , fr: 'Squat Sumo aux Haltères', 'pt-BR': 'Agachamento Sumo com Halteres' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.40, quads: 0.35, hamstrings: 0.15, core: 0.10 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -1746,13 +1978,15 @@ export const exercises = [
     description: {
       en: 'Wide stance squat for inner thighs and glutes. Hold dumbbell between legs, squat with wide stance and toes pointed out, emphasizes glutes and adductors more than standard squat.',
       es: 'Sentadilla con postura ancha para muslos internos y glúteos. Sostén mancuerna entre piernas, sentadilla con postura ancha y puntas afuera, enfatiza glúteos y aductores.',
+      fr: 'Squat avec posture large pour les cuisses internes et les fessiers. Tiens l\'haltère entre les jambes, fais un squat avec posture large et orteils vers l\'extérieur, sollicite davantage les fessiers et les adducteurs que le squat standard.',
+      'pt-BR': 'Agachamento com postura aberta para face interna das coxas e glúteos. Segure o halter entre as pernas, agache com postura aberta e dedos apontados para fora, enfatiza glúteos e adutores mais do que o agachamento padrão.',
     },
     bmc: 4.0,
     wf: 0.03,
   },
   {
     id: 'rdl_glutes',
-    name: { en: 'Romanian Deadlift', es: 'Peso Muerto Rumano' },
+    name: { en: 'Romanian Deadlift', es: 'Peso Muerto Rumano' , fr: 'Soulevé de Terre Roumain', 'pt-BR': 'Levantamento Terra Romeno' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.40, hamstrings: 0.35, back: 0.20, core: 0.05 },
     equipment: ['straight_bar', 'plates', 'rack'],
@@ -1760,13 +1994,15 @@ export const exercises = [
     description: {
       en: 'Hip hinge building both hamstrings and glutes. Keep slight knee bend, push hips back lowering bar, squeeze glutes to return to standing, essential posterior chain movement.',
       es: 'Bisagra de cadera construyendo isquiotibiales y glúteos. Mantén ligera flexión de rodilla, empuja caderas atrás bajando la barra, aprieta glúteos para regresar, movimiento esencial.',
+      fr: 'Charnière de hanche développant à la fois les ischio-jambiers et les fessiers. Maintiens une légère flexion des genoux, pousse les hanches en arrière en abaissant la barre, contracte les fessiers pour revenir debout, mouvement essentiel de la chaîne postérieure.',
+      'pt-BR': 'Dobradiça de quadril desenvolvendo isquiotibiais e glúteos. Mantenha leve flexão dos joelhos, empurre os quadris para trás baixando a barra, contraia os glúteos para voltar à posição em pé, movimento essencial da cadeia posterior.',
     },
     bmc: 5.0,
     wf: 0.04,
   },
   {
     id: 'step_ups_glutes',
-    name: { en: 'Step-Ups (Glute Focus)', es: 'Step-Ups (Enfoque Glúteos)' },
+    name: { en: 'Step-Ups (Glute Focus)', es: 'Step-Ups (Enfoque Glúteos)' , fr: 'Montées sur Banc (Accent Fessiers)', 'pt-BR': 'Subida no Banco (Foco Glúteos)' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.50, quads: 0.30, hamstrings: 0.15, core: 0.05 },
     equipment: [['dumbbells', 'kettlebells'], 'flat_bench'],
@@ -1774,13 +2010,15 @@ export const exercises = [
     description: {
       en: 'Step-up emphasizing glute drive. Use higher box, drive through heel of elevated foot, focus on squeezing glute at top, lean slightly forward to increase glute activation.',
       es: 'Step-up enfatizando impulso de glúteos. Usa caja más alta, empuja con talón del pie elevado, enfócate en apretar glúteo arriba, inclínate ligeramente para aumentar activación.',
+      fr: 'Montée sur banc avec accent sur la poussée fessière. Utilise une boîte plus haute, pousse à travers le talon du pied posé sur la boîte, concentre-toi sur la contraction du fessier en haut, penche légèrement en avant pour augmenter l\'activation fessière.',
+      'pt-BR': 'Subida no banco enfatizando o impulso dos glúteos. Use uma caixa mais alta, empurre pelo calcanhar do pé elevado, concentre-se em contrair o glúteo no topo, incline levemente para frente para aumentar a ativação dos glúteos.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'lateral_band_walk',
-    name: { en: 'Lateral Band Walk', es: 'Caminata Lateral con Banda' },
+    name: { en: 'Lateral Band Walk', es: 'Caminata Lateral con Banda' , fr: 'Marche Latérale avec Élastique', 'pt-BR': 'Caminhada Lateral com Elástico' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.80, quads: 0.20 },
     equipment: ['resistance_band'],
@@ -1788,6 +2026,8 @@ export const exercises = [
     description: {
       en: 'Side-stepping with band for glute medius activation. Band around thighs or ankles, step sideways maintaining tension, excellent for glute activation warm-up and hip stability.',
       es: 'Pasos laterales con banda para activación del glúteo medio. Banda alrededor de muslos o tobillos, paso lateral manteniendo tensión, excelente para calentamiento y estabilidad.',
+      fr: 'Marche latérale avec élastique pour l\'activation du moyen fessier. Élastique autour des cuisses ou des chevilles, marche de côté en maintenant la tension, excellent échauffement pour l\'activation des fessiers et la stabilité des hanches.',
+      'pt-BR': 'Caminhada lateral com elástico para ativação do glúteo médio. Elástico em volta das coxas ou tornozelos, dê passos laterais mantendo a tensão, excelente aquecimento para ativação dos glúteos e estabilidade do quadril.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -1795,7 +2035,7 @@ export const exercises = [
   },
   {
     id: 'clamshells',
-    name: { en: 'Clamshells', es: 'Conchas' },
+    name: { en: 'Clamshells', es: 'Conchas' , fr: 'Coquilles (Abduction Couchée)', 'pt-BR': 'Concha' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.90, core: 0.10 },
     equipment: ['resistance_band'],
@@ -1803,6 +2043,8 @@ export const exercises = [
     description: {
       en: 'Side-lying hip external rotation for glute medius. Lie on side with knees bent, rotate top knee open against band resistance, excellent for targeting the often weak glute medius.',
       es: 'Rotación externa de cadera acostado de lado para glúteo medio. Acuéstate de lado con rodillas flexionadas, rota la rodilla superior contra resistencia, excelente para el glúteo medio.',
+      fr: 'Rotation externe de hanche en décubitus latéral ciblant le moyen fessier. Allonge-toi sur le côté avec les genoux fléchis, ouvre le genou supérieur contre la résistance de l\'élastique, excellent pour cibler le souvent faible moyen fessier.',
+      'pt-BR': 'Rotação externa do quadril deitado de lado visando o glúteo médio. Deite de lado com os joelhos dobrados, abra o joelho de cima contra a resistência do elástico, excelente para trabalhar o frequentemente fraco glúteo médio.',
     },
     bmc: 0.8,
     wf: 0.0,
@@ -1810,7 +2052,7 @@ export const exercises = [
   },
   {
     id: 'donkey_kicks',
-    name: { en: 'Donkey Kicks', es: 'Patadas de Burro' },
+    name: { en: 'Donkey Kicks', es: 'Patadas de Burro' , fr: 'Donkey Kicks', 'pt-BR': 'Donkey Kicks' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.80, hamstrings: 0.15, core: 0.05 },
     equipment: [],
@@ -1818,6 +2060,8 @@ export const exercises = [
     description: {
       en: 'Quadruped glute kickback movement. On hands and knees, kick one leg back and up, squeeze glute at top, can be done with bodyweight or ankle strap attached to cable.',
       es: 'Movimiento de patada de glúteos en cuadrupedia. A cuatro patas, patea una pierna atrás y arriba, aprieta glúteo arriba, puede hacerse con peso corporal o correa de tobillo.',
+      fr: 'Mouvement de coup de pied fessier en quadrupédie. À quatre pattes, envoie une jambe en arrière et vers le haut, contracte le fessier en haut, peut être réalisé au poids de corps ou avec une sangle de cheville attachée à un câble.',
+      'pt-BR': 'Movimento de chute para os glúteos em posição de quatro apoios. Em quatro apoios, chute uma perna para trás e para cima, contraia o glúteo no topo, pode ser feito com peso corporal ou com tornozeleira presa a um cabo.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -1825,7 +2069,7 @@ export const exercises = [
   },
   {
     id: 'fire_hydrants',
-    name: { en: 'Fire Hydrants', es: 'Hidrantes' },
+    name: { en: 'Fire Hydrants', es: 'Hidrantes' , fr: 'Fire Hydrants', 'pt-BR': 'Elevação de Quadril Lateral' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.85, core: 0.15 },
     equipment: [],
@@ -1833,6 +2077,8 @@ export const exercises = [
     description: {
       en: 'Hip abduction on hands and knees targeting glute medius. Lift bent knee out to side while maintaining stable hips, squeeze outer glute, return with control, builds hip stability.',
       es: 'Abducción de cadera a cuatro patas trabajando glúteo medio. Levanta rodilla flexionada hacia el lado manteniendo caderas estables, aprieta glúteo externo, regresa con control.',
+      fr: 'Abduction de hanche à quatre pattes ciblant le moyen fessier. Lève le genou fléchi sur le côté tout en maintenant les hanches stables, contracte le fessier externe, reviens avec contrôle, développe la stabilité de la hanche.',
+      'pt-BR': 'Abdução do quadril em quatro apoios visando o glúteo médio. Levante o joelho dobrado para o lado mantendo os quadris estáveis, contraia o glúteo externo, retorne com controle, desenvolve a estabilidade do quadril.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -1840,7 +2086,7 @@ export const exercises = [
   },
   {
     id: 'frog_bridge',
-    name: { en: 'Frog Bridge', es: 'Puente de Rana' },
+    name: { en: 'Frog Bridge', es: 'Puente de Rana' , fr: 'Pont Grenouille', 'pt-BR': 'Ponte Sapo' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.80, hamstrings: 0.15, core: 0.05 },
     equipment: [],
@@ -1848,6 +2094,8 @@ export const exercises = [
     description: {
       en: 'Glute bridge variation with feet together. Lie on back, soles of feet together knees out, perform bridge movement, unique angle targets glutes differently than standard bridges.',
       es: 'Variación de puente de glúteos con pies juntos. Acuéstate boca arriba, plantas de pies juntas rodillas afuera, realiza movimiento de puente, ángulo único trabaja glúteos diferente.',
+      fr: 'Variante du pont fessiers avec les pieds joints. Allonge-toi sur le dos, plantes des pieds jointes et genoux vers l\'extérieur, effectue le mouvement de pont, l\'angle unique sollicite les fessiers différemment des ponts classiques.',
+      'pt-BR': 'Variação da ponte de glúteos com os pés juntos. Deite de costas, plantas dos pés juntas com os joelhos para fora, execute o movimento de ponte, o ângulo único trabalha os glúteos de forma diferente das pontes convencionais.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -1859,7 +2107,7 @@ export const exercises = [
   // ============================================
   {
     id: 'standing_calf_raise_barbell',
-    name: { en: 'Standing Calf Raise (Barbell)', es: 'Elevación de Talones de Pie (Barra)' },
+    name: { en: 'Standing Calf Raise (Barbell)', es: 'Elevación de Talones de Pie (Barra)' , fr: 'Mollets Debout (Barre)', 'pt-BR': 'Elevação de Panturrilha (Barra)' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: ['straight_bar', 'rack', 'plates'],
@@ -1868,13 +2116,15 @@ export const exercises = [
     description: {
       en: 'Heavy loaded calf raise with barbell. Bar on back, stand on elevated surface for range of motion, rise onto toes, squeeze calves at top, lower heels below platform for stretch.',
       es: 'Elevación de talones con carga pesada de barra. Barra en espalda, de pie en superficie elevada, sube a las puntas, aprieta gemelos arriba, baja talones bajo la plataforma.',
+      fr: 'Élévation lourde des mollets avec barre. Barre sur le dos, debout sur une surface surélevée pour l\'amplitude, monte sur les pointes, contracte les mollets en haut, abaisse les talons sous la plateforme pour l\'étirement.',
+      'pt-BR': 'Elevação pesada de panturrilha com barra. Barra nas costas, de pé em uma superfície elevada para amplitude, suba nas pontas, contraia as panturrilhas no topo, desça os calcanhares abaixo da plataforma para o alongamento.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'standing_calf_raise_dumbbell',
-    name: { en: 'Standing Calf Raise (Dumbbell)', es: 'Elevación de Talones de Pie (Mancuernas)' },
+    name: { en: 'Standing Calf Raise (Dumbbell)', es: 'Elevación de Talones de Pie (Mancuernas)' , fr: 'Mollets Debout (Haltères)', 'pt-BR': 'Elevação de Panturrilha (Halteres)' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -1883,13 +2133,15 @@ export const exercises = [
     description: {
       en: 'Calf raise holding dumbbells for added resistance. Stand on elevated edge, hold dumbbells at sides, rise up on toes, lower heels below platform, works the gastrocnemius muscle.',
       es: 'Elevación de talones sosteniendo mancuernas para resistencia adicional. De pie en borde elevado, sostén mancuernas a los lados, sube a las puntas, baja talones bajo la plataforma.',
+      fr: 'Élévation des mollets en tenant des haltères pour une résistance supplémentaire. Debout sur un bord surélevé, tiens les haltères le long du corps, monte sur les pointes, abaisse les talons sous la plateforme, travaille le gastrocnémien.',
+      'pt-BR': 'Elevação de panturrilha segurando halteres para resistência adicional. De pé em uma borda elevada, segure os halteres ao longo do corpo, suba nas pontas, desça os calcanhares abaixo da plataforma, trabalha o gastrocnêmio.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'standing_calf_raise_single',
-    name: { en: 'Standing Calf Raise (Single Leg)', es: 'Elevación de Talones a Una Pierna' },
+    name: { en: 'Standing Calf Raise (Single Leg)', es: 'Elevación de Talones a Una Pierna' , fr: 'Mollets Debout Unilatéral', 'pt-BR': 'Elevação de Panturrilha Unilateral' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -1898,13 +2150,15 @@ export const exercises = [
     description: {
       en: 'Unilateral calf raise for balanced development. Stand on one foot on elevated surface, hold dumbbell for resistance, allows full focus on each calf independently for even growth.',
       es: 'Elevación de talón unilateral para desarrollo equilibrado. De pie en un pie en superficie elevada, sostén mancuerna, permite enfoque completo en cada gemelo independientemente.',
+      fr: 'Élévation unilatérale des mollets pour un développement équilibré. Debout sur un pied sur une surface surélevée, tiens un haltère pour la résistance, permet un travail individuel de chaque mollet indépendamment pour une croissance homogène.',
+      'pt-BR': 'Elevação unilateral de panturrilha para desenvolvimento equilibrado. De pé em um pé em uma superfície elevada, segure um halter para resistência, permite foco completo em cada panturrilha individualmente para crescimento uniforme.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'seated_calf_raise',
-    name: { en: 'Seated Calf Raise', es: 'Elevación de Talones Sentado' },
+    name: { en: 'Seated Calf Raise', es: 'Elevación de Talones Sentado' , fr: 'Mollets Assis', 'pt-BR': 'Elevação de Panturrilha Sentado' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: ['dumbbells', 'flat_bench'],
@@ -1912,13 +2166,15 @@ export const exercises = [
     description: {
       en: 'Seated calf raise targeting the soleus muscle. Sit with weight on knees, perform calf raise movement, the bent knee position shifts emphasis to the soleus rather than gastrocnemius.',
       es: 'Elevación de talón sentado trabajando el sóleo. Siéntate con peso en las rodillas, realiza el movimiento de elevación, la posición de rodilla flexionada traslada énfasis al sóleo.',
+      fr: 'Élévation des mollets assis ciblant le soléaire. Assieds-toi avec un poids sur les genoux, effectue le mouvement d\'élévation, la position genou fléchi déplace l\'accent sur le soléaire plutôt que le gastrocnémien.',
+      'pt-BR': 'Elevação de panturrilha sentado visando o sóleo. Sente-se com peso nos joelhos, execute o movimento de elevação, a posição com joelho dobrado desloca a ênfase para o sóleo em vez do gastrocnêmio.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'donkey_calf_raise',
-    name: { en: 'Donkey Calf Raise', es: 'Elevación de Talones Burro' },
+    name: { en: 'Donkey Calf Raise', es: 'Elevación de Talones Burro' , fr: 'Mollets Ânesse', 'pt-BR': 'Elevação de Panturrilha Burro' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: ['dip_belt', 'plates'],
@@ -1927,13 +2183,15 @@ export const exercises = [
     description: {
       en: 'Classic calf exercise with torso bent forward. Hinge forward, weight on hips via belt, perform calf raises, the angled position provides excellent stretch and contraction for calves.',
       es: 'Ejercicio clásico de gemelos con torso inclinado hacia adelante. Inclínate hacia adelante, peso en caderas vía cinturón, eleva talones, la posición angulada proporciona excelente estiramiento.',
+      fr: 'Exercice classique pour les mollets avec le torse incliné vers l\'avant. Penche-toi vers l\'avant, poids sur les hanches via une ceinture, effectue des élévations de mollets, la position angulée offre un excellent étirement et contraction.',
+      'pt-BR': 'Exercício clássico de panturrilha com tronco inclinado para frente. Incline-se para frente, peso nos quadris via cinto, execute as elevações de panturrilha, a posição angular proporciona excelente alongamento e contração.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'calf_raise_bodyweight',
-    name: { en: 'Calf Raise (Bodyweight)', es: 'Elevación de Talones (Peso Corporal)' },
+    name: { en: 'Calf Raise (Bodyweight)', es: 'Elevación de Talones (Peso Corporal)' , fr: 'Mollets au Poids du Corps', 'pt-BR': 'Elevação de Panturrilha (Peso Corporal)' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: [],
@@ -1942,6 +2200,8 @@ export const exercises = [
     description: {
       en: 'Simple bodyweight calf raise for beginners. Stand on elevated edge, rise onto toes, lower heels below platform for full stretch, can do high reps for calf endurance and burn.',
       es: 'Elevación simple de talones con peso corporal para principiantes. De pie en borde elevado, sube a las puntas, baja talones para estiramiento completo, muchas reps para resistencia.',
+      fr: 'Simple élévation des mollets au poids du corps pour débutants. Debout sur un bord surélevé, monte sur les pointes, abaisse les talons sous la plateforme pour un étirement complet, de nombreuses répétitions pour l\'endurance et la brûlure des mollets.',
+      'pt-BR': 'Elevação simples de panturrilha com peso corporal para iniciantes. De pé em uma borda elevada, suba nas pontas, desça os calcanhares para o alongamento completo, muitas repetições para resistência e queima das panturrilhas.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -1953,7 +2213,7 @@ export const exercises = [
   // ============================================
   {
     id: 'wheel_crunches',
-    name: { en: 'Wheel Crunches', es: 'Abdominales con Rueda' },
+    name: { en: 'Wheel Crunches', es: 'Abdominales con Rueda' , fr: 'Crunches à la Roue', 'pt-BR': 'Abdominal com Roda' },
     muscleGroup: 'core',
     muscles: { core: 0.85, shoulders: 0.15 },
     equipment: ['abs_wheel'],
@@ -1961,6 +2221,8 @@ export const exercises = [
     description: {
       en: 'Kneel and grip the wheel. Roll it forward, extending your body while keeping your core tight. Stop before your hips sag, then use your abs to pull back to the start.',
       es: 'Arrodíllate y sujeta la rueda. Rueda hacia adelante, extendiendo el cuerpo con el core activo. Detente antes de arquear la espalda y usa los abdominales para volver.',
+      fr: 'Agenouille-toi et saisis la roue. Fais-la rouler vers l\'avant en étendant le corps avec le gainage bien actif. Arrête-toi avant que les hanches s\'affaissent, puis utilise les abdominaux pour revenir au départ.',
+      'pt-BR': 'Ajoelhe-se e segure a roda. Role-a para frente, estendendo o corpo mantendo o core contraído. Pare antes que os quadris cedam, depois use os abdominais para voltar à posição inicial.',
     },
     bmc: 2.0,
     wf: 0.0,
@@ -1968,7 +2230,7 @@ export const exercises = [
   },
   {
     id: 'crunches',
-    name: { en: 'Crunches', es: 'Crunches' },
+    name: { en: 'Crunches', es: 'Crunches' , fr: 'Crunches', 'pt-BR': 'Abdominal' },
     muscleGroup: 'core',
     muscles: { core: 1.0 },
     equipment: [],
@@ -1977,6 +2239,8 @@ export const exercises = [
     description: {
       en: 'Basic abdominal exercise for upper abs. Lie on back with knees bent, curl shoulders toward hips contracting abs, lower with control, focus on abdominal contraction not neck pulling.',
       es: 'Ejercicio abdominal básico para abdominales superiores. Acuéstate con rodillas flexionadas, eleva hombros hacia caderas contrayendo abdominales, baja con control.',
+      fr: 'Exercice abdominal de base pour les abdominaux supérieurs. Allonge-toi sur le dos avec les genoux fléchis, enroule les épaules vers les hanches en contractant les abdominaux, redescends avec contrôle, concentre-toi sur la contraction et non sur la nuque.',
+      'pt-BR': 'Exercício abdominal básico para o reto superior. Deite de costas com os joelhos dobrados, enrole os ombros em direção aos quadris contraindo os abdominais, desça com controle, concentre-se na contração abdominal e não em puxar o pescoço.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -1984,7 +2248,7 @@ export const exercises = [
   },
   {
     id: 'reverse_crunches',
-    name: { en: 'Reverse Crunches', es: 'Crunches Invertidos' },
+    name: { en: 'Reverse Crunches', es: 'Crunches Invertidos' , fr: 'Crunches Inversés', 'pt-BR': 'Abdominal Inverso' },
     muscleGroup: 'core',
     muscles: { core: 0.90, quads: 0.10 },
     equipment: [],
@@ -1992,6 +2256,8 @@ export const exercises = [
     description: {
       en: 'Lower ab focus by lifting hips. Lie on back, lift knees toward chest curling hips off floor, lower with control, targets lower portion of rectus abdominis effectively.',
       es: 'Enfoque en abdominales bajos levantando caderas. Acuéstate boca arriba, levanta rodillas hacia el pecho elevando caderas del suelo, baja con control, trabaja porción inferior del recto.',
+      fr: 'Accent sur les abdominaux inférieurs en soulevant les hanches. Allonge-toi sur le dos, ramène les genoux vers la poitrine en décollant les hanches du sol, redescends avec contrôle, cible efficacement la partie inférieure du grand droit.',
+      'pt-BR': 'Foco nos abdominais inferiores elevando os quadris. Deite de costas, levante os joelhos em direção ao peito enrolando os quadris para cima, desça com controle, trabalha efetivamente a porção inferior do reto abdominal.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -1999,7 +2265,7 @@ export const exercises = [
   },
   {
     id: 'lying_leg_raise',
-    name: { en: 'Lying Leg Raise', es: 'Elevación de Piernas Tumbado' },
+    name: { en: 'Lying Leg Raise', es: 'Elevación de Piernas Tumbado' , fr: 'Élévation de Jambes Allongé', 'pt-BR': 'Elevação de Pernas Deitado' },
     muscleGroup: 'core',
     muscles: { core: 0.80, quads: 0.15, glutes: 0.05 },
     equipment: [],
@@ -2007,6 +2273,8 @@ export const exercises = [
     description: {
       en: 'Lower ab and hip flexor exercise on the floor. Lie flat on back with hands under hips, raise straight legs to 90°, then curl hips slightly off the floor at the top, lower legs slowly without touching the floor.',
       es: 'Ejercicio de abdominales bajos y flexores de cadera en el suelo. Túmbate boca arriba con manos bajo las caderas, sube las piernas rectas a 90°, luego eleva ligeramente el culo del suelo al final, baja lentamente sin tocar el suelo.',
+      fr: 'Exercice pour les abdominaux inférieurs et les fléchisseurs de hanche au sol. Allonge-toi à plat sur le dos avec les mains sous les hanches, lève les jambes tendues à 90°, puis décolle légèrement les hanches du sol en haut, abaisse les jambes lentement sans toucher le sol.',
+      'pt-BR': 'Exercício para abdominais inferiores e flexores do quadril no chão. Deite de costas com as mãos sob os quadris, levante as pernas esticadas até 90°, depois enrole levemente os quadris do chão no topo, desça as pernas lentamente sem tocar o chão.',
     },
     bmc: 1.2,
     wf: 0.0,
@@ -2014,7 +2282,7 @@ export const exercises = [
   },
   {
     id: 'bicycle_crunches',
-    name: { en: 'Bicycle Crunches', es: 'Bicicleta' },
+    name: { en: 'Bicycle Crunches', es: 'Bicicleta' , fr: 'Crunches Vélo', 'pt-BR': 'Abdominal Bicicleta' },
     muscleGroup: 'core',
     muscles: { core: 0.90, quads: 0.10 },
     equipment: [],
@@ -2022,6 +2290,8 @@ export const exercises = [
     description: {
       en: 'Rotational crunch for abs and obliques. Lie on back, bring opposite elbow to knee while extending other leg, alternate sides in cycling motion, excellent for oblique development.',
       es: 'Crunch rotacional para abdominales y oblicuos. Acuéstate boca arriba, lleva codo opuesto a rodilla mientras extiendes la otra pierna, alterna lados en movimiento de ciclismo.',
+      fr: 'Crunch rotatoire pour les abdominaux et les obliques. Allonge-toi sur le dos, amène le coude opposé vers le genou en allongeant l\'autre jambe, alterne les côtés en mouvement de pédalage, excellent pour le développement des obliques.',
+      'pt-BR': 'Abdominal rotacional para reto e oblíquos. Deite de costas, leve o cotovelo oposto ao joelho enquanto estende a outra perna, alterne os lados em movimento de pedalada, excelente para desenvolvimento dos oblíquos.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -2029,7 +2299,7 @@ export const exercises = [
   },
   {
     id: 'sit_ups',
-    name: { en: 'Sit-Ups', es: 'Sit-Ups' },
+    name: { en: 'Sit-Ups', es: 'Sit-Ups' , fr: 'Abdominaux Classiques', 'pt-BR': 'Sit-Ups' },
     muscleGroup: 'core',
     muscles: { core: 0.80, quads: 0.20 },
     equipment: [],
@@ -2038,6 +2308,8 @@ export const exercises = [
     description: {
       en: 'Full range abdominal movement. Lie on back, sit all the way up touching toes or knees, lower with control, involves hip flexors more than crunches but builds overall core strength.',
       es: 'Movimiento abdominal de rango completo. Acuéstate boca arriba, siéntate completamente tocando dedos o rodillas, baja con control, involucra más flexores de cadera.',
+      fr: 'Mouvement abdominal en pleine amplitude. Allonge-toi sur le dos, assieds-toi complètement en touchant les orteils ou les genoux, redescends avec contrôle, implique davantage les fléchisseurs de hanche que les crunches mais construit la force globale du core.',
+      'pt-BR': 'Movimento abdominal em amplitude completa. Deite de costas, sente-se completamente tocando os dedos dos pés ou os joelhos, desça com controle, envolve mais os flexores do quadril do que os crunches mas desenvolve a força geral do core.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -2045,7 +2317,7 @@ export const exercises = [
   },
   {
     id: 'decline_sit_ups',
-    name: { en: 'Decline Sit-Ups', es: 'Sit-Ups Declinados' },
+    name: { en: 'Decline Sit-Ups', es: 'Sit-Ups Declinados' , fr: 'Abdominaux Déclinés', 'pt-BR': 'Sit-Up Declinado' },
     muscleGroup: 'core',
     muscles: { core: 0.85, quads: 0.15 },
     equipment: ['decline_bench'],
@@ -2054,6 +2326,8 @@ export const exercises = [
     description: {
       en: 'Sit-ups on decline bench for increased difficulty. Hook feet under pads, lower back down bench, sit up contracting abs, the decline increases resistance and range of motion.',
       es: 'Sit-ups en banco declinado para mayor dificultad. Engancha pies bajo los pads, baja la espalda por el banco, siéntate contrayendo abdominales, la declinación aumenta resistencia.',
+      fr: 'Sit-ups sur banc décliné pour une difficulté accrue. Accroche les pieds sous les coussins, descends le dos le long du banc, assieds-toi en contractant les abdominaux, l\'inclinaison augmente la résistance et l\'amplitude de mouvement.',
+      'pt-BR': 'Sit-ups em banco declinado para maior dificuldade. Prenda os pés sob os apoios, desça as costas pelo banco, sente-se contraindo os abdominais, a inclinação aumenta a resistência e a amplitude de movimento.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -2061,7 +2335,7 @@ export const exercises = [
   },
   {
     id: 'hanging_leg_raise',
-    name: { en: 'Hanging Leg Raise', es: 'Elevación de Piernas Colgado' },
+    name: { en: 'Hanging Leg Raise', es: 'Elevación de Piernas Colgado' , fr: 'Élévation de Jambes Suspendu', 'pt-BR': 'Elevação de Pernas na Barra' },
     muscleGroup: 'core',
     muscles: { core: 0.75, quads: 0.15, biceps: 0.10 },
     equipment: ['pullup_rack'],
@@ -2070,6 +2344,8 @@ export const exercises = [
     description: {
       en: 'Advanced lower ab exercise hanging from bar. Hang from pull-up bar, raise straight legs to horizontal or higher, lower with control, demands significant core strength and control.',
       es: 'Ejercicio avanzado de abdominales bajos colgado de barra. Cuélgate de la barra, eleva piernas rectas a horizontal o más, baja con control, demanda fuerza y control significativo.',
+      fr: 'Exercice avancé pour les abdominaux inférieurs suspendu à une barre. Suspends-toi à la barre de traction, lève les jambes tendues à l\'horizontale ou plus haut, redescends avec contrôle, demande une force et un contrôle du core importants.',
+      'pt-BR': 'Exercício avançado para abdominais inferiores suspenso na barra. Pendure-se na barra de tração, levante as pernas estendidas até a horizontal ou mais acima, desça com controle, exige força e controle significativos do core.',
     },
     bmc: 2.0,
     wf: 0.0,
@@ -2077,7 +2353,7 @@ export const exercises = [
   },
   {
     id: 'hanging_knee_raise',
-    name: { en: 'Hanging Knee Raise', es: 'Elevación de Rodillas Colgado' },
+    name: { en: 'Hanging Knee Raise', es: 'Elevación de Rodillas Colgado' , fr: 'Élévation de Genoux Suspendu', 'pt-BR': 'Elevação de Joelhos na Barra' },
     muscleGroup: 'core',
     muscles: { core: 0.80, quads: 0.10, biceps: 0.10 },
     equipment: ['pullup_rack'],
@@ -2086,6 +2362,8 @@ export const exercises = [
     description: {
       en: 'Easier regression of hanging leg raise. Hang from bar, bring knees up toward chest, lower with control, builds toward full leg raises while still effectively targeting lower abs.',
       es: 'Regresión más fácil de elevación de piernas colgado. Cuélgate de la barra, lleva rodillas hacia el pecho, baja con control, progresa hacia elevaciones completas.',
+      fr: 'Régression plus facile de l\'élévation de jambes suspendu. Suspends-toi à la barre, ramène les genoux vers la poitrine, redescends avec contrôle, progression vers les élévations complètes tout en ciblant efficacement les abdominaux inférieurs.',
+      'pt-BR': 'Regressão mais fácil da elevação de pernas suspenso. Pendure-se na barra, traga os joelhos em direção ao peito, desça com controle, evolui para as elevações completas enquanto ainda trabalha efetivamente os abdominais inferiores.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -2093,7 +2371,7 @@ export const exercises = [
   },
   {
     id: 'hanging_oblique_knee_raise',
-    name: { en: 'Hanging Oblique Knee Raise', es: 'Elevación Oblicua de Rodillas Colgado' },
+    name: { en: 'Hanging Oblique Knee Raise', es: 'Elevación Oblicua de Rodillas Colgado' , fr: 'Élévation de Genoux Oblique Suspendu', 'pt-BR': 'Elevação Oblíqua de Joelhos na Barra' },
     muscleGroup: 'core',
     muscles: { core: 0.80, quads: 0.10, biceps: 0.10 },
     equipment: ['pullup_rack'],
@@ -2101,6 +2379,8 @@ export const exercises = [
     description: {
       en: 'Hanging knee raise with rotation for obliques. Hang from bar, raise knees up and to one side, alternate sides, the rotation emphasizes oblique muscles along with lower abs.',
       es: 'Elevación de rodillas colgado con rotación para oblicuos. Cuélgate de la barra, eleva rodillas hacia un lado, alterna lados, la rotación enfatiza oblicuos y abdominales bajos.',
+      fr: 'Élévation de genoux suspendu avec rotation pour les obliques. Suspends-toi à la barre, lève les genoux vers un côté, alterne les côtés, la rotation met l\'accent sur les obliques avec les abdominaux inférieurs.',
+      'pt-BR': 'Elevação de joelhos suspenso com rotação para os oblíquos. Pendure-se na barra, levante os joelhos para um lado, alterne os lados, a rotação enfatiza os oblíquos junto com os abdominais inferiores.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -2108,7 +2388,7 @@ export const exercises = [
   },
   {
     id: 'toes_to_bar',
-    name: { en: 'Toes to Bar', es: 'Dedos a la Barra' },
+    name: { en: 'Toes to Bar', es: 'Dedos a la Barra' , fr: 'Pieds à la Barre', 'pt-BR': 'Pés na Barra' },
     muscleGroup: 'core',
     muscles: { core: 0.70, quads: 0.15, biceps: 0.15 },
     equipment: ['pullup_rack'],
@@ -2116,6 +2396,8 @@ export const exercises = [
     description: {
       en: 'Advanced hanging ab exercise bringing toes to bar. Hang from bar, swing legs up to touch bar with toes, requires significant core strength, hip flexor flexibility, and control.',
       es: 'Ejercicio abdominal avanzado colgado llevando dedos a la barra. Cuélgate de la barra, balancea piernas para tocar la barra con los dedos, requiere fuerza y flexibilidad.',
+      fr: 'Exercice abdominal avancé suspendu amenant les orteils à la barre. Suspends-toi à la barre, balance les jambes pour toucher la barre avec les orteils, requiert une force importante du core, de la flexibilité et du contrôle.',
+      'pt-BR': 'Exercício abdominal avançado suspenso levando os pés até a barra. Pendure-se na barra, balance as pernas para tocar a barra com os pés, requer força significativa do core, flexibilidade dos flexores do quadril e controle.',
     },
     bmc: 2.5,
     wf: 0.0,
@@ -2123,7 +2405,7 @@ export const exercises = [
   },
   {
     id: 'windshield_wipers',
-    name: { en: 'Windshield Wipers', es: 'Limpiaparabrisas' },
+    name: { en: 'Windshield Wipers', es: 'Limpiaparabrisas' , fr: 'Essuie-Glaces', 'pt-BR': 'Limpadores' },
     muscleGroup: 'core',
     muscles: { core: 0.80, quads: 0.10, biceps: 0.10 },
     equipment: ['pullup_rack'],
@@ -2131,6 +2413,8 @@ export const exercises = [
     description: {
       en: 'Rotational hanging movement for obliques. Hang from bar, raise legs straight up, rotate them side to side like windshield wipers, extremely challenging oblique and core exercise.',
       es: 'Movimiento rotacional colgado para oblicuos. Cuélgate de la barra, eleva piernas rectas, rótalas de lado a lado como limpiaparabrisas, ejercicio extremadamente desafiante.',
+      fr: 'Mouvement rotatoire suspendu pour les obliques. Suspends-toi à la barre, lève les jambes tendues, fais-les pivoter de côté à l\'autre comme des essuie-glaces, exercice oblique et core extrêmement exigeant.',
+      'pt-BR': 'Movimento rotacional suspenso para os oblíquos. Pendure-se na barra, levante as pernas estendidas, gire-as de lado a lado como limpadores de para-brisa, exercício extremamente desafiador para oblíquos e core.',
     },
     bmc: 2.5,
     wf: 0.0,
@@ -2138,7 +2422,7 @@ export const exercises = [
   },
   {
     id: 'plank',
-    name: { en: 'Plank', es: 'Plancha' },
+    name: { en: 'Plank', es: 'Plancha' , fr: 'Gainage', 'pt-BR': 'Prancha' },
     muscleGroup: 'core',
     muscles: { core: 0.80, shoulders: 0.15, quads: 0.05 },
     equipment: [],
@@ -2148,6 +2432,8 @@ export const exercises = [
     description: {
       en: 'Foundational core stability exercise. Hold push-up position on forearms, keep body straight from head to heels, brace core tightly, builds isometric strength and endurance.',
       es: 'Ejercicio fundamental de estabilidad del core. Mantén posición de flexión sobre antebrazos, cuerpo recto de cabeza a talones, aprieta el core fuertemente, construye fuerza isométrica.',
+      fr: 'Exercice fondamental de stabilité du gainage. Maintiens la position de pompe sur les avant-bras, corps droit de la tête aux talons, gainage bien serré, développe la force isométrique et l\'endurance.',
+      'pt-BR': 'Exercício fundamental de estabilidade do core. Mantenha a posição de flexão nos antebraços, corpo reto da cabeça aos calcanhares, contraia o core firmemente, desenvolve força isométrica e resistência.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -2155,7 +2441,7 @@ export const exercises = [
   },
   {
     id: 'side_plank',
-    name: { en: 'Side Plank', es: 'Plancha Lateral' },
+    name: { en: 'Side Plank', es: 'Plancha Lateral' , fr: 'Gainage Latéral', 'pt-BR': 'Prancha Lateral' },
     muscleGroup: 'core',
     muscles: { core: 0.85, shoulders: 0.15 },
     equipment: [],
@@ -2165,6 +2451,8 @@ export const exercises = [
     description: {
       en: 'Lateral core stability exercise targeting obliques. Support body on one forearm and side of foot, keep body straight, hold position, builds lateral core strength and hip stability.',
       es: 'Ejercicio de estabilidad lateral del core trabajando oblicuos. Apoya el cuerpo en un antebrazo y lado del pie, mantén cuerpo recto, sostén la posición, construye fuerza lateral.',
+      fr: 'Exercice de stabilité latérale du core ciblant les obliques. Soutiens le corps sur un avant-bras et le côté du pied, maintiens le corps droit, tiens la position, développe la force latérale du core et la stabilité des hanches.',
+      'pt-BR': 'Exercício de estabilidade lateral do core visando os oblíquos. Apoie o corpo em um antebraço e na lateral do pé, mantenha o corpo reto, segure a posição, desenvolve força lateral do core e estabilidade do quadril.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -2172,7 +2460,7 @@ export const exercises = [
   },
   {
     id: 'mountain_climbers',
-    name: { en: 'Mountain Climbers', es: 'Escaladores' },
+    name: { en: 'Mountain Climbers', es: 'Escaladores' , fr: 'Grimpeurs', 'pt-BR': 'Escaladores' },
     muscleGroup: 'core',
     muscles: { core: 0.50, quads: 0.25, shoulders: 0.25 },
     equipment: [],
@@ -2180,6 +2468,8 @@ export const exercises = [
     description: {
       en: 'Dynamic plank variation with running motion. In push-up position, rapidly alternate driving knees toward chest, excellent for core stability while elevating heart rate for cardio.',
       es: 'Variación dinámica de plancha con movimiento de carrera. En posición de flexión, alterna rápidamente llevando rodillas al pecho, excelente para estabilidad del core y cardio.',
+      fr: 'Variante dynamique du gainage avec mouvement de course. En position de pompe, alterne rapidement en ramenant les genoux vers la poitrine, excellent pour la stabilité du core tout en élevant la fréquence cardiaque.',
+      'pt-BR': 'Variação dinâmica da prancha com movimento de corrida. Na posição de flexão, alterne rapidamente trazendo os joelhos em direção ao peito, excelente para estabilidade do core enquanto eleva a frequência cardíaca.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -2187,7 +2477,7 @@ export const exercises = [
   },
   {
     id: 'dead_bug',
-    name: { en: 'Dead Bug', es: 'Bicho Muerto' },
+    name: { en: 'Dead Bug', es: 'Bicho Muerto' , fr: 'Dead Bug', 'pt-BR': 'Dead Bug' },
     muscleGroup: 'core',
     muscles: { core: 0.90, quads: 0.10 },
     equipment: [],
@@ -2195,6 +2485,8 @@ export const exercises = [
     description: {
       en: 'Anti-extension exercise for core stability. Lie on back, lift opposite arm and knee while keeping lower back pressed to floor, builds coordination and deep core stability.',
       es: 'Ejercicio anti-extensión para estabilidad del core. Acuéstate boca arriba, levanta brazo y rodilla opuestos manteniendo espalda baja pegada al suelo, construye coordinación.',
+      fr: 'Exercice anti-extension pour la stabilité du core. Allonge-toi sur le dos, lève le bras opposé au genou tout en maintenant le bas du dos plaqué au sol, développe la coordination et la stabilité profonde du core.',
+      'pt-BR': 'Exercício anti-extensão para estabilidade do core. Deite de costas, levante o braço e o joelho opostos mantendo a lombar pressionada contra o chão, desenvolve coordenação e estabilidade profunda do core.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -2202,7 +2494,7 @@ export const exercises = [
   },
   {
     id: 'bird_dog',
-    name: { en: 'Bird Dog', es: 'Perro Pájaro' },
+    name: { en: 'Bird Dog', es: 'Perro Pájaro' , fr: 'Bird Dog', 'pt-BR': 'Bird Dog' },
     muscleGroup: 'core',
     muscles: { core: 0.70, glutes: 0.20, shoulders: 0.10 },
     equipment: [],
@@ -2210,6 +2502,8 @@ export const exercises = [
     description: {
       en: 'Quadruped stability exercise for back and core. On hands and knees, extend opposite arm and leg while maintaining stable spine, excellent for lower back health and coordination.',
       es: 'Ejercicio de estabilidad en cuadrupedia para espalda y core. A cuatro patas, extiende brazo y pierna opuestos manteniendo columna estable, excelente para salud lumbar.',
+      fr: 'Exercice de stabilité en quadrupédie pour le dos et le core. À quatre pattes, étends le bras et la jambe opposés en maintenant une colonne vertébrale stable, excellent pour la santé du bas du dos et la coordination.',
+      'pt-BR': 'Exercício de estabilidade em quatro apoios para costas e core. Em quatro apoios, estenda o braço e a perna opostos mantendo a coluna estável, excelente para a saúde lombar e coordenação.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -2217,7 +2511,7 @@ export const exercises = [
   },
   {
     id: 'ab_rollout',
-    name: { en: 'Ab Rollout (Barbell)', es: 'Rueda Abdominal (Barra)' },
+    name: { en: 'Ab Rollout (Barbell)', es: 'Rueda Abdominal (Barra)' , fr: 'Roulette Abdominale (Barre)', 'pt-BR': 'Roda Abdominal (Barra)' },
     muscleGroup: 'core',
     muscles: { core: 0.70, shoulders: 0.20, triceps: 0.10 },
     equipment: ['straight_bar', 'plates'],
@@ -2225,6 +2519,8 @@ export const exercises = [
     description: {
       en: 'Advanced core exercise rolling barbell out. Kneel with hands on barbell, roll out extending body, pull back using abs, extremely demanding anti-extension core exercise.',
       es: 'Ejercicio avanzado de core rodando la barra hacia afuera. Arrodíllate con manos en la barra, rueda extendiendo el cuerpo, regresa usando abdominales, ejercicio anti-extensión exigente.',
+      fr: 'Exercice avancé de core en faisant rouler la barre vers l\'avant. Agenouille-toi avec les mains sur la barre, fais-la rouler en étendant le corps, tire vers toi en utilisant les abdominaux, exercice anti-extension du core extrêmement exigeant.',
+      'pt-BR': 'Exercício avançado de core rolando a barra para frente. Ajoelhe-se com as mãos na barra, role-a estendendo o corpo, puxe de volta usando os abdominais, exercício anti-extensão de core extremamente exigente.',
     },
     bmc: 2.0,
     wf: 0.0,
@@ -2232,7 +2528,7 @@ export const exercises = [
   },
   {
     id: 'russian_twist',
-    name: { en: 'Russian Twist', es: 'Giro Ruso' },
+    name: { en: 'Russian Twist', es: 'Giro Ruso' , fr: 'Torsion Russe', 'pt-BR': 'Giro Russo' },
     muscleGroup: 'core',
     muscles: { core: 0.85, shoulders: 0.15 },
     equipment: ['plates'],
@@ -2240,6 +2536,8 @@ export const exercises = [
     description: {
       en: 'Seated rotation exercise for obliques. Sit with torso at 45 degrees, rotate side to side touching weight to floor each side, excellent for building rotational strength.',
       es: 'Ejercicio de rotación sentado para oblicuos. Siéntate con torso a 45 grados, rota de lado a lado tocando peso al suelo en cada lado, excelente para fuerza rotacional.',
+      fr: 'Exercice de rotation assis pour les obliques. Assieds-toi avec le torse à 45 degrés, tourne de côté à côté en touchant le poids au sol de chaque côté, excellent pour développer la force rotatoire.',
+      'pt-BR': 'Exercício de rotação sentado para os oblíquos. Sente-se com o tronco a 45 graus, gire de lado a lado tocando o peso no chão em cada lado, excelente para desenvolver força rotacional.',
     },
     bmc: 1.5,
     wf: 0.02,
@@ -2247,7 +2545,7 @@ export const exercises = [
   },
   {
     id: 'v_ups',
-    name: { en: 'V-Ups', es: 'V-Ups' },
+    name: { en: 'V-Ups', es: 'V-Ups' , fr: 'V-Ups', 'pt-BR': 'V-Ups' },
     muscleGroup: 'core',
     muscles: { core: 0.85, quads: 0.15 },
     equipment: [],
@@ -2255,6 +2553,8 @@ export const exercises = [
     description: {
       en: 'Full body crunch forming a V shape. Lie flat, simultaneously raise legs and torso to touch toes at top, lower with control, works entire rectus abdominis intensely.',
       es: 'Crunch de cuerpo completo formando una V. Acuéstate plano, simultáneamente eleva piernas y torso para tocar dedos arriba, baja con control, trabaja intensamente todo el recto.',
+      fr: 'Crunch corps entier formant une forme en V. Allonge-toi à plat, lève simultanément les jambes et le torse pour toucher les orteils en haut, redescends avec contrôle, sollicite intensément tout le grand droit.',
+      'pt-BR': 'Abdominal de corpo inteiro formando um V. Deite plano, levante simultaneamente as pernas e o tronco para tocar os dedos dos pés no topo, desça com controle, trabalha intensamente todo o reto abdominal.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -2262,7 +2562,7 @@ export const exercises = [
   },
   {
     id: 'l_sit_hold',
-    name: { en: 'L-Sit Hold', es: 'Aguante en L' },
+    name: { en: 'L-Sit Hold', es: 'Aguante en L' , fr: 'Maintien en L', 'pt-BR': 'Posição L' },
     muscleGroup: 'core',
     muscles: { core: 0.60, quads: 0.25, triceps: 0.15 },
     equipment: ['pullup_rack'],
@@ -2270,6 +2570,8 @@ export const exercises = [
     description: {
       en: 'Isometric hold with legs extended in front. Support body on hands with legs straight out parallel to floor, extremely challenging core and hip flexor exercise requiring strength.',
       es: 'Aguante isométrico con piernas extendidas al frente. Apoya el cuerpo en manos con piernas rectas paralelas al suelo, ejercicio extremadamente desafiante de core y flexores.',
+      fr: 'Maintien isométrique avec les jambes étendues vers l\'avant. Soutiens le corps sur les mains avec les jambes droites parallèles au sol, exercice extrêmement exigeant pour le core et les fléchisseurs de hanche.',
+      'pt-BR': 'Sustentação isométrica com as pernas estendidas à frente. Apoie o corpo nas mãos com as pernas retas paralelas ao chão, exercício extremamente desafiador para o core e flexores do quadril.',
     },
     bmc: 2.0,
     wf: 0.0,
@@ -2277,7 +2579,7 @@ export const exercises = [
   },
   {
     id: 'hyperextension_core',
-    name: { en: 'Hyperextension (Lower Back)', es: 'Hiperextensión (Espalda Baja)' },
+    name: { en: 'Hyperextension (Lower Back)', es: 'Hiperextensión (Espalda Baja)' , fr: 'Hyperextension (Bas du Dos)', 'pt-BR': 'Hiperextensão (Lombar)' },
     muscleGroup: 'core',
     muscles: { core: 0.50, back: 0.30, glutes: 0.20 },
     equipment: ['decline_bench'],
@@ -2286,6 +2588,8 @@ export const exercises = [
     description: {
       en: 'Lower back strengthening on decline bench. Position face down, lower upper body toward floor, raise up by contracting lower back muscles, builds erector spinae strength for back health.',
       es: 'Fortalecimiento de espalda baja en banco declinado. Posiciónate boca abajo, baja el torso hacia el suelo, sube contrayendo músculos de espalda baja, construye fuerza de erectores.',
+      fr: 'Renforcement du bas du dos sur banc décliné. Positionne-toi face vers le bas, abaisse le haut du corps vers le sol, remonte en contractant les muscles du bas du dos, renforce les érecteurs du rachis pour la santé du dos.',
+      'pt-BR': 'Fortalecimento da lombar em banco declinado. Posicione-se de bruços, abaixe a parte superior do corpo em direção ao chão, suba contraindo os músculos da lombar, desenvolve força dos eretores da espinha para a saúde das costas.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -2293,7 +2597,7 @@ export const exercises = [
   },
   {
     id: 'superman',
-    name: { en: 'Superman', es: 'Superman' },
+    name: { en: 'Superman', es: 'Superman' , fr: 'Superman', 'pt-BR': 'Superman' },
     muscleGroup: 'core',
     muscles: { core: 0.40, back: 0.35, glutes: 0.25 },
     equipment: [],
@@ -2301,6 +2605,8 @@ export const exercises = [
     description: {
       en: 'Floor exercise for lower back and glutes. Lie face down, simultaneously raise arms and legs off floor, hold briefly squeezing lower back and glutes, lower with control.',
       es: 'Ejercicio en el suelo para espalda baja y glúteos. Acuéstate boca abajo, simultáneamente eleva brazos y piernas del suelo, mantén brevemente apretando espalda baja y glúteos.',
+      fr: 'Exercice au sol pour le bas du dos et les fessiers. Allonge-toi face contre terre, lève simultanément bras et jambes du sol, maintiens brièvement en contractant le bas du dos et les fessiers, redescends avec contrôle.',
+      'pt-BR': 'Exercício no chão para lombar e glúteos. Deite de bruços, levante simultaneamente braços e pernas do chão, mantenha brevemente contraindo a lombar e os glúteos, desça com controle.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -2308,7 +2614,7 @@ export const exercises = [
   },
   {
     id: 'db_side_bend',
-    name: { en: 'Dumbbell Side Bend', es: 'Flexiones Laterales con Mancuernas' },
+    name: { en: 'Dumbbell Side Bend', es: 'Flexiones Laterales con Mancuernas' , fr: 'Flexion Latérale aux Haltères', 'pt-BR': 'Flexão Lateral com Haltere' },
     muscleGroup: 'core',
     muscles: { core: 0.90, back: 0.10 },
     equipment: [['dumbbells', 'kettlebells']],
@@ -2316,6 +2622,8 @@ export const exercises = [
     description: {
       en: 'Standing with a dumbbell, lean your torso to that side without swaying, then return. Keep your back straight, knees slightly bent, and perform controlled movements.',
       es: 'De pie, con una mancuerna, inclina el tronco hacia ese lado sin balancear, luego regresa. Mantén espalda recta, rodillas ligeramente flexionadas y realiza movimientos controlados.',
+      fr: 'Debout avec un haltère, incline le torse vers ce côté sans te balancer, puis reviens. Garde le dos droit, les genoux légèrement fléchis et effectue des mouvements contrôlés.',
+      'pt-BR': 'De pé com um halter, incline o tronco para aquele lado sem balançar, depois volte. Mantenha as costas retas, joelhos levemente dobrados e realize movimentos controlados.',
     },
     bmc: 1.5,
     wf: 0.03,
@@ -2326,7 +2634,7 @@ export const exercises = [
   // ============================================
   {
     id: 'jump_rope',
-    name: { en: 'Jump Rope', es: 'Saltar la Cuerda' },
+    name: { en: 'Jump Rope', es: 'Saltar la Cuerda' , fr: 'Corde à Sauter', 'pt-BR': 'Corda de Pular' },
     muscleGroup: 'cardio',
     muscles: { calves: 0.70, quads: 0.15, core: 0.15 },
     equipment: ['jump_rope'],
@@ -2335,6 +2643,8 @@ export const exercises = [
     description: {
       en: 'Cardio exercise that builds calf endurance. Jump continuously on balls of feet, excellent for calf conditioning, footwork, coordination, and cardiovascular fitness simultaneously.',
       es: 'Ejercicio cardiovascular que construye resistencia de gemelos. Salta continuamente en las puntas de los pies, excelente para acondicionamiento de gemelos, coordinación y cardio.',
+      fr: 'Exercice cardio qui développe l\'endurance des mollets. Saute continuellement sur les pointes des pieds, excellent pour le conditionnement des mollets, la coordination des pieds et la forme cardiovasculaire simultanément.',
+      'pt-BR': 'Exercício cardiovascular que desenvolve a resistência das panturrilhas. Pule continuamente na ponta dos pés, excelente para condicionamento das panturrilhas, coordenação e aptidão cardiovascular simultaneamente.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -2342,7 +2652,7 @@ export const exercises = [
   },
   {
     id: 'running',
-    name: { en: 'Running', es: 'Correr' },
+    name: { en: 'Running', es: 'Correr' , fr: 'Course à Pied', 'pt-BR': 'Corrida' },
     muscleGroup: 'cardio',
     muscles: { calves: 0.30, quads: 0.30, hamstrings: 0.15, glutes: 0.15, core: 0.10 },
     equipment: [],
@@ -2351,6 +2661,8 @@ export const exercises = [
     description: {
       en: 'Full-body cardio exercise. Run at a steady pace outdoors or in any open space. Engages legs, glutes, and core while building cardiovascular endurance and burning calories.',
       es: 'Ejercicio cardiovascular de cuerpo completo. Corre a un ritmo constante al aire libre o en cualquier espacio abierto. Trabaja piernas, glúteos y core mientras mejora la resistencia cardiovascular.',
+      fr: 'Exercice cardio corps entier. Cours à un rythme régulier en extérieur ou dans n\'importe quel espace ouvert. Sollicite les jambes, les fessiers et le core tout en développant l\'endurance cardiovasculaire et en brûlant des calories.',
+      'pt-BR': 'Exercício cardiovascular de corpo inteiro. Corra em ritmo constante ao ar livre ou em qualquer espaço aberto. Trabalha pernas, glúteos e core enquanto desenvolve a resistência cardiovascular e queima calorias.',
     },
     bmc: 2.5,
     wf: 0.0,
@@ -2358,7 +2670,7 @@ export const exercises = [
   },
   {
     id: 'burpees',
-    name: { en: 'Burpees', es: 'Burpees' },
+    name: { en: 'Burpees', es: 'Burpees' , fr: 'Burpees', 'pt-BR': 'Burpees' },
     muscleGroup: 'cardio',
     muscles: { quads: 0.25, chest: 0.20, shoulders: 0.15, core: 0.20, glutes: 0.10, triceps: 0.10 },
     equipment: [],
@@ -2366,6 +2678,8 @@ export const exercises = [
     description: {
       en: 'Full-body explosive exercise. From standing, squat down, kick feet back into a push-up position, perform a push-up, jump feet forward, then explode upward into a jump. High calorie burn and conditioning.',
       es: 'Ejercicio explosivo de cuerpo completo. Desde parado, agáchate, lanza los pies atrás a posición de flexión, haz una flexión, salta los pies adelante, luego explota hacia arriba en un salto. Alta quema calórica y acondicionamiento.',
+      fr: 'Exercice explosif corps entier. Depuis la position debout, accroupis-toi, projette les pieds en arrière en position de pompe, effectue une pompe, ramène les pieds vers l\'avant, puis explose vers le haut en saut. Forte dépense calorique et conditionnement.',
+      'pt-BR': 'Exercício explosivo de corpo inteiro. Da posição em pé, agache, jogue os pés para trás na posição de flexão, faça uma flexão, pule os pés para frente, depois exploda para cima em um salto. Alta queima calórica e condicionamento.',
     },
     bmc: 2.5,
     wf: 0.0,
@@ -2373,7 +2687,7 @@ export const exercises = [
   },
   {
     id: 'jumping_jacks',
-    name: { en: 'Jumping Jacks', es: 'Saltos de Tijera' },
+    name: { en: 'Jumping Jacks', es: 'Saltos de Tijera' , fr: 'Jumping Jacks', 'pt-BR': 'Polichinelos' },
     muscleGroup: 'cardio',
     muscles: { calves: 0.25, quads: 0.20, shoulders: 0.25, glutes: 0.15, core: 0.15 },
     equipment: [],
@@ -2381,6 +2695,8 @@ export const exercises = [
     description: {
       en: 'Classic full-body cardio exercise. Start standing with arms at sides, jump while spreading legs and raising arms overhead, then jump back to starting position. Great for warm-ups and conditioning.',
       es: 'Ejercicio cardiovascular clásico de cuerpo completo. Comienza de pie con brazos a los lados, salta abriendo piernas y subiendo brazos sobre la cabeza, luego salta de vuelta a la posición inicial. Ideal para calentamiento y acondicionamiento.',
+      fr: 'Exercice cardio classique corps entier. Debout les bras le long du corps, saute en écartant les jambes et en levant les bras au-dessus de la tête, puis reviens à la position initiale. Idéal pour l\'échauffement et le conditionnement.',
+      'pt-BR': 'Exercício cardiovascular clássico de corpo inteiro. Comece em pé com os braços ao lado do corpo, pule abrindo as pernas e levantando os braços acima da cabeça, depois volte à posição inicial. Ótimo para aquecimento e condicionamento.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -2396,7 +2712,7 @@ export const exercises = [
   // ============================================
   {
     id: 'cable_crossover_high',
-    name: { en: 'Cable Crossover (High)', es: 'Cruce de Cables (Alto)' },
+    name: { en: 'Cable Crossover (High)', es: 'Cruce de Cables (Alto)' , fr: 'Croisé Câble (Haut)', 'pt-BR': 'Cruzamento no Cabo (Alto)' },
     muscleGroup: 'chest',
     muscles: { chest: 0.80, shoulders: 0.15, core: 0.05 },
     equipment: ['high_pulley', ['single_handle', 'single_rope']],
@@ -2404,13 +2720,15 @@ export const exercises = [
     description: {
       en: 'Constant tension chest isolation from high pulleys. Step forward, pull handles down and across your body in an arc, crossing at the bottom while squeezing your lower chest intensely.',
       es: 'Aislamiento de pecho con tensión constante desde poleas altas. Da un paso adelante, tira los mangos hacia abajo y cruza en arco, cruzando abajo mientras aprietas intensamente el pecho inferior.',
+      fr: 'Isolation des pectoraux sous tension constante depuis les poulies hautes. Avancez un pied, tirez les poignées vers le bas et en travers en arc, en croisant en bas tout en contractant intensément le bas des pectoraux.',
+      'pt-BR': 'Isolamento do peitoral com tensão constante a partir de polias altas. Dê um passo à frente, puxe os cabos para baixo e cruzando o corpo em arco, cruzando embaixo enquanto contrai intensamente a parte inferior do peitoral.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'cable_crossover_low',
-    name: { en: 'Cable Crossover (Low to High)', es: 'Cruce de Cables (Bajo a Alto)' },
+    name: { en: 'Cable Crossover (Low to High)', es: 'Cruce de Cables (Bajo a Alto)' , fr: 'Croisé Câble (Bas vers Haut)', 'pt-BR': 'Cruzamento no Cabo (Baixo para Alto)' },
     muscleGroup: 'chest',
     muscles: { chest: 0.75, shoulders: 0.20, core: 0.05 },
     equipment: ['low_pulley', ['single_handle', 'single_rope']],
@@ -2418,13 +2736,15 @@ export const exercises = [
     description: {
       en: 'Targets upper chest with upward cable motion. From low pulleys, bring handles up and together in front of your face, focusing on contracting the upper chest fibers throughout.',
       es: 'Trabaja el pecho superior con movimiento de cable ascendente. Desde poleas bajas, lleva los mangos arriba y júntalos frente a la cara, enfocándote en contraer las fibras del pecho superior.',
+      fr: 'Cible le haut des pectoraux par un mouvement de câble ascendant. Depuis les poulies basses, remontez les poignées vers le haut et rejoignez-les devant votre visage en contractant les fibres supérieures du pectoral.',
+      'pt-BR': 'Trabalha a parte superior do peitoral com movimento ascendente do cabo. A partir das polias baixas, suba os cabos e junte-os na frente do rosto contraindo as fibras superiores do peitoral durante todo o movimento.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'cable_flyes_mid',
-    name: { en: 'Cable Flyes (Mid)', es: 'Aperturas en Polea (Media)' },
+    name: { en: 'Cable Flyes (Mid)', es: 'Aperturas en Polea (Media)' , fr: 'Écarté Câble (Milieu)', 'pt-BR': 'Crucifixo no Cabo (Médio)' },
     muscleGroup: 'chest',
     muscles: { chest: 0.80, shoulders: 0.15, core: 0.05 },
     equipment: ['mid_pulley', ['single_handle', 'single_rope']],
@@ -2432,13 +2752,15 @@ export const exercises = [
     description: {
       en: 'Mid-level cable fly for overall chest development. With pulleys at chest height, bring handles together in front maintaining slight elbow bend, squeezing hard at the center.',
       es: 'Apertura con polea media para desarrollo general del pecho. Con poleas a altura del pecho, junta los mangos al frente manteniendo codos ligeramente flexionados, apretando fuerte en el centro.',
+      fr: 'Écarté en câble à hauteur intermédiaire pour un développement global du pectoral. Poulies à hauteur de poitrine, ramenez les poignées ensemble en gardant les coudes légèrement fléchis, en contractant fort au centre.',
+      'pt-BR': 'Crucifixo no cabo em nível médio para desenvolvimento geral do peitoral. Com as polias na altura do peito, junte os cabos à frente mantendo os cotovelos levemente flexionados e contraia com força no centro.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'pec_deck',
-    name: { en: 'Pec Deck / Butterfly', es: 'Pec Deck / Mariposa' },
+    name: { en: 'Pec Deck / Butterfly', es: 'Pec Deck / Mariposa' , fr: 'Pec Deck / Butterfly', 'pt-BR': 'Pec Deck / Borboleta' },
     muscleGroup: 'chest',
     muscles: { chest: 0.85, shoulders: 0.15 },
     equipment: ['pec_deck_station'],
@@ -2446,13 +2768,15 @@ export const exercises = [
     description: {
       en: 'Machine-based chest isolation with guided movement path. Sit with back flat, bring padded arms together in front of your chest, hold the squeeze for a second, then return with control.',
       es: 'Aislamiento de pecho en máquina con trayectoria guiada. Siéntate con espalda plana, junta los brazos acolchados frente al pecho, mantén la contracción un segundo, luego regresa con control.',
+      fr: 'Isolation des pectoraux en machine avec trajectoire guidée. Dos plat contre le dossier, ramenez les bras rembourrés devant la poitrine, maintenez la contraction une seconde, puis revenez avec contrôle.',
+      'pt-BR': 'Isolamento do peitoral em máquina com trajetória guiada. Sente-se com as costas retas, junte os braços acolchoados na frente do peito, segure a contração por um segundo e retorne com controle.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'chest_press',
-    name: { en: 'Chest Press', es: 'Press de Pecho' },
+    name: { en: 'Chest Press', es: 'Press de Pecho' , fr: 'Développé Poitrine (Machine)', 'pt-BR': 'Supino na Máquina' },
     muscleGroup: 'chest',
     muscles: { chest: 0.60, triceps: 0.25, shoulders: 0.15 },
     equipment: ['chest_press_station'],
@@ -2460,13 +2784,15 @@ export const exercises = [
     description: {
       en: 'Sit on the chest press machine, back flat, feet firm. Grip handles at chest height, elbows bent 90°. Exhale, press forward smoothly to near-straight arms, squeezing chest. Inhale, return slowly with control.',
       es: 'Siéntate en la máquina de press de pecho, espalda plana, pies firmes. Agarra las manijas a la altura del pecho, codos en 90°. Exhala, empuja hacia adelante hasta casi extender brazos, apretando pecho. Inhala, regresa lento con control.',
+      fr: 'Assis sur la machine de développé poitrine, dos plat, pieds stables. Saisissez les poignées à hauteur de poitrine, coudes à 90°. Expirez, poussez en avant jusqu\'à quasi-extension des bras en contractant le pectoral. Inspirez, revenez lentement avec contrôle.',
+      'pt-BR': 'Sente-se na máquina de supino, costas retas e pés firmes. Segure as alças na altura do peito com os cotovelos a 90°. Expire, empurre suavemente até quase estender os braços contraindo o peitoral. Inspire e retorne lentamente com controle.',
     },
     bmc: 1.8,
     wf: 0.03,
   },
   {
     id: 'neutral_bench_press',
-    name: { en: 'Neutral Grip Bench Press', es: 'Press de Banca Agarre Neutro' },
+    name: { en: 'Neutral Grip Bench Press', es: 'Press de Banca Agarre Neutro' , fr: 'Développé Couché Prise Neutre', 'pt-BR': 'Supino Pegada Neutra' },
     muscleGroup: 'chest',
     muscles: { chest: 0.55, triceps: 0.30, shoulders: 0.15 },
     equipment: ['neutral_bar', 'flat_bench', 'plates'],
@@ -2474,6 +2800,8 @@ export const exercises = [
     description: {
       en: 'Bench press with a neutral (palms facing each other) grip bar. Reduces shoulder strain while shifting emphasis to triceps. Lower the bar to mid-chest and press up, keeping wrists in a natural position.',
       es: 'Press de banca con barra de agarre neutro (palmas enfrentadas). Reduce tensión en hombros y traslada énfasis a tríceps. Baja la barra al pecho medio y empuja, manteniendo muñecas en posición natural.',
+      fr: 'Développé couché avec une barre à prise neutre (paumes face à face). Réduit la tension sur les épaules tout en accentuant le travail des triceps. Descendez la barre jusqu\'à mi-poitrine et poussez en gardant les poignets en position naturelle.',
+      'pt-BR': 'Supino com barra de pegada neutra (palmas voltadas uma para a outra). Reduz a tensão nos ombros e direciona o trabalho para os tríceps. Desça a barra até o meio do peito e empurre mantendo os punhos em posição natural.',
     },
     bmc: 2.0,
     wf: 0.03,
@@ -2484,7 +2812,7 @@ export const exercises = [
   // ============================================
   {
     id: 'lat_pulldown_wide',
-    name: { en: 'Lat Pulldown (Wide)', es: 'Jalón al Pecho (Ancho)' },
+    name: { en: 'Lat Pulldown (Wide)', es: 'Jalón al Pecho (Ancho)' , fr: 'Tirage Dorsaux (Prise Large)', 'pt-BR': 'Puxada no Pulley (Larga)' },
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.25, shoulders: 0.10 },
     equipment: ['lat_station', ['lat_bar', 'neutral_bar_attachment']],
@@ -2492,13 +2820,15 @@ export const exercises = [
     description: {
       en: 'Machine alternative to wide-grip pull-ups. Sit with thighs secured, grip the bar wide, pull down to upper chest while squeezing shoulder blades together, then return with controlled tempo.',
       es: 'Alternativa en máquina a dominadas con agarre ancho. Siéntate con muslos asegurados, agarra la barra ancho, tira al pecho superior apretando escápulas, luego regresa con tempo controlado.',
+      fr: 'Alternative en machine aux tractions prise large. Assis cuisses bloquées, saisissez la barre largement, tirez vers le haut de la poitrine en serrant les omoplates, puis revenez avec un tempo contrôlé.',
+      'pt-BR': 'Alternativa em máquina às barras fixas com pegada larga. Sente-se com as coxas fixas, segure a barra com pegada larga, puxe até a parte superior do peito contraindo as escápulas e retorne com cadência controlada.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'lat_pulldown_close',
-    name: { en: 'Lat Pulldown (Close/Neutral)', es: 'Jalón al Pecho (Cerrado/Neutro)' },
+    name: { en: 'Lat Pulldown (Close/Neutral)', es: 'Jalón al Pecho (Cerrado/Neutro)' , fr: 'Tirage Dorsaux (Prise Serrée/Neutre)', 'pt-BR': 'Puxada no Pulley (Fechada/Neutra)' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.30, shoulders: 0.10 },
     equipment: ['lat_station', ['lat_bar', 'rowing_handle', 'straight_bar_attachment']],
@@ -2506,13 +2836,15 @@ export const exercises = [
     description: {
       en: 'Close-grip variation targeting lower lats. Using a rowing handle or close-grip attachment, pull to your sternum while leaning slightly back, focusing on a strong lat contraction at the bottom.',
       es: 'Variación con agarre cerrado que trabaja dorsales inferiores. Usando barra de remo o agarre cerrado, tira al esternón inclinándote ligeramente atrás, enfocándote en fuerte contracción de dorsales.',
+      fr: 'Variante prise serrée ciblant les dorsaux inférieurs. Avec une poignée de rowing ou un accessoire prise serrée, tirez vers le sternum en vous penchant légèrement en arrière, en vous concentrant sur une forte contraction des dorsaux.',
+      'pt-BR': 'Variação com pegada fechada que trabalha os dorsais inferiores. Usando uma pega de remada ou acessório de pegada fechada, puxe até o esterno inclinando levemente para trás, concentrando-se em uma forte contração dos dorsais.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'lat_pulldown_reverse',
-    name: { en: 'Lat Pulldown (Reverse Grip)', es: 'Jalón al Pecho (Agarre Inverso)' },
+    name: { en: 'Lat Pulldown (Reverse Grip)', es: 'Jalón al Pecho (Agarre Inverso)' , fr: 'Tirage Dorsaux (Prise Inversée)', 'pt-BR': 'Puxada no Pulley (Pegada Invertida)' },
     muscleGroup: 'back',
     muscles: { back: 0.55, biceps: 0.35, shoulders: 0.10 },
     equipment: ['lat_station', 'lat_bar'],
@@ -2520,13 +2852,15 @@ export const exercises = [
     description: {
       en: 'Underhand grip pulldown for lower lat emphasis. Grip the bar with palms facing you, pull down to your upper chest, squeezing your lats and biceps at the bottom of each repetition.',
       es: 'Jalón con agarre supino para énfasis en dorsales inferiores. Agarra la barra con palmas hacia ti, tira hacia el pecho superior, apretando dorsales y bíceps en la parte inferior.',
+      fr: 'Tirage en supination pour accentuer les dorsaux inférieurs. Saisissez la barre paumes vers vous, tirez vers le haut de la poitrine en contractant dorsaux et biceps en bas de chaque répétition.',
+      'pt-BR': 'Puxada com pegada supinada para ênfase nos dorsais inferiores. Segure a barra com as palmas voltadas para você, puxe até a parte superior do peito contraindo os dorsais e bíceps na parte inferior de cada repetição.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'behind_neck_pulldown',
-    name: { en: 'Behind-the-Neck Lat Pulldown', es: 'Jalón trasnuca' },
+    name: { en: 'Behind-the-Neck Lat Pulldown', es: 'Jalón trasnuca' , fr: 'Tirage Dorsaux Derrière la Nuque', 'pt-BR': 'Puxada por Trás da Nuca' },
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.20, shoulders: 0.15 },
     equipment: ['lat_station', 'lat_bar'],
@@ -2534,13 +2868,15 @@ export const exercises = [
     description: {
       en: 'Sit with thighs secured, grip the bar wide, pull down to behind the neck, then return with controlled tempo.',
       es: 'Siéntate con los muslos sujetos, agarra la barra con las manos separadas, tira hacia abajo hasta detrás del cuello y luego regresa con un tempo controlado.',
+      fr: 'Assis cuisses bloquées, saisissez la barre largement, tirez jusqu\'à derrière la nuque, puis revenez avec un tempo contrôlé.',
+      'pt-BR': 'Sente-se com as coxas fixas, segure a barra com pegada larga, puxe até atrás do pescoço e retorne com cadência controlada.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'seated_cable_row',
-    name: { en: 'Seated Cable Row', es: 'Remo Sentado en Polea' },
+    name: { en: 'Seated Cable Row', es: 'Remo Sentado en Polea' , fr: 'Rowing Poulie Assis', 'pt-BR': 'Remada Sentada no Cabo' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
     equipment: ['low_pulley', 'rowing_handle'],
@@ -2549,13 +2885,15 @@ export const exercises = [
     description: {
       en: 'Builds mid-back thickness with constant tension. Sit with feet braced, pull handle to lower chest while squeezing shoulder blades together, extend arms fully to stretch lats between reps.',
       es: 'Construye grosor de espalda media con tensión constante. Siéntate con pies apoyados, tira el agarre al pecho bajo apretando escápulas, extiende brazos completamente para estirar dorsales.',
+      fr: 'Développe l\'épaisseur du dos médian sous tension constante. Assis pieds calés, tirez la poignée vers le bas de la poitrine en serrant les omoplates, étendez les bras complètement pour étirer les dorsaux entre les répétitions.',
+      'pt-BR': 'Desenvolve a espessura do dorsal médio com tensão constante. Sente-se com os pés apoiados, puxe o cabo até a parte inferior do peito contraindo as escápulas e estenda completamente os braços para alongar os dorsais entre as repetições.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'seated_cable_row_wide',
-    name: { en: 'Seated Cable Row (Wide)', es: 'Remo Sentado en Polea (Ancho)' },
+    name: { en: 'Seated Cable Row (Wide)', es: 'Remo Sentado en Polea (Ancho)' , fr: 'Rowing Poulie Assis (Large)', 'pt-BR': 'Remada Sentada no Cabo (Larga)' },
     muscleGroup: 'back',
     muscles: { back: 0.65, biceps: 0.20, shoulders: 0.10, core: 0.05 },
     equipment: ['low_pulley', 'lat_bar'],
@@ -2564,13 +2902,15 @@ export const exercises = [
     description: {
       en: 'Wide grip variation targeting rear delts and upper back. Pull the wide bar to your upper abdomen with elbows flared out, focusing on squeezing your shoulder blades together.',
       es: 'Variación con agarre ancho que trabaja deltoides posteriores y espalda alta. Tira la barra ancha al abdomen superior con codos afuera, enfocándote en apretar las escápulas juntas.',
+      fr: 'Variante prise large ciblant les deltoïdes postérieurs et le haut du dos. Tirez la barre large vers l\'abdomen supérieur coudes écartés, en vous concentrant sur la contraction des omoplates.',
+      'pt-BR': 'Variação com pegada larga que trabalha os deltóides posteriores e a parte superior das costas. Puxe a barra larga até o abdômen superior com os cotovelos afastados, focando em contrair as escápulas.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'face_pulls',
-    name: { en: 'Face Pulls', es: 'Tirón a la Cara' },
+    name: { en: 'Face Pulls', es: 'Tirón a la Cara' , fr: 'Face Pulls', 'pt-BR': 'Face Pulls' },
     muscleGroup: 'back',
     muscles: { back: 0.50, shoulders: 0.40, biceps: 0.10 },
     equipment: ['high_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
@@ -2578,13 +2918,15 @@ export const exercises = [
     description: {
       en: 'Essential for rear delts and upper back health. Pull the bar to your face with elbows high, externally rotate at the end position, squeezing rear delts and upper back muscles.',
       es: 'Esencial para deltoides posteriores y salud de espalda alta. Tira la barra a la cara con codos altos, rota externamente al final, apretando deltoides posteriores y músculos de espalda alta.',
+      fr: 'Essentiel pour la santé des deltoïdes postérieurs et du haut du dos. Tirez la barre vers votre visage coudes hauts, effectuez une rotation externe en fin de mouvement en contractant les deltoïdes arrière et les muscles du haut du dos.',
+      'pt-BR': 'Essencial para a saúde dos deltóides posteriores e da parte superior das costas. Puxe o cabo até o rosto com os cotovelos altos, realize rotação externa na posição final contraindo os deltóides traseiros e os músculos do dorsal superior.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'single_arm_cable_row',
-    name: { en: 'Single-Arm Cable Row', es: 'Remo Unilateral en Polea' },
+    name: { en: 'Single-Arm Cable Row', es: 'Remo Unilateral en Polea' , fr: 'Rowing Unilateral en Poulie', 'pt-BR': 'Remada Unilateral no Cabo' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, core: 0.10, shoulders: 0.05 },
     equipment: ['low_pulley', ['single_handle', 'single_rope']],
@@ -2592,13 +2934,15 @@ export const exercises = [
     description: {
       en: 'Unilateral rowing for balanced back development. Stand or kneel, pull the handle to your hip while rotating your torso slightly, focusing on a full stretch and strong contraction.',
       es: 'Remo unilateral para desarrollo equilibrado de espalda. De pie o arrodillado, tira el mango a la cadera rotando ligeramente el torso, enfocándote en estiramiento completo y contracción fuerte.',
+      fr: 'Rowing unilatéral pour un développement équilibré du dos. Debout ou agenouillé, tirez la poignée vers la hanche en faisant légèrement pivoter le torse, en cherchant un étirement complet et une forte contraction.',
+      'pt-BR': 'Remada unilateral para desenvolvimento equilibrado das costas. De pé ou ajoelhado, puxe o cabo até o quadril girando levemente o tronco, buscando um alongamento completo e uma forte contração.',
     },
     bmc: 2.5,
     wf: 0.03,
   },
   {
     id: 'cable_shrugs',
-    name: { en: 'Cable Shrugs', es: 'Encogimientos en Polea' },
+    name: { en: 'Cable Shrugs', es: 'Encogimientos en Polea' , fr: 'Haussements d\'Épaules en Poulie', 'pt-BR': 'Encolhimento de Ombros no Cabo' },
     muscleGroup: 'back',
     muscles: { back: 0.85, shoulders: 0.15 },
     equipment: ['low_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
@@ -2606,13 +2950,15 @@ export const exercises = [
     description: {
       en: 'Constant tension shrug variation using cables. Stand between low pulleys or facing one, shrug shoulders up while keeping arms straight, focus on peak contraction, then lower with resistance.',
       es: 'Variación de encogimiento con tensión constante usando poleas. De pie entre poleas bajas o frente a una, encoge hombros manteniendo brazos rectos, enfócate en contracción máxima.',
+      fr: 'Variante des haussements d\'épaules sous tension constante avec câbles. Debout entre les poulies basses ou face à l\'une d\'elles, haussez les épaules bras tendus, cherchez la contraction maximale, puis redescendez avec résistance.',
+      'pt-BR': 'Variação de encolhimento com tensão constante usando cabos. De pé entre as polias baixas ou de frente para uma, eleve os ombros mantendo os braços retos, foque na contração máxima e desça com resistência.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'kb_row',
-    name: { en: 'Kettlebell Row', es: 'Remo con Pesa Rusa' },
+    name: { en: 'Kettlebell Row', es: 'Remo con Pesa Rusa' , fr: 'Rowing au Kettlebell', 'pt-BR': 'Remada com Kettlebell' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, core: 0.15 },
     equipment: ['kettlebells'],
@@ -2621,13 +2967,15 @@ export const exercises = [
     description: {
       en: 'Hinge forward with one hand on a bench or knee for support, row the kettlebell to your hip squeezing the shoulder blade at the top. The offset handle challenges grip and forearm stability.',
       es: 'Inclínate hacia adelante con una mano apoyada en banco o rodilla, rema la pesa rusa hacia la cadera apretando la escápula arriba. El agarre descentrado desafía el agarre y la estabilidad del antebrazo.',
+      fr: 'Inclinez-vous vers l\'avant, une main appuyée sur un banc ou un genou, ramez le kettlebell jusqu\'à la hanche en contractant l\'omoplate au sommet. La prise décentrée sollicite la préhension et la stabilité des avant-bras.',
+      'pt-BR': 'Incline-se para frente com uma mão apoiada no banco ou no joelho, puxe o kettlebell até o quadril contraindo a escápula no topo. A pegada descentrada desafia o grip e a estabilidade dos antebraços.',
     },
     bmc: 1.8,
     wf: 0.03,
   },
   {
     id: 'neutral_cable_row',
-    name: { en: 'Neutral Grip Cable Row', es: 'Remo en Polea Agarre Neutro' },
+    name: { en: 'Neutral Grip Cable Row', es: 'Remo en Polea Agarre Neutro' , fr: 'Rowing Poulie Prise Neutre', 'pt-BR': 'Remada no Cabo Pegada Neutra' },
     muscleGroup: 'back',
     muscles: { back: 0.60, biceps: 0.25, shoulders: 0.10, core: 0.05 },
     equipment: ['low_pulley', 'neutral_bar_attachment'],
@@ -2636,6 +2984,8 @@ export const exercises = [
     description: {
       en: 'Seated cable row using a neutral grip attachment. The palms-facing grip allows a strong lat contraction while reducing bicep dominance. Pull to the lower chest, squeeze shoulder blades, and extend fully.',
       es: 'Remo sentado en polea con agarre neutro. El agarre con palmas enfrentadas permite una fuerte contracción de dorsales reduciendo dominancia de bíceps. Tira al pecho bajo, aprieta escápulas y extiende completamente.',
+      fr: 'Rowing assis en câble avec une prise neutre. La prise paumes face à face permet une forte contraction des dorsaux tout en réduisant la dominance des biceps. Tirez vers le bas de la poitrine, serrez les omoplates et étendez complètement.',
+      'pt-BR': 'Remada sentada no cabo com pegada neutra. A pegada com as palmas voltadas uma para a outra permite forte contração dos dorsais reduzindo a dominância dos bíceps. Puxe até a parte inferior do peito, contraia as escápulas e estenda completamente.',
     },
     bmc: 3.0,
     wf: 0.03,
@@ -2646,7 +2996,7 @@ export const exercises = [
   // ============================================
   {
     id: 'cable_lateral_raise',
-    name: { en: 'Cable Lateral Raise', es: 'Elevación Lateral en Polea' },
+    name: { en: 'Cable Lateral Raise', es: 'Elevación Lateral en Polea' , fr: 'Élévation Latérale en Câble', 'pt-BR': 'Elevação Lateral no Cabo' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.90, back: 0.10 },
     equipment: ['low_pulley', ['single_handle', 'single_rope']],
@@ -2654,13 +3004,15 @@ export const exercises = [
     description: {
       en: 'Constant tension lateral raise with cable. Stand sideways to low pulley, raise arm out to side against resistance, the cable provides tension throughout the entire range of motion.',
       es: 'Elevación lateral con tensión constante usando polea. De pie lateral a polea baja, eleva el brazo al lado contra resistencia, el cable proporciona tensión durante todo el rango.',
+      fr: 'Élévation latérale à tension constante avec le câble. Debout de côté face à la poulie basse, levez le bras sur le côté contre la résistance — le câble maintient la tension sur toute l\'amplitude du mouvement.',
+      'pt-BR': 'Elevação lateral com tensão constante no cabo. De lado para a polia baixa, eleve o braço para o lado contra a resistência — o cabo mantém a tensão em toda a amplitude do movimento.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_front_raise',
-    name: { en: 'Cable Front Raise', es: 'Elevación Frontal en Polea' },
+    name: { en: 'Cable Front Raise', es: 'Elevación Frontal en Polea' , fr: 'Élévation Frontale en Câble', 'pt-BR': 'Elevação Frontal no Cabo' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.85, chest: 0.15 },
     equipment: ['low_pulley', ['single_handle', 'single_rope']],
@@ -2668,13 +3020,15 @@ export const exercises = [
     description: {
       en: 'Cable version of front raises for constant tension. Face away from low pulley, raise handle in front to shoulder height, the cable ensures resistance even at the bottom.',
       es: 'Versión con cable de elevaciones frontales para tensión constante. De espaldas a polea baja, eleva el mango al frente hasta altura de hombros, el cable asegura resistencia incluso abajo.',
+      fr: 'Version en câble des élévations frontales pour une tension constante. Dos à la poulie basse, levez le manche devant vous jusqu\'à la hauteur des épaules — le câble assure une résistance même en bas du mouvement.',
+      'pt-BR': 'Versão no cabo das elevações frontais para tensão constante. De costas para a polia baixa, eleve o cabo à frente até a altura dos ombros — o cabo garante resistência mesmo na posição mais baixa.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_rear_delt_fly',
-    name: { en: 'Cable Rear Delt Fly', es: 'Aperturas Posteriores en Polea' },
+    name: { en: 'Cable Rear Delt Fly', es: 'Aperturas Posteriores en Polea' , fr: 'Oiseau en Câble', 'pt-BR': 'Crucifixo Invertido no Cabo' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.75, back: 0.25 },
     equipment: ['high_pulley', ['single_handle', 'rope', 'single_rope']],
@@ -2682,13 +3036,15 @@ export const exercises = [
     description: {
       en: 'Rear delt isolation using cables for constant tension. Using high pulleys or rope, pull apart to engage rear delts, hold the squeeze, return with control maintaining tension.',
       es: 'Aislamiento de deltoides posterior usando cables para tensión constante. Usando poleas altas o cuerda, separa para activar deltoides posteriores, mantén la contracción, regresa con control.',
+      fr: 'Isolation des deltoïdes postérieurs avec câbles pour une tension constante. Avec des poulies hautes ou une corde, écartez pour activer les deltoïdes postérieurs, maintenez la contraction et revenez avec contrôle en gardant la tension.',
+      'pt-BR': 'Isolamento do deltoide posterior com cabo e tensão constante. Usando polias altas ou corda, abra os braços para ativar os deltoides posteriores, mantenha a contração e retorne com controle mantendo a tensão.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'face_pulls_shoulders',
-    name: { en: 'Face Pulls (Shoulders)', es: 'Tirón a la Cara (Hombros)' },
+    name: { en: 'Face Pulls (Shoulders)', es: 'Tirón a la Cara (Hombros)' , fr: 'Face Pulls (Épaules)', 'pt-BR': 'Face Pulls (Ombros)' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.50, back: 0.40, biceps: 0.10 },
     equipment: ['high_pulley', 'rope'],
@@ -2696,13 +3052,15 @@ export const exercises = [
     description: {
       en: 'Excellent for rear delt and rotator cuff health. Pull rope toward face with elbows high, externally rotate hands at end position, essential for shoulder stability and posture.',
       es: 'Excelente para deltoides posterior y salud del manguito rotador. Tira la cuerda hacia la cara con codos altos, rota externamente las manos al final, esencial para estabilidad y postura.',
+      fr: 'Excellent pour la santé des deltoïdes postérieurs et de la coiffe des rotateurs. Tirez la corde vers le visage avec les coudes hauts, tournez les mains vers l\'extérieur en fin de mouvement — essentiel pour la stabilité et la posture des épaules.',
+      'pt-BR': 'Excelente para a saúde do deltoide posterior e do manguito rotador. Puxe a corda em direção ao rosto com os cotovelos elevados e gire as mãos para fora no final — essencial para estabilidade e postura dos ombros.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'upright_row_cable',
-    name: { en: 'Upright Row (Cable)', es: 'Remo al Mentón (Polea)' },
+    name: { en: 'Upright Row (Cable)', es: 'Remo al Mentón (Polea)' , fr: 'Rowing Vertical en Câble', 'pt-BR': 'Remada Alta no Cabo' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.55, back: 0.30, biceps: 0.15 },
     equipment: ['low_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
@@ -2710,13 +3068,15 @@ export const exercises = [
     description: {
       en: 'Cable upright row for constant tension throughout. Using low pulley with bar attachment, pull up leading with elbows, the cable maintains resistance through the entire range.',
       es: 'Remo al mentón con cable para tensión constante. Usando polea baja con barra, tira hacia arriba liderando con codos, el cable mantiene resistencia durante todo el rango.',
+      fr: 'Rowing vertical au câble pour une tension constante. Avec la poulie basse et une barre, tirez vers le haut en menant avec les coudes — le câble maintient la résistance sur toute l\'amplitude.',
+      'pt-BR': 'Remada alta no cabo com tensão constante. Usando polia baixa com barra, puxe para cima liderando com os cotovelos — o cabo mantém a resistência em toda a amplitude do movimento.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'kb_press',
-    name: { en: 'Kettlebell Press', es: 'Press con Pesa Rusa' },
+    name: { en: 'Kettlebell Press', es: 'Press con Pesa Rusa' , fr: 'Press au Kettlebell', 'pt-BR': 'Press com Kettlebell' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.60, triceps: 0.25, core: 0.15 },
     equipment: ['kettlebells'],
@@ -2725,13 +3085,15 @@ export const exercises = [
     description: {
       en: 'Clean the kettlebell to rack position at your shoulder, then press it overhead to full lockout. Keep your core tight and avoid leaning. Lower with control back to the rack position.',
       es: 'Lleva la pesa rusa a posición de rack en el hombro, luego presiónala sobre la cabeza hasta extensión completa. Mantén el core firme y evita inclinarte. Baja con control a la posición de rack.',
+      fr: 'Amenez le kettlebell en position de rack à l\'épaule, puis pressez-le au-dessus de la tête jusqu\'à l\'extension complète. Maintenez le gainage et évitez de vous pencher. Redescendez sous contrôle en position de rack.',
+      'pt-BR': 'Leve o kettlebell à posição de rack no ombro e pressione acima da cabeça até o travamento completo. Mantenha o core firme e evite inclinar o corpo. Desça com controle até a posição de rack.',
     },
     bmc: 1.8,
     wf: 0.03,
   },
   {
     id: 'kb_clean',
-    name: { en: 'Kettlebell Clean & Press', es: 'Cargada y Press con Pesa Rusa' },
+    name: { en: 'Kettlebell Clean & Press', es: 'Cargada y Press con Pesa Rusa' , fr: 'Clean & Press au Kettlebell', 'pt-BR': 'Kettlebell Clean & Press' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.25, back: 0.20, glutes: 0.20, hamstrings: 0.20, core: 0.15 },
     equipment: ['kettlebells'],
@@ -2740,13 +3102,15 @@ export const exercises = [
     description: {
       en: 'Swing the kettlebell back between your legs, then explosively clean it to the rack position by pulling your elbow tight to your body, and press overhead. A full-body compound movement combining power and strength.',
       es: 'Balancea la pesa rusa entre las piernas, luego limpia explosivamente a posición de rack tirando el codo pegado al cuerpo, y presiona sobre la cabeza. Movimiento compuesto de cuerpo completo que combina potencia y fuerza.',
+      fr: 'Balancez le kettlebell entre vos jambes, puis amenez-le explosivemnent en position de rack en tirant le coude près du corps, et pressez au-dessus de la tête. Mouvement polyarticulaire complet combinant puissance et force.',
+      'pt-BR': 'Balance o kettlebell entre as pernas, limpe-o explosivamente para a posição de rack puxando o cotovelo junto ao corpo e pressione acima da cabeça. Movimento composto de corpo inteiro que combina potência e força.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'kb_snatch',
-    name: { en: 'Kettlebell Snatch', es: 'Arrancada con Pesa Rusa' },
+    name: { en: 'Kettlebell Snatch', es: 'Arrancada con Pesa Rusa' , fr: 'Arraché au Kettlebell', 'pt-BR': 'Kettlebell Snatch' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.30, glutes: 0.20, back: 0.15, hamstrings: 0.15, triceps: 0.10, core: 0.10 },
     equipment: ['kettlebells'],
@@ -2755,13 +3119,15 @@ export const exercises = [
     description: {
       en: 'The king of kettlebell lifts. Swing the bell back, then in one explosive motion drive it overhead to lockout. The bell rotates smoothly around your hand at the top. Combines power, endurance and coordination.',
       es: 'El rey de los levantamientos con pesa rusa. Balancea la pesa atrás, luego en un movimiento explosivo llévala sobre la cabeza a extensión completa. La pesa rota suavemente alrededor de la mano arriba. Combina potencia, resistencia y coordinación.',
+      fr: 'Le roi des levés au kettlebell. Balancez la cloche vers l\'arrière, puis dans un seul mouvement explosif amenez-la au-dessus de la tête jusqu\'à l\'extension. La cloche pivote en douceur autour de la main en haut. Combine puissance, endurance et coordination.',
+      'pt-BR': 'O rei dos levantamentos com kettlebell. Balance a pesa para trás e num único movimento explosivo leve-a acima da cabeça até o travamento completo. A pesa gira suavemente em torno da mão no topo. Combina potência, resistência e coordenação.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'reverse_fly',
-    name: { en: 'Reverse Fly Machine', es: 'Aperturas Inversas en Máquina' },
+    name: { en: 'Reverse Fly Machine', es: 'Aperturas Inversas en Máquina' , fr: 'Machine à Écarté Inversé', 'pt-BR': 'Máquina de Crucifixo Invertido' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.70, back: 0.30 },
     equipment: ['reverse_fly_machine'],
@@ -2769,13 +3135,15 @@ export const exercises = [
     description: {
       en: 'Machine isolation for rear delts. Sit facing the pad, grip the handles and open your arms in a wide arc, squeezing your rear delts and upper back at the end of the movement.',
       es: 'Aislamiento en máquina para deltoides posteriores. Siéntate de frente al pad, agarra los mangos y abre los brazos en un arco amplio, apretando deltoides traseros y espalda alta al final del movimiento.',
+      fr: 'Isolation en machine pour les deltoïdes postérieurs. Assis face au pad, saisissez les poignées et ouvrez les bras en arc large en contractant les deltoïdes postérieurs et le haut du dos en fin de mouvement.',
+      'pt-BR': 'Isolamento em máquina para os deltoides posteriores. Sentado de frente para o apoio, segure as alças e abra os braços em arco amplo contraindo os deltoides posteriores e a parte superior das costas no final do movimento.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'neutral_overhead_press',
-    name: { en: 'Neutral Grip Overhead Press', es: 'Press Militar Agarre Neutro' },
+    name: { en: 'Neutral Grip Overhead Press', es: 'Press Militar Agarre Neutro' , fr: 'Développé Militaire Prise Neutre', 'pt-BR': 'Desenvolvimento Pegada Neutra' },
     muscleGroup: 'shoulders',
     muscles: { shoulders: 0.55, triceps: 0.35, chest: 0.10 },
     equipment: ['neutral_bar', 'rack', 'plates'],
@@ -2783,6 +3151,8 @@ export const exercises = [
     description: {
       en: 'Overhead press with a neutral grip bar for a more shoulder-friendly pressing angle. Press from shoulder height to lockout with palms facing each other, reducing external rotation stress on the shoulders.',
       es: 'Press militar con barra de agarre neutro para un ángulo más amigable con los hombros. Empuja desde la altura de los hombros hasta extensión completa con palmas enfrentadas, reduciendo estrés de rotación externa.',
+      fr: 'Développé militaire avec une barre à prise neutre pour un angle plus favorable aux épaules. Poussez depuis la hauteur des épaules jusqu\'au blocage, paumes face à face — réduit le stress en rotation externe sur les épaules.',
+      'pt-BR': 'Desenvolvimento militar com barra de pegada neutra para um ângulo mais amigável aos ombros. Pressione da altura dos ombros até o travamento com as palmas voltadas uma para a outra — reduz o estresse de rotação externa nos ombros.',
     },
     bmc: 2.0,
     wf: 0.03,
@@ -2793,7 +3163,7 @@ export const exercises = [
   // ============================================
   {
     id: 'ez_bar_preacher_curl',
-    name: { en: 'EZ Bar Preacher Curl', es: 'Curl en Banco Scott con Barra Z' },
+    name: { en: 'EZ Bar Preacher Curl', es: 'Curl en Banco Scott con Barra Z' , fr: 'Curl Pupitre Scott Barre EZ', 'pt-BR': 'Rosca Scott com Barra EZ' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.95, shoulders: 0.05 },
     equipment: [['ez_bar', 'straight_bar'], 'plates', 'preacher_pad'],
@@ -2801,13 +3171,15 @@ export const exercises = [
     description: {
       en: 'Strict bicep isolation eliminating momentum. Rest arms on preacher pad, curl bar up squeezing biceps, lower fully to stretch, the pad prevents cheating and isolates completely.',
       es: 'Aislamiento estricto de bíceps eliminando impulso. Apoya brazos en el pad, curl subiendo y apretando bíceps, baja completamente para estirar, el pad previene trampa y aísla completamente.',
+      fr: 'Isolation stricte des biceps sans élan. Appuyez les bras sur le pupitre Scott, curl en contractant les biceps, descendez complètement pour étirer — le pupitre empêche la triche et isole totalement.',
+      'pt-BR': 'Isolamento estrito dos bíceps sem impulso. Apoie os braços no banco Scott, faça a rosca contraindo os bíceps e desça completamente para alongar — o banco impede a trapaça e isola completamente.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'db_preacher_curl',
-    name: { en: 'Dumbbell Preacher Curl', es: 'Curl en Banco Scott con Mancuerna' },
+    name: { en: 'Dumbbell Preacher Curl', es: 'Curl en Banco Scott con Mancuerna' , fr: 'Curl Pupitre Scott à l\'Haltère', 'pt-BR': 'Rosca Scott com Haltere' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.95, shoulders: 0.05 },
     equipment: ['dumbbells', 'preacher_pad'],
@@ -2815,13 +3187,15 @@ export const exercises = [
     description: {
       en: 'Unilateral preacher curl for balanced development. One arm at a time on preacher pad, allows full focus on each bicep, eliminates strength imbalances between arms effectively.',
       es: 'Curl en banco scott unilateral para desarrollo equilibrado. Un brazo a la vez en el pad, permite enfoque completo en cada bíceps, elimina desequilibrios de fuerza entre brazos.',
+      fr: 'Curl pupitre unilatéral pour un développement équilibré. Un bras à la fois sur le pupitre, permet de se concentrer pleinement sur chaque biceps — élimine efficacement les déséquilibres de force entre les bras.',
+      'pt-BR': 'Rosca Scott unilateral para desenvolvimento equilibrado. Um braço de cada vez no banco Scott — permite foco total em cada bíceps e elimina efetivamente os desequilíbrios de força entre os braços.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_curl_bar',
-    name: { en: 'Cable Curl (Straight Bar)', es: 'Curl en Polea (Barra Recta)' },
+    name: { en: 'Cable Curl (Straight Bar)', es: 'Curl en Polea (Barra Recta)' , fr: 'Curl Câble (Barre Droite)', 'pt-BR': 'Rosca no Cabo (Barra Reta)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['low_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
@@ -2829,13 +3203,15 @@ export const exercises = [
     description: {
       en: 'Constant tension bicep curl using cable. Using low pulley with bar, curl up while keeping elbows stationary, the cable provides resistance throughout entire range including bottom.',
       es: 'Curl de bíceps con tensión constante usando cable. Usando polea baja con barra, curl manteniendo codos fijos, el cable proporciona resistencia durante todo el rango incluyendo abajo.',
+      fr: 'Curl de biceps à tension constante avec câble. Avec la poulie basse et la barre, curl en gardant les coudes fixes — le câble maintient la résistance sur toute l\'amplitude, y compris en bas.',
+      'pt-BR': 'Rosca com tensão constante no cabo. Com a polia baixa e a barra, faça a rosca mantendo os cotovelos fixos — o cabo mantém a resistência em toda a amplitude, incluindo na posição mais baixa.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_curl_rope',
-    name: { en: 'Cable Curl (Rope - Hammer)', es: 'Curl en Polea (Cuerda - Martillo)' },
+    name: { en: 'Cable Curl (Rope - Hammer)', es: 'Curl en Polea (Cuerda - Martillo)' , fr: 'Curl Câble (Corde - Marteau)', 'pt-BR': 'Rosca no Cabo (Corda - Martelo)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['low_pulley', 'rope'],
@@ -2843,13 +3219,15 @@ export const exercises = [
     description: {
       en: 'Neutral grip cable curl using rope attachment. Curl rope up keeping neutral grip, split ends apart at top for extra contraction, excellent for brachialis and forearm development.',
       es: 'Curl con cable con agarre neutro usando cuerda. Curl con cuerda manteniendo agarre neutro, separa los extremos arriba para contracción extra, excelente para braquial y antebrazos.',
+      fr: 'Curl câble prise neutre avec corde. Curl en prise neutre, écartez les extrémités de la corde en haut pour une contraction supplémentaire — excellent pour le brachial et le développement des avant-bras.',
+      'pt-BR': 'Rosca no cabo com pegada neutra usando corda. Faça a rosca mantendo a pegada neutra e separe as pontas da corda no topo para contração extra — excelente para o braquial e o desenvolvimento dos antebraços.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_curl_single',
-    name: { en: 'Cable Curl (Single Arm)', es: 'Curl en Polea (Un Brazo)' },
+    name: { en: 'Cable Curl (Single Arm)', es: 'Curl en Polea (Un Brazo)' , fr: 'Curl Câble (Un Bras)', 'pt-BR': 'Rosca no Cabo (Um Braço)' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.90, shoulders: 0.10 },
     equipment: ['low_pulley', ['single_handle', 'single_rope']],
@@ -2857,13 +3235,15 @@ export const exercises = [
     description: {
       en: 'Unilateral cable curl for isolation and balance. Stand sideways to low pulley, curl single handle while keeping elbow fixed, excellent for addressing strength imbalances between arms.',
       es: 'Curl unilateral con cable para aislamiento y equilibrio. De pie lateral a polea baja, curl con un mango manteniendo codo fijo, excelente para corregir desequilibrios de fuerza.',
+      fr: 'Curl unilatéral au câble pour l\'isolation et l\'équilibre. Debout de côté face à la poulie basse, curl avec une poignée en gardant le coude fixe — excellent pour corriger les déséquilibres de force entre les bras.',
+      'pt-BR': 'Rosca unilateral no cabo para isolamento e equilíbrio. De lado para a polia baixa, faça a rosca com uma alça mantendo o cotovelo fixo — excelente para corrigir desequilíbrios de força entre os braços.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_high_curl',
-    name: { en: 'Cable High Curl', es: 'Curl Alto en Polea' },
+    name: { en: 'Cable High Curl', es: 'Curl Alto en Polea' , fr: 'Curl Câble Haut', 'pt-BR': 'Rosca Alta no Cabo' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.85, shoulders: 0.15 },
     equipment: ['high_pulley', ['curved_bar_attachment', 'straight_bar_attachment', 'rope']],
@@ -2871,13 +3251,15 @@ export const exercises = [
     description: {
       en: 'Bicep curl from high pulley using a curved bar attachment. Stand facing the high pulley, grip the curved bar with both hands and curl toward your forehead, excellent for hitting biceps from a unique overhead angle and creating a strong peak contraction.',
       es: 'Curl de bíceps desde polea alta usando barra curva. De pie frente a la polea alta, agarra la barra curva con ambas manos y curl hacia la frente, excelente para trabajar bíceps desde un ángulo único y crear fuerte contracción de pico.',
+      fr: 'Curl de biceps depuis une poulie haute avec barre courbe. Debout face à la poulie haute, saisissez la barre courbe à deux mains et curl vers le front — excellent pour solliciter les biceps selon un angle overhead unique et créer une forte contraction de pic.',
+      'pt-BR': 'Rosca nos bíceps na polia alta com barra curva. De pé de frente para a polia alta, segure a barra curva com as duas mãos e faça a rosca em direção à testa — excelente para atingir os bíceps em um ângulo overhead único e criar forte contração de pico.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_preacher_curl',
-    name: { en: 'Cable Preacher Curl', es: 'Curl en Banco Scott con Polea' },
+    name: { en: 'Cable Preacher Curl', es: 'Curl en Banco Scott con Polea' , fr: 'Curl Pupitre Scott en Câble', 'pt-BR': 'Rosca Scott no Cabo' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.95, shoulders: 0.05 },
     equipment: ['low_pulley', 'preacher_pad', ['curved_bar_attachment', 'straight_bar_attachment', 'single_handle']],
@@ -2885,13 +3267,15 @@ export const exercises = [
     description: {
       en: 'Preacher curl with constant cable tension using a curved bar attachment. Position preacher pad facing low pulley, curl keeping upper arms on pad, the cable ensures tension throughout the entire movement.',
       es: 'Curl en banco scott con tensión constante de cable usando barra curva. Posiciona el pad frente a polea baja, curl manteniendo brazos en el pad, el cable asegura tensión durante todo el movimiento.',
+      fr: 'Curl pupitre Scott à tension câble constante avec barre courbe. Positionnez le pupitre face à la poulie basse, curl en maintenant les bras supérieurs sur le pad — le câble assure une tension tout au long du mouvement.',
+      'pt-BR': 'Rosca Scott com tensão constante no cabo usando barra curva. Posicione o banco frente à polia baixa, faça a rosca mantendo os braços superiores no apoio — o cabo garante tensão durante todo o movimento.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'neutral_curl',
-    name: { en: 'Neutral Grip Curl', es: 'Curl con Barra de Agarre Neutro' },
+    name: { en: 'Neutral Grip Curl', es: 'Curl con Barra de Agarre Neutro' , fr: 'Curl Prise Neutre', 'pt-BR': 'Rosca Pegada Neutra' },
     muscleGroup: 'biceps',
     muscles: { biceps: 0.65, forearms: 0.35 },
     equipment: ['neutral_bar', 'plates'],
@@ -2899,6 +3283,8 @@ export const exercises = [
     description: {
       en: 'Curl with a neutral grip bar targeting the brachialis and brachioradialis along with the biceps. The palms-facing grip recruits more forearm musculature and builds thicker arms from the side.',
       es: 'Curl con barra de agarre neutro que trabaja el braquial y braquiorradial junto con los bíceps. El agarre con palmas enfrentadas recluta más musculatura del antebrazo y construye brazos más gruesos.',
+      fr: 'Curl avec une barre à prise neutre ciblant le brachial, le brachio-radial et les biceps. La prise paumes face à face recrute davantage la musculature des avant-bras et construit des bras plus épais vus de profil.',
+      'pt-BR': 'Rosca com barra de pegada neutra que trabalha o braquial, braquiorradial e bíceps. A pegada com as palmas voltadas uma para a outra recruta mais musculatura dos antebraços e constrói braços mais espessos vistos de lado.',
     },
     bmc: 1.0,
     wf: 0.02,
@@ -2909,7 +3295,7 @@ export const exercises = [
   // ============================================
   {
     id: 'cable_pushdown_rope',
-    name: { en: 'Cable Pushdown (Rope)', es: 'Empuje en Polea (Cuerda)' },
+    name: { en: 'Cable Pushdown (Rope)', es: 'Empuje en Polea (Cuerda)' , fr: 'Pushdown Câble (Corde)', 'pt-BR': 'Pushdown no Cabo (Corda)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.85, shoulders: 0.10, core: 0.05 },
     equipment: ['high_pulley', 'rope'],
@@ -2917,13 +3303,15 @@ export const exercises = [
     description: {
       en: 'Classic tricep isolation with rope attachment. Push rope down while keeping elbows at sides, split the rope apart at bottom for extra contraction, return with control.',
       es: 'Aislamiento clásico de tríceps con cuerda. Empuja la cuerda hacia abajo manteniendo codos a los lados, separa la cuerda abajo para contracción extra, regresa con control.',
+      fr: 'Isolation classique des triceps avec corde. Poussez la corde vers le bas en gardant les coudes à vos côtés, écartez les extrémités en bas pour une contraction supplémentaire, remontez sous contrôle.',
+      'pt-BR': 'Isolamento clássico de tríceps com corda. Empurre a corda para baixo mantendo os cotovelos ao lado do corpo, separe as pontas embaixo para contração extra e retorne com controle.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_pushdown_bar',
-    name: { en: 'Cable Pushdown (Straight Bar)', es: 'Empuje en Polea (Barra Recta)' },
+    name: { en: 'Cable Pushdown (Straight Bar)', es: 'Empuje en Polea (Barra Recta)' , fr: 'Pushdown Câble (Barre Droite)', 'pt-BR': 'Pushdown no Cabo (Barra Reta)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.85, shoulders: 0.10, core: 0.05 },
     equipment: ['high_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
@@ -2931,13 +3319,15 @@ export const exercises = [
     description: {
       en: 'Straight bar pushdown for heavy tricep work. Using bar attachment, push down until arms are fully extended, keep elbows pinned to sides, allows heavier loads than rope.',
       es: 'Empuje con barra recta para trabajo pesado de tríceps. Usando accesorio de barra, empuja hasta extensión completa de brazos, mantén codos fijos a los lados.',
+      fr: 'Pushdown barre droite pour un travail de triceps lourd. Avec la barre, poussez jusqu\'à l\'extension complète des bras en maintenant les coudes collés aux côtés — permet des charges plus lourdes qu\'avec la corde.',
+      'pt-BR': 'Pushdown com barra reta para trabalho pesado de tríceps. Com a barra, empurre até a extensão completa dos braços mantendo os cotovelos fixos ao lado — permite cargas maiores que com a corda.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_pushdown_vbar',
-    name: { en: 'Cable Pushdown (V-Bar/Handle)', es: 'Empuje en Polea (Barra V/Mango)' },
+    name: { en: 'Cable Pushdown (V-Bar/Handle)', es: 'Empuje en Polea (Barra V/Mango)' , fr: 'Pushdown Câble (Barre V/Mango)', 'pt-BR': 'Pushdown no Cabo (Barra V/Puxador)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.85, shoulders: 0.10, core: 0.05 },
     equipment: ['high_pulley', 'v_bar'],
@@ -2945,13 +3335,15 @@ export const exercises = [
     description: {
       en: 'V-bar pushdown for comfortable wrist position. The angled grip of V-bar is easier on wrists while still providing effective tricep isolation, push down and squeeze at bottom.',
       es: 'Empuje con barra V para posición cómoda de muñecas. El agarre angular de la barra V es más cómodo mientras proporciona aislamiento efectivo de tríceps, empuja y aprieta abajo.',
+      fr: 'Pushdown barre en V pour une position confortable des poignets. La prise angulée est plus douce pour les poignets tout en offrant un isolement efficace des triceps — poussez et contractez en bas.',
+      'pt-BR': 'Pushdown com barra V para posição confortável dos pulsos. A pegada angular é mais suave para os pulsos enquanto oferece isolamento eficaz dos tríceps — empurre e contraia embaixo.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_pushdown_reverse',
-    name: { en: 'Cable Pushdown (Reverse Grip)', es: 'Empuje en Polea (Agarre Inverso)' },
+    name: { en: 'Cable Pushdown (Reverse Grip)', es: 'Empuje en Polea (Agarre Inverso)' , fr: 'Pushdown Câble (Prise Inversée)', 'pt-BR': 'Pushdown no Cabo (Pegada Invertida)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.80, shoulders: 0.10, biceps: 0.10 },
     equipment: ['high_pulley', ['straight_bar_attachment', 'curved_bar_attachment']],
@@ -2959,13 +3351,15 @@ export const exercises = [
     description: {
       en: 'Underhand grip pushdown for medial head emphasis. Grip bar with palms up, push down focusing on tricep contraction, this variation shifts emphasis to the medial tricep head.',
       es: 'Empuje con agarre supino para énfasis en cabeza medial. Agarra la barra con palmas arriba, empuja enfocándote en contracción de tríceps, esta variación enfatiza la cabeza medial.',
+      fr: 'Pushdown prise inversée pour accentuer le chef médial. Saisissez la barre paumes vers le haut, poussez en contractant les triceps — cette variante déplace l\'accent vers le chef médial du triceps.',
+      'pt-BR': 'Pushdown com pegada invertida para ênfase na cabeça medial. Pegue a barra com as palmas para cima e empurre contraindo os tríceps — esta variação desloca o ênfase para a cabeça medial do tríceps.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_overhead_extension_rope',
-    name: { en: 'Cable Overhead Extension (Rope)', es: 'Extensión sobre Cabeza en Polea (Cuerda)' },
+    name: { en: 'Cable Overhead Extension (Rope)', es: 'Extensión sobre Cabeza en Polea (Cuerda)' , fr: 'Extension Câble au-dessus Tête (Corde)', 'pt-BR': 'Extensão de Tríceps no Cabo (Corda)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['low_pulley', 'rope'],
@@ -2973,13 +3367,15 @@ export const exercises = [
     description: {
       en: 'Overhead cable extension for long head emphasis. Face away from low pulley, extend rope overhead, the stretched position at bottom maximally targets the tricep long head.',
       es: 'Extensión sobre cabeza con cable para énfasis en cabeza larga. De espaldas a polea baja, extiende la cuerda sobre la cabeza, la posición estirada trabaja máximamente la cabeza larga.',
+      fr: 'Extension overhead au câble pour accentuer le chef long. De dos à la poulie basse, étendez la corde au-dessus de la tête — la position étirée en bas cible au maximum le chef long du triceps.',
+      'pt-BR': 'Extensão overhead no cabo para ênfase na cabeça longa. De costas para a polia baixa, estenda a corda acima da cabeça — a posição alongada embaixo atinge ao máximo a cabeça longa do tríceps.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_overhead_extension_single',
-    name: { en: 'Cable Overhead Extension (Single Arm)', es: 'Extensión sobre Cabeza en Polea (Un Brazo)' },
+    name: { en: 'Cable Overhead Extension (Single Arm)', es: 'Extensión sobre Cabeza en Polea (Un Brazo)' , fr: 'Extension Câble au-dessus Tête (Un Bras)', 'pt-BR': 'Extensão de Tríceps no Cabo (Um Braço)' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['low_pulley', ['single_handle', 'single_rope']],
@@ -2987,13 +3383,15 @@ export const exercises = [
     description: {
       en: 'Unilateral overhead extension for balanced triceps. Single arm allows full focus on each tricep, extend fully overhead while keeping upper arm stationary, great for imbalances.',
       es: 'Extensión sobre cabeza unilateral para tríceps equilibrados. Un brazo permite enfoque completo en cada tríceps, extiende completamente manteniendo brazo superior fijo.',
+      fr: 'Extension overhead unilatérale pour des triceps équilibrés. Un bras à la fois permet de se concentrer pleinement sur chaque triceps — étendez complètement en maintenant le bras supérieur fixe, idéal pour corriger les déséquilibres.',
+      'pt-BR': 'Extensão overhead unilateral para tríceps equilibrados. Um braço de cada vez permite foco total em cada tríceps — estenda completamente mantendo o braço superior fixo, ótimo para corrigir desequilíbrios.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'cable_kickback',
-    name: { en: 'Triceps Cable Kickback', es: 'Patada de Triceps en Polea' },
+    name: { en: 'Triceps Cable Kickback', es: 'Patada de Triceps en Polea' , fr: 'Kickback Triceps en Câble', 'pt-BR': 'Tríceps Coice no Cabo' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.90, shoulders: 0.10 },
     equipment: ['low_pulley', ['single_handle', 'single_rope']],
@@ -3001,13 +3399,15 @@ export const exercises = [
     description: {
       en: 'Cable version of kickbacks for constant tension. Hinge forward, extend arm back against cable resistance, the cable maintains tension throughout entire range of motion.',
       es: 'Versión con cable de patadas traseras para tensión constante. Inclínate hacia adelante, extiende el brazo atrás contra la resistencia del cable, el cable mantiene tensión durante todo.',
+      fr: 'Version câble des kickbacks pour une tension constante. Inclinez-vous vers l\'avant, étendez le bras vers l\'arrière contre la résistance du câble — le câble maintient la tension sur toute l\'amplitude du mouvement.',
+      'pt-BR': 'Versão no cabo do coice de tríceps para tensão constante. Incline-se para frente e estenda o braço para trás contra a resistência do cabo — o cabo mantém a tensão em toda a amplitude do movimento.',
     },
     bmc: 1.0,
     wf: 0.02,
   },
   {
     id: 'neutral_skull_crushers',
-    name: { en: 'Neutral Grip Skull Crushers', es: 'Rompecráneos Agarre Neutro' },
+    name: { en: 'Neutral Grip Skull Crushers', es: 'Rompecráneos Agarre Neutro' , fr: 'Barre au Front Prise Neutre', 'pt-BR': 'Rosca Testa Pegada Neutra' },
     muscleGroup: 'triceps',
     muscles: { triceps: 0.85, shoulders: 0.10, chest: 0.05 },
     equipment: ['neutral_bar', 'flat_bench', 'plates'],
@@ -3015,6 +3415,8 @@ export const exercises = [
     description: {
       en: 'Lying tricep extension with a neutral grip bar. The palms-facing position reduces wrist and elbow strain. Lower the bar beside your head and extend fully, keeping upper arms stationary throughout.',
       es: 'Extensión de tríceps acostado con barra de agarre neutro. La posición con palmas enfrentadas reduce tensión en muñecas y codos. Baja la barra junto a la cabeza y extiende completamente, manteniendo brazos fijos.',
+      fr: 'Extension de triceps allongée avec une barre à prise neutre. La position paumes face à face réduit la tension sur les poignets et les coudes. Descendez la barre à côté de la tête et étendez complètement, bras supérieurs fixes.',
+      'pt-BR': 'Extensão de tríceps deitado com barra de pegada neutra. A posição com as palmas voltadas uma para a outra reduz a tensão nos pulsos e cotovelos. Desça a barra ao lado da cabeça e estenda completamente, mantendo os braços superiores fixos.',
     },
     bmc: 1.5,
     wf: 0.02,
@@ -3025,7 +3427,7 @@ export const exercises = [
   // ============================================
   {
     id: 'cable_wrist_curl',
-    name: { en: 'Cable Wrist Curl', es: 'Curl de Muñeca en Polea' },
+    name: { en: 'Cable Wrist Curl', es: 'Curl de Muñeca en Polea' , fr: 'Curl de Poignet en Câble', 'pt-BR': 'Rosca de Pulso no Cabo' },
     muscleGroup: 'forearms',
     muscles: { biceps: 1.0 },
     equipment: ['low_pulley', 'single_handle'],
@@ -3033,6 +3435,8 @@ export const exercises = [
     description: {
       en: 'Constant tension wrist curl using cable. Kneel facing low pulley, curl wrist up against cable resistance, the cable provides smooth resistance through entire range of movement.',
       es: 'Curl de muñeca con tensión constante usando cable. Arrodíllate frente a polea baja, curl de muñeca contra resistencia del cable, el cable proporciona resistencia suave durante todo el rango.',
+      fr: 'Curl de poignet à tension constante avec câble. Agenouillez-vous face à la poulie basse, fléchissez le poignet contre la résistance du câble — le câble offre une résistance fluide sur toute l\'amplitude du mouvement.',
+      'pt-BR': 'Rosca de pulso com tensão constante no cabo. Ajoelhe-se de frente para a polia baixa e flexione o pulso contra a resistência do cabo — o cabo oferece resistência suave em toda a amplitude do movimento.',
     },
     bmc: 0.5,
     wf: 0.02,
@@ -3043,7 +3447,7 @@ export const exercises = [
   // ============================================
   {
     id: 'leg_extension',
-    name: { en: 'Leg Extension', es: 'Extensión de Piernas' },
+    name: { en: 'Leg Extension', es: 'Extensión de Piernas' , fr: 'Leg Extension', 'pt-BR': 'Extensão de Pernas' },
     muscleGroup: 'quads',
     muscles: { quads: 0.95, core: 0.05 },
     equipment: ['leg_extension_station'],
@@ -3051,13 +3455,15 @@ export const exercises = [
     description: {
       en: 'Isolation exercise targeting quadriceps directly. Sit with knees at edge of pad, extend legs fully, squeeze quads at top, lower with control, excellent for quad isolation and definition.',
       es: 'Ejercicio de aislamiento que trabaja los cuádriceps directamente. Siéntate con rodillas en el borde del pad, extiende piernas completamente, aprieta arriba, baja con control.',
+      fr: 'Exercice d\'isolation ciblant directement les quadriceps. Assieds-toi avec les genoux au bord du coussin, étends les jambes complètement, contracte les quadriceps en haut, descends avec contrôle, excellent pour l\'isolation et la définition des quadriceps.',
+      'pt-BR': 'Exercício de isolamento que trabalha os quadríceps diretamente. Sente-se com os joelhos na borda do apoio, estenda completamente as pernas, contraia os quadríceps no topo, desça com controle, excelente para isolamento e definição dos quadríceps.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'leg_press',
-    name: { en: 'Leg Press', es: 'Prensa de Piernas' },
+    name: { en: 'Leg Press', es: 'Prensa de Piernas' , fr: 'Presse à Cuisses', 'pt-BR': 'Leg Press' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.20, calves: 0.05 },
     equipment: ['leg_press_station'],
@@ -3065,13 +3471,15 @@ export const exercises = [
     description: {
       en: 'Machine compound movement for heavy quad loading. Press platform away by extending legs, lower with control, foot placement affects muscle emphasis, allows very heavy weights safely.',
       es: 'Movimiento compuesto en máquina para carga pesada de cuádriceps. Empuja la plataforma extendiendo piernas, baja con control, la posición de pies afecta el énfasis muscular.',
+      fr: 'Mouvement composé en machine pour une charge lourde des quadriceps. Pousse la plateforme en étendant les jambes, descends avec contrôle, la position des pieds influence l\'accent musculaire, permet des charges très lourdes en toute sécurité.',
+      'pt-BR': 'Movimento composto em máquina para carga pesada nos quadríceps. Empurre a plataforma estendendo as pernas, desça com controle, a posição dos pés afeta a ênfase muscular, permite pesos muito pesados com segurança.',
     },
     bmc: 4.0,
     wf: 0.04,
   },
   {
     id: 'squat',
-    name: { en: 'Hack Squat', es: 'Sentadilla Hack' },
+    name: { en: 'Hack Squat', es: 'Sentadilla Hack' , fr: 'Hack Squat', 'pt-BR': 'Hack Squat' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.30, hamstrings: 0.20, calves: 0.05 },
     equipment: ['squat_station'],
@@ -3079,13 +3487,15 @@ export const exercises = [
     description: {
       en: 'Machine squat with back supported on angled pad. Place shoulders under the pads, feet on the platform, and squat down by bending knees. Press through heels to stand. Allows heavy quad loading with reduced lower back stress.',
       es: 'Sentadilla en máquina con espalda apoyada en almohadilla inclinada. Coloca los hombros bajo las almohadillas, pies en la plataforma, y baja flexionando rodillas. Empuja con talones para subir. Permite carga pesada de cuádriceps con menor estrés lumbar.',
+      fr: 'Squat en machine avec le dos soutenu sur un coussin incliné. Place les épaules sous les appuis, pieds sur la plateforme, et descends en fléchissant les genoux. Pousse à travers les talons pour remonter. Permet une charge lourde des quadriceps avec moins de stress lombaire.',
+      'pt-BR': 'Agachamento em máquina com as costas apoiadas em uma almofada inclinada. Posicione os ombros sob os suportes, pés na plataforma, e agache flexionando os joelhos. Empurre pelos calcanhares para subir. Permite carga pesada nos quadríceps com menor estresse na lombar.',
     },
     bmc: 4.0,
     wf: 0.04,
   },
   {
     id: 'kb_goblet_squat',
-    name: { en: 'Kettlebell Goblet Squat', es: 'Sentadilla Goblet con Pesa Rusa' },
+    name: { en: 'Kettlebell Goblet Squat', es: 'Sentadilla Goblet con Pesa Rusa' , fr: 'Squat Gobelet au Kettlebell', 'pt-BR': 'Agachamento Goblet com Kettlebell' },
     muscleGroup: 'quads',
     muscles: { quads: 0.45, glutes: 0.30, core: 0.15, hamstrings: 0.10 },
     equipment: ['kettlebells'],
@@ -3094,13 +3504,15 @@ export const exercises = [
     description: {
       en: 'Hold a kettlebell by the horns at chest height, squat deep keeping your torso upright and elbows inside the knees. The front-loaded position encourages proper squat mechanics and deep range of motion.',
       es: 'Sostén la pesa rusa por los cuernos a la altura del pecho, haz sentadilla profunda manteniendo el torso erguido y codos dentro de las rodillas. La carga frontal favorece la mecánica correcta y rango de movimiento profundo.',
+      fr: 'Tiens le kettlebell par les anses à hauteur de poitrine, fais un squat profond en gardant le torse droit et les coudes à l\'intérieur des genoux. La charge frontale favorise une bonne mécanique de squat et une grande amplitude de mouvement.',
+      'pt-BR': 'Segure o kettlebell pelas alças na altura do peito, agache fundo mantendo o tronco ereto e os cotovelos dentro dos joelhos. O carregamento frontal incentiva a mecânica correta do agachamento e ampla amplitude de movimento.',
     },
     bmc: 1.8,
     wf: 0.03,
   },
   {
     id: 'kb_lunge',
-    name: { en: 'Kettlebell Lunge', es: 'Zancada con Pesa Rusa' },
+    name: { en: 'Kettlebell Lunge', es: 'Zancada con Pesa Rusa' , fr: 'Fente au Kettlebell', 'pt-BR': 'Afundo com Kettlebell' },
     muscleGroup: 'quads',
     muscles: { quads: 0.40, glutes: 0.30, hamstrings: 0.20, core: 0.10 },
     equipment: ['kettlebells'],
@@ -3108,13 +3520,15 @@ export const exercises = [
     description: {
       en: 'Hold kettlebells in rack position or by your sides, step forward or backward into a deep lunge. Keep your torso upright and front knee tracking over your toes. The offset weight challenges balance and core stability.',
       es: 'Sostén las pesas rusas en posición de rack o a los lados, da un paso adelante o atrás en una zancada profunda. Mantén el torso erguido y la rodilla delantera alineada con los pies. El peso descentrado desafía el equilibrio y la estabilidad del core.',
+      fr: 'Tiens les kettlebells en position de rack ou le long du corps, fais un pas en avant ou en arrière dans une fente profonde. Garde le torse droit et le genou avant dans l\'axe des orteils. Le poids asymétrique sollicite l\'équilibre et la stabilité du gainage.',
+      'pt-BR': 'Segure os kettlebells na posição de rack ou ao longo do corpo, dê um passo à frente ou atrás em um afundo profundo. Mantenha o tronco ereto e o joelho dianteiro alinhado com os pés. O peso assimétrico desafia o equilíbrio e a estabilidade do core.',
     },
     bmc: 1.8,
     wf: 0.03,
   },
   {
     id: 'ball_wall_squat',
-    name: { en: 'Ball Wall Squat', es: 'Sentadilla en Pared con Pelota' },
+    name: { en: 'Ball Wall Squat', es: 'Sentadilla en Pared con Pelota' , fr: 'Squat au Mur avec Ballon', 'pt-BR': 'Agachamento na Parede com Bola' },
     muscleGroup: 'quads',
     muscles: { quads: 0.55, glutes: 0.30, hamstrings: 0.10, core: 0.05 },
     equipment: ['ball'],
@@ -3123,6 +3537,8 @@ export const exercises = [
     description: {
       en: 'Place an exercise ball between your lower back and the wall. Stand with feet shoulder-width apart, slightly forward of the ball. Squat down until thighs are parallel to the floor, the ball rolls along your back. Press through heels to stand. Add dumbbells for extra resistance.',
       es: 'Coloca un balón de ejercicio entre la espalda baja y la pared. De pie con pies al ancho de hombros, ligeramente adelantados. Baja en sentadilla hasta que los muslos estén paralelos al suelo, el balón rueda por la espalda. Empuja con talones para levantarte. Agrega mancuernas para mayor resistencia.',
+      fr: 'Place un ballon de fitness entre le bas du dos et le mur. Debout avec les pieds à la largeur des épaules, légèrement en avant du ballon. Descends en squat jusqu\'à ce que les cuisses soient parallèles au sol, le ballon roule dans le dos. Pousse à travers les talons pour remonter. Ajoute des haltères pour plus de résistance.',
+      'pt-BR': 'Coloque uma bola de exercício entre a lombar e a parede. Fique em pé com os pés na largura dos ombros, levemente à frente da bola. Agache até as coxas ficarem paralelas ao chão, a bola rola pelas costas. Empurre pelos calcanhares para subir. Adicione halteres para maior resistência.',
     },
     bmc: 2.0,
     wf: 0.0,
@@ -3134,7 +3550,7 @@ export const exercises = [
   // ============================================
   {
     id: 'leg_curl',
-    name: { en: 'Standing Leg Curl (Single-Leg)', es: 'Curl de Piernas de Pie (Una Pierna)' },
+    name: { en: 'Standing Leg Curl (Single-Leg)', es: 'Curl de Piernas de Pie (Una Pierna)' , fr: 'Leg Curl Debout (Une Jambe)', 'pt-BR': 'Rosca de Pernas em Pé (Uma Perna)' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.85, calves: 0.15 },
     equipment: ['standing_leg_curl_station'],
@@ -3143,13 +3559,15 @@ export const exercises = [
     description: {
       en: 'Machine isolation for hamstring knee flexion. Curl heels toward glutes, squeeze hamstrings at top, lower with control, keeps hips stable for strict isolation.',
       es: 'Aislamiento en máquina para flexión de rodilla de isquiotibiales. Curl de talones hacia glúteos, aprieta isquios arriba, baja con control, mantiene caderas estables.',
+      fr: 'Isolation en machine pour la flexion du genou des ischio-jambiers. Fléchis les talons vers les fessiers, contracte les ischio-jambiers en haut, redescends avec contrôle, maintient les hanches stables pour une isolation stricte.',
+      'pt-BR': 'Isolamento em máquina para a flexão do joelho dos isquiotibiais. Curve os calcanhares em direção aos glúteos, contraia os isquiotibiais no topo, desça com controle, mantém os quadris estáveis para isolamento rigoroso.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'seated_leg_curl',
-    name: { en: 'Leg Curl (Seated or Lying)', es: 'Curl de Piernas (Sentado o Tumbado)' },
+    name: { en: 'Leg Curl (Seated or Lying)', es: 'Curl de Piernas (Sentado o Tumbado)' , fr: 'Leg Curl (Assis ou Allongé)', 'pt-BR': 'Rosca de Pernas (Sentado ou Deitado)' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.85, calves: 0.15 },
     equipment: ['leg_curl_station'],
@@ -3157,13 +3575,15 @@ export const exercises = [
     description: {
       en: 'Hamstring isolation on a leg curl machine, seated or lying. Adjust the pad above your ankles and curl your heels toward your glutes. Squeeze at full contraction, then return with control. Both positions effectively isolate the hamstrings with minimal lower back involvement.',
       es: 'Aislamiento de isquiotibiales en máquina de curl de piernas, sentado o tumbado. Ajusta la almohadilla sobre los tobillos y curva los talones hacia los glúteos. Aprieta en la contracción completa, luego vuelve con control. Ambas posiciones aíslan eficazmente los isquiotibiales con mínima participación lumbar.',
+      fr: 'Isolation des ischio-jambiers sur machine à curl de jambe, assis ou allongé. Ajuste le coussin au-dessus des chevilles et fléchis les talons vers les fessiers. Contracte à la contraction complète, puis reviens avec contrôle. Les deux positions isolent efficacement les ischio-jambiers avec une implication lombaire minimale.',
+      'pt-BR': 'Isolamento dos isquiotibiais na máquina de rosca de pernas, sentado ou deitado. Ajuste o apoio acima dos tornozelos e curve os calcanhares em direção aos glúteos. Contraia na contração completa, depois retorne com controle. Ambas as posições isolam eficazmente os isquiotibiais com mínimo envolvimento lombar.',
     },
     bmc: 2.0,
     wf: 0.03,
   },
   {
     id: 'cable_pull_through',
-    name: { en: 'Cable Pull-Through', es: 'Tirón de Cable entre Piernas' },
+    name: { en: 'Cable Pull-Through', es: 'Tirón de Cable entre Piernas' , fr: 'Tiré de Câble entre Jambes', 'pt-BR': 'Pull-Through no Cabo' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.40, glutes: 0.40, back: 0.15, core: 0.05 },
     equipment: ['low_pulley', 'rope'],
@@ -3171,13 +3591,15 @@ export const exercises = [
     description: {
       en: 'Hip hinge with constant cable tension. Face away from low pulley, rope between legs, hinge forward then thrust hips to stand, excellent hip hinge pattern practice with resistance.',
       es: 'Bisagra de cadera con tensión constante de cable. De espaldas a polea baja, cuerda entre piernas, inclínate y empuja caderas para pararte, excelente práctica de bisagra con resistencia.',
+      fr: 'Charnière de hanche avec tension constante du câble. De dos à la poulie basse, corde entre les jambes, incline-toi puis propulse les hanches pour te redresser, excellent entraînement du pattern de charnière de hanche avec résistance.',
+      'pt-BR': 'Dobradiça de quadril com tensão constante de cabo. De costas para a polia baixa, corda entre as pernas, incline-se e impulsione os quadris para ficar em pé, excelente prática do padrão de dobradiça de quadril com resistência.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'kb_deadlift',
-    name: { en: 'Kettlebell Deadlift', es: 'Peso Muerto con Pesa Rusa' },
+    name: { en: 'Kettlebell Deadlift', es: 'Peso Muerto con Pesa Rusa' , fr: 'Soulevé de Terre au Kettlebell', 'pt-BR': 'Levantamento Terra com Kettlebell' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.35, glutes: 0.30, back: 0.25, core: 0.10 },
     equipment: ['kettlebells'],
@@ -3185,13 +3607,15 @@ export const exercises = [
     description: {
       en: 'Stand over the kettlebell with feet hip-width apart, hinge at the hips to grip it, drive through your heels to stand tall. Keep your back flat and chest up throughout the movement.',
       es: 'De pie sobre la pesa rusa con pies al ancho de caderas, flexiona en las caderas para agarrarla, empuja con los talones para ponerte de pie. Mantén la espalda plana y el pecho arriba durante todo el movimiento.',
+      fr: 'Debout au-dessus du kettlebell avec les pieds à la largeur des hanches, fais une charnière de hanche pour le saisir, pousse à travers les talons pour te redresser. Garde le dos plat et la poitrine haute tout au long du mouvement.',
+      'pt-BR': 'Fique de pé sobre o kettlebell com os pés na largura dos quadris, faça a dobradiça de quadril para segurá-lo, empurre pelos calcanhares para ficar em pé. Mantenha as costas planas e o peito erguido durante todo o movimento.',
     },
     bmc: 1.8,
     wf: 0.03,
   },
   {
     id: 'ball_hamstring_curl',
-    name: { en: 'Ball Hamstring Curl', es: 'Curl de Isquiotibiales con Pelota' },
+    name: { en: 'Ball Hamstring Curl', es: 'Curl de Isquiotibiales con Pelota' , fr: 'Leg Curl avec Ballon', 'pt-BR': 'Rosca de Pernas com Bola' },
     muscleGroup: 'hamstrings',
     muscles: { hamstrings: 0.55, glutes: 0.30, calves: 0.10, core: 0.05 },
     equipment: ['ball'],
@@ -3199,6 +3623,8 @@ export const exercises = [
     description: {
       en: 'Lie on your back with heels on the exercise ball, arms at your sides. Lift hips into a bridge, then curl the ball toward your glutes by bending your knees. Extend legs back out with control. Keep hips elevated throughout.',
       es: 'Acuéstate boca arriba con los talones sobre el balón, brazos a los lados. Levanta las caderas en puente, luego curva el balón hacia los glúteos flexionando las rodillas. Extiende las piernas con control. Mantén las caderas elevadas todo el tiempo.',
+      fr: 'Allonge-toi sur le dos avec les talons sur le ballon, bras le long du corps. Lève les hanches en pont, puis fléchis les genoux pour ramener le ballon vers les fessiers. Étends les jambes avec contrôle. Garde les hanches élevées tout au long du mouvement.',
+      'pt-BR': 'Deite de costas com os calcanhares sobre a bola, braços ao longo do corpo. Eleve os quadris em ponte, depois dobre os joelhos para puxar a bola em direção aos glúteos. Estenda as pernas com controle. Mantenha os quadris elevados o tempo todo.',
     },
     bmc: 1.8,
     wf: 0.0,
@@ -3210,7 +3636,7 @@ export const exercises = [
   // ============================================
   {
     id: 'cable_kickback_glutes',
-    name: { en: 'Cable Kickback', es: 'Patada Trasera en Polea' },
+    name: { en: 'Cable Kickback', es: 'Patada Trasera en Polea' , fr: 'Kickback en Câble', 'pt-BR': 'Extensão de Quadril no Cabo' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.75, hamstrings: 0.20, core: 0.05 },
     equipment: ['low_pulley', 'ankle_strap'],
@@ -3218,13 +3644,15 @@ export const exercises = [
     description: {
       en: 'Glute isolation using cable and ankle strap. Attach strap to ankle, face low pulley, kick leg back squeezing glute at top, constant tension throughout entire range of motion.',
       es: 'Aislamiento de glúteos usando cable y correa de tobillo. Conecta la correa al tobillo, de frente a polea baja, patea hacia atrás apretando glúteo arriba, tensión constante.',
+      fr: 'Isolation des fessiers avec câble et sangle de cheville. Attache la sangle à la cheville, de face à la poulie basse, envoie la jambe en arrière en contractant le fessier, tension constante sur toute l\'amplitude du mouvement.',
+      'pt-BR': 'Isolamento dos glúteos usando cabo e tornozeleira. Prenda a tornozeleira no tornozelo, fique de frente para a polia baixa, chute a perna para trás contraindo o glúteo no topo, tensão constante em toda a amplitude do movimento.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'cable_pull_through_glutes',
-    name: { en: 'Cable Pull-Through', es: 'Tirón de Cable entre Piernas' },
+    name: { en: 'Cable Pull-Through', es: 'Tirón de Cable entre Piernas' , fr: 'Tiré de Câble entre Jambes', 'pt-BR': 'Pull-Through no Cabo' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.45, hamstrings: 0.35, back: 0.15, core: 0.05 },
     equipment: ['low_pulley', 'rope'],
@@ -3232,13 +3660,15 @@ export const exercises = [
     description: {
       en: 'Hip hinge for glutes with cable resistance. Face away from low pulley, rope between legs, hinge and thrust hips forward, excellent glute activation with constant cable tension.',
       es: 'Bisagra de cadera para glúteos con resistencia de cable. De espaldas a polea baja, cuerda entre piernas, inclínate y empuja caderas adelante, excelente activación con tensión constante.',
+      fr: 'Charnière de hanche pour les fessiers avec résistance du câble. De dos à la poulie basse, corde entre les jambes, incline-toi et propulse les hanches en avant, excellente activation des fessiers avec tension constante du câble.',
+      'pt-BR': 'Dobradiça de quadril para glúteos com resistência de cabo. De costas para a polia baixa, corda entre as pernas, incline-se e impulsione os quadris para frente, excelente ativação dos glúteos com tensão constante do cabo.',
     },
     bmc: 3.0,
     wf: 0.03,
   },
   {
     id: 'kb_swing',
-    name: { en: 'Kettlebell Swing', es: 'Swing con Pesa Rusa' },
+    name: { en: 'Kettlebell Swing', es: 'Swing con Pesa Rusa' , fr: 'Swing au Kettlebell', 'pt-BR': 'Swing com Kettlebell' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.35, hamstrings: 0.30, back: 0.15, shoulders: 0.10, core: 0.10 },
     equipment: ['kettlebells'],
@@ -3246,6 +3676,8 @@ export const exercises = [
     description: {
       en: 'Explosive hip-hinge movement. Grip the kettlebell with both hands, hinge at the hips driving it back between your legs, then snap your hips forward to swing it to chest height. Keep arms relaxed, power comes from the hips.',
       es: 'Movimiento explosivo de bisagra de cadera. Agarra la pesa rusa con ambas manos, flexiona las caderas llevándola entre las piernas, luego extiende las caderas con fuerza para elevarla al pecho. Brazos relajados, la potencia viene de las caderas.',
+      fr: 'Mouvement explosif de charnière de hanche. Saisis le kettlebell à deux mains, fléchis les hanches en le ramenant entre les jambes, puis propulse les hanches vers l\'avant pour le balancer à hauteur de poitrine. Garde les bras détendus, la puissance vient des hanches.',
+      'pt-BR': 'Movimento explosivo de dobradiça de quadril. Segure o kettlebell com ambas as mãos, incline os quadris levando-o entre as pernas, depois estenda os quadris com força para balançá-lo até a altura do peito. Mantenha os braços relaxados, a potência vem dos quadris.',
     },
     bmc: 2.0,
     wf: 0.03,
@@ -3253,7 +3685,7 @@ export const exercises = [
 
   {
     id: 'hip_abduction',
-    name: { en: 'Hip Abduction (Machine)', es: 'Abducción de Cadera (Máquina)' },
+    name: { en: 'Hip Abduction (Machine)', es: 'Abducción de Cadera (Máquina)' , fr: 'Abduction de Hanche (Machine)', 'pt-BR': 'Abdução de Quadril (Máquina)' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.85, quads: 0.15 },
     equipment: ['hip_abductor_adductor'],
@@ -3261,13 +3693,15 @@ export const exercises = [
     description: {
       en: 'Seated hip abduction on machine. Sit with pads on outer thighs, push legs apart against resistance, squeeze glutes at full abduction, return with control. Targets the gluteus medius and minimus.',
       es: 'Abducción de cadera sentado en máquina. Siéntate con almohadillas en la parte externa de los muslos, empuja las piernas separándolas contra la resistencia, aprieta glúteos en abducción completa. Trabaja glúteo medio y menor.',
+      fr: 'Abduction de hanche assise sur machine. Assieds-toi avec les coussins sur la face externe des cuisses, pousse les jambes vers l\'extérieur contre la résistance, contracte les fessiers à l\'abduction complète, reviens avec contrôle. Cible le moyen et petit fessier.',
+      'pt-BR': 'Abdução do quadril sentado na máquina. Sente-se com os apoios na face externa das coxas, empurre as pernas para fora contra a resistência, contraia os glúteos na abdução completa, retorne com controle. Trabalha o glúteo médio e mínimo.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'hip_adduction',
-    name: { en: 'Hip Adduction (Machine)', es: 'Aducción de Cadera (Máquina)' },
+    name: { en: 'Hip Adduction (Machine)', es: 'Aducción de Cadera (Máquina)' , fr: 'Adduction de Hanche (Machine)', 'pt-BR': 'Adução de Quadril (Máquina)' },
     muscleGroup: 'glutes',
     muscles: { glutes: 0.40, quads: 0.60 },
     equipment: ['hip_abductor_adductor'],
@@ -3275,6 +3709,8 @@ export const exercises = [
     description: {
       en: 'Seated hip adduction on machine. Sit with pads on inner thighs, squeeze legs together against resistance, hold briefly at full adduction, return with control. Targets the inner thigh adductor muscles.',
       es: 'Aducción de cadera sentado en máquina. Siéntate con almohadillas en la parte interna de los muslos, aprieta las piernas juntándolas contra la resistencia, mantén brevemente en aducción completa. Trabaja los músculos aductores del muslo interno.',
+      fr: 'Adduction de hanche assise sur machine. Assieds-toi avec les coussins sur la face interne des cuisses, resserre les jambes contre la résistance, maintiens brièvement à l\'adduction complète, reviens avec contrôle. Cible les muscles adducteurs de la cuisse interne.',
+      'pt-BR': 'Adução do quadril sentado na máquina. Sente-se com os apoios na face interna das coxas, feche as pernas contra a resistência, mantenha brevemente na adução completa, retorne com controle. Trabalha os músculos adutores da face interna da coxa.',
     },
     bmc: 1.5,
     wf: 0.02,
@@ -3285,7 +3721,7 @@ export const exercises = [
   // ============================================
   {
     id: 'standing_calf_raise_machine',
-    name: { en: 'Standing Calf Raise (Machine)', es: 'Elevación de Talones de Pie (Máquina)' },
+    name: { en: 'Standing Calf Raise (Machine)', es: 'Elevación de Talones de Pie (Máquina)' , fr: 'Mollets Debout (Machine)', 'pt-BR': 'Elevação de Panturrilha em Pé (Máquina)' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: ['calf_station'],
@@ -3293,13 +3729,15 @@ export const exercises = [
     description: {
       en: 'Standing calf raise on dedicated machine. Position shoulders under pads, rise onto toes with full range of motion, the machine allows heavy loading with stable form for maximum calf development.',
       es: 'Elevación de talones de pie en máquina dedicada. Posiciona hombros bajo las almohadillas, sube a las puntas con rango completo, la máquina permite carga pesada con forma estable para máximo desarrollo.',
+      fr: 'Élévation des mollets de pied sur machine dédiée. Positionne les épaules sous les coussins, monte sur les pointes avec une amplitude complète, la machine permet une charge lourde avec une forme stable pour un développement maximal des mollets.',
+      'pt-BR': 'Elevação de panturrilha em pé em máquina dedicada. Posicione os ombros sob as almofadas, suba nas pontas com amplitude completa, a máquina permite carga pesada com forma estável para máximo desenvolvimento das panturrilhas.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'leg_press_calf_raise',
-    name: { en: 'Leg Press Calf Raise', es: 'Elevación de Talones en Prensa' },
+    name: { en: 'Leg Press Calf Raise', es: 'Elevación de Talones en Prensa' , fr: 'Mollets à la Presse', 'pt-BR': 'Elevação de Panturrilha no Leg Press' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: ['leg_press_station'],
@@ -3307,13 +3745,15 @@ export const exercises = [
     description: {
       en: 'Calf raise using leg press machine. Position toes on bottom of platform, press through toes to extend calves, allows heavy loading with machine support for safe calf training.',
       es: 'Elevación de talones usando la prensa de piernas. Posiciona puntas en la parte baja de la plataforma, empuja con puntas para extender gemelos, permite carga pesada con soporte.',
+      fr: 'Élévation des mollets sur la presse à jambes. Positionne les orteils en bas de la plateforme, pousse sur les orteils pour étendre les mollets, permet une charge lourde avec le support de la machine pour un entraînement sûr des mollets.',
+      'pt-BR': 'Elevação de panturrilha usando a máquina de leg press. Posicione as pontas dos pés na parte inferior da plataforma, empurre pelas pontas para estender as panturrilhas, permite carga pesada com suporte da máquina para treino seguro.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'squat_calf_raise',
-    name: { en: 'Hack Squat Calf Raise', es: 'Elevación de Talones en Hack Squat' },
+    name: { en: 'Hack Squat Calf Raise', es: 'Elevación de Talones en Hack Squat' , fr: 'Mollets au Hack Squat', 'pt-BR': 'Elevação de Panturrilha no Hack Squat' },
     muscleGroup: 'calves',
     muscles: { calves: 1.0 },
     equipment: ['squat_station'],
@@ -3321,6 +3761,8 @@ export const exercises = [
     description: {
       en: 'Calf raise using the hack squat machine. Position toes on the lower edge of the platform with legs nearly straight. Press through toes to raise heels, squeeze calves at top, lower with control.',
       es: 'Elevación de talones usando la máquina hack squat. Posiciona las puntas en el borde inferior de la plataforma con piernas casi extendidas. Empuja con las puntas para elevar talones, aprieta gemelos arriba, baja con control.',
+      fr: 'Élévation des mollets sur la machine hack squat. Positionne les orteils sur le bord inférieur de la plateforme avec les jambes presque tendues. Pousse sur les orteils pour lever les talons, contracte les mollets en haut, redescends avec contrôle.',
+      'pt-BR': 'Elevação de panturrilha usando a máquina hack squat. Posicione as pontas dos pés na borda inferior da plataforma com as pernas quase estendidas. Empurre pelas pontas para elevar os calcanhares, contraia as panturrilhas no topo, desça com controle.',
     },
     bmc: 1.5,
     wf: 0.02,
@@ -3331,7 +3773,7 @@ export const exercises = [
   // ============================================
   {
     id: 'cable_crunch',
-    name: { en: 'Cable Crunch (Kneeling)', es: 'Crunch en Polea (Arrodillado)' },
+    name: { en: 'Cable Crunch (Kneeling)', es: 'Crunch en Polea (Arrodillado)' , fr: 'Crunch Câble (Agenouillé)', 'pt-BR': 'Abdominal no Cabo (Ajoelhado)' },
     muscleGroup: 'core',
     muscles: { core: 0.90, shoulders: 0.10 },
     equipment: ['high_pulley', 'rope'],
@@ -3339,13 +3781,15 @@ export const exercises = [
     description: {
       en: 'Weighted crunch using cable for progressive resistance. Kneel facing away from high pulley, crunch down contracting abs against cable resistance, allows heavy loading for ab strength.',
       es: 'Crunch con peso usando cable para resistencia progresiva. Arrodíllate de espaldas a polea alta, crunch contrayendo abdominales contra resistencia del cable, permite carga pesada.',
+      fr: 'Crunch lesté en câble pour une résistance progressive. Agenouille-toi dos à la poulie haute, fléchis en contractant les abdos contre la résistance du câble, permet une charge lourde pour la force abdominale.',
+      'pt-BR': 'Abdominal com carga usando cabo para resistência progressiva. Ajoelhe-se de costas para a polia alta, flexione contraindo os abdominais contra a resistência do cabo, permite carga pesada para força abdominal.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'cable_woodchop_high',
-    name: { en: 'Cable Woodchop (High to Low)', es: 'Leñador en Polea (Alto a Bajo)' },
+    name: { en: 'Cable Woodchop (High to Low)', es: 'Leñador en Polea (Alto a Bajo)' , fr: 'Bûcheron Câble (Haut vers Bas)', 'pt-BR': 'Woodchop no Cabo (Alto para Baixo)' },
     muscleGroup: 'core',
     muscles: { core: 0.65, shoulders: 0.20, back: 0.15 },
     equipment: ['high_pulley', ['single_handle', 'single_rope', 'rope']],
@@ -3353,13 +3797,15 @@ export const exercises = [
     description: {
       en: 'Rotational core exercise from high to low. Pull cable diagonally across body from high to low, rotating through core, excellent for building rotational power and oblique strength.',
       es: 'Ejercicio rotacional de core de alto a bajo. Tira el cable diagonalmente a través del cuerpo de alto a bajo, rotando el core, excelente para potencia rotacional y fuerza de oblicuos.',
+      fr: 'Exercice de rotation du core de haut en bas. Tire le câble en diagonale à travers le corps de haut en bas en faisant pivoter le core, excellent pour la puissance rotationnelle et la force des obliques.',
+      'pt-BR': 'Exercício rotacional do core de cima para baixo. Puxe o cabo diagonalmente pelo corpo de cima para baixo, girando pelo core, excelente para desenvolver potência rotacional e força dos oblíquos.',
     },
     bmc: 2.0,
     wf: 0.02,
   },
   {
     id: 'cable_woodchop_low',
-    name: { en: 'Cable Woodchop (Low to High)', es: 'Leñador en Polea (Bajo a Alto)' },
+    name: { en: 'Cable Woodchop (Low to High)', es: 'Leñador en Polea (Bajo a Alto)' , fr: 'Bûcheron Câble (Bas vers Haut)', 'pt-BR': 'Woodchop no Cabo (Baixo para Alto)' },
     muscleGroup: 'core',
     muscles: { core: 0.65, shoulders: 0.20, quads: 0.15 },
     equipment: ['low_pulley', ['single_handle', 'single_rope', 'rope']],
@@ -3367,13 +3813,15 @@ export const exercises = [
     description: {
       en: 'Rotational movement from low to high position. Pull cable diagonally upward across body, rotating through core, works obliques and rotational muscles from a different angle.',
       es: 'Movimiento rotacional de posición baja a alta. Tira el cable diagonalmente hacia arriba a través del cuerpo, rotando el core, trabaja oblicuos desde otro ángulo.',
+      fr: 'Mouvement de rotation du bas vers le haut. Tire le câble en diagonale vers le haut à travers le corps en faisant pivoter le core, travaille les obliques et les muscles rotationnels sous un angle différent.',
+      'pt-BR': 'Movimento rotacional de baixo para cima. Puxe o cabo diagonalmente para cima pelo corpo, girando pelo core, trabalha os oblíquos e músculos rotacionais de um ângulo diferente.',
     },
     bmc: 2.0,
     wf: 0.02,
   },
   {
     id: 'pallof_press',
-    name: { en: 'Cable Pallof Press', es: 'Press Pallof en Polea' },
+    name: { en: 'Cable Pallof Press', es: 'Press Pallof en Polea' , fr: 'Press Pallof en Câble', 'pt-BR': 'Press Pallof no Cabo' },
     muscleGroup: 'core',
     muscles: { core: 0.80, shoulders: 0.15, chest: 0.05 },
     equipment: ['mid_pulley', ['single_handle', 'single_rope', 'rope']],
@@ -3381,13 +3829,15 @@ export const exercises = [
     description: {
       en: 'Anti-rotation exercise for core stability. Stand perpendicular to cable, press handle straight out resisting rotation, return to chest, builds crucial rotational stability for sports.',
       es: 'Ejercicio anti-rotación para estabilidad del core. De pie perpendicular al cable, empuja el mango hacia afuera resistiendo rotación, regresa al pecho, construye estabilidad rotacional.',
+      fr: 'Exercice anti-rotation pour la stabilité du core. Debout perpendiculaire au câble, pousse la poignée droit devant toi en résistant à la rotation, reviens à la poitrine, construit la stabilité rotationnelle indispensable au sport.',
+      'pt-BR': 'Exercício anti-rotação para estabilidade do core. Fique de pé perpendicular ao cabo, empurre a alça reto para fora resistindo à rotação, volte ao peito, desenvolve estabilidade rotacional essencial para o esporte.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'turkish_getup',
-    name: { en: 'Turkish Get-Up', es: 'Levantamiento Turco' },
+    name: { en: 'Turkish Get-Up', es: 'Levantamiento Turco' , fr: 'Lever Turc', 'pt-BR': 'Turkish Get-Up' },
     muscleGroup: 'core',
     muscles: { core: 0.30, shoulders: 0.30, glutes: 0.20, quads: 0.10, hamstrings: 0.10 },
     equipment: ['kettlebells'],
@@ -3396,13 +3846,15 @@ export const exercises = [
     description: {
       en: 'Start lying down holding a kettlebell overhead with one arm locked out. Rise to standing through a sequence of movements while keeping the bell stable overhead, then reverse back down. Builds total-body stability and mobility.',
       es: 'Comienza acostado sosteniendo una pesa rusa sobre la cabeza con un brazo extendido. Levántate a través de una secuencia de movimientos manteniendo la pesa estable, luego vuelve a bajar. Desarrolla estabilidad y movilidad de todo el cuerpo.',
+      fr: 'Commence allongé en tenant un kettlebell au-dessus de la tête avec un bras verrouillé. Lève-toi à travers une séquence de mouvements tout en gardant la cloche stable au-dessus, puis redescends. Développe la stabilité et la mobilité de tout le corps.',
+      'pt-BR': 'Comece deitado segurando um kettlebell acima da cabeça com um braço estendido. Levante-se através de uma sequência de movimentos mantendo o peso estável acima, depois desça de volta. Desenvolve estabilidade e mobilidade de todo o corpo.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'kb_windmill',
-    name: { en: 'Kettlebell Windmill', es: 'Molino con Pesa Rusa' },
+    name: { en: 'Kettlebell Windmill', es: 'Molino con Pesa Rusa' , fr: 'Moulin à Vent au Kettlebell', 'pt-BR': 'Moinho com Kettlebell' },
     muscleGroup: 'core',
     muscles: { core: 0.35, shoulders: 0.25, hamstrings: 0.25, glutes: 0.15 },
     equipment: ['kettlebells'],
@@ -3411,13 +3863,15 @@ export const exercises = [
     description: {
       en: 'Press a kettlebell overhead, angle your feet 45 degrees, then slowly hinge and rotate your torso to touch your opposite foot while keeping the bell locked out overhead. Excellent for shoulder stability, core strength and hamstring flexibility.',
       es: 'Presiona una pesa rusa sobre la cabeza, angula los pies 45 grados, luego lentamente flexiona y rota el torso para tocar el pie opuesto manteniendo la pesa extendida arriba. Excelente para estabilidad de hombro, fuerza de core y flexibilidad de isquiotibiales.',
+      fr: 'Presse un kettlebell au-dessus de la tête, oriente les pieds à 45 degrés, puis fléchis et fais pivoter lentement le torse pour toucher le pied opposé tout en gardant la cloche verrouillée au-dessus. Excellent pour la stabilité des épaules, la force du core et la souplesse des ischio-jambiers.',
+      'pt-BR': 'Pressione um kettlebell acima da cabeça, angule os pés a 45 graus, depois lentamente dobre e gire o tronco para tocar o pé oposto mantendo o peso estendido acima. Excelente para estabilidade do ombro, força do core e flexibilidade dos isquiotibiais.',
     },
     bmc: 1.5,
     wf: 0.02,
   },
   {
     id: 'ball_crunch',
-    name: { en: 'Ball Crunch', es: 'Crunch en Pelota' },
+    name: { en: 'Ball Crunch', es: 'Crunch en Pelota' , fr: 'Crunch sur Ballon', 'pt-BR': 'Abdominal na Bola' },
     muscleGroup: 'core',
     muscles: { core: 0.90, quads: 0.10 },
     equipment: ['ball'],
@@ -3426,6 +3880,8 @@ export const exercises = [
     description: {
       en: 'Sit on the exercise ball and walk your feet forward until your lower back rests on the ball. Place hands behind your head or across your chest. Crunch upward, contracting your abs. The ball increases range of motion compared to floor crunches.',
       es: 'Siéntate en el balón y camina los pies hacia adelante hasta que la espalda baja descanse sobre el balón. Coloca las manos detrás de la cabeza o sobre el pecho. Realiza un crunch contrayendo los abdominales. El balón aumenta el rango de movimiento comparado con crunches en el suelo.',
+      fr: 'Assieds-toi sur le ballon et avance les pieds jusqu\'à ce que le bas du dos repose sur le ballon. Place les mains derrière la tête ou sur la poitrine. Fléchis vers le haut en contractant les abdos. Le ballon augmente l\'amplitude de mouvement par rapport aux crunches au sol.',
+      'pt-BR': 'Sente-se na bola e caminhe com os pés para frente até a lombar descansar sobre a bola. Coloque as mãos atrás da cabeça ou sobre o peito. Flexione para cima contraindo os abdominais. A bola aumenta a amplitude de movimento em comparação com abdominais no chão.',
     },
     bmc: 1.2,
     wf: 0.0,
@@ -3433,7 +3889,7 @@ export const exercises = [
   },
   {
     id: 'ball_pike',
-    name: { en: 'Ball Pike', es: 'Pike en Pelota' },
+    name: { en: 'Ball Pike', es: 'Pike en Pelota' , fr: 'Pike sur Ballon', 'pt-BR': 'Pike na Bola' },
     muscleGroup: 'core',
     muscles: { core: 0.60, shoulders: 0.25, quads: 0.15 },
     equipment: ['ball'],
@@ -3441,6 +3897,8 @@ export const exercises = [
     description: {
       en: 'Start in a push-up position with your shins on the exercise ball. Keeping legs straight, pike your hips up toward the ceiling by rolling the ball toward your hands. Your body forms an inverted V. Lower with control back to plank.',
       es: 'Comienza en posición de flexión con las espinillas sobre el balón. Manteniendo las piernas rectas, eleva las caderas hacia el techo rodando el balón hacia las manos. Tu cuerpo forma una V invertida. Baja con control a la posición de plancha.',
+      fr: 'Commence en position de pompe avec les tibias sur le ballon. En gardant les jambes droites, monte les hanches vers le plafond en faisant rouler le ballon vers les mains. Ton corps forme un V inversé. Redescends avec contrôle en planche.',
+      'pt-BR': 'Comece na posição de flexão com as canelas sobre a bola. Mantendo as pernas retas, eleve os quadris em direção ao teto rolando a bola em direção às mãos. Seu corpo forma um V invertido. Desça com controle de volta à prancha.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -3448,7 +3906,7 @@ export const exercises = [
   },
   {
     id: 'ball_back_extension',
-    name: { en: 'Ball Back Extension', es: 'Extensión de Espalda en Pelota' },
+    name: { en: 'Ball Back Extension', es: 'Extensión de Espalda en Pelota' , fr: 'Extension Dorsale sur Ballon', 'pt-BR': 'Extensão de Costas na Bola' },
     muscleGroup: 'core',
     muscles: { back: 0.45, core: 0.30, glutes: 0.25 },
     equipment: ['ball'],
@@ -3457,6 +3915,8 @@ export const exercises = [
     description: {
       en: 'Lie face down with your hips on the exercise ball and feet on the ground. Cross arms over your chest or behind your head. Lower your upper body toward the floor, then extend back up by squeezing your lower back and glutes.',
       es: 'Acuéstate boca abajo con las caderas sobre el balón y los pies en el suelo. Cruza los brazos sobre el pecho o detrás de la cabeza. Baja el torso hacia el suelo, luego extiende subiendo apretando la espalda baja y glúteos.',
+      fr: 'Allonge-toi face vers le bas avec les hanches sur le ballon et les pieds au sol. Croise les bras sur la poitrine ou derrière la tête. Abaisse le haut du corps vers le sol, puis étends en remontant en contractant le bas du dos et les fessiers.',
+      'pt-BR': 'Deite de bruços com os quadris sobre a bola e os pés no chão. Cruze os braços sobre o peito ou atrás da cabeça. Desça o tronco em direção ao chão, depois estenda subindo contraindo a lombar e os glúteos.',
     },
     bmc: 1.2,
     wf: 0.0,
@@ -3464,7 +3924,7 @@ export const exercises = [
   },
   {
     id: 'ball_plank',
-    name: { en: 'Ball Plank', es: 'Plancha en Pelota' },
+    name: { en: 'Ball Plank', es: 'Plancha en Pelota' , fr: 'Gainage sur Ballon', 'pt-BR': 'Prancha na Bola' },
     muscleGroup: 'core',
     muscles: { core: 0.70, shoulders: 0.20, glutes: 0.10 },
     equipment: ['ball'],
@@ -3473,6 +3933,8 @@ export const exercises = [
     description: {
       en: 'Place your forearms on the exercise ball and extend your legs behind you in a plank position. Brace your core and hold. The instability of the ball forces deeper core activation than a regular plank. Can also be done with feet on the ball.',
       es: 'Coloca los antebrazos sobre el balón y extiende las piernas detrás en posición de plancha. Activa el core y mantén la posición. La inestabilidad del balón fuerza una activación más profunda del core que una plancha regular. También se puede hacer con los pies en el balón.',
+      fr: 'Place les avant-bras sur le ballon et étends les jambes derrière toi en position de planche. Engage le core et tiens la position. L\'instabilité du ballon force une activation plus profonde du core qu\'une planche ordinaire. Peut aussi être effectué avec les pieds sur le ballon.',
+      'pt-BR': 'Apoie os antebraços na bola e estenda as pernas atrás em posição de prancha. Contraia o core e mantenha. A instabilidade da bola força uma ativação mais profunda do core do que uma prancha regular. Também pode ser feito com os pés na bola.',
     },
     bmc: 1.0,
     wf: 0.0,
@@ -3480,7 +3942,7 @@ export const exercises = [
   },
   {
     id: 'ball_russian_twist',
-    name: { en: 'Ball Russian Twist', es: 'Giro Ruso en Pelota' },
+    name: { en: 'Ball Russian Twist', es: 'Giro Ruso en Pelota' , fr: 'Torsion Russe sur Ballon', 'pt-BR': 'Giro Russo na Bola' },
     muscleGroup: 'core',
     muscles: { core: 0.85, shoulders: 0.15 },
     equipment: ['ball'],
@@ -3489,6 +3951,8 @@ export const exercises = [
     description: {
       en: 'Sit on the exercise ball, walk feet forward until upper back and shoulders rest on the ball with hips lifted. Extend arms straight above your chest with hands together. Rotate your torso to one side, then the other, keeping hips level.',
       es: 'Siéntate en el balón, camina los pies hacia adelante hasta que la espalda alta y hombros descansen sobre el balón con las caderas elevadas. Extiende los brazos sobre el pecho con las manos juntas. Rota el torso a un lado, luego al otro, manteniendo las caderas niveladas.',
+      fr: 'Assieds-toi sur le ballon, avance les pieds jusqu\'à ce que le haut du dos et les épaules reposent sur le ballon avec les hanches soulevées. Étends les bras droits au-dessus de la poitrine, mains jointes. Fais pivoter le torse d\'un côté puis de l\'autre en gardant les hanches de niveau.',
+      'pt-BR': 'Sente-se na bola, caminhe com os pés para frente até a parte superior das costas e ombros descansarem sobre a bola com os quadris elevados. Estenda os braços retos acima do peito com as mãos juntas. Gire o tronco para um lado e depois para o outro, mantendo os quadris nivelados.',
     },
     bmc: 1.3,
     wf: 0.0,
@@ -3496,7 +3960,7 @@ export const exercises = [
   },
   {
     id: 'ball_pass',
-    name: { en: 'Ball Pass (V-Up Transfer)', es: 'Pase de Pelota (V-Up)' },
+    name: { en: 'Ball Pass (V-Up Transfer)', es: 'Pase de Pelota (V-Up)' , fr: 'Passe de Ballon (V-Up)', 'pt-BR': 'Passe de Bola (V-Up)' },
     muscleGroup: 'core',
     muscles: { core: 0.75, quads: 0.15, shoulders: 0.10 },
     equipment: ['ball'],
@@ -3504,6 +3968,8 @@ export const exercises = [
     description: {
       en: 'Lie on your back holding the exercise ball overhead. V-up by lifting legs and torso simultaneously, transfer the ball from hands to feet (or vice versa) at the top. Lower back down with control and repeat, passing the ball back each rep.',
       es: 'Acuéstate boca arriba sosteniendo el balón sobre la cabeza. Realiza un V-up levantando piernas y torso simultáneamente, transfiere el balón de manos a pies (o viceversa) en la parte superior. Baja con control y repite, pasando el balón en cada repetición.',
+      fr: 'Allonge-toi sur le dos en tenant le ballon au-dessus de la tête. Fais un V-up en levant jambes et torse simultanément, transfère le ballon des mains aux pieds (ou vice versa) au sommet. Redescends avec contrôle et répète, en repassant le ballon à chaque répétition.',
+      'pt-BR': 'Deite de costas segurando a bola acima da cabeça. Faça um V-up levantando as pernas e o tronco simultaneamente, transfira a bola das mãos para os pés (ou vice-versa) no topo. Desça com controle e repita, passando a bola em cada repetição.',
     },
     bmc: 1.5,
     wf: 0.0,
@@ -3515,7 +3981,7 @@ export const exercises = [
   // ============================================
   {
     id: 'treadmill_running',
-    name: { en: 'Treadmill Running', es: 'Correr en Cinta' },
+    name: { en: 'Treadmill Running', es: 'Correr en Cinta' , fr: 'Course sur Tapis', 'pt-BR': 'Corrida na Esteira' },
     muscleGroup: 'cardio',
     muscles: { calves: 0.30, quads: 0.30, hamstrings: 0.15, glutes: 0.15, core: 0.10 },
     equipment: ['treadmill'],
@@ -3524,6 +3990,8 @@ export const exercises = [
     description: {
       en: 'Cardio exercise on treadmill machine. Run at a steady pace with adjustable speed and incline. Great for controlled cardiovascular training, leg endurance, and calorie burning regardless of weather.',
       es: 'Ejercicio cardiovascular en cinta de correr. Corre a un ritmo constante con velocidad e inclinación ajustables. Ideal para entrenamiento cardiovascular controlado, resistencia de piernas y quema de calorías.',
+      fr: 'Exercice cardio sur tapis de course. Cours à un rythme régulier avec vitesse et inclinaison réglables. Idéal pour un entraînement cardiovasculaire contrôlé, l\'endurance des jambes et la dépense calorique quelle que soit la météo.',
+      'pt-BR': 'Exercício cardiovascular na esteira. Corra em ritmo constante com velocidade e inclinação ajustáveis. Ótimo para treino cardiovascular controlado, resistência das pernas e queima de calorias independentemente do clima.',
     },
     bmc: 2.5,
     wf: 0.0,
@@ -3531,7 +3999,7 @@ export const exercises = [
   },
   {
     id: 'stationary_bike',
-    name: { en: 'Stationary Bike', es: 'Bicicleta Estática' },
+    name: { en: 'Stationary Bike', es: 'Bicicleta Estática' , fr: 'Vélo Stationnaire', 'pt-BR': 'Bicicleta Ergométrica' },
     muscleGroup: 'cardio',
     muscles: { quads: 0.35, hamstrings: 0.20, glutes: 0.20, calves: 0.15, core: 0.10 },
     equipment: ['stationary_bike'],
@@ -3540,6 +4008,8 @@ export const exercises = [
     description: {
       en: 'Cardio exercise on a stationary bike. Pedal at a steady pace with adjustable resistance. Low-impact cardiovascular training that builds leg endurance and burns calories while being easy on the joints.',
       es: 'Ejercicio cardiovascular en bicicleta estática. Pedalea a un ritmo constante con resistencia ajustable. Entrenamiento cardiovascular de bajo impacto que desarrolla la resistencia de piernas y quema calorías siendo suave con las articulaciones.',
+      fr: 'Exercice cardio sur vélo stationnaire. Pédale à un rythme régulier avec résistance réglable. Entraînement cardiovasculaire à faible impact qui développe l\'endurance des jambes et brûle des calories tout en ménageant les articulations.',
+      'pt-BR': 'Exercício cardiovascular na bicicleta ergométrica. Pedale em ritmo constante com resistência ajustável. Treino cardiovascular de baixo impacto que desenvolve a resistência das pernas e queima calorias sendo suave para as articulações.',
     },
     bmc: 2.0,
     wf: 0.0,
@@ -3547,7 +4017,7 @@ export const exercises = [
   },
   {
     id: 'stepper',
-    name: { en: 'Stepper / Elliptical', es: 'Stepper / Elíptica' },
+    name: { en: 'Stepper / Elliptical', es: 'Stepper / Elíptica' , fr: 'Stepper / Elliptique', 'pt-BR': 'Stepper / Elíptico' },
     muscleGroup: 'cardio',
     muscles: { quads: 0.30, glutes: 0.25, hamstrings: 0.20, calves: 0.15, core: 0.10 },
     equipment: ['stepper'],
@@ -3556,6 +4026,8 @@ export const exercises = [
     description: {
       en: 'Low-impact cardio on stepper or elliptical machine. Step at a steady pace with adjustable resistance and incline. Engages the entire lower body while being gentle on the joints.',
       es: 'Cardio de bajo impacto en stepper o elíptica. Pedalea a un ritmo constante con resistencia e inclinación ajustables. Trabaja todo el tren inferior siendo suave con las articulaciones.',
+      fr: 'Cardio à faible impact sur stepper ou elliptique. Marche à un rythme régulier avec résistance et inclinaison réglables. Sollicite tout le bas du corps en ménageant les articulations.',
+      'pt-BR': 'Cardio de baixo impacto no stepper ou elíptico. Marche em ritmo constante com resistência e inclinação ajustáveis. Trabalha todo o trem inferior sendo suave para as articulações.',
     },
     bmc: 2.0,
     wf: 0.0,
@@ -3563,7 +4035,7 @@ export const exercises = [
   },
   {
     id: 'rowing',
-    name: { en: 'Rowing Machine', es: 'Máquina de Remo' },
+    name: { en: 'Rowing Machine', es: 'Máquina de Remo' , fr: 'Rameur', 'pt-BR': 'Remo Ergométrico' },
     muscleGroup: 'cardio',
     muscles: { back: 0.30, quads: 0.20, hamstrings: 0.15, shoulders: 0.15, biceps: 0.10, core: 0.10 },
     equipment: ['rowing_machine'],
@@ -3572,6 +4044,8 @@ export const exercises = [
     description: {
       en: 'Full-body cardio on rowing machine. Drive with your legs, lean back slightly, then pull the handle to your lower chest. Reverse the motion smoothly. Builds cardiovascular endurance and full-body strength.',
       es: 'Cardio de cuerpo completo en máquina de remo. Empuja con las piernas, inclínate ligeramente atrás, luego tira del mango al pecho bajo. Invierte el movimiento suavemente. Desarrolla resistencia cardiovascular y fuerza corporal completa.',
+      fr: 'Cardio corps entier sur rameur. Pousse avec les jambes, penche légèrement en arrière, puis tire la poignée vers le bas de la poitrine. Inverse le mouvement en douceur. Développe l\'endurance cardiovasculaire et la force de tout le corps.',
+      'pt-BR': 'Cardio de corpo inteiro no remo ergométrico. Empurre com as pernas, incline levemente para trás, depois puxe a alça até o peito inferior. Inverta o movimento suavemente. Desenvolve resistência cardiovascular e força de todo o corpo.',
     },
     bmc: 2.5,
     wf: 0.0,

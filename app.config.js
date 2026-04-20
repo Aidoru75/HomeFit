@@ -6,7 +6,7 @@ export default ({ config }) => {
     name: isFree ? 'HomeFit Free' : 'HomeFit',
     slug: 'HomeFit',
     scheme: isFree ? 'homefitfree' : 'homefit',
-    version: '1.2.1',
+    version: '1.2.2',
     orientation: 'default',
     icon: isFree ? './assets/icon-free.png' : './assets/icon.png',
     userInterfaceStyle: 'light',

@@ -150,7 +150,11 @@ export default function App() {
       const settings = await loadLanguage();
       seedDefaultRoutines();
       // Warm up TTS engine with the user's language to pre-cache the correct voice
-      Speech.speak(' ', { volume: 0, language: settings?.language === 'es' ? 'es-ES' : 'en-US' });
+      const ttsLang = settings?.language === 'es' ? 'es-ES'
+        : settings?.language === 'fr' ? 'fr-FR'
+        : settings?.language === 'pt-BR' ? 'pt-BR'
+        : 'en-US';
+      Speech.speak(' ', { volume: 0, language: ttsLang });
       const onboarded = await checkOnboarded();
       if (!onboarded) setShowOnboarding(true);
     }

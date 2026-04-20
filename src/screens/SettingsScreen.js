@@ -106,39 +106,42 @@ export default function SettingsScreen() {
   const handleLanguageChange = async (newLanguage) => {
     if (newLanguage === settings.language) return;
     
-    // Get the correct translation for the confirmation based on the NEW language
-    const confirmTitle = newLanguage === 'es' ? 'Cambiar Idioma' : 'Change Language';
-    const confirmMessage = newLanguage === 'es' 
-      ? 'La aplicación se reiniciará para aplicar el nuevo idioma.'
-      : 'The app will restart to apply the new language.';
-    const cancelText = newLanguage === 'es' ? 'Cancelar' : 'Cancel';
-    const confirmText = newLanguage === 'es' ? 'Reiniciar' : 'Restart';
-    
+    // Confirmation dialog shown in the TARGET language
+    const pick = (en, es, fr, pt) =>
+      newLanguage === 'es' ? es : newLanguage === 'fr' ? fr : newLanguage === 'pt-BR' ? pt : en;
+    const confirmTitle   = pick('Change Language', 'Cambiar Idioma', 'Changer de Langue', 'Alterar Idioma');
+    const confirmMessage = pick(
+      'The app will restart to apply the new language.',
+      'La aplicación se reiniciará para aplicar el nuevo idioma.',
+      'L\'application va redémarrer pour appliquer la nouvelle langue.',
+      'O aplicativo será reiniciado para aplicar o novo idioma.',
+    );
+    const cancelText  = pick('Cancel',  'Cancelar', 'Annuler',    'Cancelar');
+    const confirmText = pick('Restart', 'Reiniciar', 'Redémarrer', 'Reiniciar');
+
     Alert.alert(
       confirmTitle,
       confirmMessage,
       [
         { text: cancelText, style: 'cancel' },
-        { 
-          text: confirmText, 
+        {
+          text: confirmText,
           onPress: async () => {
-            // Save the new language setting first
             const newSettings = { ...settings, language: newLanguage };
             await saveSettings(newSettings);
-            
-            // Reload the app
             try {
               await Updates.reloadAsync();
             } catch (error) {
-              // If Updates.reloadAsync fails (e.g., in development), 
-              // just update the state and show a message
               console.log('Could not reload app:', error);
               setSettings(newSettings);
               Alert.alert(
-                newLanguage === 'es' ? 'Nota' : 'Note',
-                newLanguage === 'es' 
-                  ? 'Por favor, cierra y vuelve a abrir la app para ver todos los cambios.'
-                  : 'Please close and reopen the app to see all changes.'
+                pick('Note', 'Nota', 'Note', 'Nota'),
+                pick(
+                  'Please close and reopen the app to see all changes.',
+                  'Por favor, cierra y vuelve a abrir la app para ver todos los cambios.',
+                  'Veuillez fermer et rouvrir l\'application pour voir tous les changements.',
+                  'Por favor, feche e reabra o aplicativo para ver todas as alterações.',
+                )
               );
             }
           }
@@ -191,35 +194,67 @@ export default function SettingsScreen() {
         <Text style={styles.sectionTitle}>{t('language', lang)}</Text>
         <View style={styles.card}>
           <Text style={styles.label}>{t('selectLanguage', lang)}</Text>
-          <View style={styles.languageButtons}>
-            <TouchableOpacity
-              style={[
-                styles.languageButton,
-                settings.language === 'en' && styles.languageButtonActive,
-              ]}
-              onPress={() => handleLanguageChange('en')}
-            >
-              <Text style={[
-                styles.languageButtonText,
-                settings.language === 'en' && styles.languageButtonTextActive,
-              ]}>
-                🇬🇧 {t('english', lang)}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.languageButton,
-                settings.language === 'es' && styles.languageButtonActive,
-              ]}
-              onPress={() => handleLanguageChange('es')}
-            >
-              <Text style={[
-                styles.languageButtonText,
-                settings.language === 'es' && styles.languageButtonTextActive,
-              ]}>
-                🇪🇸 {t('spanish', lang)}
-              </Text>
-            </TouchableOpacity>
+          <View style={styles.languageGrid}>
+            <View style={styles.languageButtons}>
+              <TouchableOpacity
+                style={[
+                  styles.languageButton,
+                  settings.language === 'en' && styles.languageButtonActive,
+                ]}
+                onPress={() => handleLanguageChange('en')}
+              >
+                <Text style={[
+                  styles.languageButtonText,
+                  settings.language === 'en' && styles.languageButtonTextActive,
+                ]}>
+                  🇬🇧 {t('english', lang)}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.languageButton,
+                  settings.language === 'es' && styles.languageButtonActive,
+                ]}
+                onPress={() => handleLanguageChange('es')}
+              >
+                <Text style={[
+                  styles.languageButtonText,
+                  settings.language === 'es' && styles.languageButtonTextActive,
+                ]}>
+                  🇪🇸 {t('spanish', lang)}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.languageButtons}>
+              <TouchableOpacity
+                style={[
+                  styles.languageButton,
+                  settings.language === 'fr' && styles.languageButtonActive,
+                ]}
+                onPress={() => handleLanguageChange('fr')}
+              >
+                <Text style={[
+                  styles.languageButtonText,
+                  settings.language === 'fr' && styles.languageButtonTextActive,
+                ]}>
+                  🇫🇷 {t('french', lang)}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.languageButton,
+                  settings.language === 'pt-BR' && styles.languageButtonActive,
+                ]}
+                onPress={() => handleLanguageChange('pt-BR')}
+              >
+                <Text style={[
+                  styles.languageButtonText,
+                  settings.language === 'pt-BR' && styles.languageButtonTextActive,
+                ]}>
+                  🇧🇷 {t('portuguese', lang)}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -455,6 +490,9 @@ const makeStyles = (colors) => StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.textPrimary,
     marginBottom: spacing.sm,
+  },
+  languageGrid: {
+    gap: spacing.sm,
   },
   languageButtons: {
     flexDirection: 'row',
